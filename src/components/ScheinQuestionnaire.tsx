@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { scheinQuestions } from '@/data/scheinQuestions';
+import OwlMessage from './OwlMessage';
 import type { Answers } from '@/lib/scoring';
+import { getScheinEncouragement, getRandomWisdomTip } from '@/lib/owlMessages';
 
 interface ScheinQuestionnaireProps {
   answers: Answers;
@@ -15,12 +17,18 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete }: ScheinQuestionna
   const allAnswered = totalAnswered >= scheinQuestions.length;
   const progress = (totalAnswered / scheinQuestions.length) * 100;
 
+  const encouragement = getScheinEncouragement(totalAnswered, scheinQuestions.length);
+  const wisdomTip = useMemo(() => getRandomWisdomTip(), [totalAnswered > 0]);
+
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
       <div className="w-full max-w-2xl space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold text-foreground">חלק ב׳: עוגנים תעסוקתיים של שיין</h2>
+          <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold text-sm">
+            🧭 חלק ב׳
+          </div>
+          <h2 className="text-2xl font-bold text-foreground">עוגנים תעסוקתיים של שיין</h2>
           <p className="text-muted-foreground">דרגו כל אמירה מ-1 (לא מסכים כלל) עד 7 (מסכים לחלוטין)</p>
         </div>
 
@@ -36,6 +44,11 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete }: ScheinQuestionna
             />
           </div>
         </div>
+
+        {/* Owl encouragement */}
+        {encouragement && (
+          <OwlMessage message={encouragement} variant="encouragement" />
+        )}
 
         {/* Questions */}
         <div className="space-y-4">
@@ -70,7 +83,7 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete }: ScheinQuestionna
             disabled={!allAnswered}
             className="px-10 py-4 rounded-lg bg-secondary text-secondary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
           >
-            סיום חלק ב׳ ✓
+            🦉 סיום חלק ב׳ ✓
           </button>
         </div>
       </div>

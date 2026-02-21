@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { viaQuestions } from '@/data/viaQuestions';
 import StarRating from './StarRating';
+import OwlMessage from './OwlMessage';
 import type { Answers } from '@/lib/scoring';
+import { getVIAEncouragement, getRandomWisdomTip } from '@/lib/owlMessages';
 
 interface VIAQuestionnaireProps {
   answers: Answers;
@@ -24,12 +26,18 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
   const totalAnswered = Object.keys(answers).length;
   const progress = (totalAnswered / viaQuestions.length) * 100;
 
+  const encouragement = getVIAEncouragement(totalAnswered, viaQuestions.length);
+  const wisdomTip = useMemo(() => getRandomWisdomTip(), [page]);
+
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
       <div className="w-full max-w-2xl space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold text-foreground">חלק א׳: שאלון חוזקות VIA</h2>
+          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
+            🌟 חלק א׳
+          </div>
+          <h2 className="text-2xl font-bold text-foreground">שאלון חוזקות VIA</h2>
           <p className="text-muted-foreground">דרגו כל אמירה מ-1 (לא מתאים) עד 5 (מתאים מאוד)</p>
         </div>
 
@@ -46,6 +54,16 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
             />
           </div>
         </div>
+
+        {/* Owl encouragement */}
+        {encouragement && (
+          <OwlMessage message={encouragement} variant="encouragement" />
+        )}
+
+        {/* Wisdom tip between pages */}
+        {page > 0 && !encouragement && (
+          <OwlMessage message={wisdomTip} variant="tip" />
+        )}
 
         {/* Questions */}
         <div className="space-y-6" key={page}>
@@ -86,7 +104,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
               disabled={!allAnswered}
               className="px-8 py-3 rounded-lg bg-secondary text-secondary-foreground font-semibold disabled:opacity-30 hover:opacity-90 transition-colors"
             >
-              סיום חלק א׳ ✓
+              🦉 סיום חלק א׳ ✓
             </button>
           )}
         </div>
