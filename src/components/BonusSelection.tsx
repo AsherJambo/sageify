@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { CheckCircle } from 'lucide-react';
+import owlLogo from '@/assets/owl-logo.png';
 
 interface BonusSelectionProps {
   title: string;
@@ -19,6 +20,14 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
     });
   };
 
+  const feedbackMessage = selected.length === 0
+    ? '🦉 הינשוף ממתין לבחירה שלכם – סמכו על התחושה הראשונית'
+    : selected.length === 1
+    ? '🪶 בחירה ראשונה מצוינת! עוד שתיים...'
+    : selected.length === 2
+    ? '✨ כמעט שם – עוד אחת אחרונה!'
+    : '🌟 שלוש בחירות מושלמות! הינשוף מאשר';
+
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
       <div className="w-full max-w-2xl space-y-6">
@@ -28,9 +37,15 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
           </div>
           <h2 className="text-2xl font-bold text-foreground">{title}</h2>
           <p className="text-muted-foreground text-lg">{subtitle}</p>
-          <p className="text-accent font-semibold">
-            נבחרו {selected.length} / 3
-          </p>
+        </div>
+
+        {/* Owl feedback */}
+        <div className="flex items-center gap-3 bg-card rounded-2xl p-4 border border-accent/20 shadow-sm">
+          <img src={owlLogo} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
+          <div className="flex-1">
+            <p className="text-foreground text-base">{feedbackMessage}</p>
+          </div>
+          <span className="text-accent font-bold text-lg">{selected.length}/3</span>
         </div>
 
         <div className="space-y-3">
@@ -42,15 +57,15 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
                 onClick={() => toggle(q.id)}
                 className={`w-full text-right p-5 rounded-xl border-2 transition-all duration-200 ${
                   isSelected
-                    ? 'border-accent bg-gold-light shadow-md'
+                    ? 'border-accent bg-gold-light shadow-md scale-[1.01]'
                     : 'border-border bg-card hover:border-accent/40'
                 }`}
               >
                 <div className="flex items-start gap-3">
                   <CheckCircle
                     size={24}
-                    className={`mt-0.5 flex-shrink-0 transition-colors ${
-                      isSelected ? 'text-accent' : 'text-muted-foreground/30'
+                    className={`mt-0.5 flex-shrink-0 transition-all duration-300 ${
+                      isSelected ? 'text-accent scale-110' : 'text-muted-foreground/30'
                     }`}
                   />
                   <div>
@@ -69,7 +84,7 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
             disabled={selected.length !== 3}
             className="px-10 py-4 rounded-lg bg-primary text-primary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
           >
-            אישור הבחירה →
+            🦉 אישור הבחירה →
           </button>
         </div>
       </div>

@@ -117,6 +117,18 @@
   .slide-up {
     animation: slideUp 0.5s ease-out;
   }
+
+  .animate-float {
+    animation: owlFloat 3s ease-in-out infinite;
+  }
+
+  .animate-shadow-pulse {
+    animation: shadowPulse 3s ease-in-out infinite;
+  }
+
+  .animate-bounce-gentle {
+    animation: bounceGentle 2s ease-in-out infinite;
+  }
 }
 
 @keyframes cardEnter {
@@ -144,4 +156,19 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes owlFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes shadowPulse {
+  0%, 100% { opacity: 0.3; transform: translateX(-50%) scaleX(1); }
+  50% { opacity: 0.15; transform: translateX(-50%) scaleX(0.85); }
+}
+
+@keyframes bounceGentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
 }
