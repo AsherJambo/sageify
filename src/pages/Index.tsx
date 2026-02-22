@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import WelcomeScreen from '@/components/WelcomeScreen';
+import SectionIntro from '@/components/SectionIntro';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
 import ScheinQuestionnaire from '@/components/ScheinQuestionnaire';
 import BonusSelection from '@/components/BonusSelection';
@@ -13,6 +14,16 @@ import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import type { SkillColumn } from '@/data/skillsData';
 import {
+  generalIntro,
+  viaIntro,
+  viaBonusIntro,
+  scheinIntro,
+  considerationsIntro,
+  hollandIntro,
+  skillsIntro,
+  preferencesIntro,
+} from '@/data/sectionIntros';
+import {
   type Answers,
   calculateCategoryScores,
   getMaxScoredQuestions,
@@ -21,12 +32,13 @@ import {
 
 type Step =
   | 'welcome'
-  | 'via' | 'via-bonus'
-  | 'schein' | 'schein-bonus'
-  | 'considerations'
-  | 'holland'
-  | 'skills'
-  | 'preferences'
+  | 'general-intro'
+  | 'via-intro' | 'via' | 'via-bonus-intro' | 'via-bonus'
+  | 'schein-intro' | 'schein' | 'schein-bonus'
+  | 'considerations-intro' | 'considerations'
+  | 'holland-intro' | 'holland'
+  | 'skills-intro' | 'skills'
+  | 'preferences-intro' | 'preferences'
   | 'results';
 
 const STORAGE_KEY = 'sageify-state';
@@ -94,7 +106,7 @@ const Index = () => {
     updateState({
       finalViaAnswers: finalAnswers,
       viaBonusApplied: true,
-      step: 'schein',
+      step: 'schein-intro',
     });
   };
 
@@ -103,7 +115,7 @@ const Index = () => {
     updateState({
       finalScheinAnswers: finalAnswers,
       scheinBonusApplied: true,
-      step: 'considerations',
+      step: 'considerations-intro',
     });
   };
 
@@ -135,14 +147,47 @@ const Index = () => {
 
   switch (state.step) {
     case 'welcome':
-      return <WelcomeScreen onStart={() => updateState({ step: 'via' })} />;
+      return <WelcomeScreen onStart={() => updateState({ step: 'general-intro' })} />;
+
+    case 'general-intro':
+      return (
+        <SectionIntro
+          title={generalIntro.title}
+          paragraphs={generalIntro.paragraphs}
+          bulletPoints={generalIntro.bulletPoints}
+          paragraphs2={generalIntro.paragraphs2}
+          notes={generalIntro.notes}
+          onContinue={() => updateState({ step: 'via-intro' })}
+          buttonText="יוצאים לדרך! 🦉"
+        />
+      );
+
+    case 'via-intro':
+      return (
+        <SectionIntro
+          badge={viaIntro.badge}
+          title={viaIntro.title}
+          paragraphs={viaIntro.paragraphs}
+          onContinue={() => updateState({ step: 'via' })}
+        />
+      );
 
     case 'via':
       return (
         <VIAQuestionnaire
           answers={state.viaAnswers}
           onAnswer={handleViaAnswer}
-          onComplete={() => updateState({ step: 'via-bonus' })}
+          onComplete={() => updateState({ step: 'via-bonus-intro' })}
+        />
+      );
+
+    case 'via-bonus-intro':
+      return (
+        <SectionIntro
+          badge={viaBonusIntro.badge}
+          title={viaBonusIntro.title}
+          paragraphs={viaBonusIntro.paragraphs}
+          onContinue={() => updateState({ step: 'via-bonus' })}
         />
       );
 
@@ -153,6 +198,16 @@ const Index = () => {
           subtitle="מתוך השאלות שנתתם להן את הציון הגבוה ביותר, בחרו 3 שהכי מהדהדות אצלכם"
           questions={viaMaxQuestions}
           onComplete={handleViaBonusComplete}
+        />
+      );
+
+    case 'schein-intro':
+      return (
+        <SectionIntro
+          badge={scheinIntro.badge}
+          title={scheinIntro.title}
+          paragraphs={scheinIntro.paragraphs}
+          onContinue={() => updateState({ step: 'schein' })}
         />
       );
 
@@ -175,15 +230,35 @@ const Index = () => {
         />
       );
 
+    case 'considerations-intro':
+      return (
+        <SectionIntro
+          badge={considerationsIntro.badge}
+          title={considerationsIntro.title}
+          paragraphs={considerationsIntro.paragraphs}
+          onContinue={() => updateState({ step: 'considerations' })}
+        />
+      );
+
     case 'considerations':
       return (
         <ConsiderationsQuestionnaire
           onComplete={(selected, points) => {
             updateState({
               considerationsData: { selected, points },
-              step: 'holland',
+              step: 'holland-intro',
             });
           }}
+        />
+      );
+
+    case 'holland-intro':
+      return (
+        <SectionIntro
+          badge={hollandIntro.badge}
+          title={hollandIntro.title}
+          paragraphs={hollandIntro.paragraphs}
+          onContinue={() => updateState({ step: 'holland' })}
         />
       );
 
@@ -193,9 +268,20 @@ const Index = () => {
           onComplete={(answers) => {
             updateState({
               hollandAnswers: answers,
-              step: 'skills',
+              step: 'skills-intro',
             });
           }}
+        />
+      );
+
+    case 'skills-intro':
+      return (
+        <SectionIntro
+          badge={skillsIntro.badge}
+          title={skillsIntro.title}
+          paragraphs={skillsIntro.paragraphs}
+          bulletPoints={skillsIntro.bulletPoints}
+          onContinue={() => updateState({ step: 'skills' })}
         />
       );
 
@@ -205,9 +291,19 @@ const Index = () => {
           onComplete={(assignments) => {
             updateState({
               skillsAssignments: assignments,
-              step: 'preferences',
+              step: 'preferences-intro',
             });
           }}
+        />
+      );
+
+    case 'preferences-intro':
+      return (
+        <SectionIntro
+          badge={preferencesIntro.badge}
+          title={preferencesIntro.title}
+          paragraphs={preferencesIntro.paragraphs}
+          onContinue={() => updateState({ step: 'preferences' })}
         />
       );
 
@@ -236,7 +332,7 @@ const Index = () => {
       );
 
     default:
-      return <WelcomeScreen onStart={() => updateState({ step: 'via' })} />;
+      return <WelcomeScreen onStart={() => updateState({ step: 'general-intro' })} />;
   }
 };
 
