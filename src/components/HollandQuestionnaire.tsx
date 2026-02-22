@@ -10,7 +10,14 @@ const QUESTIONS_PER_PAGE = 11;
 
 const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
   const [answers, setAnswers] = useState<Record<number, boolean>>({});
-  const [page, setPage] = useState(0);
+  const [page, setPageRaw] = useState(0);
+  const setPage = (updater: (p: number) => number) => {
+    setPageRaw(prev => {
+      const next = updater(prev);
+      if (next !== prev) window.scrollTo({ top: 0, behavior: 'smooth' });
+      return next;
+    });
+  };
 
   const totalPages = Math.ceil(hollandQuestions.length / QUESTIONS_PER_PAGE);
   const pageQuestions = hollandQuestions.slice(page * QUESTIONS_PER_PAGE, (page + 1) * QUESTIONS_PER_PAGE);

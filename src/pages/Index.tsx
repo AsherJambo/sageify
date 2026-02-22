@@ -70,6 +70,10 @@ const Index = () => {
     saveState(state);
   }, [state]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [state.step]);
+
   const updateState = (partial: Partial<SavedState>) => {
     setState(prev => ({ ...prev, ...partial }));
   };
