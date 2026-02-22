@@ -66,22 +66,50 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
             showDetails ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 bg-card rounded-xl p-4 border border-border shadow-sm">
-              <span className="text-3xl">🌟</span>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 bg-card rounded-xl p-3 border border-border shadow-sm">
+              <span className="text-2xl">🌟</span>
               <div className="text-right">
-                <p className="font-semibold text-foreground">חלק א׳: חוזקות VIA</p>
-                <p className="text-sm text-muted-foreground">48 שאלות – גלו את הכוחות הפנימיים שלכם</p>
+                <p className="font-semibold text-foreground text-sm">חלק א׳: חוזקות VIA</p>
+                <p className="text-xs text-muted-foreground">48 שאלות – גלו את הכוחות הפנימיים שלכם</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-card rounded-xl p-4 border border-border shadow-sm">
-              <span className="text-3xl">🧭</span>
+            <div className="flex items-center gap-3 bg-card rounded-xl p-3 border border-border shadow-sm">
+              <span className="text-2xl">🧭</span>
               <div className="text-right">
-                <p className="font-semibold text-foreground">חלק ב׳: עוגנים תעסוקתיים</p>
-                <p className="text-sm text-muted-foreground">40 שאלות – מצאו מה באמת מניע אתכם</p>
+                <p className="font-semibold text-foreground text-sm">חלק ב׳: עוגנים תעסוקתיים</p>
+                <p className="text-xs text-muted-foreground">40 שאלות – מצאו מה באמת מניע אתכם</p>
               </div>
             </div>
-            <p className="text-muted-foreground text-sm">⏱️ זמן משוער: 20-30 דקות | ההתקדמות נשמרת אוטומטית</p>
+            <div className="flex items-center gap-3 bg-card rounded-xl p-3 border border-border shadow-sm">
+              <span className="text-2xl">📋</span>
+              <div className="text-right">
+                <p className="font-semibold text-foreground text-sm">חלק ג׳: שיקולים בבחירת עיסוק</p>
+                <p className="text-xs text-muted-foreground">בחרו 6 שיקולים וחלקו ביניהם 100 נקודות</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 bg-card rounded-xl p-3 border border-border shadow-sm">
+              <span className="text-2xl">🔍</span>
+              <div className="text-right">
+                <p className="font-semibold text-foreground text-sm">חלק ד׳: נטיות תעסוקתיות (הולנד)</p>
+                <p className="text-xs text-muted-foreground">66 שאלות – מצאו את הנטיות שלכם</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 bg-card rounded-xl p-3 border border-border shadow-sm">
+              <span className="text-2xl">🧰</span>
+              <div className="text-right">
+                <p className="font-semibold text-foreground text-sm">חלק ה׳: כישורים ותנאי סף</p>
+                <p className="text-xs text-muted-foreground">20 כישורים – מיינו לארגז הכלים שלכם</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 bg-card rounded-xl p-3 border border-border shadow-sm">
+              <span className="text-2xl">⚙️</span>
+              <div className="text-right">
+                <p className="font-semibold text-foreground text-sm">חלק ו׳: העדפות וחלום המגירה</p>
+                <p className="text-xs text-muted-foreground">העדפות אישיות + תחום החלום שלכם</p>
+              </div>
+            </div>
+            <p className="text-muted-foreground text-sm">⏱️ זמן משוער: 40-50 דקות | ההתקדמות נשמרת אוטומטית</p>
           </div>
         </div>
 
