@@ -32,7 +32,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
       <div className="w-full max-w-2xl space-y-6">
         <div className="text-center space-y-2">
           <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold text-sm">
-            🔍 שאלון נטיות
+            🔍 חלק ד׳
           </div>
           <h2 className="text-2xl font-bold text-foreground">נטיות תעסוקתיות (הולנד)</h2>
           <p className="text-muted-foreground">סמנו "כן" או "לא" עבור כל פעילות</p>
@@ -111,7 +111,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
               disabled={!allAnswered}
               className="px-10 py-4 rounded-lg bg-secondary text-secondary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
             >
-              🦉 סיום שאלון נטיות ✓
+              🦉 סיום חלק ד׳ ✓
             </button>
           )}
         </div>

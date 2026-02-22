@@ -43,9 +43,9 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
       <div className="w-full max-w-2xl space-y-6">
         <div className="text-center space-y-2">
           <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold text-sm">
-            📋 שיקולים בבחירת עיסוק
+            📋 חלק ג׳
           </div>
-          <h2 className="text-2xl font-bold text-foreground">שאלון שיקולים</h2>
+          <h2 className="text-2xl font-bold text-foreground">שיקולים בבחירת עיסוק</h2>
           {phase === 'select' ? (
             <p className="text-muted-foreground">בחרו 6 שיקולים שהכי חשובים לכם מהרשימה</p>
           ) : (
@@ -119,7 +119,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
                 disabled={remaining !== 0}
                 className="px-10 py-4 rounded-lg bg-secondary text-secondary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
               >
-                🦉 סיום שאלון שיקולים ✓
+                🦉 סיום חלק ג׳ ✓
               </button>
             </div>
           </>
