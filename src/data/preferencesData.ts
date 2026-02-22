@@ -45,6 +45,7 @@ export const preferenceQuestions: PreferenceQuestion[] = [
     options: [
       'ילדים ונוער.',
       'סטודנטים, חיילים, צעירים.',
+      'אנשים בוגרים.',
       'קשישים.',
       'אנשים במשבר או אוכלוסיות מיוחדות.',
     ],
