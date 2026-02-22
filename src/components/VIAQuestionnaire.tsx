@@ -14,7 +14,14 @@ interface VIAQuestionnaireProps {
 const QUESTIONS_PER_PAGE = 8;
 
 const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnaireProps) => {
-  const [page, setPage] = useState(0);
+  const [page, setPageRaw] = useState(0);
+  const setPage = (updater: (p: number) => number) => {
+    setPageRaw(prev => {
+      const next = updater(prev);
+      if (next !== prev) window.scrollTo({ top: 0, behavior: 'smooth' });
+      return next;
+    });
+  };
   const totalPages = Math.ceil(viaQuestions.length / QUESTIONS_PER_PAGE);
   const currentQuestions = viaQuestions.slice(
     page * QUESTIONS_PER_PAGE,
