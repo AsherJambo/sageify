@@ -11,7 +11,7 @@ interface VIAQuestionnaireProps {
   onComplete: () => void;
 }
 
-const QUESTIONS_PER_PAGE = 4;
+const QUESTIONS_PER_PAGE = 8;
 
 const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnaireProps) => {
   const [page, setPage] = useState(0);
