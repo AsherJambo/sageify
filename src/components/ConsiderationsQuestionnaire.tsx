@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { considerations } from '@/data/considerationsData';
+import { considerationsDistributeIntro } from '@/data/sectionIntros';
+import SectionIntro from './SectionIntro';
 import OwlMessage from './OwlMessage';
 
 interface ConsiderationsQuestionnaireProps {
@@ -9,7 +11,7 @@ interface ConsiderationsQuestionnaireProps {
 const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaireProps) => {
   const [selected, setSelected] = useState<string[]>([]);
   const [points, setPoints] = useState<Record<string, number>>({});
-  const [phase, setPhase] = useState<'select' | 'distribute'>('select');
+  const [phase, setPhase] = useState<'select' | 'distribute-intro' | 'distribute'>('select');
 
   const totalPoints = Object.values(points).reduce((a, b) => a + b, 0);
   const remaining = 100 - totalPoints;
@@ -35,8 +37,23 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
     const initial: Record<string, number> = {};
     selected.forEach(s => { initial[s] = 0; });
     setPoints(initial);
-    setPhase('distribute');
+    setPhase('distribute-intro');
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
+
+  if (phase === 'distribute-intro') {
+    return (
+      <SectionIntro
+        badge={considerationsDistributeIntro.badge}
+        title={considerationsDistributeIntro.title}
+        paragraphs={considerationsDistributeIntro.paragraphs}
+        onContinue={() => {
+          setPhase('distribute');
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
