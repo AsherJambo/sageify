@@ -32,9 +32,9 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
       <div className="w-full max-w-3xl space-y-6">
         <div className="text-center space-y-2">
           <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold text-sm">
-            🧰 כישורים ותנאי סף
+            🧰 חלק ה׳
           </div>
-          <h2 className="text-2xl font-bold text-foreground">שאלון כישורים</h2>
+          <h2 className="text-2xl font-bold text-foreground">כישורים ותנאי סף</h2>
           <p className="text-muted-foreground">מיינו כל כישור לאחת משלוש העמודות (5-7 ב"ארגז המנצח")</p>
         </div>
 
@@ -88,7 +88,7 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
             disabled={!allAssigned || winnerCount < 5}
             className="px-10 py-4 rounded-lg bg-secondary text-secondary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
           >
-            🦉 סיום שאלון כישורים ✓
+            🦉 סיום חלק ה׳ ✓
           </button>
         </div>
       </div>

@@ -33,9 +33,9 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
       <div className="w-full max-w-2xl space-y-6">
         <div className="text-center space-y-2">
           <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold text-sm">
-            ⚙️ העדפות וחלום המגירה
+            ⚙️ חלק ו׳
           </div>
-          <h2 className="text-2xl font-bold text-foreground">שאלון העדפות</h2>
+          <h2 className="text-2xl font-bold text-foreground">העדפות וחלום המגירה</h2>
           <p className="text-muted-foreground">ענו על שאלות ההעדפה ובחרו את חלום המגירה שלכם</p>
         </div>
 
@@ -94,7 +94,7 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
             disabled={!canComplete}
             className="px-10 py-4 rounded-lg bg-secondary text-secondary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
           >
-            🦉 סיום וצפייה בתוצאות ✓
+            🦉 סיום חלק ו׳ וצפייה בתוצאות ✓
           </button>
         </div>
       </div>
