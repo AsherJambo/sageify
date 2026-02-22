@@ -3,9 +3,15 @@ import WelcomeScreen from '@/components/WelcomeScreen';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
 import ScheinQuestionnaire from '@/components/ScheinQuestionnaire';
 import BonusSelection from '@/components/BonusSelection';
+import ConsiderationsQuestionnaire from '@/components/ConsiderationsQuestionnaire';
+import HollandQuestionnaire from '@/components/HollandQuestionnaire';
+import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
+import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
 import ResultsDashboard from '@/components/ResultsDashboard';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
+import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
+import type { SkillColumn } from '@/data/skillsData';
 import {
   type Answers,
   calculateCategoryScores,
@@ -13,7 +19,15 @@ import {
   applyBonus,
 } from '@/lib/scoring';
 
-type Step = 'welcome' | 'via' | 'via-bonus' | 'schein' | 'schein-bonus' | 'results';
+type Step =
+  | 'welcome'
+  | 'via' | 'via-bonus'
+  | 'schein' | 'schein-bonus'
+  | 'considerations'
+  | 'holland'
+  | 'skills'
+  | 'preferences'
+  | 'results';
 
 const STORAGE_KEY = 'sageify-state';
 
@@ -25,6 +39,10 @@ interface SavedState {
   scheinBonusApplied: boolean;
   finalViaAnswers?: Answers;
   finalScheinAnswers?: Answers;
+  considerationsData?: { selected: string[]; points: Record<string, number> };
+  hollandAnswers?: Record<number, boolean>;
+  skillsAssignments?: Record<number, SkillColumn>;
+  preferencesData?: { preferences: Record<string, string[]>; dream: string };
 }
 
 function loadState(): SavedState {
@@ -81,7 +99,7 @@ const Index = () => {
     updateState({
       finalScheinAnswers: finalAnswers,
       scheinBonusApplied: true,
-      step: 'results',
+      step: 'considerations',
     });
   };
 
@@ -96,6 +114,20 @@ const Index = () => {
     scheinQuestions,
     scheinCategories
   );
+
+  // Calculate Holland scores
+  const hollandScores: Record<string, number> = {};
+  if (state.hollandAnswers) {
+    hollandCategories.forEach(cat => { hollandScores[cat] = 0; });
+    Object.entries(state.hollandAnswers).forEach(([id, val]) => {
+      if (val) {
+        const q = hollandQuestions.find(q => q.id === Number(id));
+        if (q && hollandScores[q.category] !== undefined) {
+          hollandScores[q.category] += 1;
+        }
+      }
+    });
+  }
 
   switch (state.step) {
     case 'welcome':
@@ -139,8 +171,65 @@ const Index = () => {
         />
       );
 
+    case 'considerations':
+      return (
+        <ConsiderationsQuestionnaire
+          onComplete={(selected, points) => {
+            updateState({
+              considerationsData: { selected, points },
+              step: 'holland',
+            });
+          }}
+        />
+      );
+
+    case 'holland':
+      return (
+        <HollandQuestionnaire
+          onComplete={(answers) => {
+            updateState({
+              hollandAnswers: answers,
+              step: 'skills',
+            });
+          }}
+        />
+      );
+
+    case 'skills':
+      return (
+        <SkillsQuestionnaire
+          onComplete={(assignments) => {
+            updateState({
+              skillsAssignments: assignments,
+              step: 'preferences',
+            });
+          }}
+        />
+      );
+
+    case 'preferences':
+      return (
+        <PreferencesQuestionnaire
+          onComplete={(preferences, dream) => {
+            updateState({
+              preferencesData: { preferences, dream },
+              step: 'results',
+            });
+          }}
+        />
+      );
+
     case 'results':
-      return <ResultsDashboard viaScores={viaScores} scheinScores={scheinScores} />;
+      return (
+        <ResultsDashboard
+          viaScores={viaScores}
+          scheinScores={scheinScores}
+          hollandScores={hollandScores}
+          considerationsData={state.considerationsData}
+          skillsAssignments={state.skillsAssignments}
+          preferencesData={state.preferencesData}
+        />
+      );
 
     default:
       return <WelcomeScreen onStart={() => updateState({ step: 'via' })} />;

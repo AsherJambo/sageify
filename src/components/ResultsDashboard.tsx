@@ -3,13 +3,26 @@ import owlLogo from '@/assets/owl-logo.png';
 import { getTopCategories } from '@/lib/scoring';
 import { owlCelebrations } from '@/lib/owlMessages';
 import { getRecommendations, type Recommendation } from '@/lib/recommendations';
+import type { SkillColumn } from '@/data/skillsData';
+import { skills } from '@/data/skillsData';
 
 interface ResultsDashboardProps {
   viaScores: Record<string, number>;
   scheinScores: Record<string, number>;
+  hollandScores?: Record<string, number>;
+  considerationsData?: { selected: string[]; points: Record<string, number> };
+  skillsAssignments?: Record<number, SkillColumn>;
+  preferencesData?: { preferences: Record<string, string[]>; dream: string };
 }
 
-const ResultsDashboard = ({ viaScores, scheinScores }: ResultsDashboardProps) => {
+const ResultsDashboard = ({
+  viaScores,
+  scheinScores,
+  hollandScores,
+  considerationsData,
+  skillsAssignments,
+  preferencesData,
+}: ResultsDashboardProps) => {
   const topVIA = getTopCategories(viaScores, 2);
   const topSchein = getTopCategories(scheinScores, 2);
 
@@ -20,6 +33,7 @@ const ResultsDashboard = ({ viaScores, scheinScores }: ResultsDashboardProps) =>
   const [showCards, setShowCards] = useState(false);
   const [showRecommendations, setShowRecommendations] = useState(false);
   const [showCharts, setShowCharts] = useState(false);
+  const [showExtra, setShowExtra] = useState(false);
 
   useEffect(() => {
     setTimeout(() => setShowHeader(true), 200);
@@ -27,6 +41,7 @@ const ResultsDashboard = ({ viaScores, scheinScores }: ResultsDashboardProps) =>
     setTimeout(() => setShowCards(true), 1400);
     setTimeout(() => setShowRecommendations(true), 2000);
     setTimeout(() => setShowCharts(true), 2600);
+    setTimeout(() => setShowExtra(true), 3200);
   }, []);
 
   const generateNarrative = () => {
@@ -36,6 +51,28 @@ const ResultsDashboard = ({ viaScores, scheinScores }: ResultsDashboardProps) =>
     const s2 = topSchein[1]?.category;
     return `הפרופיל שלכם מראה שהחוזקות המרכזיות שלכם הן "${v1}" ו"${v2}", בשילוב עם צורך עמוק ב"${s1}" ו"${s2}". שילוב ייחודי זה מעיד על כך שתפרחו בתפקידים שמאפשרים לכם להביא את החוכמה והניסיון שלכם לידי ביטוי, תוך שמירה על הערכים שחשובים לכם ביותר.`;
   };
+
+  // Winner skills
+  const winnerSkills = skillsAssignments
+    ? Object.entries(skillsAssignments)
+        .filter(([, col]) => col === 'winner')
+        .map(([id]) => skills.find(s => s.id === Number(id))?.text)
+        .filter(Boolean)
+    : [];
+
+  // Top Holland
+  const topHolland = hollandScores
+    ? Object.entries(hollandScores)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 3)
+    : [];
+
+  // Top considerations
+  const topConsiderations = considerationsData
+    ? Object.entries(considerationsData.points)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 6)
+    : [];
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8">
@@ -183,6 +220,86 @@ const ResultsDashboard = ({ viaScores, scheinScores }: ResultsDashboardProps) =>
                 ))}
             </div>
           </div>
+        </div>
+
+        {/* Extra results from new questionnaires */}
+        <div className={`space-y-6 transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          {/* Holland RIASEC */}
+          {topHolland.length > 0 && (
+            <div className="bg-card rounded-2xl p-6 border border-border">
+              <h3 className="text-lg font-bold text-foreground mb-4">🔍 נטיות תעסוקתיות (הולנד)</h3>
+              <div className="space-y-3">
+                {Object.entries(hollandScores || {})
+                  .sort(([, a], [, b]) => b - a)
+                  .map(([cat, score]) => (
+                    <div key={cat} className="space-y-1">
+                      <div className="flex justify-between text-sm">
+                        <span className="font-medium text-foreground">{cat}</span>
+                        <span className="text-muted-foreground">{score} / 11</span>
+                      </div>
+                      <div className="w-full h-4 bg-muted rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-primary rounded-full progress-bar-fill"
+                          style={{ width: `${(score / 11) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {/* Considerations */}
+          {topConsiderations.length > 0 && (
+            <div className="bg-card rounded-2xl p-6 border border-border">
+              <h3 className="text-lg font-bold text-foreground mb-4">📋 שיקולים מובילים</h3>
+              <div className="space-y-3">
+                {topConsiderations.map(([item, pts]) => (
+                  <div key={item} className="flex justify-between items-center bg-background rounded-xl px-4 py-3 border border-border">
+                    <span className="font-medium text-foreground">{item}</span>
+                    <span className="text-accent font-bold text-lg">{pts} נק׳</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Winner Skills */}
+          {winnerSkills.length > 0 && (
+            <div className="bg-card rounded-2xl p-6 border border-border">
+              <h3 className="text-lg font-bold text-foreground mb-4">🏆 ארגז הכלים המנצח</h3>
+              <div className="space-y-2">
+                {winnerSkills.map((skill, i) => (
+                  <div key={i} className="flex items-center gap-3 bg-background rounded-xl px-4 py-3 border border-border">
+                    <span className="w-7 h-7 rounded-full bg-secondary/15 text-secondary flex items-center justify-center font-bold text-sm">{i + 1}</span>
+                    <span className="text-foreground">{skill}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Preferences & Dream */}
+          {preferencesData && (
+            <div className="bg-card rounded-2xl p-6 border border-accent/30 shadow-md">
+              <h3 className="text-lg font-bold text-foreground mb-4">⚙️ העדפות אישיות</h3>
+              <div className="space-y-3">
+                {Object.entries(preferencesData.preferences).map(([key, values]) => (
+                  <div key={key} className="bg-background rounded-xl px-4 py-3 border border-border">
+                    {values.map((v, i) => (
+                      <p key={i} className="text-foreground text-sm">✓ {v}</p>
+                    ))}
+                  </div>
+                ))}
+              </div>
+              {preferencesData.dream && (
+                <div className="mt-4 bg-accent/10 rounded-xl px-4 py-3 border border-accent/30">
+                  <p className="font-bold text-foreground">🌟 חלום המגירה:</p>
+                  <p className="text-accent font-semibold text-lg">{preferencesData.dream}</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Restart */}
