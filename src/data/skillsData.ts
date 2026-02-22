@@ -23,7 +23,6 @@ export const skills: Skill[] = [
   { id: 17, text: 'נהיגה, עבודה בהתניידות רבה ממקום למקום.' },
   { id: 18, text: 'עשייה אומנותית, עיצוב או יצירה חזותית.' },
   { id: 19, text: 'עבודה בטבע, בחוץ, עם צמחים או בעלי חיים.' },
-  { id: 20, text: 'אחר' },
 ];
 
 export type SkillColumn = 'winner' | 'burnout' | 'irrelevant';

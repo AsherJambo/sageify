@@ -52,10 +52,10 @@ describe('Data Integrity', () => {
     });
   });
 
-  it('Skills: 20 skills with unique IDs', () => {
-    expect(skills.length).toBe(20);
+  it('Skills: 19 skills with unique IDs', () => {
+    expect(skills.length).toBe(19);
     const ids = skills.map(s => s.id);
-    expect(new Set(ids).size).toBe(20);
+    expect(new Set(ids).size).toBe(19);
   });
 
   it('Considerations: 36 items, all unique', () => {
