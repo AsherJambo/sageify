@@ -14,7 +14,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
   const setPage = (updater: (p: number) => number) => {
     setPageRaw(prev => {
       const next = updater(prev);
-      if (next !== prev) window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (next !== prev) window.scrollTo({ top: 0, behavior: 'instant' });
       return next;
     });
   };

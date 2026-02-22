@@ -71,7 +71,7 @@ const Index = () => {
   }, [state]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [state.step]);
 
   const updateState = (partial: Partial<SavedState>) => {
