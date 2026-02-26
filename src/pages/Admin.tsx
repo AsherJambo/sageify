@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { supabase } from '@/integrations/supabase/client';
+import { cloudClient } from '@/lib/cloudClient';
 import owlLogo from '@/assets/owl-logo.png';
 import { toast } from 'sonner';
 
@@ -24,6 +24,7 @@ const Admin = () => {
   const [bulkNames, setBulkNames] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedToken, setSelectedToken] = useState<TokenRow | null>(null);
+  const supabase = cloudClient;
 
   const apiCall = useCallback(async (action: string, body: Record<string, unknown> = {}): Promise<any> => {
     const { data, error } = await supabase.functions.invoke('admin', {

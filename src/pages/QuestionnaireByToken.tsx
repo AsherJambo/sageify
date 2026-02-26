@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { cloudClient } from '@/lib/cloudClient';
 import SectionIntro from '@/components/SectionIntro';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
 import ScheinQuestionnaire from '@/components/ScheinQuestionnaire';
@@ -63,6 +63,7 @@ const QuestionnaireByToken = () => {
   const [responseId, setResponseId] = useState<string | null>(null);
   const [state, setState] = useState<ResponseData>(defaultData);
   const [pageState, setPageState] = useState<'loading' | 'invalid' | 'used' | 'ready'>('loading');
+  const supabase = cloudClient;
 
   // Validate token on mount
   useEffect(() => {
