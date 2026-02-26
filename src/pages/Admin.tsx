@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { supabase } from '@/integrations/supabase/client';
+import { cloudClient } from '@/lib/cloudClient';
 import owlLogo from '@/assets/owl-logo.png';
 import { toast } from 'sonner';
 
