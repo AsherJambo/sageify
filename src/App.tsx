@@ -6,9 +6,9 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import Admin from "./pages/Admin";
 
 const QuestionnaireByToken = lazy(() => import("./pages/QuestionnaireByToken"));
+const Admin = lazy(() => import("./pages/Admin"));
 
 const queryClient = new QueryClient();
 
