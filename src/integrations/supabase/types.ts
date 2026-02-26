@@ -14,7 +14,65 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      questionnaire_responses: {
+        Row: {
+          created_at: string
+          id: string
+          response_data: Json
+          token_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          response_data?: Json
+          token_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          response_data?: Json
+          token_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questionnaire_responses_token_id_fkey"
+            columns: ["token_id"]
+            isOneToOne: true
+            referencedRelation: "questionnaire_tokens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      questionnaire_tokens: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          token: string
+          used: boolean
+          username: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          token?: string
+          used?: boolean
+          username: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          token?: string
+          used?: boolean
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
