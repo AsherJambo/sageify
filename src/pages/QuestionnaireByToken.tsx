@@ -98,7 +98,7 @@ const QuestionnaireByToken = () => {
       } else {
         const { data: newResp } = await supabase
           .from('questionnaire_responses')
-          .insert({ token_id: data.id, response_data: defaultData as unknown as Record<string, unknown> })
+          .insert([{ token_id: data.id, response_data: JSON.parse(JSON.stringify(defaultData)) }])
           .select()
           .single();
         if (newResp) setResponseId(newResp.id);
