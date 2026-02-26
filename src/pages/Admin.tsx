@@ -45,21 +45,33 @@ const Admin = () => {
   }, [storedPassword]);
 
   const handleLogin = async () => {
+    const passwordToUse = password.trim();
+    if (!passwordToUse) {
+      toast.error('יש להזין סיסמה');
+      return;
+    }
+
     const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-    const res = await fetch(`https://${projectId}.supabase.co/functions/v1/admin?action=list-tokens`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'x-admin-password': password,
-        'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-      },
-    });
-    if (res.ok) {
-      setStoredPassword(password);
-      setAuthenticated(true);
-      const data = await res.json();
-      setTokens(data.tokens || []);
-    } else {
-      toast.error('סיסמה שגויה');
+
+    try {
+      const res = await fetch(`https://${projectId}.supabase.co/functions/v1/admin?action=list-tokens`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-password': passwordToUse,
+          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        },
+      });
+
+      if (res.ok) {
+        setStoredPassword(passwordToUse);
+        setAuthenticated(true);
+        const data = await res.json();
+        setTokens(data.tokens || []);
+      } else {
+        toast.error('סיסמה שגויה');
+      }
+    } catch {
+      toast.error('שגיאת תקשורת, נסו שוב');
     }
   };
 

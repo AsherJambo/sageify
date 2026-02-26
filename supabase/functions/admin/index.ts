@@ -19,9 +19,13 @@ Deno.serve(async (req) => {
   }
 
   const adminPassword = Deno.env.get("ADMIN_PASSWORD");
-  const providedPassword = req.headers.get("x-admin-password");
+  const providedPassword = req.headers.get("x-admin-password")?.trim();
 
-  if (!providedPassword || providedPassword !== adminPassword) {
+  if (!adminPassword) {
+    return jsonResponse({ error: "Admin password is not configured" }, 500);
+  }
+
+  if (!providedPassword || providedPassword !== adminPassword.trim()) {
     return jsonResponse({ error: "Unauthorized" }, 401);
   }
 
