@@ -25,23 +25,16 @@ const Admin = () => {
   const [loading, setLoading] = useState(false);
   const [selectedToken, setSelectedToken] = useState<TokenRow | null>(null);
 
-  const apiCall = useCallback(async (action: string, options?: { method?: string; body?: unknown; params?: Record<string, string> }) => {
-    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-    const url = new URL(`https://${projectId}.supabase.co/functions/v1/admin`);
-    url.searchParams.set('action', action);
-    if (options?.params) {
-      Object.entries(options.params).forEach(([k, v]) => url.searchParams.set(k, v));
-    }
-    const res = await fetch(url.toString(), {
-      method: options?.method || 'GET',
+  const apiCall = useCallback(async (action: string, body: Record<string, unknown> = {}): Promise<any> => {
+    const { data, error } = await supabase.functions.invoke('admin', {
       headers: {
-        'Content-Type': 'application/json',
         'x-admin-password': storedPassword,
-        'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
       },
-      ...(options?.body ? { body: JSON.stringify(options.body) } : {}),
+      body: { action, ...body },
     });
-    return res.json();
+
+    if (error) return { error: 'שגיאת תקשורת, נסו שוב' };
+    return data ?? {};
   }, [storedPassword]);
 
   const handleLogin = async () => {
@@ -51,25 +44,23 @@ const Admin = () => {
       return;
     }
 
-    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-
     try {
-      const res = await fetch(`https://${projectId}.supabase.co/functions/v1/admin?action=list-tokens`, {
+      const { data, error } = await supabase.functions.invoke('admin', {
         headers: {
-          'Content-Type': 'application/json',
           'x-admin-password': passwordToUse,
-          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
         },
+        body: { action: 'list-tokens' },
       });
 
-      if (res.ok) {
-        setStoredPassword(passwordToUse);
-        setAuthenticated(true);
-        const data = await res.json();
-        setTokens(data.tokens || []);
-      } else {
+      if (error) {
         toast.error('סיסמה שגויה');
+        return;
       }
+
+      const response = data as { tokens?: TokenRow[] } | null;
+      setStoredPassword(passwordToUse);
+      setAuthenticated(true);
+      setTokens(response?.tokens || []);
     } catch {
       toast.error('שגיאת תקשורת, נסו שוב');
     }
@@ -85,7 +76,7 @@ const Admin = () => {
   const createToken = async () => {
     if (!newUsername.trim()) return;
     setLoading(true);
-    const data = await apiCall('create-token', { method: 'POST', body: { username: newUsername.trim() } });
+    const data = await apiCall('create-token', { username: newUsername.trim() });
     if (data.token) {
       toast.success(`קישור נוצר עבור ${newUsername}`);
       setNewUsername('');
@@ -100,7 +91,7 @@ const Admin = () => {
     const names = bulkNames.split('\n').map(n => n.trim()).filter(Boolean);
     if (names.length === 0) return;
     setLoading(true);
-    const data = await apiCall('create-tokens-bulk', { method: 'POST', body: { usernames: names } });
+    const data = await apiCall('create-tokens-bulk', { usernames: names });
     if (data.tokens) {
       toast.success(`${data.tokens.length} קישורים נוצרו`);
       setBulkNames('');
@@ -113,7 +104,7 @@ const Admin = () => {
 
   const deleteToken = async (tokenId: string) => {
     if (!confirm('למחוק את הקישור הזה?')) return;
-    await apiCall('delete-token', { method: 'POST', body: { tokenId } });
+    await apiCall('delete-token', { tokenId });
     toast.success('נמחק');
     await loadTokens();
   };
