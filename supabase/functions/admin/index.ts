@@ -35,13 +35,30 @@ Deno.serve(async (req) => {
   );
 
   const url = new URL(req.url);
-  const action = url.searchParams.get("action");
+  let payload: Record<string, unknown> = {};
+
+  if (req.method !== "GET") {
+    const contentType = req.headers.get("content-type") ?? "";
+    if (contentType.includes("application/json")) {
+      try {
+        const parsed = await req.json();
+        if (parsed && typeof parsed === "object") {
+          payload = parsed as Record<string, unknown>;
+        }
+      } catch {
+        payload = {};
+      }
+    }
+  }
+
+  const bodyAction = typeof payload.action === "string" ? payload.action : null;
+  const action = url.searchParams.get("action") ?? bodyAction;
 
   try {
     switch (action) {
       case "create-token": {
-        const { username } = await req.json();
-        if (!username || typeof username !== "string" || username.trim().length === 0) {
+        const username = typeof payload.username === "string" ? payload.username : "";
+        if (username.trim().length === 0) {
           return jsonResponse({ error: "Username is required" }, 400);
         }
         const { data, error } = await supabase
@@ -54,13 +71,18 @@ Deno.serve(async (req) => {
       }
 
       case "create-tokens-bulk": {
-        const { usernames } = await req.json();
-        if (!Array.isArray(usernames) || usernames.length === 0) {
+        const usernames = Array.isArray(payload.usernames) ? payload.usernames : [];
+        if (usernames.length === 0) {
           return jsonResponse({ error: "Usernames array is required" }, 400);
         }
         const rows = usernames
-          .filter((u: string) => typeof u === "string" && u.trim().length > 0)
-          .map((u: string) => ({ username: u.trim() }));
+          .filter((u): u is string => typeof u === "string" && u.trim().length > 0)
+          .map((u) => ({ username: u.trim() }));
+
+        if (rows.length === 0) {
+          return jsonResponse({ error: "No valid usernames provided" }, 400);
+        }
+
         const { data, error } = await supabase
           .from("questionnaire_tokens")
           .insert(rows)
@@ -79,7 +101,8 @@ Deno.serve(async (req) => {
       }
 
       case "get-responses": {
-        const tokenId = url.searchParams.get("tokenId");
+        const tokenIdFromBody = typeof payload.tokenId === "string" ? payload.tokenId : null;
+        const tokenId = url.searchParams.get("tokenId") ?? tokenIdFromBody;
         if (!tokenId) return jsonResponse({ error: "tokenId required" }, 400);
         const { data, error } = await supabase
           .from("questionnaire_responses")
@@ -99,7 +122,7 @@ Deno.serve(async (req) => {
       }
 
       case "delete-token": {
-        const { tokenId } = await req.json();
+        const tokenId = typeof payload.tokenId === "string" ? payload.tokenId : null;
         if (!tokenId) return jsonResponse({ error: "tokenId required" }, 400);
         const { error } = await supabase
           .from("questionnaire_tokens")
