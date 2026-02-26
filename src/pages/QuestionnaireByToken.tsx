@@ -113,7 +113,7 @@ const QuestionnaireByToken = () => {
     if (!responseId || pageState !== 'ready') return;
     supabase
       .from('questionnaire_responses')
-      .update({ response_data: state as unknown as Record<string, unknown> })
+      .update({ response_data: JSON.parse(JSON.stringify(state)) })
       .eq('id', responseId)
       .then();
   }, [state, responseId, pageState]);
