@@ -78,7 +78,7 @@ const Admin = () => {
     setLoading(true);
     const data = await apiCall('create-token', { username: newUsername.trim() });
     if (data.token) {
-      toast.success(`קישור נוצר עבור ${newUsername}`);
+      toast.success(`קישור נוצר עבור ${newUsername} (בפורמט חדש)`);
       setNewUsername('');
       await loadTokens();
     } else {
