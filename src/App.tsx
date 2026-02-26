@@ -12,25 +12,35 @@ const Admin = lazy(() => import("./pages/Admin"));
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <HashRouter>
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">טוען...</div>}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/q/:token" element={<QuestionnaireByToken />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin-panel" element={<Admin />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </HashRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  if (typeof window !== "undefined" && (window.location.pathname === "/admin" || window.location.pathname === "/admin/")) {
+    const target = `${window.location.origin}/#/admin-panel`;
+    if (window.location.href !== target) {
+      window.location.replace(target);
+      return null;
+    }
+  }
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <HashRouter>
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center">טוען...</div>}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/q/:token" element={<QuestionnaireByToken />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin-panel" element={<Admin />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </HashRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
