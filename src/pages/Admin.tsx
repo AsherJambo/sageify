@@ -24,6 +24,7 @@ const Admin = () => {
   const [bulkNames, setBulkNames] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedToken, setSelectedToken] = useState<TokenRow | null>(null);
+  const supabase = cloudClient;
 
   const apiCall = useCallback(async (action: string, body: Record<string, unknown> = {}): Promise<any> => {
     const { data, error } = await supabase.functions.invoke('admin', {
