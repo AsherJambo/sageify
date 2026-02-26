@@ -110,7 +110,7 @@ const Admin = () => {
   };
 
   const getLink = (tokenValue: string) => {
-    return `${window.location.origin}/q/${tokenValue}`;
+    return `${window.location.origin}/#/q/${tokenValue}`;
   };
 
   const copyLink = (tokenValue: string) => {
