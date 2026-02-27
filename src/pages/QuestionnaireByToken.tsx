@@ -214,6 +214,18 @@ const QuestionnaireByToken = () => {
     }
   };
 
+  const globalProgress = STEP_PROGRESS[state.step] || 0;
+  const showProgressBar = globalProgress > 0 && state.step !== 'results';
+
+  const ProgressBar = showProgressBar ? (
+    <div className="fixed top-0 left-0 right-0 z-50 h-2 bg-muted/50 backdrop-blur-sm">
+      <div
+        className="h-full bg-primary rounded-l-full progress-bar-fill"
+        style={{ width: `${globalProgress}%` }}
+      />
+    </div>
+  ) : null;
+
   switch (state.step) {
     case 'welcome':
       return (
