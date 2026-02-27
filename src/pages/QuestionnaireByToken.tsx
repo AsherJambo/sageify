@@ -57,6 +57,18 @@ const defaultData: ResponseData = {
   scheinBonusApplied: false,
 };
 
+const STEP_PROGRESS: Record<Step, number> = {
+  loading: 0, invalid: 0, used: 0, welcome: 0,
+  'general-intro': 3,
+  'via-intro': 6, 'via': 15, 'via-bonus-intro': 22, 'via-bonus': 25,
+  'schein-intro': 28, 'schein': 40, 'schein-bonus': 45,
+  'considerations-intro': 48, 'considerations': 55,
+  'holland-intro': 58, 'holland': 68,
+  'skills-intro': 72, 'skills': 80,
+  'preferences-intro': 85, 'preferences': 92,
+  'results': 100,
+};
+
 const QuestionnaireByToken = () => {
   const { token } = useParams<{ token: string }>();
   const [tokenRow, setTokenRow] = useState<{ id: string; username: string } | null>(null);
