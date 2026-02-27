@@ -13,7 +13,7 @@ interface TokenRow {
   used: boolean;
   created_at: string;
   completed_at: string | null;
-  questionnaire_responses?: { response_data: Record<string, unknown> }[];
+  questionnaire_responses?: { response_data: Record<string, unknown> } | { response_data: Record<string, unknown> }[] | null;
 }
 
 const Admin = () => {
