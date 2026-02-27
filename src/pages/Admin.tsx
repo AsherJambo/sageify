@@ -245,7 +245,7 @@ const Admin = () => {
                 <td className="p-3">
                   <div className="flex gap-2">
                     <Button size="sm" variant="ghost" onClick={() => copyLink(t.token)}>📋 העתק</Button>
-                    {t.questionnaire_responses?.length ? (
+                    {t.questionnaire_responses && (!Array.isArray(t.questionnaire_responses) || t.questionnaire_responses.length > 0) ? (
                       <Button size="sm" variant="ghost" onClick={() => setSelectedToken(t)}>👁️ צפה</Button>
                     ) : null}
                     <Button size="sm" variant="ghost" onClick={() => deleteToken(t.id)} className="text-destructive">🗑️</Button>
