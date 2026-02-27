@@ -13,7 +13,7 @@ interface TokenRow {
   used: boolean;
   created_at: string;
   completed_at: string | null;
-  questionnaire_responses?: { response_data: Record<string, unknown> }[];
+  questionnaire_responses?: { response_data: Record<string, unknown> } | { response_data: Record<string, unknown> }[] | null;
 }
 
 const Admin = () => {
@@ -138,11 +138,11 @@ const Admin = () => {
   };
 
   const exportResponses = () => {
-    const completed = tokens.filter(t => t.questionnaire_responses?.length);
+    const completed = tokens.filter(t => t.questionnaire_responses != null && (!Array.isArray(t.questionnaire_responses) || t.questionnaire_responses.length > 0));
     const data = completed.map(t => ({
       username: t.username,
       completed_at: t.completed_at,
-      responses: t.questionnaire_responses?.[0]?.response_data,
+      responses: Array.isArray(t.questionnaire_responses) ? t.questionnaire_responses[0]?.response_data : t.questionnaire_responses?.response_data,
     }));
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
@@ -245,7 +245,7 @@ const Admin = () => {
                 <td className="p-3">
                   <div className="flex gap-2">
                     <Button size="sm" variant="ghost" onClick={() => copyLink(t.token)}>📋 העתק</Button>
-                    {t.questionnaire_responses?.length ? (
+                    {t.questionnaire_responses && (!Array.isArray(t.questionnaire_responses) || t.questionnaire_responses.length > 0) ? (
                       <Button size="sm" variant="ghost" onClick={() => setSelectedToken(t)}>👁️ צפה</Button>
                     ) : null}
                     <Button size="sm" variant="ghost" onClick={() => deleteToken(t.id)} className="text-destructive">🗑️</Button>
@@ -264,7 +264,7 @@ const Admin = () => {
       {selectedToken && (
         <ResponseViewer
           username={selectedToken.username}
-          responseData={selectedToken.questionnaire_responses?.[0]?.response_data as Record<string, unknown> || {}}
+          responseData={(Array.isArray(selectedToken.questionnaire_responses) ? selectedToken.questionnaire_responses[0]?.response_data : selectedToken.questionnaire_responses?.response_data) as Record<string, unknown> || {}}
           onClose={() => setSelectedToken(null)}
         />
       )}
