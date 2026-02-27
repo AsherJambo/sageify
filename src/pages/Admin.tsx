@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { cloudClient } from '@/lib/cloudClient';
 import owlLogo from '@/assets/owl-logo.png';
 import { toast } from 'sonner';
+import ResponseViewer from '@/components/ResponseViewer';
 
 interface TokenRow {
   id: string;
