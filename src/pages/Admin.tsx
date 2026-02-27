@@ -262,17 +262,11 @@ const Admin = () => {
 
       {/* Response viewer modal */}
       {selectedToken && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-6" onClick={() => setSelectedToken(null)}>
-          <div className="bg-card rounded-xl p-6 max-w-3xl w-full max-h-[80vh] overflow-auto" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold">תשובות: {selectedToken.username}</h2>
-              <Button variant="ghost" onClick={() => setSelectedToken(null)}>✕</Button>
-            </div>
-            <pre className="text-xs bg-muted p-4 rounded-lg overflow-auto whitespace-pre-wrap" dir="ltr">
-              {JSON.stringify(selectedToken.questionnaire_responses?.[0]?.response_data, null, 2)}
-            </pre>
-          </div>
-        </div>
+        <ResponseViewer
+          username={selectedToken.username}
+          responseData={selectedToken.questionnaire_responses?.[0]?.response_data as Record<string, unknown> || {}}
+          onClose={() => setSelectedToken(null)}
+        />
       )}
     </div>
   );
