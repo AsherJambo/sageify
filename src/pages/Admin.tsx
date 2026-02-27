@@ -138,11 +138,11 @@ const Admin = () => {
   };
 
   const exportResponses = () => {
-    const completed = tokens.filter(t => t.questionnaire_responses?.length);
+    const completed = tokens.filter(t => t.questionnaire_responses != null && (!Array.isArray(t.questionnaire_responses) || t.questionnaire_responses.length > 0));
     const data = completed.map(t => ({
       username: t.username,
       completed_at: t.completed_at,
-      responses: t.questionnaire_responses?.[0]?.response_data,
+      responses: Array.isArray(t.questionnaire_responses) ? t.questionnaire_responses[0]?.response_data : t.questionnaire_responses?.response_data,
     }));
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
