@@ -264,7 +264,7 @@ const Admin = () => {
       {selectedToken && (
         <ResponseViewer
           username={selectedToken.username}
-          responseData={selectedToken.questionnaire_responses?.[0]?.response_data as Record<string, unknown> || {}}
+          responseData={(Array.isArray(selectedToken.questionnaire_responses) ? selectedToken.questionnaire_responses[0]?.response_data : selectedToken.questionnaire_responses?.response_data) as Record<string, unknown> || {}}
           onClose={() => setSelectedToken(null)}
         />
       )}
