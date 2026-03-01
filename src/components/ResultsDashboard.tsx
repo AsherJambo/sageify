@@ -79,6 +79,18 @@ const ResultsDashboard = ({
         .slice(0, 6)
     : [];
 
+  // Build profile summary for AI
+  const profileSummary = useMemo(() => {
+    const parts: string[] = [];
+    parts.push(`חוזקות VIA מובילות: ${topVIA.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
+    parts.push(`עוגני קריירה מובילים: ${topSchein.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
+    if (topHolland.length > 0) parts.push(`נטיות הולנד מובילות: ${topHolland.map(([c, s]) => `${c} (${s})`).join(', ')}`);
+    if (winnerSkills.length > 0) parts.push(`כישורי מנצח: ${winnerSkills.join(', ')}`);
+    if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
+    if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
+    return parts.join('\n');
+  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData]);
+
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8">
       <div className="w-full max-w-3xl space-y-8">
