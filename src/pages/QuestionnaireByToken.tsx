@@ -285,10 +285,31 @@ const QuestionnaireByToken = () => {
       return (
         <>{ProgressBar}<PreferencesQuestionnaire
           onComplete={(preferences, dream) => {
-            updateState({ preferencesData: { preferences, dream }, step: 'results' });
-            markComplete();
+            updateState({ preferencesData: { preferences, dream }, step: 'advisor' });
           }}
         /></>
+      );
+    case 'advisor':
+      return (
+        <>
+          {ProgressBar}
+          <SageAdvisor
+            username={tokenRow?.username}
+            viaScores={viaScores}
+            scheinScores={scheinScores}
+            hollandScores={hollandScores}
+            considerationsData={state.considerationsData}
+            skillsAssignments={state.skillsAssignments}
+            preferencesData={state.preferencesData}
+            initialMessages={state.chatMessages}
+            onMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
+            onRoadmapReady={() => setAdvisorProgress(100)}
+            onFinish={() => {
+              markComplete();
+              updateState({ step: 'results' });
+            }}
+          />
+        </>
       );
     case 'results':
       return (
