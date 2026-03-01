@@ -227,7 +227,7 @@ const SageAdvisor = ({
         <div className="flex items-center gap-4 mb-6 px-2">
           <div className="relative">
             <img src={owlLogo} alt="" className="w-14 h-14 rounded-full ring-2 ring-accent/40" />
-            <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-background" />
+            <span className="absolute bottom-0 right-0 w-4 h-4 bg-accent rounded-full border-2 border-background" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-foreground">Sage Career Advisor</h2>
