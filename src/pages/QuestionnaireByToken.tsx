@@ -287,7 +287,18 @@ const QuestionnaireByToken = () => {
         /></>
       );
     case 'results':
-      return <ResultsDashboard viaScores={viaScores} scheinScores={scheinScores} hollandScores={hollandScores} considerationsData={state.considerationsData} skillsAssignments={state.skillsAssignments} preferencesData={state.preferencesData} />;
+      return (
+        <ResultsDashboard
+          viaScores={viaScores}
+          scheinScores={scheinScores}
+          hollandScores={hollandScores}
+          considerationsData={state.considerationsData}
+          skillsAssignments={state.skillsAssignments}
+          preferencesData={state.preferencesData}
+          chatMessages={state.chatMessages}
+          onChatMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
+        />
+      );
     default:
       return null;
   }
