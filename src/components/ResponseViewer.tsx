@@ -208,6 +208,29 @@ const ResponseViewer = ({ username, responseData, onClose }: ResponseViewerProps
           </Section>
         )}
 
+        {/* Chat Messages */}
+        {data.chatMessages && data.chatMessages.length > 0 && (
+          <Section title="🦉 שיחה עם הינשוף היועץ">
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {data.chatMessages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`rounded-xl px-4 py-3 text-sm ${
+                    msg.role === 'user'
+                      ? 'bg-primary/10 text-foreground mr-8'
+                      : 'bg-muted text-foreground ml-8'
+                  }`}
+                >
+                  <p className="text-xs font-bold mb-1 text-muted-foreground">
+                    {msg.role === 'user' ? '👤 המשתמש' : '🦉 הינשוף'}
+                  </p>
+                  <p className="whitespace-pre-wrap">{msg.content}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
         {/* Current step */}
         <div className="text-xs text-muted-foreground mt-4 pt-3 border-t border-border">
           שלב נוכחי: <Badge variant="muted">{data.step || 'לא ידוע'}</Badge>
