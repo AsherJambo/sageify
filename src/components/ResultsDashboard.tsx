@@ -321,14 +321,16 @@ const ResultsDashboard = ({
           )}
         </div>
 
-        {/* Owl AI Chat */}
-        <div className={`transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <OwlChat
-            profileSummary={profileSummary}
-            initialMessages={chatMessages}
-            onMessagesChange={onChatMessagesChange}
-          />
-        </div>
+        {/* Roadmap from AI Advisor */}
+        {roadmapContent && (
+          <div className={`transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+            <div className="bg-card rounded-2xl p-6 border-2 border-accent/40 shadow-lg">
+              <div className="prose prose-sm dark:prose-invert max-w-none [&_h2]:text-accent [&_h2]:text-xl [&_h2]:mt-2 [&_h2]:mb-3 [&_strong]:text-foreground [&_li]:text-foreground [&_hr]:border-accent/30">
+                <ReactMarkdown>{roadmapContent}</ReactMarkdown>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Restart */}
         <div className="text-center pb-8">
