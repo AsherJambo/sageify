@@ -53,6 +53,7 @@ const ResponseViewer = ({ username, responseData, onClose }: ResponseViewerProps
     skillsAssignments?: Record<string, string>;
     considerationsData?: { selected: string[]; points: Record<string, number> };
     preferencesData?: { preferences: Record<string, string[]>; dream: string };
+    chatMessages?: { role: 'user' | 'assistant'; content: string }[];
   };
 
   // VIA scores
