@@ -47,6 +47,7 @@ interface ResponseData {
   hollandAnswers?: Record<number, boolean>;
   skillsAssignments?: Record<number, SkillColumn>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
+  chatMessages?: { role: 'user' | 'assistant'; content: string }[];
 }
 
 const defaultData: ResponseData = {
