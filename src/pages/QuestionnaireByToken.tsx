@@ -219,7 +219,7 @@ const QuestionnaireByToken = () => {
     }
   };
 
-  const globalProgress = STEP_PROGRESS[state.step] || 0;
+  const globalProgress = state.step === 'advisor' ? advisorProgress : (STEP_PROGRESS[state.step] || 0);
   const showProgressBar = globalProgress > 0 && state.step !== 'results';
 
   const ProgressBar = showProgressBar ? (
