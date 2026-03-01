@@ -162,7 +162,7 @@ const OwlChat = ({ profileSummary, username, initialMessages, onMessagesChange, 
       <div className="bg-gradient-to-l from-accent/20 via-accent/10 to-transparent rounded-t-2xl px-6 py-4 flex items-center gap-4 border border-accent/30 border-b-0">
         <div className="relative">
           <img src={owlLogo} alt="" className="w-14 h-14 rounded-full ring-2 ring-accent/50 shadow-lg" />
-          <span className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-500 rounded-full border-2 border-background" />
+        <span className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-accent rounded-full border-2 border-background" />
         </div>
         <div className="flex-1">
           <h3 className="text-lg font-bold text-foreground">🦉 Sage Advisor</h3>
