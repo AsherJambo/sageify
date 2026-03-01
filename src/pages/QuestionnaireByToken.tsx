@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { cloudClient } from '@/lib/cloudClient';
 import SectionIntro from '@/components/SectionIntro';
@@ -10,16 +10,19 @@ import HollandQuestionnaire from '@/components/HollandQuestionnaire';
 import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
 import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
 import ResultsDashboard from '@/components/ResultsDashboard';
+import OwlChat, { type ChatMessage } from '@/components/OwlChat';
+import { Button } from '@/components/ui/button';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
+import { skills } from '@/data/skillsData';
 import type { SkillColumn } from '@/data/skillsData';
 import {
   generalIntro, viaIntro, viaBonusIntro, scheinIntro,
   considerationsIntro, hollandIntro, skillsIntro, preferencesIntro,
 } from '@/data/sectionIntros';
 import {
-  type Answers, calculateCategoryScores, getMaxScoredQuestions, applyBonus,
+  type Answers, calculateCategoryScores, getMaxScoredQuestions, applyBonus, getTopCategories,
 } from '@/lib/scoring';
 import owlLogo from '@/assets/owl-logo.png';
 
@@ -33,6 +36,7 @@ type Step =
   | 'holland-intro' | 'holland'
   | 'skills-intro' | 'skills'
   | 'preferences-intro' | 'preferences'
+  | 'ai-processing' | 'ai-advisor'
   | 'results';
 
 interface ResponseData {
@@ -47,7 +51,8 @@ interface ResponseData {
   hollandAnswers?: Record<number, boolean>;
   skillsAssignments?: Record<number, SkillColumn>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
-  chatMessages?: { role: 'user' | 'assistant'; content: string }[];
+  chatMessages?: ChatMessage[];
+  roadmapContent?: string;
 }
 
 const defaultData: ResponseData = {
@@ -66,7 +71,8 @@ const STEP_PROGRESS: Record<Step, number> = {
   'considerations-intro': 48, 'considerations': 55,
   'holland-intro': 58, 'holland': 68,
   'skills-intro': 72, 'skills': 80,
-  'preferences-intro': 85, 'preferences': 92,
+  'preferences-intro': 83, 'preferences': 85,
+  'ai-processing': 85, 'ai-advisor': 90,
   'results': 100,
 };
 
@@ -76,6 +82,7 @@ const QuestionnaireByToken = () => {
   const [responseId, setResponseId] = useState<string | null>(null);
   const [state, setState] = useState<ResponseData>(defaultData);
   const [pageState, setPageState] = useState<'loading' | 'invalid' | 'used' | 'ready'>('loading');
+  const [roadmapReady, setRoadmapReady] = useState(false);
   const supabase = cloudClient;
 
   // Validate token on mount
@@ -94,12 +101,10 @@ const QuestionnaireByToken = () => {
 
       setTokenRow({ id: data.id, username: data.username });
 
-      // Mark as used if first time
       if (!data.used) {
         await supabase.from('questionnaire_tokens').update({ used: true }).eq('id', data.id);
       }
 
-      // Load existing response or create new
       const { data: existing } = await supabase
         .from('questionnaire_responses')
         .select('*')
@@ -140,61 +145,7 @@ const QuestionnaireByToken = () => {
     setState(prev => ({ ...prev, ...partial }));
   };
 
-  if (pageState === 'loading') {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto animate-float" />
-          <p className="text-muted-foreground text-lg">טוען...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (pageState === 'invalid') {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4 max-w-md px-6">
-          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto" />
-          <h1 className="text-2xl font-bold text-foreground">קישור לא תקין</h1>
-          <p className="text-muted-foreground">הקישור שקיבלת אינו תקין או שפג תוקפו. פנה למנהל לקבלת קישור חדש.</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (pageState === 'used') {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4 max-w-md px-6">
-          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto" />
-          <h1 className="text-2xl font-bold text-foreground">השאלון כבר הושלם</h1>
-          <p className="text-muted-foreground">השאלון הזה כבר מולא ואין אפשרות למלא אותו שוב.</p>
-        </div>
-      </div>
-    );
-  }
-
-  // --- Questionnaire logic (same as Index.tsx) ---
-  const handleViaAnswer = (id: number, score: number) => {
-    updateState({ viaAnswers: { ...state.viaAnswers, [id]: score } });
-  };
-  const handleScheinAnswer = (id: number, score: number) => {
-    updateState({ scheinAnswers: { ...state.scheinAnswers, [id]: score } });
-  };
-
-  const viaMaxQuestions = getMaxScoredQuestions(state.viaAnswers, viaQuestions);
-  const scheinMaxQuestions = getMaxScoredQuestions(state.scheinAnswers, scheinQuestions);
-
-  const handleViaBonusComplete = (selectedIds: number[]) => {
-    const finalAnswers = applyBonus(state.viaAnswers, selectedIds);
-    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'schein-intro' });
-  };
-  const handleScheinBonusComplete = (selectedIds: number[]) => {
-    const finalAnswers = applyBonus(state.scheinAnswers, selectedIds);
-    updateState({ finalScheinAnswers: finalAnswers, scheinBonusApplied: true, step: 'considerations-intro' });
-  };
-
+  // --- Scoring computations ---
   const viaScores = calculateCategoryScores(state.finalViaAnswers || state.viaAnswers, viaQuestions, viaCategories);
   const scheinScores = calculateCategoryScores(state.finalScheinAnswers || state.scheinAnswers, scheinQuestions, scheinCategories);
 
@@ -209,13 +160,65 @@ const QuestionnaireByToken = () => {
     });
   }
 
-  const markComplete = async () => {
+  const topVIA = getTopCategories(viaScores, 2);
+  const topSchein = getTopCategories(scheinScores, 2);
+  const topHolland = state.hollandAnswers
+    ? Object.entries(hollandScores).sort(([, a], [, b]) => b - a).slice(0, 3)
+    : [];
+  const winnerSkills = state.skillsAssignments
+    ? Object.entries(state.skillsAssignments)
+        .filter(([, col]) => col === 'winner')
+        .map(([id]) => skills.find(s => s.id === Number(id))?.text)
+        .filter(Boolean)
+    : [];
+  const topConsiderations = state.considerationsData
+    ? Object.entries(state.considerationsData.points).sort(([, a], [, b]) => b - a).slice(0, 6)
+    : [];
+
+  const profileSummary = useMemo(() => {
+    const parts: string[] = [];
+    parts.push(`חוזקות VIA מובילות: ${topVIA.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
+    parts.push(`עוגני קריירה מובילים: ${topSchein.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
+    if (topHolland.length > 0) parts.push(`נטיות הולנד מובילות: ${topHolland.map(([c, s]) => `${c} (${s})`).join(', ')}`);
+    if (winnerSkills.length > 0) parts.push(`כישורי מנצח: ${winnerSkills.join(', ')}`);
+    if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
+    if (state.preferencesData?.dream) parts.push(`חלום המגירה: ${state.preferencesData.dream}`);
+    return parts.join('\n');
+  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, state.preferencesData]);
+
+  // Roadmap detection callback
+  const handleRoadmapDetected = useCallback((content: string) => {
+    setRoadmapReady(true);
+    updateState({ roadmapContent: content });
+  }, []);
+
+  const handleFinish = async () => {
     if (tokenRow) {
       await supabase.from('questionnaire_tokens').update({ completed_at: new Date().toISOString() }).eq('id', tokenRow.id);
     }
+    updateState({ step: 'results' });
   };
 
-  const globalProgress = STEP_PROGRESS[state.step] || 0;
+  // --- Questionnaire handlers ---
+  const handleViaAnswer = (id: number, score: number) => {
+    updateState({ viaAnswers: { ...state.viaAnswers, [id]: score } });
+  };
+  const handleScheinAnswer = (id: number, score: number) => {
+    updateState({ scheinAnswers: { ...state.scheinAnswers, [id]: score } });
+  };
+  const viaMaxQuestions = getMaxScoredQuestions(state.viaAnswers, viaQuestions);
+  const scheinMaxQuestions = getMaxScoredQuestions(state.scheinAnswers, scheinQuestions);
+  const handleViaBonusComplete = (selectedIds: number[]) => {
+    const finalAnswers = applyBonus(state.viaAnswers, selectedIds);
+    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'schein-intro' });
+  };
+  const handleScheinBonusComplete = (selectedIds: number[]) => {
+    const finalAnswers = applyBonus(state.scheinAnswers, selectedIds);
+    updateState({ finalScheinAnswers: finalAnswers, scheinBonusApplied: true, step: 'considerations-intro' });
+  };
+
+  // --- Progress bar ---
+  const globalProgress = roadmapReady && state.step === 'ai-advisor' ? 100 : (STEP_PROGRESS[state.step] || 0);
   const showProgressBar = globalProgress > 0 && state.step !== 'results';
 
   const ProgressBar = showProgressBar ? (
@@ -227,6 +230,41 @@ const QuestionnaireByToken = () => {
     </div>
   ) : null;
 
+  // --- Loading / error states ---
+  if (pageState === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto animate-float" />
+          <p className="text-muted-foreground text-lg">טוען...</p>
+        </div>
+      </div>
+    );
+  }
+  if (pageState === 'invalid') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4 max-w-md px-6">
+          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto" />
+          <h1 className="text-2xl font-bold text-foreground">קישור לא תקין</h1>
+          <p className="text-muted-foreground">הקישור שקיבלת אינו תקין או שפג תוקפו. פנה למנהל לקבלת קישור חדש.</p>
+        </div>
+      </div>
+    );
+  }
+  if (pageState === 'used') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4 max-w-md px-6">
+          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto" />
+          <h1 className="text-2xl font-bold text-foreground">השאלון כבר הושלם</h1>
+          <p className="text-muted-foreground">השאלון הזה כבר מולא ואין אפשרות למלא אותו שוב.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // --- Main step rendering ---
   switch (state.step) {
     case 'welcome':
       return (
@@ -281,11 +319,71 @@ const QuestionnaireByToken = () => {
       return (
         <>{ProgressBar}<PreferencesQuestionnaire
           onComplete={(preferences, dream) => {
-            updateState({ preferencesData: { preferences, dream }, step: 'results' });
-            markComplete();
+            updateState({ preferencesData: { preferences, dream }, step: 'ai-processing' });
           }}
         /></>
       );
+
+    case 'ai-processing':
+      return (
+        <>
+          {ProgressBar}
+          <div className="min-h-screen flex flex-col items-center justify-center px-6">
+            <div className="max-w-md text-center space-y-6 fade-in">
+              <img src={owlLogo} alt="Sageify" className="w-28 h-28 mx-auto animate-float" />
+              <h2 className="text-2xl font-bold text-foreground">ה-Sage Advisor מנתח את התשובות שלך...</h2>
+              <p className="text-muted-foreground">בעוד רגע תיפתח שיחה אישית עם היועץ שלך</p>
+              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+                <div className="h-full bg-accent rounded-full progress-bar-fill animate-pulse" style={{ width: '65%' }} />
+              </div>
+              {/* Auto-advance after 3 seconds */}
+              <AutoAdvance onAdvance={() => updateState({ step: 'ai-advisor' })} delay={3000} />
+            </div>
+          </div>
+        </>
+      );
+
+    case 'ai-advisor':
+      return (
+        <>
+          {ProgressBar}
+          <div className="min-h-screen flex flex-col items-center px-4 py-8">
+            <div className="w-full max-w-2xl space-y-6">
+              <div className="text-center space-y-2 fade-in">
+                <h2 className="text-xl font-bold text-foreground">🦉 ייעוץ אסטרטגי עם Sage Advisor</h2>
+                <p className="text-sm text-muted-foreground">שיחה ממוקדת להפוך את התוצאות לתכנית פעולה</p>
+              </div>
+
+              <OwlChat
+                profileSummary={profileSummary}
+                username={tokenRow?.username || ''}
+                initialMessages={state.chatMessages}
+                onMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
+                onRoadmapDetected={handleRoadmapDetected}
+                autoStart={!state.chatMessages?.length}
+              />
+
+              {roadmapReady && (
+                <div className="text-center space-y-4 fade-in">
+                  <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-600 px-4 py-2 rounded-full text-sm font-medium">
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                    מפת הדרכים שלך מוכנה!
+                  </div>
+                  <div>
+                    <Button
+                      onClick={handleFinish}
+                      className="px-10 py-6 text-lg bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg"
+                    >
+                      סיום וצפייה בסיכום 🦉
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      );
+
     case 'results':
       return (
         <ResultsDashboard
@@ -297,11 +395,21 @@ const QuestionnaireByToken = () => {
           preferencesData={state.preferencesData}
           chatMessages={state.chatMessages}
           onChatMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
+          roadmapContent={state.roadmapContent}
         />
       );
     default:
       return null;
   }
+};
+
+// Small helper to auto-advance after delay
+const AutoAdvance = ({ onAdvance, delay }: { onAdvance: () => void; delay: number }) => {
+  useEffect(() => {
+    const timer = setTimeout(onAdvance, delay);
+    return () => clearTimeout(timer);
+  }, []);
+  return null;
 };
 
 export default QuestionnaireByToken;
