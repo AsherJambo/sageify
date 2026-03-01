@@ -79,6 +79,7 @@ const QuestionnaireByToken = () => {
   const [responseId, setResponseId] = useState<string | null>(null);
   const [state, setState] = useState<ResponseData>(defaultData);
   const [pageState, setPageState] = useState<'loading' | 'invalid' | 'used' | 'ready'>('loading');
+  const [advisorProgress, setAdvisorProgress] = useState(85);
   const supabase = cloudClient;
 
   // Validate token on mount
