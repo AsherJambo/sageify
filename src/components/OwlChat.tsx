@@ -15,7 +15,8 @@ interface OwlChatProps {
   onMessagesChange?: (messages: ChatMessage[]) => void;
 }
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/owl-chat`;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://mxyyirizhnwkmvcbnypn.supabase.co';
+const CHAT_URL = `${SUPABASE_URL}/functions/v1/owl-chat`;
 
 const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages || []);
@@ -41,7 +42,7 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14eXlpcml6aG53a212Y2JueXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMjI4MjUsImV4cCI6MjA4NzY5ODgyNX0.pEstDk6163sy5MC2JuhcvW7A1a8KCEjrkw5ZJ1-40TQ'}`,
       },
       body: JSON.stringify({ messages: allMessages, profileSummary }),
     });
