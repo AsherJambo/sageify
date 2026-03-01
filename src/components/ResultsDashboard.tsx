@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import owlLogo from '@/assets/owl-logo.png';
 import { getTopCategories } from '@/lib/scoring';
 import { owlCelebrations } from '@/lib/owlMessages';
 import { getRecommendations, type Recommendation } from '@/lib/recommendations';
 import type { SkillColumn } from '@/data/skillsData';
 import { skills } from '@/data/skillsData';
+import OwlChat, { type ChatMessage } from '@/components/OwlChat';
 
 interface ResultsDashboardProps {
   viaScores: Record<string, number>;
