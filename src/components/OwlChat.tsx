@@ -15,7 +15,8 @@ interface OwlChatProps {
   onMessagesChange?: (messages: ChatMessage[]) => void;
 }
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/owl-chat`;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://mxyyirizhnwkmvcbnypn.supabase.co';
+const CHAT_URL = `${SUPABASE_URL}/functions/v1/owl-chat`;
 
 const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages || []);
