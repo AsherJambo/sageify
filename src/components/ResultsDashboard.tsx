@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import owlLogo from '@/assets/owl-logo.png';
 import { getTopCategories } from '@/lib/scoring';
 import { owlCelebrations } from '@/lib/owlMessages';
 import { getRecommendations, type Recommendation } from '@/lib/recommendations';
 import type { SkillColumn } from '@/data/skillsData';
 import { skills } from '@/data/skillsData';
+import OwlChat, { type ChatMessage } from '@/components/OwlChat';
 
 interface ResultsDashboardProps {
   viaScores: Record<string, number>;
@@ -13,6 +14,8 @@ interface ResultsDashboardProps {
   considerationsData?: { selected: string[]; points: Record<string, number> };
   skillsAssignments?: Record<number, SkillColumn>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
+  chatMessages?: ChatMessage[];
+  onChatMessagesChange?: (messages: ChatMessage[]) => void;
 }
 
 const ResultsDashboard = ({
@@ -22,6 +25,8 @@ const ResultsDashboard = ({
   considerationsData,
   skillsAssignments,
   preferencesData,
+  chatMessages,
+  onChatMessagesChange,
 }: ResultsDashboardProps) => {
   const topVIA = getTopCategories(viaScores, 2);
   const topSchein = getTopCategories(scheinScores, 2);
@@ -73,6 +78,18 @@ const ResultsDashboard = ({
         .sort(([, a], [, b]) => b - a)
         .slice(0, 6)
     : [];
+
+  // Build profile summary for AI
+  const profileSummary = useMemo(() => {
+    const parts: string[] = [];
+    parts.push(`חוזקות VIA מובילות: ${topVIA.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
+    parts.push(`עוגני קריירה מובילים: ${topSchein.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
+    if (topHolland.length > 0) parts.push(`נטיות הולנד מובילות: ${topHolland.map(([c, s]) => `${c} (${s})`).join(', ')}`);
+    if (winnerSkills.length > 0) parts.push(`כישורי מנצח: ${winnerSkills.join(', ')}`);
+    if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
+    if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
+    return parts.join('\n');
+  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData]);
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8">
@@ -300,6 +317,15 @@ const ResultsDashboard = ({
               )}
             </div>
           )}
+        </div>
+
+        {/* Owl AI Chat */}
+        <div className={`transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <OwlChat
+            profileSummary={profileSummary}
+            initialMessages={chatMessages}
+            onMessagesChange={onChatMessagesChange}
+          />
         </div>
 
         {/* Restart */}

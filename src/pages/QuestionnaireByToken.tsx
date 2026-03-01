@@ -47,6 +47,7 @@ interface ResponseData {
   hollandAnswers?: Record<number, boolean>;
   skillsAssignments?: Record<number, SkillColumn>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
+  chatMessages?: { role: 'user' | 'assistant'; content: string }[];
 }
 
 const defaultData: ResponseData = {
@@ -286,7 +287,18 @@ const QuestionnaireByToken = () => {
         /></>
       );
     case 'results':
-      return <ResultsDashboard viaScores={viaScores} scheinScores={scheinScores} hollandScores={hollandScores} considerationsData={state.considerationsData} skillsAssignments={state.skillsAssignments} preferencesData={state.preferencesData} />;
+      return (
+        <ResultsDashboard
+          viaScores={viaScores}
+          scheinScores={scheinScores}
+          hollandScores={hollandScores}
+          considerationsData={state.considerationsData}
+          skillsAssignments={state.skillsAssignments}
+          preferencesData={state.preferencesData}
+          chatMessages={state.chatMessages}
+          onChatMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
+        />
+      );
     default:
       return null;
   }

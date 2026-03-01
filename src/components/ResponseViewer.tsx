@@ -53,6 +53,7 @@ const ResponseViewer = ({ username, responseData, onClose }: ResponseViewerProps
     skillsAssignments?: Record<string, string>;
     considerationsData?: { selected: string[]; points: Record<string, number> };
     preferencesData?: { preferences: Record<string, string[]>; dream: string };
+    chatMessages?: { role: 'user' | 'assistant'; content: string }[];
   };
 
   // VIA scores
@@ -204,6 +205,29 @@ const ResponseViewer = ({ username, responseData, onClose }: ResponseViewerProps
                 <Badge variant="warning">{preferences.dream}</Badge>
               </div>
             )}
+          </Section>
+        )}
+
+        {/* Chat Messages */}
+        {data.chatMessages && data.chatMessages.length > 0 && (
+          <Section title="🦉 שיחה עם הינשוף היועץ">
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {data.chatMessages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`rounded-xl px-4 py-3 text-sm ${
+                    msg.role === 'user'
+                      ? 'bg-primary/10 text-foreground mr-8'
+                      : 'bg-muted text-foreground ml-8'
+                  }`}
+                >
+                  <p className="text-xs font-bold mb-1 text-muted-foreground">
+                    {msg.role === 'user' ? '👤 המשתמש' : '🦉 הינשוף'}
+                  </p>
+                  <p className="whitespace-pre-wrap">{msg.content}</p>
+                </div>
+              ))}
+            </div>
           </Section>
         )}
 
