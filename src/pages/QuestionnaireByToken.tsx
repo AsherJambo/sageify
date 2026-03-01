@@ -34,6 +34,7 @@ type Step =
   | 'holland-intro' | 'holland'
   | 'skills-intro' | 'skills'
   | 'preferences-intro' | 'preferences'
+  | 'advisor'
   | 'results';
 
 interface ResponseData {
