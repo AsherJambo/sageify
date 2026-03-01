@@ -25,6 +25,8 @@ const ResultsDashboard = ({
   considerationsData,
   skillsAssignments,
   preferencesData,
+  chatMessages,
+  onChatMessagesChange,
 }: ResultsDashboardProps) => {
   const topVIA = getTopCategories(viaScores, 2);
   const topSchein = getTopCategories(scheinScores, 2);
