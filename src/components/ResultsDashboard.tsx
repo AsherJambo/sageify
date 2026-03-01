@@ -319,6 +319,15 @@ const ResultsDashboard = ({
           )}
         </div>
 
+        {/* Owl AI Chat */}
+        <div className={`transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <OwlChat
+            profileSummary={profileSummary}
+            initialMessages={chatMessages}
+            onMessagesChange={onChatMessagesChange}
+          />
+        </div>
+
         {/* Restart */}
         <div className="text-center pb-8">
           <p className="text-muted-foreground mb-3 text-sm">🦉 הינשוף תמיד כאן אם תרצו לעבור שוב</p>
