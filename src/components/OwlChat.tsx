@@ -169,7 +169,7 @@ const OwlChat = ({ profileSummary, username, initialMessages, onMessagesChange, 
           <p className="text-sm text-muted-foreground">ייעוץ קריירה אסטרטגי מותאם אישית</p>
         </div>
         {hasRoadmap && (
-          <span className="text-xs bg-green-500/15 text-green-600 px-3 py-1 rounded-full font-medium">
+          <span className="text-xs bg-accent/15 text-accent px-3 py-1 rounded-full font-medium">
             ✓ Roadmap מוכן
           </span>
         )}

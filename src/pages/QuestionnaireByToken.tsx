@@ -365,8 +365,8 @@ const QuestionnaireByToken = () => {
 
               {roadmapReady && (
                 <div className="text-center space-y-4 fade-in">
-                  <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-600 px-4 py-2 rounded-full text-sm font-medium">
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">
+                    <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
                     מפת הדרכים שלך מוכנה!
                   </div>
                   <div>
