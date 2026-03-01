@@ -9,6 +9,7 @@ import ConsiderationsQuestionnaire from '@/components/ConsiderationsQuestionnair
 import HollandQuestionnaire from '@/components/HollandQuestionnaire';
 import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
 import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
+import SageAdvisor from '@/components/SageAdvisor';
 import ResultsDashboard from '@/components/ResultsDashboard';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
@@ -33,6 +34,7 @@ type Step =
   | 'holland-intro' | 'holland'
   | 'skills-intro' | 'skills'
   | 'preferences-intro' | 'preferences'
+  | 'advisor'
   | 'results';
 
 interface ResponseData {
@@ -66,7 +68,8 @@ const STEP_PROGRESS: Record<Step, number> = {
   'considerations-intro': 48, 'considerations': 55,
   'holland-intro': 58, 'holland': 68,
   'skills-intro': 72, 'skills': 80,
-  'preferences-intro': 85, 'preferences': 92,
+  'preferences-intro': 83, 'preferences': 85,
+  'advisor': 85,
   'results': 100,
 };
 
@@ -76,6 +79,7 @@ const QuestionnaireByToken = () => {
   const [responseId, setResponseId] = useState<string | null>(null);
   const [state, setState] = useState<ResponseData>(defaultData);
   const [pageState, setPageState] = useState<'loading' | 'invalid' | 'used' | 'ready'>('loading');
+  const [advisorProgress, setAdvisorProgress] = useState(85);
   const supabase = cloudClient;
 
   // Validate token on mount
@@ -215,7 +219,7 @@ const QuestionnaireByToken = () => {
     }
   };
 
-  const globalProgress = STEP_PROGRESS[state.step] || 0;
+  const globalProgress = state.step === 'advisor' ? advisorProgress : (STEP_PROGRESS[state.step] || 0);
   const showProgressBar = globalProgress > 0 && state.step !== 'results';
 
   const ProgressBar = showProgressBar ? (
@@ -281,10 +285,31 @@ const QuestionnaireByToken = () => {
       return (
         <>{ProgressBar}<PreferencesQuestionnaire
           onComplete={(preferences, dream) => {
-            updateState({ preferencesData: { preferences, dream }, step: 'results' });
-            markComplete();
+            updateState({ preferencesData: { preferences, dream }, step: 'advisor' });
           }}
         /></>
+      );
+    case 'advisor':
+      return (
+        <>
+          {ProgressBar}
+          <SageAdvisor
+            username={tokenRow?.username}
+            viaScores={viaScores}
+            scheinScores={scheinScores}
+            hollandScores={hollandScores}
+            considerationsData={state.considerationsData}
+            skillsAssignments={state.skillsAssignments}
+            preferencesData={state.preferencesData}
+            initialMessages={state.chatMessages}
+            onMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
+            onRoadmapReady={() => setAdvisorProgress(100)}
+            onFinish={() => {
+              markComplete();
+              updateState({ step: 'results' });
+            }}
+          />
+        </>
       );
     case 'results':
       return (
