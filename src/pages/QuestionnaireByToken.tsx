@@ -9,6 +9,7 @@ import ConsiderationsQuestionnaire from '@/components/ConsiderationsQuestionnair
 import HollandQuestionnaire from '@/components/HollandQuestionnaire';
 import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
 import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
+import SageAdvisor from '@/components/SageAdvisor';
 import ResultsDashboard from '@/components/ResultsDashboard';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
