@@ -28,6 +28,7 @@ const ResultsDashboard = ({
   preferencesData,
   chatMessages,
   onChatMessagesChange,
+  roadmapContent,
 }: ResultsDashboardProps) => {
   const topVIA = getTopCategories(viaScores, 2);
   const topSchein = getTopCategories(scheinScores, 2);
