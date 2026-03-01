@@ -16,6 +16,7 @@ interface ResultsDashboardProps {
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
   chatMessages?: ChatMessage[];
   onChatMessagesChange?: (messages: ChatMessage[]) => void;
+  roadmapContent?: string;
 }
 
 const ResultsDashboard = ({
