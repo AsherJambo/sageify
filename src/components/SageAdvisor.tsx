@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import type { ChatMessage } from '@/components/OwlChat';
 import { getTopCategories } from '@/lib/scoring';
+import { getRecommendations } from '@/lib/recommendations';
 import type { SkillColumn } from '@/data/skillsData';
 import { skills } from '@/data/skillsData';
 
@@ -57,17 +58,33 @@ const SageAdvisor = ({
     if (messages.length > 0) onMessagesChange?.(messages);
   }, [messages]);
 
-  // Build profile summary
+  // Build profile summary with recommendations
   const topVIA = getTopCategories(viaScores, 3);
   const topSchein = getTopCategories(scheinScores, 3);
+  const recommendations = getRecommendations(viaScores, scheinScores);
+
+  // Bottom VIA & Schein (least suitable)
+  const bottomVIA = getTopCategories(viaScores, 100).slice(-2);
+  const bottomSchein = getTopCategories(scheinScores, 100).slice(-2);
 
   const topHolland = hollandScores
     ? Object.entries(hollandScores).sort(([, a], [, b]) => b - a).slice(0, 3)
     : [];
 
+  const bottomHolland = hollandScores
+    ? Object.entries(hollandScores).sort(([, a], [, b]) => a - b).slice(0, 2)
+    : [];
+
   const winnerSkills = skillsAssignments
     ? Object.entries(skillsAssignments)
         .filter(([, col]) => col === 'winner')
+        .map(([id]) => skills.find(s => s.id === Number(id))?.text)
+        .filter(Boolean)
+    : [];
+
+  const burnoutSkills = skillsAssignments
+    ? Object.entries(skillsAssignments)
+        .filter(([, col]) => col === 'burnout')
         .map(([id]) => skills.find(s => s.id === Number(id))?.text)
         .filter(Boolean)
     : [];
@@ -80,11 +97,20 @@ const SageAdvisor = ({
     const parts: string[] = [];
     if (username) parts.push(`שם המשתמש: ${username}`);
     parts.push(`חוזקות VIA מובילות: ${topVIA.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
+    parts.push(`חוזקות VIA חלשות: ${bottomVIA.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
     parts.push(`עוגני קריירה מובילים: ${topSchein.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
-    if (topHolland.length > 0) parts.push(`נטיות הולנד: ${topHolland.map(([c, s]) => `${c} (${s})`).join(', ')}`);
+    parts.push(`עוגני קריירה חלשים: ${bottomSchein.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
+    if (topHolland.length > 0) parts.push(`נטיות הולנד חזקות: ${topHolland.map(([c, s]) => `${c} (${s})`).join(', ')}`);
+    if (bottomHolland.length > 0) parts.push(`נטיות הולנד חלשות: ${bottomHolland.map(([c, s]) => `${c} (${s})`).join(', ')}`);
     if (winnerSkills.length > 0) parts.push(`כישורי מנצח: ${winnerSkills.join(', ')}`);
+    if (burnoutSkills.length > 0) parts.push(`כישורי שחיקה (להימנע): ${burnoutSkills.join(', ')}`);
     if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
     if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
+    // Include recommendations from the report
+    parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
+    recommendations.forEach((rec, i) => {
+      parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.description}`);
+    });
     return parts.join('\n');
   }, []);
 
@@ -235,6 +261,56 @@ const SageAdvisor = ({
               {isStreaming ? '🟢 כותב...' : '🟢 מחובר'}
             </p>
           </div>
+        </div>
+
+        {/* Personal Report Summary Card – shown before chat */}
+        <div className="mb-6 bg-card rounded-2xl border border-accent/30 p-5 shadow-md" dir="rtl">
+          <h3 className="text-lg font-bold text-accent mb-3">📊 סיכום הפרופיל האישי שלך</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div className="space-y-1">
+              <p className="font-semibold text-foreground">🌟 חוזקות מובילות</p>
+              {topVIA.map(t => (
+                <p key={t.category} className="text-muted-foreground">• {t.category} ({t.score.toFixed(1)})</p>
+              ))}
+            </div>
+            <div className="space-y-1">
+              <p className="font-semibold text-foreground">🧭 עוגני קריירה</p>
+              {topSchein.map(t => (
+                <p key={t.category} className="text-muted-foreground">• {t.category} ({t.score.toFixed(1)})</p>
+              ))}
+            </div>
+            {topHolland.length > 0 && (
+              <div className="space-y-1">
+                <p className="font-semibold text-foreground">🔍 נטיות הולנד</p>
+                {topHolland.map(([c, s]) => (
+                  <p key={c} className="text-muted-foreground">• {c} ({s})</p>
+                ))}
+              </div>
+            )}
+            {winnerSkills.length > 0 && (
+              <div className="space-y-1">
+                <p className="font-semibold text-foreground">🏆 כישורי מנצח</p>
+                {winnerSkills.slice(0, 4).map((s, i) => (
+                  <p key={i} className="text-muted-foreground">• {s}</p>
+                ))}
+              </div>
+            )}
+          </div>
+          {recommendations.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-border">
+              <p className="font-semibold text-foreground mb-1">💡 הצעות עיסוק מהדו"ח</p>
+              {recommendations.map((rec, i) => (
+                <p key={i} className="text-muted-foreground text-sm">
+                  {rec.icon} {rec.title} – {rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}
+                </p>
+              ))}
+            </div>
+          )}
+          {preferencesData?.dream && (
+            <div className="mt-2">
+              <p className="text-accent font-semibold text-sm">⭐ חלום המגירה: {preferencesData.dream}</p>
+            </div>
+          )}
         </div>
 
         {/* Messages area */}
