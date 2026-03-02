@@ -57,7 +57,8 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete }: ScheinQuestionna
               <p className="text-question font-medium text-foreground mb-4">
                 {q.id}. {q.text}
               </p>
-              <div className="flex gap-2 justify-center flex-wrap" dir="ltr">
+              <div className="flex gap-2 justify-center items-center flex-wrap" dir="ltr">
+                <span className="text-xs text-muted-foreground/60 w-20 text-right hidden sm:inline">לא מסכים כלל</span>
                 {SCALE.map(val => (
                   <button
                     key={val}
@@ -71,6 +72,7 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete }: ScheinQuestionna
                     {val}
                   </button>
                 ))}
+                <span className="text-xs text-muted-foreground/60 w-20 text-left hidden sm:inline">מסכים לחלוטין</span>
               </div>
             </div>
           ))}

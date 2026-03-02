@@ -79,7 +79,7 @@ const ResultsDashboard = ({
         .slice(0, 6)
     : [];
 
-  // Build profile summary for AI
+  // Build profile summary for AI (synced with SageAdvisor)
   const profileSummary = useMemo(() => {
     const parts: string[] = [];
     parts.push(`חוזקות VIA מובילות: ${topVIA.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
@@ -88,8 +88,13 @@ const ResultsDashboard = ({
     if (winnerSkills.length > 0) parts.push(`כישורי מנצח: ${winnerSkills.join(', ')}`);
     if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
     if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
+    // Sync recommendations from report
+    parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
+    recommendations.forEach((rec, i) => {
+      parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.description}`);
+    });
     return parts.join('\n');
-  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData]);
+  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, recommendations]);
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8">
