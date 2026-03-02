@@ -373,6 +373,32 @@ const SageAdvisor = ({
           </div>
         )}
 
+        {/* Quick replies */}
+        {!roadmapDetected && !isStreaming && messages.length >= 2 && (
+          <div className="flex flex-wrap gap-2 px-1 pt-2" dir="rtl">
+            {[
+              { label: '🔍 מה לא מתאים לי?', msg: 'ספר לי עוד על מה שפחות מתאים לי ולמה כדאי להימנע מזה' },
+              { label: '🎯 רוצה תכנית פעולה', msg: 'אני מוכן! בוא נבנה תכנית פעולה קונקרטית' },
+              { label: '📊 דירוג לכל כיוון', msg: 'תן לי דירוג של 1-10 לכל כיוון תעסוקתי שעלה, עם הסבר קצר' },
+              { label: '💡 כיוונים יצירתיים', msg: 'תציע לי כיוונים יצירתיים ולא שגרתיים שאולי לא חשבתי עליהם' },
+            ].map((qr) => (
+              <button
+                key={qr.label}
+                onClick={() => {
+                  const userMsg: ChatMessage = { role: 'user', content: qr.msg };
+                  const newMessages = [...messages, userMsg];
+                  setMessages(newMessages);
+                  setIsStreaming(true);
+                  streamChat(newMessages).catch(console.error).finally(() => setIsStreaming(false));
+                }}
+                className="px-3 py-2 text-sm rounded-xl border border-accent/30 bg-accent/5 text-accent hover:bg-accent/15 transition-colors"
+              >
+                {qr.label}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Input area */}
         {!roadmapDetected && (
           <div className="border-t border-border pt-3 flex gap-2" dir="rtl">
