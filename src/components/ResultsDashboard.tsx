@@ -352,7 +352,7 @@ const ResultsDashboard = ({
         </div>
 
         {/* Owl AI Chat */}
-        <div className={`transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <div className={`print:hidden transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
           <OwlChat
             profileSummary={profileSummary}
             initialMessages={chatMessages}
@@ -360,8 +360,15 @@ const ResultsDashboard = ({
           />
         </div>
 
-        {/* Restart */}
-        <div className="text-center pb-8">
+        {/* Actions */}
+        <div className="text-center pb-8 space-y-4 print:hidden">
+          <button
+            onClick={() => window.print()}
+            className="px-8 py-3 rounded-lg bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-colors mx-2"
+          >
+            📄 הורדה כ-PDF
+          </button>
+          <br />
           <p className="text-muted-foreground mb-3 text-sm">🦉 הינשוף תמיד כאן אם תרצו לעבור שוב</p>
           <button
             onClick={() => {
