@@ -77,10 +77,17 @@ export function generatePrintHTML(username: string, bodyContent: string, idNumbe
       font-weight: 600;
     }
 
+    .header .id-number {
+      font-size: 13px;
+      color: #1e3a5f;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
     .header .date {
       font-size: 11px;
       color: #94a3b8;
-      margin-top: 4px;
+      margin-top: 8px;
       margin-bottom: 8px;
     }
 

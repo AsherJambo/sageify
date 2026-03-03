@@ -258,7 +258,7 @@ const Admin = () => {
                             if (!content) return;
                             const win = window.open('', '_blank');
                             if (!win) return;
-                            win.document.write(generatePrintHTML(t.username, content.innerHTML));
+                            win.document.write(generatePrintHTML(t.username, content.innerHTML, t.id_number));
                             win.document.close();
                             setTimeout(() => { win.print(); }, 400);
                           }, 200);
