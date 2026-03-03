@@ -276,8 +276,8 @@ export function generatePrintHTML(username: string, bodyContent: string): string
   <div class="page-frame">
     <div class="header">
       <h1>פרופיל אישי – ${username}</h1>
-      <div class="subtitle">✦ מפת חוזקות וכיוון מקצועי ✦</div>
       <div class="date">${date}</div>
+      <div class="subtitle">✦ מפת חוזקות וכיוון מקצועי ✦</div>
     </div>
     ${bodyContent}
     <div class="footer-brand">
