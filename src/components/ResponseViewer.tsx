@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 
 interface ResponseViewerProps {
   username: string;
+  idNumber?: string | null;
   responseData: Record<string, unknown>;
   onClose: () => void;
 }
