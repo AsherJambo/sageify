@@ -46,8 +46,8 @@ export function generatePrintHTML(username: string, bodyContent: string): string
     /* ── Header ── */
     .header {
       text-align: center;
-      margin-bottom: 24px;
-      padding-bottom: 18px;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
       border-bottom: 2px solid #1e3a5f;
       position: relative;
     }
