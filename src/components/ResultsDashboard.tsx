@@ -352,7 +352,7 @@ const ResultsDashboard = ({
         </div>
 
         {/* Owl AI Chat */}
-        <div className={`transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <div className={`print:hidden transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
           <OwlChat
             profileSummary={profileSummary}
             initialMessages={chatMessages}
