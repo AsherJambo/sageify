@@ -108,7 +108,10 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div className="bg-card rounded-xl p-6 max-w-3xl w-full max-h-[85vh] overflow-auto" dir="rtl" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-6 print:hidden">
-          <h2 className="text-xl font-bold">תוצאות: {username}</h2>
+          <div>
+            <h2 className="text-xl font-bold">תוצאות: {username}</h2>
+            {idNumber && <p className="text-sm text-muted-foreground">ת.ז: {idNumber}</p>}
+          </div>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => {
               const printContent = document.getElementById('response-viewer-content');
