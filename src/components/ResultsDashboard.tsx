@@ -170,47 +170,57 @@ const ResultsDashboard = ({
           </div>
         </div>
 
-        {/* Recommendations */}
+        {/* Recommendations - AI-based from advisor chat */}
         <div className={`transition-all duration-700 ${showRecommendations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
           <div className="bg-card rounded-2xl p-6 border border-accent/30 shadow-md">
             <div className="flex items-center gap-3 mb-5">
               <img src={owlLogo} alt="" className="w-10 h-10 rounded-full" />
               <div>
                 <h3 className="text-lg font-bold text-foreground">🦉 ההמלצות של הינשוף</h3>
-                <p className="text-sm text-muted-foreground">הנה 3 כיוונים שמתאימים בדיוק לפרופיל שלכם</p>
+                <p className="text-sm text-muted-foreground">
+                  {aiRecommendations ? 'תובנות והמלצות מהשיחה עם היועץ' : 'הנה 3 כיוונים שמתאימים בדיוק לפרופיל שלכם'}
+                </p>
               </div>
             </div>
-            <div className="space-y-4">
-              {recommendations.map((rec, i) => (
-                <a
-                  key={i}
-                  href={rec.platformUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block bg-background rounded-xl p-5 border border-border hover:border-accent/50 hover:shadow-md transition-all duration-300 group"
-                >
-                  <div className="flex items-start gap-4">
-                    <span className="text-3xl flex-shrink-0">{rec.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <h4 className="font-bold text-foreground group-hover:text-accent transition-colors">{rec.title}</h4>
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                          rec.type === 'volunteer' ? 'bg-secondary/15 text-secondary' :
-                          rec.type === 'freelance' ? 'bg-accent/15 text-accent' :
-                          'bg-primary/15 text-primary'
-                        }`}>
-                          {rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}
+            {aiRecommendations ? (
+              <div className="bg-background rounded-xl p-5 border border-border">
+                <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_h1]:text-lg [&_h2]:text-base [&_h3]:text-sm [&_ul]:mr-4 [&_ol]:mr-4 [&_li]:mb-1" dir="rtl">
+                  <ReactMarkdown>{aiRecommendations}</ReactMarkdown>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {staticRecommendations.map((rec, i) => (
+                  <a
+                    key={i}
+                    href={rec.platformUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block bg-background rounded-xl p-5 border border-border hover:border-accent/50 hover:shadow-md transition-all duration-300 group"
+                  >
+                    <div className="flex items-start gap-4">
+                      <span className="text-3xl flex-shrink-0">{rec.icon}</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <h4 className="font-bold text-foreground group-hover:text-accent transition-colors">{rec.title}</h4>
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                            rec.type === 'volunteer' ? 'bg-secondary/15 text-secondary' :
+                            rec.type === 'freelance' ? 'bg-accent/15 text-accent' :
+                            'bg-primary/15 text-primary'
+                          }`}>
+                            {rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}
+                          </span>
+                        </div>
+                        <p className="text-sm text-muted-foreground leading-relaxed mb-2">{rec.description}</p>
+                        <span className="text-xs text-accent font-medium">
+                          מצאו הזדמנויות ב-{rec.platform} ←
                         </span>
                       </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed mb-2">{rec.description}</p>
-                      <span className="text-xs text-accent font-medium">
-                        מצאו הזדמנויות ב-{rec.platform} ←
-                      </span>
                     </div>
-                  </div>
-                </a>
-              ))}
-            </div>
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
