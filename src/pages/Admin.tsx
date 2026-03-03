@@ -123,9 +123,10 @@ const Admin = () => {
   };
 
   const exportCSV = () => {
-    const headers = ['שם משתמש', 'סטטוס', 'תאריך יצירה', 'תאריך השלמה', 'קישור'];
+    const headers = ['שם משתמש', 'ת.ז', 'סטטוס', 'תאריך יצירה', 'תאריך השלמה', 'קישור'];
     const rows = tokens.map(t => [
       t.username,
+      t.id_number || '',
       t.completed_at ? 'הושלם' : t.used ? 'בתהליך' : 'טרם נפתח',
       new Date(t.created_at).toLocaleString('he-IL'),
       t.completed_at ? new Date(t.completed_at).toLocaleString('he-IL') : '',
