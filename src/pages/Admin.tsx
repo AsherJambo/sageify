@@ -11,6 +11,7 @@ interface TokenRow {
   id: string;
   token: string;
   username: string;
+  id_number?: string | null;
   used: boolean;
   created_at: string;
   completed_at: string | null;
@@ -122,9 +123,10 @@ const Admin = () => {
   };
 
   const exportCSV = () => {
-    const headers = ['שם משתמש', 'סטטוס', 'תאריך יצירה', 'תאריך השלמה', 'קישור'];
+    const headers = ['שם משתמש', 'ת.ז', 'סטטוס', 'תאריך יצירה', 'תאריך השלמה', 'קישור'];
     const rows = tokens.map(t => [
       t.username,
+      t.id_number || '',
       t.completed_at ? 'הושלם' : t.used ? 'בתהליך' : 'טרם נפתח',
       new Date(t.created_at).toLocaleString('he-IL'),
       t.completed_at ? new Date(t.completed_at).toLocaleString('he-IL') : '',
@@ -222,6 +224,7 @@ const Admin = () => {
           <thead className="bg-muted/50">
             <tr>
               <th className="p-3 text-right font-semibold">שם</th>
+              <th className="p-3 text-right font-semibold">ת.ז</th>
               <th className="p-3 text-right font-semibold">סטטוס</th>
               <th className="p-3 text-right font-semibold">תאריך</th>
               <th className="p-3 text-right font-semibold">פעולות</th>
@@ -231,6 +234,7 @@ const Admin = () => {
             {tokens.map(t => (
               <tr key={t.id} className="border-t border-border hover:bg-muted/30">
                 <td className="p-3 font-medium">{t.username}</td>
+                <td className="p-3 text-muted-foreground">{t.id_number || '—'}</td>
                 <td className="p-3">
                   <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
                     t.completed_at
@@ -255,7 +259,7 @@ const Admin = () => {
                             if (!content) return;
                             const win = window.open('', '_blank');
                             if (!win) return;
-                            win.document.write(generatePrintHTML(t.username, content.innerHTML));
+                            win.document.write(generatePrintHTML(t.username, content.innerHTML, t.id_number));
                             win.document.close();
                             setTimeout(() => { win.print(); }, 400);
                           }, 200);
@@ -269,7 +273,7 @@ const Admin = () => {
               </tr>
             ))}
             {tokens.length === 0 && (
-              <tr><td colSpan={4} className="p-8 text-center text-muted-foreground">אין קישורים עדיין. צרו את הראשון!</td></tr>
+              <tr><td colSpan={5} className="p-8 text-center text-muted-foreground">אין קישורים עדיין. צרו את הראשון!</td></tr>
             )}
           </tbody>
         </table>
@@ -279,6 +283,7 @@ const Admin = () => {
       {selectedToken && (
         <ResponseViewer
           username={selectedToken.username}
+          idNumber={selectedToken.id_number}
           responseData={(Array.isArray(selectedToken.questionnaire_responses) ? selectedToken.questionnaire_responses[0]?.response_data : selectedToken.questionnaire_responses?.response_data) as Record<string, unknown> || {}}
           onClose={() => setSelectedToken(null)}
         />

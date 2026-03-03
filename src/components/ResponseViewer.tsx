@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 
 interface ResponseViewerProps {
   username: string;
+  idNumber?: string | null;
   responseData: Record<string, unknown>;
   onClose: () => void;
 }
@@ -43,7 +44,7 @@ const Badge = ({ children, variant = 'default' }: { children: React.ReactNode; v
   return <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${colors[variant]}`}>{children}</span>;
 };
 
-const ResponseViewer = ({ username, responseData, onClose }: ResponseViewerProps) => {
+const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseViewerProps) => {
   const data = responseData as {
     step?: string;
     viaAnswers?: Answers;
@@ -107,14 +108,17 @@ const ResponseViewer = ({ username, responseData, onClose }: ResponseViewerProps
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div className="bg-card rounded-xl p-6 max-w-3xl w-full max-h-[85vh] overflow-auto" dir="rtl" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-6 print:hidden">
-          <h2 className="text-xl font-bold">תוצאות: {username}</h2>
+          <div>
+            <h2 className="text-xl font-bold">תוצאות: {username}</h2>
+            {idNumber && <p className="text-sm text-muted-foreground">ת.ז: {idNumber}</p>}
+          </div>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => {
               const printContent = document.getElementById('response-viewer-content');
               if (!printContent) return;
               const win = window.open('', '_blank');
               if (!win) return;
-              win.document.write(generatePrintHTML(username, printContent.innerHTML));
+              win.document.write(generatePrintHTML(username, printContent.innerHTML, idNumber));
               win.document.close();
               setTimeout(() => { win.print(); }, 400);
             }}>

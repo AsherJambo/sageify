@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import { cloudClient } from '@/lib/cloudClient';
 import SectionIntro from '@/components/SectionIntro';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
@@ -77,6 +78,7 @@ const QuestionnaireByToken = () => {
   const { token } = useParams<{ token: string }>();
   const [tokenRow, setTokenRow] = useState<{ id: string; username: string } | null>(null);
   const [responseId, setResponseId] = useState<string | null>(null);
+  const [idNumber, setIdNumber] = useState('');
   const [state, setState] = useState<ResponseData>(defaultData);
   const [pageState, setPageState] = useState<'loading' | 'invalid' | 'used' | 'ready'>('loading');
   const [advisorProgress, setAdvisorProgress] = useState(85);
@@ -240,10 +242,33 @@ const QuestionnaireByToken = () => {
             <h1 className="text-3xl font-bold text-foreground">
               שלום, <span className="text-accent">{tokenRow?.username}</span>! 🦉
             </h1>
-            <p className="text-lg text-muted-foreground">ברוכים הבאים לשאלון Sageify. לחצו להתחיל.</p>
+            <p className="text-lg text-muted-foreground">ברוכים הבאים לשאלון Sageify. הזינו את מספר תעודת הזהות שלכם ולחצו להתחיל.</p>
+            <div className="max-w-xs mx-auto">
+              <input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                placeholder="מספר תעודת זהות"
+                value={idNumber}
+                onChange={e => setIdNumber(e.target.value.replace(/\D/g, ''))}
+                className="w-full text-center px-4 py-3 rounded-xl border border-border bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                maxLength={9}
+              />
+            </div>
             <button
-              onClick={() => updateState({ step: 'general-intro' })}
-              className="px-10 py-4 bg-primary text-primary-foreground rounded-xl text-xl font-semibold hover:opacity-90 transition-all shadow-lg"
+              onClick={async () => {
+                if (idNumber.length < 5) {
+                  toast.error('יש להזין מספר ת.ז תקין');
+                  return;
+                }
+                // Save id_number to token row
+                if (tokenRow) {
+                  await supabase.from('questionnaire_tokens').update({ id_number: idNumber } as any).eq('id', tokenRow.id);
+                }
+                updateState({ step: 'general-intro' });
+              }}
+              disabled={idNumber.length < 5}
+              className="px-10 py-4 bg-primary text-primary-foreground rounded-xl text-xl font-semibold hover:opacity-90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               בואו נתחיל! 🦉
             </button>

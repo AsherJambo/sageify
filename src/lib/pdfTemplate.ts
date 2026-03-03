@@ -1,4 +1,4 @@
-export function generatePrintHTML(username: string, bodyContent: string): string {
+export function generatePrintHTML(username: string, bodyContent: string, idNumber?: string | null): string {
   const date = new Date().toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return `<!DOCTYPE html>
@@ -77,10 +77,17 @@ export function generatePrintHTML(username: string, bodyContent: string): string
       font-weight: 600;
     }
 
+    .header .id-number {
+      font-size: 13px;
+      color: #1e3a5f;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
     .header .date {
       font-size: 11px;
       color: #94a3b8;
-      margin-top: 4px;
+      margin-top: 8px;
       margin-bottom: 8px;
     }
 
@@ -273,6 +280,7 @@ export function generatePrintHTML(username: string, bodyContent: string): string
   <div class="page-frame">
     <div class="header">
       <h1>פרופיל אישי – ${username}</h1>
+      ${idNumber ? `<div class="id-number">ת.ז: ${idNumber}</div>` : ''}
       <div class="date">${date}</div>
       <div class="subtitle">✦ מפת חוזקות וכיוון מקצועי ✦</div>
     </div>
