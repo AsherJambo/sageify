@@ -77,6 +77,7 @@ const QuestionnaireByToken = () => {
   const { token } = useParams<{ token: string }>();
   const [tokenRow, setTokenRow] = useState<{ id: string; username: string } | null>(null);
   const [responseId, setResponseId] = useState<string | null>(null);
+  const [idNumber, setIdNumber] = useState('');
   const [state, setState] = useState<ResponseData>(defaultData);
   const [pageState, setPageState] = useState<'loading' | 'invalid' | 'used' | 'ready'>('loading');
   const [advisorProgress, setAdvisorProgress] = useState(85);
