@@ -105,10 +105,43 @@ const ResponseViewer = ({ username, responseData, onClose }: ResponseViewerProps
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div className="bg-card rounded-xl p-6 max-w-3xl w-full max-h-[85vh] overflow-auto" dir="rtl" onClick={e => e.stopPropagation()}>
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 print:hidden">
           <h2 className="text-xl font-bold">תוצאות: {username}</h2>
-          <Button variant="ghost" onClick={onClose}>✕</Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => {
+              const printContent = document.getElementById('response-viewer-content');
+              if (!printContent) return;
+              const win = window.open('', '_blank');
+              if (!win) return;
+              win.document.write(`
+                <html dir="rtl"><head><title>תוצאות - ${username}</title>
+                <style>
+                  body { font-family: 'Heebo', sans-serif; padding: 24px; direction: rtl; color: #1a1a1a; }
+                  h3 { font-size: 16px; font-weight: bold; border-bottom: 1px solid #ddd; padding-bottom: 4px; margin-bottom: 12px; }
+                  .score-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+                  .score-label { font-size: 13px; width: 140px; text-align: right; }
+                  .bar-bg { flex: 1; background: #eee; border-radius: 8px; height: 14px; overflow: hidden; }
+                  .bar-fill { background: #6366f1; height: 100%; border-radius: 8px; }
+                  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; background: #f0f0f0; margin: 2px; }
+                  .section { margin-bottom: 24px; }
+                  .chat-msg { padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; }
+                  .chat-user { background: #f0f4ff; margin-left: 40px; }
+                  .chat-assistant { background: #f5f5f5; margin-right: 40px; }
+                </style></head><body>
+                <h2>תוצאות: ${username}</h2>
+                ${printContent.innerHTML}
+                </body></html>
+              `);
+              win.document.close();
+              setTimeout(() => { win.print(); }, 300);
+            }}>
+              📄 PDF
+            </Button>
+            <Button variant="ghost" onClick={onClose}>✕</Button>
+          </div>
         </div>
+
+        <div id="response-viewer-content">
 
         {/* VIA */}
         {hasData(viaAnswers) && (
@@ -234,6 +267,7 @@ const ResponseViewer = ({ username, responseData, onClose }: ResponseViewerProps
         {/* Current step */}
         <div className="text-xs text-muted-foreground mt-4 pt-3 border-t border-border">
           שלב נוכחי: <Badge variant="muted">{data.step || 'לא ידוע'}</Badge>
+        </div>
         </div>
       </div>
     </div>
