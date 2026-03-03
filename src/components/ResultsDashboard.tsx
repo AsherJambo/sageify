@@ -109,7 +109,7 @@ const ResultsDashboard = ({
     if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
     // Sync recommendations from report
     parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
-    recommendations.forEach((rec, i) => {
+    staticRecommendations.forEach((rec, i) => {
       parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.description}`);
     });
     return parts.join('\n');
