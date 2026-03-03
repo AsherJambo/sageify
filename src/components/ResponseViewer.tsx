@@ -118,7 +118,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
               if (!printContent) return;
               const win = window.open('', '_blank');
               if (!win) return;
-              win.document.write(generatePrintHTML(username, printContent.innerHTML));
+              win.document.write(generatePrintHTML(username, printContent.innerHTML, idNumber));
               win.document.close();
               setTimeout(() => { win.print(); }, 400);
             }}>
