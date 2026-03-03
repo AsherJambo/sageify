@@ -11,6 +11,7 @@ interface TokenRow {
   id: string;
   token: string;
   username: string;
+  id_number?: string | null;
   used: boolean;
   created_at: string;
   completed_at: string | null;
