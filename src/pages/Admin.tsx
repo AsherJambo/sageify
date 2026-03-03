@@ -5,6 +5,7 @@ import { cloudClient } from '@/lib/cloudClient';
 import owlLogo from '@/assets/owl-logo.png';
 import { toast } from 'sonner';
 import ResponseViewer from '@/components/ResponseViewer';
+import { generatePrintHTML } from '@/lib/pdfTemplate';
 
 interface TokenRow {
   id: string;
@@ -248,32 +249,15 @@ const Admin = () => {
                       <>
                         <Button size="sm" variant="ghost" onClick={() => setSelectedToken(t)}>👁️ צפה</Button>
                         <Button size="sm" variant="ghost" onClick={() => {
-                          const viewer = document.getElementById('response-viewer-content');
-                          // Temporarily render the viewer for printing
                           setSelectedToken(t);
                           setTimeout(() => {
                             const content = document.getElementById('response-viewer-content');
                             if (!content) return;
                             const win = window.open('', '_blank');
                             if (!win) return;
-                            win.document.write(`
-                              <html dir="rtl"><head><title>תוצאות - ${t.username}</title>
-                              <style>
-                                body { font-family: 'Heebo', sans-serif; padding: 24px; direction: rtl; color: #1a1a1a; }
-                                h3 { font-size: 16px; font-weight: bold; border-bottom: 1px solid #ddd; padding-bottom: 4px; margin-bottom: 12px; }
-                                .score-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-                                .score-label { font-size: 13px; width: 140px; text-align: right; }
-                                .bar-bg { flex: 1; background: #eee; border-radius: 8px; height: 14px; overflow: hidden; }
-                                .bar-fill { background: #6366f1; height: 100%; border-radius: 8px; }
-                                .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; background: #f0f0f0; margin: 2px; }
-                                .section { margin-bottom: 24px; }
-                              </style></head><body>
-                              <h2>תוצאות: ${t.username}</h2>
-                              ${content.innerHTML}
-                              </body></html>
-                            `);
+                            win.document.write(generatePrintHTML(t.username, content.innerHTML));
                             win.document.close();
-                            setTimeout(() => { win.print(); }, 300);
+                            setTimeout(() => { win.print(); }, 400);
                           }, 200);
                         }}>📄 PDF</Button>
                       </>

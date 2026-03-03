@@ -1,3 +1,4 @@
+import { generatePrintHTML } from '@/lib/pdfTemplate';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
@@ -113,27 +114,9 @@ const ResponseViewer = ({ username, responseData, onClose }: ResponseViewerProps
               if (!printContent) return;
               const win = window.open('', '_blank');
               if (!win) return;
-              win.document.write(`
-                <html dir="rtl"><head><title>תוצאות - ${username}</title>
-                <style>
-                  body { font-family: 'Heebo', sans-serif; padding: 24px; direction: rtl; color: #1a1a1a; }
-                  h3 { font-size: 16px; font-weight: bold; border-bottom: 1px solid #ddd; padding-bottom: 4px; margin-bottom: 12px; }
-                  .score-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-                  .score-label { font-size: 13px; width: 140px; text-align: right; }
-                  .bar-bg { flex: 1; background: #eee; border-radius: 8px; height: 14px; overflow: hidden; }
-                  .bar-fill { background: #6366f1; height: 100%; border-radius: 8px; }
-                  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; background: #f0f0f0; margin: 2px; }
-                  .section { margin-bottom: 24px; }
-                  .chat-msg { padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; }
-                  .chat-user { background: #f0f4ff; margin-left: 40px; }
-                  .chat-assistant { background: #f5f5f5; margin-right: 40px; }
-                </style></head><body>
-                <h2>תוצאות: ${username}</h2>
-                ${printContent.innerHTML}
-                </body></html>
-              `);
+              win.document.write(generatePrintHTML(username, printContent.innerHTML));
               win.document.close();
-              setTimeout(() => { win.print(); }, 300);
+              setTimeout(() => { win.print(); }, 400);
             }}>
               📄 PDF
             </Button>
