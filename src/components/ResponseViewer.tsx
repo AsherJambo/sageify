@@ -1,3 +1,4 @@
+import { generatePrintHTML } from '@/lib/pdfTemplate';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';

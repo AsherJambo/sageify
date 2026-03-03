@@ -5,6 +5,7 @@ import { cloudClient } from '@/lib/cloudClient';
 import owlLogo from '@/assets/owl-logo.png';
 import { toast } from 'sonner';
 import ResponseViewer from '@/components/ResponseViewer';
+import { generatePrintHTML } from '@/lib/pdfTemplate';
 
 interface TokenRow {
   id: string;
