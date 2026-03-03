@@ -80,7 +80,11 @@ export function generatePrintHTML(username: string, bodyContent: string): string
     .header .date {
       font-size: 11px;
       color: #94a3b8;
-      margin-top: 24px;
+      margin-top: 6px;
+    }
+
+    .header {
+      padding-bottom: 32px;
     }
 
     /* ── Sections ── */
