@@ -1,4 +1,4 @@
-export function generatePrintHTML(username: string, bodyContent: string): string {
+export function generatePrintHTML(username: string, bodyContent: string, idNumber?: string | null): string {
   const date = new Date().toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return `<!DOCTYPE html>
