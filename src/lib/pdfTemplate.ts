@@ -46,8 +46,8 @@ export function generatePrintHTML(username: string, bodyContent: string): string
     /* ── Header ── */
     .header {
       text-align: center;
-      margin-bottom: 24px;
-      padding-bottom: 18px;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
       border-bottom: 2px solid #1e3a5f;
       position: relative;
     }
@@ -59,7 +59,7 @@ export function generatePrintHTML(username: string, bodyContent: string): string
       bottom: -18px;
       left: 50%;
       transform: translateX(-50%);
-      background: #f8f6f0;
+      background: linear-gradient(135deg, #fefefe 0%, #f8f6f0 100%);
       padding: 0 12px;
     }
 
@@ -80,7 +80,8 @@ export function generatePrintHTML(username: string, bodyContent: string): string
     .header .date {
       font-size: 11px;
       color: #94a3b8;
-      margin-top: 24px;
+      margin-top: 4px;
+      margin-bottom: 8px;
     }
 
     /* ── Sections ── */
@@ -272,8 +273,8 @@ export function generatePrintHTML(username: string, bodyContent: string): string
   <div class="page-frame">
     <div class="header">
       <h1>פרופיל אישי – ${username}</h1>
-      <div class="subtitle">✦ מפת חוזקות וכיוון מקצועי ✦</div>
       <div class="date">${date}</div>
+      <div class="subtitle">✦ מפת חוזקות וכיוון מקצועי ✦</div>
     </div>
     ${bodyContent}
     <div class="footer-brand">
