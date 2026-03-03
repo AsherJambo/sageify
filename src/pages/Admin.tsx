@@ -272,7 +272,7 @@ const Admin = () => {
               </tr>
             ))}
             {tokens.length === 0 && (
-              <tr><td colSpan={4} className="p-8 text-center text-muted-foreground">אין קישורים עדיין. צרו את הראשון!</td></tr>
+              <tr><td colSpan={5} className="p-8 text-center text-muted-foreground">אין קישורים עדיין. צרו את הראשון!</td></tr>
             )}
           </tbody>
         </table>
