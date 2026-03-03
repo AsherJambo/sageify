@@ -51,6 +51,7 @@ export type Database = {
           completed_at: string | null
           created_at: string
           id: string
+          id_number: string | null
           token: string
           used: boolean
           username: string
@@ -59,6 +60,7 @@ export type Database = {
           completed_at?: string | null
           created_at?: string
           id?: string
+          id_number?: string | null
           token?: string
           used?: boolean
           username: string
@@ -67,6 +69,7 @@ export type Database = {
           completed_at?: string | null
           created_at?: string
           id?: string
+          id_number?: string | null
           token?: string
           used?: boolean
           username?: string

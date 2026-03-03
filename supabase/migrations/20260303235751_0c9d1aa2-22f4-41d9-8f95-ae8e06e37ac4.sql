@@ -1,0 +1,1 @@
+ALTER TABLE public.questionnaire_tokens ADD COLUMN id_number text;
