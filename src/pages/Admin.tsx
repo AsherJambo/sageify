@@ -233,6 +233,7 @@ const Admin = () => {
             {tokens.map(t => (
               <tr key={t.id} className="border-t border-border hover:bg-muted/30">
                 <td className="p-3 font-medium">{t.username}</td>
+                <td className="p-3 text-muted-foreground">{t.id_number || '—'}</td>
                 <td className="p-3">
                   <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
                     t.completed_at
