@@ -223,6 +223,7 @@ const Admin = () => {
           <thead className="bg-muted/50">
             <tr>
               <th className="p-3 text-right font-semibold">שם</th>
+              <th className="p-3 text-right font-semibold">ת.ז</th>
               <th className="p-3 text-right font-semibold">סטטוס</th>
               <th className="p-3 text-right font-semibold">תאריך</th>
               <th className="p-3 text-right font-semibold">פעולות</th>
