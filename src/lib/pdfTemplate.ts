@@ -273,6 +273,7 @@ export function generatePrintHTML(username: string, bodyContent: string, idNumbe
   <div class="page-frame">
     <div class="header">
       <h1>פרופיל אישי – ${username}</h1>
+      ${idNumber ? `<div class="id-number">ת.ז: ${idNumber}</div>` : ''}
       <div class="date">${date}</div>
       <div class="subtitle">✦ מפת חוזקות וכיוון מקצועי ✦</div>
     </div>
