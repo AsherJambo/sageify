@@ -113,7 +113,7 @@ const ResultsDashboard = ({
       parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.description}`);
     });
     return parts.join('\n');
-  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, recommendations]);
+  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, staticRecommendations]);
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8">
