@@ -59,7 +59,7 @@ export function generatePrintHTML(username: string, bodyContent: string): string
       bottom: -18px;
       left: 50%;
       transform: translateX(-50%);
-      background: #f8f6f0;
+      background: linear-gradient(135deg, #fefefe 0%, #f8f6f0 100%);
       padding: 0 12px;
     }
 
