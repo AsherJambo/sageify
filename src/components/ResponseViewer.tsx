@@ -268,6 +268,7 @@ const ResponseViewer = ({ username, responseData, onClose }: ResponseViewerProps
         <div className="text-xs text-muted-foreground mt-4 pt-3 border-t border-border">
           שלב נוכחי: <Badge variant="muted">{data.step || 'לא ידוע'}</Badge>
         </div>
+        </div>
       </div>
     </div>
   );
