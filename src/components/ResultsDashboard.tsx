@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import ReactMarkdown from 'react-markdown';
 import owlLogo from '@/assets/owl-logo.png';
 import { getTopCategories } from '@/lib/scoring';
 import { owlCelebrations } from '@/lib/owlMessages';
