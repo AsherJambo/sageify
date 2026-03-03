@@ -253,7 +253,6 @@ const Admin = () => {
                           setTimeout(() => {
                             const content = document.getElementById('response-viewer-content');
                             if (!content) return;
-                            const { generatePrintHTML } = require('@/lib/pdfTemplate');
                             const win = window.open('', '_blank');
                             if (!win) return;
                             win.document.write(generatePrintHTML(t.username, content.innerHTML));
