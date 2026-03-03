@@ -12,8 +12,7 @@ const StarRating = ({ value, onChange, max = 5 }: StarRatingProps) => {
 
   return (
     <div className="flex flex-col items-center gap-1">
-      <div className="flex gap-1 sm:gap-2 justify-center items-center" dir="ltr">
-        <span className="text-[10px] sm:text-xs text-muted-foreground/60 shrink-0">לא</span>
+      <div className="flex gap-1 justify-center items-center" dir="ltr">
         {Array.from({ length: max }, (_, i) => i + 1).map((star) => (
           <button
             key={star}
@@ -33,7 +32,10 @@ const StarRating = ({ value, onChange, max = 5 }: StarRatingProps) => {
             />
           </button>
         ))}
-        <span className="text-[10px] sm:text-xs text-muted-foreground/60 shrink-0">מאוד</span>
+      </div>
+      <div className="flex justify-between w-full max-w-[180px]" dir="rtl">
+        <span className="text-[11px] text-muted-foreground/60">מתאים מאוד</span>
+        <span className="text-[11px] text-muted-foreground/60">לא מתאים</span>
       </div>
     </div>
   );
