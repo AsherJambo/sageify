@@ -31,7 +31,26 @@ const ResultsDashboard = ({
   const topVIA = getTopCategories(viaScores, 2);
   const topSchein = getTopCategories(scheinScores, 2);
 
-  const recommendations = getRecommendations(viaScores, scheinScores);
+  // Extract AI-based recommendations from chat messages
+  const aiRecommendations = useMemo(() => {
+    if (!chatMessages || chatMessages.length === 0) return null;
+    
+    // Find the last substantial assistant message (likely contains the roadmap)
+    const assistantMessages = chatMessages
+      .filter(m => m.role === 'assistant' && m.content.length > 100)
+      .reverse();
+    
+    if (assistantMessages.length === 0) return null;
+    
+    // Combine all assistant messages for a comprehensive summary
+    return assistantMessages
+      .slice(0, 3) // Take last 3 substantial messages
+      .reverse()
+      .map(m => m.content)
+      .join('\n\n');
+  }, [chatMessages]);
+
+  const staticRecommendations = getRecommendations(viaScores, scheinScores);
 
   const [showHeader, setShowHeader] = useState(false);
   const [showNarrative, setShowNarrative] = useState(false);
