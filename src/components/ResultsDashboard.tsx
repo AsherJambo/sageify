@@ -32,23 +32,20 @@ const ResultsDashboard = ({
   const topVIA = getTopCategories(viaScores, 2);
   const topSchein = getTopCategories(scheinScores, 2);
 
-  // Extract AI-based recommendations from chat messages
+  // Extract only the Sage Action Roadmap from chat messages
   const aiRecommendations = useMemo(() => {
     if (!chatMessages || chatMessages.length === 0) return null;
     
-    // Find the last substantial assistant message (likely contains the roadmap)
-    const assistantMessages = chatMessages
-      .filter(m => m.role === 'assistant' && m.content.length > 100)
-      .reverse();
+    // Look for the roadmap marker in assistant messages
+    const roadmapMessage = chatMessages
+      .filter(m => m.role === 'assistant')
+      .find(m => m.content.includes('🗺️'));
     
-    if (assistantMessages.length === 0) return null;
+    if (!roadmapMessage) return null;
     
-    // Combine all assistant messages for a comprehensive summary
-    return assistantMessages
-      .slice(0, 3) // Take last 3 substantial messages
-      .reverse()
-      .map(m => m.content)
-      .join('\n\n');
+    // Extract content starting from the roadmap marker
+    const roadmapIndex = roadmapMessage.content.indexOf('🗺️');
+    return roadmapMessage.content.slice(roadmapIndex);
   }, [chatMessages]);
 
   const staticRecommendations = getRecommendations(viaScores, scheinScores);
