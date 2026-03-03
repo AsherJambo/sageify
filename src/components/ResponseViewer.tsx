@@ -44,7 +44,7 @@ const Badge = ({ children, variant = 'default' }: { children: React.ReactNode; v
   return <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${colors[variant]}`}>{children}</span>;
 };
 
-const ResponseViewer = ({ username, responseData, onClose }: ResponseViewerProps) => {
+const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseViewerProps) => {
   const data = responseData as {
     step?: string;
     viaAnswers?: Answers;
