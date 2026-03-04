@@ -8,6 +8,12 @@ import ResponseViewer from '@/components/ResponseViewer';
 import { generatePrintHTML } from '@/lib/pdfTemplate';
 import AIAnalysisModal from '@/components/AIAnalysisModal';
 import { Sparkles } from 'lucide-react';
+import { viaQuestions, viaCategories } from '@/data/viaQuestions';
+import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
+import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
+import { skills } from '@/data/skillsData';
+import { preferenceQuestions } from '@/data/preferencesData';
+import { calculateCategoryScores, getTopCategories, type Answers } from '@/lib/scoring';
 
 interface TokenRow {
   id: string;
@@ -134,21 +140,109 @@ const Admin = () => {
     toast.success('הקישור הועתק!');
   };
 
+  const escCSV = (val: string) => {
+    if (val.includes(',') || val.includes('"') || val.includes('\n')) {
+      return `"${val.replace(/"/g, '""')}"`;
+    }
+    return val;
+  };
+
   const exportCSV = () => {
-    const headers = ['שם משתמש', 'ת.ז', 'סטטוס', 'תאריך יצירה', 'תאריך השלמה', 'קישור'];
-    const rows = tokens.map(t => [
-      t.username,
-      t.id_number || '',
-      t.completed_at ? 'הושלם' : t.used ? 'בתהליך' : 'טרם נפתח',
-      new Date(t.created_at).toLocaleString('he-IL'),
-      t.completed_at ? new Date(t.completed_at).toLocaleString('he-IL') : '',
-      getLink(t.token),
-    ]);
-    const csv = '\uFEFF' + [headers, ...rows].map(r => r.join(',')).join('\n');
+    // Build dynamic headers
+    const viaCats = [...viaCategories];
+    const scheinCats = [...scheinCategories];
+    const hollandCats = [...hollandCategories];
+
+    const headers = [
+      'שם משתמש', 'ת.ז', 'סטטוס', 'שלב נוכחי', 'תאריך יצירה', 'תאריך השלמה',
+      ...viaCats.map(c => `VIA: ${c}`), 'Top VIA',
+      ...scheinCats.map(c => `שיין: ${c}`), 'Top שיין',
+      ...hollandCats.map(c => `הולנד: ${c}`), 'Top הולנד',
+      'כישורי מנצח', 'כישורי שחיקה',
+      'שיקולים (מדורגים)',
+      ...preferenceQuestions.map(q => q.title),
+      'מגירת חלומות',
+      'שיחת ייעוץ',
+      'קישור',
+    ];
+
+    const rows = tokens.map(t => {
+      const raw = (Array.isArray(t.questionnaire_responses)
+        ? t.questionnaire_responses[0]?.response_data
+        : t.questionnaire_responses?.response_data) as Record<string, any> || {};
+
+      // VIA
+      const viaAnswers = raw.finalViaAnswers || raw.viaAnswers || {};
+      const viaScores = calculateCategoryScores(viaAnswers, viaQuestions, viaCategories);
+      const topVia = getTopCategories(viaScores, 3).map(x => x.category).join(' / ');
+
+      // Schein
+      const scheinAnswers = raw.finalScheinAnswers || raw.scheinAnswers || {};
+      const scheinScores = calculateCategoryScores(scheinAnswers, scheinQuestions, scheinCategories);
+      const topSchein = getTopCategories(scheinScores, 3).map(x => x.category).join(' / ');
+
+      // Holland
+      const hollandAnswers = raw.hollandAnswers || {};
+      const hScores: Record<string, number> = {};
+      hollandCats.forEach(c => { hScores[c] = 0; });
+      Object.entries(hollandAnswers).forEach(([id, val]) => {
+        if (val) {
+          const q = hollandQuestions.find(q => q.id === Number(id));
+          if (q) hScores[q.category] = (hScores[q.category] || 0) + 1;
+        }
+      });
+      const topHolland = Object.entries(hScores).sort(([,a],[,b]) => (b as number) - (a as number)).slice(0, 3).map(([c]) => c).join(' / ');
+
+      // Skills
+      const sa = raw.skillsAssignments || {};
+      const winnerSkills = Object.entries(sa).filter(([, col]) => col === 'winner').map(([id]) => skills.find(s => s.id === Number(id))?.text).filter(Boolean).join(' | ');
+      const burnoutSkills = Object.entries(sa).filter(([, col]) => col === 'burnout').map(([id]) => skills.find(s => s.id === Number(id))?.text).filter(Boolean).join(' | ');
+
+      // Considerations
+      const cons = raw.considerationsData as { selected: string[]; points: Record<string, number> } | undefined;
+      const consText = cons?.selected
+        ? cons.selected.sort((a, b) => (cons.points[b] || 0) - (cons.points[a] || 0)).map(item => `${item} (${cons.points[item] || 0})`).join(' | ')
+        : '';
+
+      // Preferences
+      const prefs = raw.preferencesData as { preferences: Record<string, string[]>; dream: string } | undefined;
+      const prefCols = preferenceQuestions.map(q => (prefs?.preferences?.[q.id] || []).join(' | '));
+      const dream = prefs?.dream || '';
+
+      // Chat
+      const chatMessages = raw.chatMessages as { role: string; content: string }[] | undefined;
+      const chatText = chatMessages
+        ? chatMessages.map(m => `${m.role === 'user' ? 'משתמש' : 'יועץ'}: ${m.content}`).join(' || ')
+        : '';
+
+      return [
+        t.username,
+        t.id_number || '',
+        t.completed_at ? 'הושלם' : t.used ? 'בתהליך' : 'טרם נפתח',
+        raw.step || '',
+        new Date(t.created_at).toLocaleString('he-IL'),
+        t.completed_at ? new Date(t.completed_at).toLocaleString('he-IL') : '',
+        ...viaCats.map(c => (viaScores[c] || 0).toFixed(1)),
+        topVia,
+        ...scheinCats.map(c => (scheinScores[c] || 0).toFixed(1)),
+        topSchein,
+        ...hollandCats.map(c => String(hScores[c] || 0)),
+        topHolland,
+        winnerSkills,
+        burnoutSkills,
+        consText,
+        ...prefCols,
+        dream,
+        chatText,
+        getLink(t.token),
+      ].map(v => escCSV(String(v)));
+    });
+
+    const csv = '\uFEFF' + [headers.map(h => escCSV(h)), ...rows].map(r => r.join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `sageify-tokens-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `sageify-full-export-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
   };
 
