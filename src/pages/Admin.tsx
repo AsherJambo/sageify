@@ -8,6 +8,7 @@ import ResponseViewer from '@/components/ResponseViewer';
 import { generatePrintHTML } from '@/lib/pdfTemplate';
 import AIAnalysisModal from '@/components/AIAnalysisModal';
 import { Sparkles } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
