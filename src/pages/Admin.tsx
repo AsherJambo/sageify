@@ -37,7 +37,30 @@ const Admin = () => {
   const [loading, setLoading] = useState(false);
   const [selectedToken, setSelectedToken] = useState<TokenRow | null>(null);
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [filterDateFrom, setFilterDateFrom] = useState('');
+  const [filterDateTo, setFilterDateTo] = useState('');
   const supabase = cloudClient;
+
+  const filteredTokens = useMemo(() => {
+    return tokens.filter(t => {
+      // Status filter
+      if (filterStatus !== 'all') {
+        if (filterStatus === 'completed' && !t.completed_at) return false;
+        if (filterStatus === 'in_progress' && (!t.used || t.completed_at)) return false;
+        if (filterStatus === 'not_started' && t.used) return false;
+      }
+      // Date filter
+      const created = new Date(t.created_at);
+      if (filterDateFrom && created < new Date(filterDateFrom)) return false;
+      if (filterDateTo) {
+        const toEnd = new Date(filterDateTo);
+        toEnd.setHours(23, 59, 59, 999);
+        if (created > toEnd) return false;
+      }
+      return true;
+    });
+  }, [tokens, filterStatus, filterDateFrom, filterDateTo]);
 
   const apiCall = useCallback(async (action: string, body: Record<string, unknown> = {}): Promise<any> => {
     const { data, error } = await supabase.functions.invoke('admin', {
