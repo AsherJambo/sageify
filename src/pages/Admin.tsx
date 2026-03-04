@@ -6,6 +6,8 @@ import owlLogo from '@/assets/owl-logo.png';
 import { toast } from 'sonner';
 import ResponseViewer from '@/components/ResponseViewer';
 import { generatePrintHTML } from '@/lib/pdfTemplate';
+import AIAnalysisModal from '@/components/AIAnalysisModal';
+import { Sparkles } from 'lucide-react';
 
 interface TokenRow {
   id: string;
@@ -27,6 +29,7 @@ const Admin = () => {
   const [bulkNames, setBulkNames] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedToken, setSelectedToken] = useState<TokenRow | null>(null);
+  const [showAnalysis, setShowAnalysis] = useState(false);
   const supabase = cloudClient;
 
   const apiCall = useCallback(async (action: string, body: Record<string, unknown> = {}): Promise<any> => {
@@ -216,6 +219,10 @@ const Admin = () => {
         </Button>
         <Button variant="outline" onClick={exportCSV}>ייצוא CSV</Button>
         <Button variant="outline" onClick={exportResponses}>ייצוא תשובות (JSON)</Button>
+        <Button onClick={() => setShowAnalysis(true)} className="gap-2">
+          <Sparkles className="w-4 h-4" />
+          ניתוח דאטה אסטרטגי (AI)
+        </Button>
       </div>
 
       {/* Token list */}
@@ -288,6 +295,12 @@ const Admin = () => {
           onClose={() => setSelectedToken(null)}
         />
       )}
+
+      <AIAnalysisModal
+        open={showAnalysis}
+        onClose={() => setShowAnalysis(false)}
+        adminPassword={storedPassword}
+      />
     </div>
   );
 };
