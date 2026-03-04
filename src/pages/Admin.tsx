@@ -64,10 +64,19 @@ const Admin = () => {
         return;
       }
 
-      const response = data as { tokens?: TokenRow[] } | null;
       setStoredPassword(passwordToUse);
       setAuthenticated(true);
-      setTokens(response?.tokens || []);
+      // Load full data with responses immediately
+      const fullData = await supabase.functions.invoke('admin', {
+        headers: { 'x-admin-password': passwordToUse },
+        body: { action: 'all-responses' },
+      });
+      if (fullData.data?.data) {
+        setTokens(fullData.data.data);
+      } else {
+        const response = data as { tokens?: TokenRow[] } | null;
+        setTokens(response?.tokens || []);
+      }
     } catch {
       toast.error('שגיאת תקשורת, נסו שוב');
     }
