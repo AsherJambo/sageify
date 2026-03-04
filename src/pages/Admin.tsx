@@ -400,7 +400,7 @@ const Admin = () => {
             </tr>
           </thead>
           <tbody>
-            {tokens.map(t => (
+            {filteredTokens.map(t => (
               <tr key={t.id} className="border-t border-border hover:bg-muted/30">
                 <td className="p-3 font-medium">{t.username}</td>
                 <td className="p-3 text-muted-foreground">{t.id_number || '—'}</td>
