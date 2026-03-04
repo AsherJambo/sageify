@@ -191,7 +191,7 @@ const Admin = () => {
       'קישור',
     ];
 
-    const rows = tokens.map(t => {
+    const rows = exportData.map(t => {
       const raw = (Array.isArray(t.questionnaire_responses)
         ? t.questionnaire_responses[0]?.response_data
         : t.questionnaire_responses?.response_data) as Record<string, any> || {};
