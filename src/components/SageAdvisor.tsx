@@ -28,7 +28,7 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://mxyyirizhnwkm
 const CHAT_URL = `${SUPABASE_URL}/functions/v1/owl-chat`;
 
 const SageAdvisor = ({
-  username,
+  username, tokenId,
   viaScores, scheinScores, hollandScores,
   considerationsData, skillsAssignments, preferencesData,
   initialMessages, onMessagesChange, onRoadmapReady, onFinish,
