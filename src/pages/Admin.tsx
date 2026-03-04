@@ -171,7 +171,8 @@ const Admin = () => {
     return val;
   };
 
-  const exportCSV = () => {
+  const exportCSV = (useFiltered = true) => {
+    const exportData = useFiltered ? filteredTokens : tokens;
     // Build dynamic headers
     const viaCats = [...viaCategories];
     const scheinCats = [...scheinCategories];
