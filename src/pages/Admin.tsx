@@ -8,6 +8,12 @@ import ResponseViewer from '@/components/ResponseViewer';
 import { generatePrintHTML } from '@/lib/pdfTemplate';
 import AIAnalysisModal from '@/components/AIAnalysisModal';
 import { Sparkles } from 'lucide-react';
+import { viaQuestions, viaCategories } from '@/data/viaQuestions';
+import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
+import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
+import { skills } from '@/data/skillsData';
+import { preferenceQuestions } from '@/data/preferencesData';
+import { calculateCategoryScores, getTopCategories, type Answers } from '@/lib/scoring';
 
 interface TokenRow {
   id: string;
