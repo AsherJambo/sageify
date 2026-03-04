@@ -6,6 +6,8 @@ import owlLogo from '@/assets/owl-logo.png';
 import { toast } from 'sonner';
 import ResponseViewer from '@/components/ResponseViewer';
 import { generatePrintHTML } from '@/lib/pdfTemplate';
+import AIAnalysisModal from '@/components/AIAnalysisModal';
+import { Sparkles } from 'lucide-react';
 
 interface TokenRow {
   id: string;
