@@ -340,17 +340,51 @@ const Admin = () => {
         <Button onClick={createBulk} disabled={loading}>צור קישורים</Button>
       </div>
 
-      {/* Actions */}
-      <div className="flex gap-3 mb-6 flex-wrap">
-        <Button variant="outline" onClick={loadTokens} disabled={loading}>
-          {loading ? 'טוען...' : 'רענן רשימה'}
-        </Button>
-        <Button variant="outline" onClick={exportCSV}>ייצוא CSV</Button>
-        <Button variant="outline" onClick={exportResponses}>ייצוא תשובות (JSON)</Button>
-        <Button onClick={() => setShowAnalysis(true)} className="gap-2">
-          <Sparkles className="w-4 h-4" />
-          ניתוח דאטה אסטרטגי (AI)
-        </Button>
+      {/* Filters & Actions */}
+      <div className="bg-card border border-border rounded-xl p-5 mb-6">
+        <h2 className="font-semibold text-lg mb-3">סינון וייצוא</h2>
+        <div className="flex gap-3 mb-4 flex-wrap items-end">
+          <div className="space-y-1">
+            <label className="text-xs text-muted-foreground">סטטוס</label>
+            <Select value={filterStatus} onValueChange={setFilterStatus}>
+              <SelectTrigger className="w-[160px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">הכל</SelectItem>
+                <SelectItem value="completed">הושלם</SelectItem>
+                <SelectItem value="in_progress">בתהליך</SelectItem>
+                <SelectItem value="not_started">טרם נפתח</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs text-muted-foreground">מתאריך</label>
+            <Input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="w-[160px]" />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs text-muted-foreground">עד תאריך</label>
+            <Input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="w-[160px]" />
+          </div>
+          {(filterStatus !== 'all' || filterDateFrom || filterDateTo) && (
+            <Button variant="ghost" size="sm" onClick={() => { setFilterStatus('all'); setFilterDateFrom(''); setFilterDateTo(''); }}>
+              נקה סינון
+            </Button>
+          )}
+        </div>
+        <div className="flex gap-3 flex-wrap">
+          <Button variant="outline" onClick={loadTokens} disabled={loading}>
+            {loading ? 'טוען...' : 'רענן רשימה'}
+          </Button>
+          <Button variant="outline" onClick={() => exportCSV(true)}>
+            ייצוא CSV {filteredTokens.length !== tokens.length ? `(${filteredTokens.length})` : ''}
+          </Button>
+          <Button variant="outline" onClick={exportResponses}>ייצוא תשובות (JSON)</Button>
+          <Button onClick={() => setShowAnalysis(true)} className="gap-2">
+            <Sparkles className="w-4 h-4" />
+            ניתוח דאטה אסטרטגי (AI)
+          </Button>
+        </div>
       </div>
 
       {/* Token list */}
