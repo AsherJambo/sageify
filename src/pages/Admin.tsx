@@ -295,6 +295,12 @@ const Admin = () => {
           onClose={() => setSelectedToken(null)}
         />
       )}
+
+      <AIAnalysisModal
+        open={showAnalysis}
+        onClose={() => setShowAnalysis(false)}
+        adminPassword={storedPassword}
+      />
     </div>
   );
 };
