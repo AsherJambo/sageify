@@ -320,6 +320,7 @@ const QuestionnaireByToken = () => {
           {ProgressBar}
           <SageAdvisor
             username={tokenRow?.username}
+            tokenId={tokenRow?.id}
             viaScores={viaScores}
             scheinScores={scheinScores}
             hollandScores={hollandScores}

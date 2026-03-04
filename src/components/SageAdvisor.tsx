@@ -11,6 +11,7 @@ import { skills } from '@/data/skillsData';
 
 interface SageAdvisorProps {
   username?: string;
+  tokenId?: string;
   viaScores: Record<string, number>;
   scheinScores: Record<string, number>;
   hollandScores?: Record<string, number>;
@@ -27,7 +28,7 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://mxyyirizhnwkm
 const CHAT_URL = `${SUPABASE_URL}/functions/v1/owl-chat`;
 
 const SageAdvisor = ({
-  username,
+  username, tokenId,
   viaScores, scheinScores, hollandScores,
   considerationsData, skillsAssignments, preferencesData,
   initialMessages, onMessagesChange, onRoadmapReady, onFinish,
@@ -121,7 +122,7 @@ const SageAdvisor = ({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14eXlpcml6aG53a212Y2JueXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMjI4MjUsImV4cCI6MjA4NzY5ODgyNX0.pEstDk6163sy5MC2JuhcvW7A1a8KCEjrkw5ZJ1-40TQ'}`,
       },
-      body: JSON.stringify({ messages: allMessages, profileSummary }),
+      body: JSON.stringify({ messages: allMessages, profileSummary, tokenId }),
     });
 
     if (!resp.ok || !resp.body) {
