@@ -11,6 +11,7 @@ import { skills } from '@/data/skillsData';
 
 interface SageAdvisorProps {
   username?: string;
+  tokenId?: string;
   viaScores: Record<string, number>;
   scheinScores: Record<string, number>;
   hollandScores?: Record<string, number>;
