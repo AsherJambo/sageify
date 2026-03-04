@@ -219,6 +219,10 @@ const Admin = () => {
         </Button>
         <Button variant="outline" onClick={exportCSV}>ייצוא CSV</Button>
         <Button variant="outline" onClick={exportResponses}>ייצוא תשובות (JSON)</Button>
+        <Button onClick={() => setShowAnalysis(true)} className="gap-2">
+          <Sparkles className="w-4 h-4" />
+          ניתוח דאטה אסטרטגי (AI)
+        </Button>
       </div>
 
       {/* Token list */}
