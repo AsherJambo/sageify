@@ -27,16 +27,16 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Fetch all completed tokens with responses
+    // Fetch ALL tokens with responses (both in-progress and completed)
     const { data: tokens, error } = await supabase
       .from("questionnaire_tokens")
       .select("*, questionnaire_responses(response_data)")
-      .not("completed_at", "is", null);
+      .eq("used", true);
 
     if (error) throw error;
 
     if (!tokens || tokens.length === 0) {
-      return new Response(JSON.stringify({ error: "אין נתונים מספיקים לניתוח. נדרשים שאלונים שהושלמו." }), {
+      return new Response(JSON.stringify({ error: "אין נתונים מספיקים לניתוח. נדרשים משתמשים שהתחילו את השאלון." }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -47,52 +47,40 @@ Deno.serve(async (req) => {
       const resp = Array.isArray(t.questionnaire_responses)
         ? t.questionnaire_responses[0]?.response_data
         : t.questionnaire_responses?.response_data;
-      if (!resp) return null;
 
       return {
         username: t.username,
-        viaScores: resp.viaScores,
-        scheinScores: resp.scheinScores,
-        hollandScores: resp.hollandScores,
-        skillsAssignment: resp.skillsAssignment,
-        considerations: resp.considerations,
-        preferences: resp.preferences,
-        bonusSelections: resp.bonusSelections,
-        chatMessages: resp.chatMessages ? `${(resp.chatMessages as any[]).length} messages` : "none",
+        status: t.completed_at ? "completed" : "in_progress",
+        viaScores: resp?.viaScores || null,
+        scheinScores: resp?.scheinScores || null,
+        hollandScores: resp?.hollandScores || null,
+        skillsAssignment: resp?.skillsAssignment || null,
+        considerations: resp?.considerations || null,
+        preferences: resp?.preferences || null,
+        bonusSelections: resp?.bonusSelections || null,
+        chatMessages: resp?.chatMessages || null,
       };
-    }).filter(Boolean);
+    });
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
-    const systemPrompt = `אתה אנליסט דאטה אסטרטגי מומחה בתחום פיתוח קריירה וניהול כוח אדם.
-קיבלת נתוני אבחון קריירה של ${summaries.length} משתתפים. כל משתתף עבר שאלוני VIA (ערכים), Schein (עוגנים תעסוקתיים), Holland (סביבות עבודה), מיומנויות, שיקולים והעדפות.
+    const systemPrompt = `אתה אנליסט דאטה אסטרטגי מומחה. ענה תמיד בעברית.
 
-נתח את הדאטה וצור דוח אסטרטגי מקיף בעברית הכולל:
+קיבלת נתוני מסעות פרישה/קריירה של ${summaries.length} משתתפים. כל משתתף עבר שאלוני VIA (ערכים), Schein (עוגנים תעסוקתיים), Holland (סביבות עבודה), מיומנויות, שיקולים, העדפות, ושיחת ייעוץ AI.
 
-## 📊 סיכום כללי
-- מספר משתתפים, מגמות כלליות
+נתח את כלל הנתונים וצור דוח מקיף בעברית הכולל:
 
-## 🏆 חוזקות דומיננטיות
-- ערכי VIA הנפוצים ביותר בקרב כל המשתתפים
-- עוגני Schein דומיננטיים
-- טיפוסי Holland שכיחים
+## 🚧 3 המחסומים הרגשיים הנפוצים ביותר
+זהה את שלושת המחסומים הרגשיים השכיחים ביותר שעולים מהנתונים (למשל: חוסר ביטחון, פחד משינוי, תחושת חוסר מטרה וכו'). הסבר כל מחסום עם דוגמאות מהנתונים.
 
-## 🔍 תובנות מפתח
-- דפוסים מעניינים שחוזרים על עצמם
-- פערים או ניגודים בולטים
-- קורלציות בין ציונים שונים
+## 🔍 2 סוגי המשמעות המבוקשים ביותר
+זהה את שני סוגי המשמעות העיקריים שהמשתתפים מחפשים (למשל: תרומה חברתית, צמיחה אישית, הורשת ידע וכו'). הראה כיצד זה בא לידי ביטוי בציונים ובתשובות.
 
-## 💡 המלצות אסטרטגיות
-- כיצד לנצל את החוזקות הקבוצתיות
-- תחומי עיסוק מומלצים לקבוצה
-- הצעות לפיתוח מקצועי
+## 💡 המלצה אסטרטגית אחת לשיפור לוגיקת המסע
+בהתבסס על המגמות שזיהית, תן המלצה אסטרטגית אחת ומפורטת לשיפור תהליך השאלון/הייעוץ. ההמלצה צריכה להיות מעשית ומבוססת נתונים.
 
-## ⚠️ נקודות לתשומת לב
-- תחומים שדורשים חיזוק
-- סיכונים פוטנציאליים
-
-השתמש באימוג'ים, כותרות ברורות וניסוח מקצועי אך נגיש. הדוח צריך לספק ערך אמיתי למנהל/יועץ.`;
+השתמש באימוג'ים, כותרות ברורות, וניסוח מקצועי אך נגיש. הדוח צריך לספק ערך אמיתי למנהל/יועץ.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
