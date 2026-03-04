@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cloudClient } from '@/lib/cloudClient';
@@ -8,6 +8,7 @@ import ResponseViewer from '@/components/ResponseViewer';
 import { generatePrintHTML } from '@/lib/pdfTemplate';
 import AIAnalysisModal from '@/components/AIAnalysisModal';
 import { Sparkles } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
@@ -36,7 +37,30 @@ const Admin = () => {
   const [loading, setLoading] = useState(false);
   const [selectedToken, setSelectedToken] = useState<TokenRow | null>(null);
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [filterDateFrom, setFilterDateFrom] = useState('');
+  const [filterDateTo, setFilterDateTo] = useState('');
   const supabase = cloudClient;
+
+  const filteredTokens = useMemo(() => {
+    return tokens.filter(t => {
+      // Status filter
+      if (filterStatus !== 'all') {
+        if (filterStatus === 'completed' && !t.completed_at) return false;
+        if (filterStatus === 'in_progress' && (!t.used || t.completed_at)) return false;
+        if (filterStatus === 'not_started' && t.used) return false;
+      }
+      // Date filter
+      const created = new Date(t.created_at);
+      if (filterDateFrom && created < new Date(filterDateFrom)) return false;
+      if (filterDateTo) {
+        const toEnd = new Date(filterDateTo);
+        toEnd.setHours(23, 59, 59, 999);
+        if (created > toEnd) return false;
+      }
+      return true;
+    });
+  }, [tokens, filterStatus, filterDateFrom, filterDateTo]);
 
   const apiCall = useCallback(async (action: string, body: Record<string, unknown> = {}): Promise<any> => {
     const { data, error } = await supabase.functions.invoke('admin', {
@@ -147,7 +171,8 @@ const Admin = () => {
     return val;
   };
 
-  const exportCSV = () => {
+  const exportCSV = (useFiltered = true) => {
+    const exportData = useFiltered ? filteredTokens : tokens;
     // Build dynamic headers
     const viaCats = [...viaCategories];
     const scheinCats = [...scheinCategories];
@@ -166,7 +191,7 @@ const Admin = () => {
       'קישור',
     ];
 
-    const rows = tokens.map(t => {
+    const rows = exportData.map(t => {
       const raw = (Array.isArray(t.questionnaire_responses)
         ? t.questionnaire_responses[0]?.response_data
         : t.questionnaire_responses?.response_data) as Record<string, any> || {};
@@ -315,17 +340,51 @@ const Admin = () => {
         <Button onClick={createBulk} disabled={loading}>צור קישורים</Button>
       </div>
 
-      {/* Actions */}
-      <div className="flex gap-3 mb-6 flex-wrap">
-        <Button variant="outline" onClick={loadTokens} disabled={loading}>
-          {loading ? 'טוען...' : 'רענן רשימה'}
-        </Button>
-        <Button variant="outline" onClick={exportCSV}>ייצוא CSV</Button>
-        <Button variant="outline" onClick={exportResponses}>ייצוא תשובות (JSON)</Button>
-        <Button onClick={() => setShowAnalysis(true)} className="gap-2">
-          <Sparkles className="w-4 h-4" />
-          ניתוח דאטה אסטרטגי (AI)
-        </Button>
+      {/* Filters & Actions */}
+      <div className="bg-card border border-border rounded-xl p-5 mb-6">
+        <h2 className="font-semibold text-lg mb-3">סינון וייצוא</h2>
+        <div className="flex gap-3 mb-4 flex-wrap items-end">
+          <div className="space-y-1">
+            <label className="text-xs text-muted-foreground">סטטוס</label>
+            <Select value={filterStatus} onValueChange={setFilterStatus}>
+              <SelectTrigger className="w-[160px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">הכל</SelectItem>
+                <SelectItem value="completed">הושלם</SelectItem>
+                <SelectItem value="in_progress">בתהליך</SelectItem>
+                <SelectItem value="not_started">טרם נפתח</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs text-muted-foreground">מתאריך</label>
+            <Input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="w-[160px]" />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs text-muted-foreground">עד תאריך</label>
+            <Input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="w-[160px]" />
+          </div>
+          {(filterStatus !== 'all' || filterDateFrom || filterDateTo) && (
+            <Button variant="ghost" size="sm" onClick={() => { setFilterStatus('all'); setFilterDateFrom(''); setFilterDateTo(''); }}>
+              נקה סינון
+            </Button>
+          )}
+        </div>
+        <div className="flex gap-3 flex-wrap">
+          <Button variant="outline" onClick={loadTokens} disabled={loading}>
+            {loading ? 'טוען...' : 'רענן רשימה'}
+          </Button>
+          <Button variant="outline" onClick={() => exportCSV(true)}>
+            ייצוא CSV {filteredTokens.length !== tokens.length ? `(${filteredTokens.length})` : ''}
+          </Button>
+          <Button variant="outline" onClick={exportResponses}>ייצוא תשובות (JSON)</Button>
+          <Button onClick={() => setShowAnalysis(true)} className="gap-2">
+            <Sparkles className="w-4 h-4" />
+            ניתוח דאטה אסטרטגי (AI)
+          </Button>
+        </div>
       </div>
 
       {/* Token list */}
@@ -341,7 +400,7 @@ const Admin = () => {
             </tr>
           </thead>
           <tbody>
-            {tokens.map(t => (
+            {filteredTokens.map(t => (
               <tr key={t.id} className="border-t border-border hover:bg-muted/30">
                 <td className="p-3 font-medium">{t.username}</td>
                 <td className="p-3 text-muted-foreground">{t.id_number || '—'}</td>
