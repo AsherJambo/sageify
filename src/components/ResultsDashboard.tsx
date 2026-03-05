@@ -210,7 +210,8 @@ const ResultsDashboard = ({
                             {rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground leading-relaxed mb-2">{rec.description}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed mb-1">{rec.description}</p>
+                        <p className="text-xs text-accent italic">{rec.reason}</p>
                         <span className="text-xs text-accent font-medium">
                           מצאו הזדמנויות ב-{rec.platform} ←
                         </span>
