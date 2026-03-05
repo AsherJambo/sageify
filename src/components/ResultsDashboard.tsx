@@ -155,7 +155,7 @@ const ResultsDashboard = ({
             <div className="flex items-center gap-3 mb-5">
               <img src={owlLogo} alt="" className="w-10 h-10 rounded-full" />
               <div>
-                <h3 className="text-lg font-bold font-serif text-foreground">🦉 ההמלצות של הינשוף</h3>
+              <h3 className="text-lg font-bold font-serif text-foreground">ההמלצות של סגי</h3>
                 <p className="text-sm text-muted-foreground">
                   {aiRecommendations ? 'תובנות והמלצות מהשיחה עם היועץ' : 'הנה כיוונים שמתאימים בדיוק לפרופיל שלכם'}
                 </p>
