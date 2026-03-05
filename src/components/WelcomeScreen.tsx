@@ -14,10 +14,10 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
   const [showCTA, setShowCTA] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setShowGreeting(true), 300);
-    setTimeout(() => setShowIntro(true), 900);
-    setTimeout(() => setShowDetails(true), 1500);
-    setTimeout(() => setShowCTA(true), 2200);
+    setTimeout(() => setShowGreeting(true), 500);
+    setTimeout(() => setShowIntro(true), 1400);
+    setTimeout(() => setShowDetails(true), 2400);
+    setTimeout(() => setShowCTA(true), 3400);
   }, []);
 
   const journeySteps = [
