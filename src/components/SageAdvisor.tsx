@@ -8,6 +8,7 @@ import { getTopCategories } from '@/lib/scoring';
 import { getRecommendations } from '@/lib/recommendations';
 import type { SkillColumn } from '@/data/skillsData';
 import { skills } from '@/data/skillsData';
+import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
 
 interface SageAdvisorProps {
   username?: string;
@@ -103,14 +104,14 @@ const SageAdvisor = ({
     parts.push(`עוגני קריירה חלשים: ${bottomSchein.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
     if (topHolland.length > 0) parts.push(`נטיות הולנד חזקות: ${topHolland.map(([c, s]) => `${c} (${s})`).join(', ')}`);
     if (bottomHolland.length > 0) parts.push(`נטיות הולנד חלשות: ${bottomHolland.map(([c, s]) => `${c} (${s})`).join(', ')}`);
-    if (winnerSkills.length > 0) parts.push(`כישורי מנצח: ${winnerSkills.join(', ')}`);
+    if (winnerSkills.length > 0) parts.push(`כישורים מובילים: ${winnerSkills.join(', ')}`);
     if (burnoutSkills.length > 0) parts.push(`כישורי שחיקה (להימנע): ${burnoutSkills.join(', ')}`);
     if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
     if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
     // Include recommendations from the report
     parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
     recommendations.forEach((rec, i) => {
-      parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.description}`);
+      parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.reason}`);
     });
     return parts.join('\n');
   }, []);
@@ -271,26 +272,26 @@ const SageAdvisor = ({
             <div className="space-y-1">
               <p className="font-semibold text-foreground">🌟 חוזקות מובילות</p>
               {topVIA.map(t => (
-                <p key={t.category} className="text-muted-foreground">• {t.category} ({t.score.toFixed(1)})</p>
+                <p key={t.category} className="text-muted-foreground">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
               ))}
             </div>
             <div className="space-y-1">
               <p className="font-semibold text-foreground">🧭 עוגני קריירה</p>
               {topSchein.map(t => (
-                <p key={t.category} className="text-muted-foreground">• {t.category} ({t.score.toFixed(1)})</p>
+                <p key={t.category} className="text-muted-foreground">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
               ))}
             </div>
             {topHolland.length > 0 && (
               <div className="space-y-1">
                 <p className="font-semibold text-foreground">🔍 נטיות הולנד</p>
-                {topHolland.map(([c, s]) => (
-                  <p key={c} className="text-muted-foreground">• {c} ({s})</p>
+                {topHolland.map(([c]) => (
+                  <p key={c} className="text-muted-foreground">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
                 ))}
               </div>
             )}
             {winnerSkills.length > 0 && (
               <div className="space-y-1">
-                <p className="font-semibold text-foreground">🏆 כישורי מנצח</p>
+                <p className="font-semibold text-foreground">🏆 כישורים מובילים</p>
                 {winnerSkills.slice(0, 4).map((s, i) => (
                   <p key={i} className="text-muted-foreground">• {s}</p>
                 ))}
@@ -302,7 +303,7 @@ const SageAdvisor = ({
               <p className="font-semibold text-foreground mb-1">💡 הצעות עיסוק מהדו"ח</p>
               {recommendations.map((rec, i) => (
                 <p key={i} className="text-muted-foreground text-sm">
-                  {rec.icon} {rec.title} – {rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}
+                  {rec.icon} {rec.title} – {rec.reason}
                 </p>
               ))}
             </div>

@@ -7,6 +7,7 @@ import { getRecommendations, type Recommendation } from '@/lib/recommendations';
 import type { SkillColumn } from '@/data/skillsData';
 import { skills } from '@/data/skillsData';
 import OwlChat, { type ChatMessage } from '@/components/OwlChat';
+import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
 
 interface ResultsDashboardProps {
   viaScores: Record<string, number>;
@@ -102,13 +103,13 @@ const ResultsDashboard = ({
     parts.push(`חוזקות VIA מובילות: ${topVIA.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
     parts.push(`עוגני קריירה מובילים: ${topSchein.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
     if (topHolland.length > 0) parts.push(`נטיות הולנד מובילות: ${topHolland.map(([c, s]) => `${c} (${s})`).join(', ')}`);
-    if (winnerSkills.length > 0) parts.push(`כישורי מנצח: ${winnerSkills.join(', ')}`);
+    if (winnerSkills.length > 0) parts.push(`כישורים מובילים: ${winnerSkills.join(', ')}`);
     if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
     if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
     // Sync recommendations from report
     parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
     staticRecommendations.forEach((rec, i) => {
-      parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.description}`);
+      parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.reason}`);
     });
     return parts.join('\n');
   }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, staticRecommendations]);
@@ -148,7 +149,7 @@ const ResultsDashboard = ({
                 <span className="w-8 h-8 rounded-full bg-accent/15 text-accent flex items-center justify-center font-bold text-lg">{i + 1}</span>
                 <div className="flex-1">
                   <p className="font-semibold text-foreground">{item.category}</p>
-                  <p className="text-sm text-muted-foreground">ציון: {item.score.toFixed(1)}</p>
+                  <p className="text-sm text-muted-foreground">{viaCategoryDescriptions[item.category] || ''}</p>
                 </div>
               </div>
             ))}
@@ -161,7 +162,7 @@ const ResultsDashboard = ({
                 <span className="w-8 h-8 rounded-full bg-secondary/15 text-secondary flex items-center justify-center font-bold text-lg">{i + 1}</span>
                 <div className="flex-1">
                   <p className="font-semibold text-foreground">{item.category}</p>
-                  <p className="text-sm text-muted-foreground">ציון: {item.score.toFixed(1)}</p>
+                  <p className="text-sm text-muted-foreground">{scheinCategoryDescriptions[item.category] || ''}</p>
                 </div>
               </div>
             ))}
@@ -176,7 +177,7 @@ const ResultsDashboard = ({
               <div>
                 <h3 className="text-lg font-bold text-foreground">🦉 ההמלצות של הינשוף</h3>
                 <p className="text-sm text-muted-foreground">
-                  {aiRecommendations ? 'תובנות והמלצות מהשיחה עם היועץ' : 'הנה 3 כיוונים שמתאימים בדיוק לפרופיל שלכם'}
+                  {aiRecommendations ? 'תובנות והמלצות מהשיחה עם היועץ' : 'הנה כיוונים שמתאימים בדיוק לפרופיל שלכם'}
                 </p>
               </div>
             </div>
@@ -209,7 +210,8 @@ const ResultsDashboard = ({
                             {rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground leading-relaxed mb-2">{rec.description}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed mb-1">{rec.description}</p>
+                        <p className="text-xs text-accent italic">{rec.reason}</p>
                         <span className="text-xs text-accent font-medium">
                           מצאו הזדמנויות ב-{rec.platform} ←
                         </span>
@@ -316,7 +318,7 @@ const ResultsDashboard = ({
           {/* Winner Skills */}
           {winnerSkills.length > 0 && (
             <div className="bg-card rounded-2xl p-6 border border-border">
-              <h3 className="text-lg font-bold text-foreground mb-4">🏆 ארגז הכלים המנצח</h3>
+              <h3 className="text-lg font-bold text-foreground mb-4">🏆 כישורים מובילים</h3>
               <div className="space-y-2">
                 {winnerSkills.map((skill, i) => (
                   <div key={i} className="flex items-center gap-3 bg-background rounded-xl px-4 py-3 border border-border">
