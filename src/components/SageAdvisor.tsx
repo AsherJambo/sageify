@@ -348,16 +348,16 @@ const SageAdvisor = ({
 
         {/* Roadmap detected → finish */}
         {roadmapDetected && !isStreaming && (
-          <div className="bg-card rounded-2xl border-2 border-secondary/30 p-8 shadow-lg text-center space-y-4">
-            <div className="w-16 h-16 mx-auto rounded-full bg-secondary/10 flex items-center justify-center text-3xl">✅</div>
-            <h3 className="text-xl font-bold font-serif text-foreground">מפת הדרכים שלך מוכנה!</h3>
+          <div className="bg-card rounded-3xl border border-secondary/20 p-10 shadow-[var(--shadow-elevated)] text-center space-y-5">
+            <div className="w-16 h-16 mx-auto rounded-full bg-secondary/8 flex items-center justify-center text-3xl">✓</div>
+            <h3 className="text-xl font-bold font-display text-foreground tracking-wide">מפת הדרכים שלך מוכנה</h3>
             <p className="text-muted-foreground text-sm">כל התובנות וההמלצות מחכות לך בסיכום</p>
             <Button
               onClick={() => {
                 setPhase('done');
                 onFinish?.();
               }}
-              className="w-full max-w-sm mx-auto py-6 text-lg bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl shadow-md"
+              className="w-full max-w-sm mx-auto py-6 text-lg bg-primary text-primary-foreground hover:bg-primary/85 rounded-2xl shadow-[var(--shadow-elevated)] font-display tracking-wide"
             >
               סיום והמשך לסיכום
             </Button>
