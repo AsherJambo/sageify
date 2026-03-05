@@ -181,8 +181,8 @@ const ResultsDashboard = ({
                       <span className="text-3xl flex-shrink-0">{rec.icon}</span>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <h4 className="font-bold font-serif text-foreground group-hover:text-secondary transition-colors">{rec.title}</h4>
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                          <h4 className="font-bold font-display text-foreground group-hover:text-secondary transition-colors tracking-wide">{rec.title}</h4>
+                          <span className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${
                             rec.type === 'volunteer' ? 'bg-secondary/15 text-secondary' :
                             rec.type === 'freelance' ? 'bg-primary/15 text-primary' :
                             'bg-muted text-muted-foreground'
