@@ -149,7 +149,7 @@ const ResultsDashboard = ({
                 <span className="w-8 h-8 rounded-full bg-accent/15 text-accent flex items-center justify-center font-bold text-lg">{i + 1}</span>
                 <div className="flex-1">
                   <p className="font-semibold text-foreground">{item.category}</p>
-                  <p className="text-sm text-muted-foreground">ציון: {item.score.toFixed(1)}</p>
+                  <p className="text-sm text-muted-foreground">{viaCategoryDescriptions[item.category] || ''}</p>
                 </div>
               </div>
             ))}
@@ -162,7 +162,7 @@ const ResultsDashboard = ({
                 <span className="w-8 h-8 rounded-full bg-secondary/15 text-secondary flex items-center justify-center font-bold text-lg">{i + 1}</span>
                 <div className="flex-1">
                   <p className="font-semibold text-foreground">{item.category}</p>
-                  <p className="text-sm text-muted-foreground">ציון: {item.score.toFixed(1)}</p>
+                  <p className="text-sm text-muted-foreground">{scheinCategoryDescriptions[item.category] || ''}</p>
                 </div>
               </div>
             ))}
