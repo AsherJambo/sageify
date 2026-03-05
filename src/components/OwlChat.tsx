@@ -140,36 +140,36 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
 
   if (!isOpen) {
     return (
-      <div className="bg-card rounded-2xl p-6 border-2 border-secondary/30 shadow-lg">
+      <div className="bg-card rounded-3xl p-8 border border-secondary/15 shadow-[var(--shadow-card)]">
         <div className="flex items-center gap-4">
           <img src={owlLogo} alt="" className="w-16 h-16 rounded-full animate-float" />
           <div className="flex-1">
-            <h3 className="text-xl font-bold font-serif text-foreground mb-1">שיחה עם סגי – יועץ Sageify</h3>
+            <h3 className="text-xl font-bold font-display text-foreground mb-1 tracking-wide">שיחה עם סגי – יועץ Sageify</h3>
             <p className="text-muted-foreground">
-              רוצים להפוך את התוצאות לתכנית עבודה? סגי כאן כדי לעזור לכם לבנות את הצעד הבא – בשיחה פתוחה ואישית.
+              רוצים להפוך את התוצאות לתכנית עבודה? סגי כאן כדי לעזור לכם לבנות את הצעד הבא.
             </p>
           </div>
         </div>
         <Button
           onClick={startChat}
-          className="w-full mt-4 text-lg py-6 bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl font-serif"
+          className="w-full mt-5 text-lg py-6 bg-primary text-primary-foreground hover:bg-primary/85 rounded-2xl font-display tracking-wide shadow-[var(--shadow-elevated)]"
         >
-          {hasStarted ? 'חזרה לשיחה' : 'בואו נדבר!'}
+          {hasStarted ? 'חזרה לשיחה' : 'בואו נדבר'}
         </Button>
       </div>
     );
   }
 
   return (
-    <div className="bg-card rounded-2xl border-2 border-secondary/30 shadow-lg overflow-hidden">
+    <div className="bg-card rounded-3xl border border-secondary/15 shadow-[var(--shadow-card)] overflow-hidden">
       {/* Header */}
-      <div className="bg-primary/5 px-5 py-3 flex items-center gap-3 border-b border-border">
+      <div className="bg-primary/3 px-6 py-4 flex items-center gap-4 border-b border-border/60">
         <img src={owlLogo} alt="" className="w-10 h-10 rounded-full" />
         <div className="flex-1">
-          <h3 className="font-bold font-serif text-foreground">סגי – יועץ Sageify</h3>
+          <h3 className="font-bold font-display text-foreground tracking-wide">סגי – יועץ Sageify</h3>
           <p className="text-xs text-muted-foreground">יועץ קריירה AI אישי</p>
         </div>
-        <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
+        <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} className="text-muted-foreground">
           ▾ מזער
         </Button>
       </div>
@@ -213,21 +213,21 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
       </div>
 
       {/* Input */}
-      <div className="border-t border-border p-3 flex gap-2" dir="rtl">
+      <div className="border-t border-border/60 p-4 flex gap-3" dir="rtl">
         <Textarea
           ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="כתבו הודעה לסגי..."
-          className="resize-none min-h-[44px] max-h-[120px] rounded-xl"
+          className="resize-none min-h-[44px] max-h-[120px] rounded-2xl border-border/60"
           rows={1}
           disabled={isLoading}
         />
         <Button
           onClick={sendMessage}
           disabled={!input.trim() || isLoading}
-          className="px-4 self-end bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl"
+          className="px-5 self-end bg-primary text-primary-foreground hover:bg-primary/85 rounded-2xl"
         >
           שלח
         </Button>

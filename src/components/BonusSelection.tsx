@@ -29,23 +29,23 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
     : '🌟 שלוש בחירות מושלמות! סגי מאשר';
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
-      <div className="w-full max-w-2xl space-y-6">
+    <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <div className="w-full max-w-2xl space-y-8">
         <div className="text-center space-y-3">
-          <div className="inline-block px-4 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
-            ✨ כוח ה-3
+          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
+            ✦ כוח ה-3
           </div>
-          <h2 className="text-2xl font-bold font-serif text-foreground">{title}</h2>
+          <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">{title}</h2>
           <p className="text-muted-foreground text-lg">{subtitle}</p>
         </div>
 
-        {/* Owl feedback */}
-        <div className="flex items-center gap-3 bg-card rounded-2xl p-4 border border-border shadow-md">
-          <img src={owlLogo} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
+        {/* Feedback */}
+        <div className="flex items-center gap-4 bg-card rounded-3xl p-5 border border-border/60 shadow-[var(--shadow-card)]">
+          <img src={owlLogo} alt="" className="w-12 h-12 rounded-full flex-shrink-0" />
           <div className="flex-1">
             <p className="text-foreground text-base">{feedbackMessage}</p>
           </div>
-          <span className="text-secondary font-bold text-lg">{selected.length}/3</span>
+          <span className="text-secondary font-display font-bold text-xl">{selected.length}/3</span>
         </div>
 
         <div className="space-y-3">
@@ -55,22 +55,22 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
               <button
                 key={q.id}
                 onClick={() => toggle(q.id)}
-                className={`w-full text-right p-5 rounded-xl border-2 transition-all duration-200 ${
+                className={`w-full text-right p-6 rounded-2xl border transition-all duration-300 ${
                   isSelected
-                    ? 'border-secondary bg-secondary/10 shadow-md scale-[1.01]'
-                    : 'border-border bg-card hover:border-secondary/40'
+                    ? 'border-secondary/40 bg-secondary/5 shadow-[var(--shadow-card)] scale-[1.01]'
+                    : 'border-border/60 bg-card hover:border-secondary/25 hover:shadow-[var(--shadow-card)]'
                 }`}
               >
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-4">
                   <CheckCircle
-                    size={24}
+                    size={22}
                     className={`mt-0.5 flex-shrink-0 transition-all duration-300 ${
-                      isSelected ? 'text-secondary scale-110' : 'text-muted-foreground/30'
+                      isSelected ? 'text-secondary scale-110' : 'text-muted-foreground/20'
                     }`}
                   />
                   <div>
                     <p className="text-lg font-medium text-foreground">{q.text}</p>
-                    <p className="text-sm text-muted-foreground mt-1">{q.category}</p>
+                    <p className="text-sm text-muted-foreground mt-1.5">{q.category}</p>
                   </div>
                 </div>
               </button>
@@ -78,11 +78,11 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
           })}
         </div>
 
-        <div className="text-center pt-4">
+        <div className="text-center pt-6">
           <button
             onClick={() => onComplete(selected)}
             disabled={selected.length !== 3}
-            className="px-10 py-4 rounded-xl bg-primary text-primary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
+            className="px-12 py-5 rounded-2xl bg-primary text-primary-foreground font-semibold font-display text-xl tracking-wide disabled:opacity-25 hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)]"
           >
             אישור הבחירה →
           </button>

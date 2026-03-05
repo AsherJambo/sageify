@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Heebo:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,74 +6,78 @@
 
 @layer base {
   :root {
-    --background: 40 30% 97%;
-    --foreground: 210 40% 16%;
+    --background: 220 20% 97%;
+    --foreground: 210 45% 14%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 40% 16%;
+    --card-foreground: 210 45% 14%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 40% 16%;
+    --popover-foreground: 210 45% 14%;
 
-    --primary: 210 40% 16%;
-    --primary-foreground: 40 30% 97%;
+    --primary: 210 45% 14%;
+    --primary-foreground: 220 20% 97%;
 
-    --secondary: 148 22% 42%;
+    --secondary: 152 18% 38%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 40 18% 93%;
-    --muted-foreground: 210 12% 48%;
+    --muted: 220 14% 93%;
+    --muted-foreground: 210 10% 50%;
 
-    --accent: 148 22% 42%;
+    --accent: 152 18% 38%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 12% 87%;
-    --input: 40 12% 87%;
-    --ring: 148 22% 42%;
+    --border: 220 10% 90%;
+    --input: 220 10% 90%;
+    --ring: 152 18% 38%;
 
-    --radius: 1rem;
+    --radius: 1.5rem;
 
-    --sage: 148 22% 42%;
-    --sage-light: 148 18% 92%;
-    --gold: 40 55% 52%;
-    --gold-light: 40 45% 92%;
-    --navy: 210 40% 16%;
-    --navy-light: 210 32% 28%;
-    --warm-bg: 40 30% 97%;
+    --sage: 152 18% 38%;
+    --sage-light: 152 14% 94%;
+    --gold: 40 45% 50%;
+    --gold-light: 40 35% 93%;
+    --navy: 210 45% 14%;
+    --navy-light: 210 35% 22%;
+    --warm-bg: 220 20% 97%;
 
-    --sidebar-background: 210 40% 16%;
-    --sidebar-foreground: 40 30% 97%;
-    --sidebar-primary: 148 22% 42%;
+    --shadow-diffuse: 0 20px 60px -15px hsl(210 45% 14% / 0.08);
+    --shadow-card: 0 8px 40px -12px hsl(210 45% 14% / 0.06), 0 4px 16px -8px hsl(210 45% 14% / 0.04);
+    --shadow-elevated: 0 24px 80px -20px hsl(210 45% 14% / 0.1), 0 8px 24px -8px hsl(210 45% 14% / 0.05);
+
+    --sidebar-background: 210 45% 14%;
+    --sidebar-foreground: 220 20% 97%;
+    --sidebar-primary: 152 18% 38%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 32% 24%;
-    --sidebar-accent-foreground: 40 30% 97%;
-    --sidebar-border: 210 32% 24%;
-    --sidebar-ring: 148 22% 42%;
+    --sidebar-accent: 210 35% 20%;
+    --sidebar-accent-foreground: 220 20% 97%;
+    --sidebar-border: 210 35% 20%;
+    --sidebar-ring: 152 18% 38%;
   }
 
   .dark {
-    --background: 210 40% 9%;
-    --foreground: 40 30% 95%;
-    --card: 210 36% 13%;
-    --card-foreground: 40 30% 95%;
-    --popover: 210 36% 13%;
-    --popover-foreground: 40 30% 95%;
-    --primary: 148 22% 50%;
-    --primary-foreground: 210 40% 9%;
-    --secondary: 148 22% 35%;
+    --background: 210 45% 7%;
+    --foreground: 220 20% 95%;
+    --card: 210 40% 11%;
+    --card-foreground: 220 20% 95%;
+    --popover: 210 40% 11%;
+    --popover-foreground: 220 20% 95%;
+    --primary: 152 18% 48%;
+    --primary-foreground: 210 45% 7%;
+    --secondary: 152 18% 32%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 210 30% 18%;
-    --muted-foreground: 40 15% 60%;
-    --accent: 148 22% 42%;
+    --muted: 210 30% 16%;
+    --muted-foreground: 220 12% 58%;
+    --accent: 152 18% 38%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
-    --border: 210 30% 20%;
-    --input: 210 30% 20%;
-    --ring: 148 22% 42%;
+    --border: 210 30% 18%;
+    --input: 210 30% 18%;
+    --ring: 152 18% 38%;
   }
 }
 
@@ -84,19 +88,23 @@
 
   html {
     font-family: 'Heebo', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     @apply bg-background text-foreground;
     direction: rtl;
-    font-size: 18px;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    font-size: 17px;
+    line-height: 1.7;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
     background-repeat: repeat;
-    background-size: 256px 256px;
+    background-size: 200px 200px;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Frank Ruhl Libre', serif;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 0.01em;
   }
 }
 

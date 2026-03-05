@@ -15,48 +15,46 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
 
   useEffect(() => {
     setTimeout(() => setShowGreeting(true), 300);
-    setTimeout(() => setShowIntro(true), 800);
-    setTimeout(() => setShowDetails(true), 1400);
-    setTimeout(() => setShowCTA(true), 2000);
+    setTimeout(() => setShowIntro(true), 900);
+    setTimeout(() => setShowDetails(true), 1500);
+    setTimeout(() => setShowCTA(true), 2200);
   }, []);
 
   const journeySteps = [
-    { icon: '🌟', title: 'חלק א׳: חוזקות VIA', desc: '48 שאלות – גלו את הכוחות הפנימיים שלכם' },
-    { icon: '🧭', title: 'חלק ב׳: עוגנים תעסוקתיים', desc: '40 שאלות – מצאו מה באמת מניע אתכם' },
-    { icon: '📋', title: 'חלק ג׳: שיקולים בבחירת עיסוק', desc: 'בחרו 6 שיקולים וחלקו ביניהם 100 נקודות' },
-    { icon: '🔍', title: 'חלק ד׳: נטיות תעסוקתיות (הולנד)', desc: '66 שאלות – מצאו את הנטיות שלכם' },
-    { icon: '🧰', title: 'חלק ה׳: כישורים ותנאי סף', desc: '20 כישורים – מיינו לארגז הכלים שלכם' },
-    { icon: '⚙️', title: 'חלק ו׳: העדפות וחלום המגירה', desc: 'העדפות אישיות + תחום החלום שלכם' },
+    { num: '01', title: 'חוזקות VIA', desc: '48 שאלות – גלו את הכוחות הפנימיים שלכם' },
+    { num: '02', title: 'עוגנים תעסוקתיים', desc: '40 שאלות – מה באמת מניע אתכם' },
+    { num: '03', title: 'שיקולים בבחירת עיסוק', desc: 'בחרו 6 שיקולים וחלקו 100 נקודות' },
+    { num: '04', title: 'נטיות תעסוקתיות', desc: '66 שאלות – גלו את הנטיות שלכם' },
+    { num: '05', title: 'כישורים ותנאי סף', desc: '20 כישורים – מיינו לארגז הכלים' },
+    { num: '06', title: 'העדפות וחלום המגירה', desc: 'העדפות אישיות + תחום החלום שלכם' },
   ];
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <div className="relative w-full h-[420px] md:h-[480px] overflow-hidden">
+      <div className="relative w-full h-[460px] md:h-[520px] overflow-hidden">
         <img
           src={heroBanner}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(210,40%,16%)/0.4] via-[hsl(210,40%,16%)/0.6] to-[hsl(var(--background))]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(210,45%,14%)/0.5] via-[hsl(210,45%,14%)/0.65] to-[hsl(var(--background))]" />
         
-        {/* Hero content */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-6 text-center">
           <div
-            className={`transition-all duration-700 ${
-              showGreeting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            className={`transition-all duration-1000 ease-out ${
+              showGreeting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             <img
               src={sageifyLogo}
               alt="Sageify"
-              className="w-24 h-24 md:w-28 md:h-28 mx-auto rounded-full shadow-2xl border-2 border-white/20 mb-6"
+              className="w-28 h-28 md:w-32 md:h-32 mx-auto rounded-full shadow-[var(--shadow-elevated)] border-2 border-white/15 mb-8"
             />
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-serif text-white drop-shadow-lg">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-display text-white tracking-wide">
               Sageify
             </h1>
-            <p className="text-lg md:text-xl text-white/80 mt-3 max-w-lg mx-auto font-light">
+            <p className="text-lg md:text-xl text-white/70 mt-4 max-w-md mx-auto font-light tracking-wide">
               הערכה מקצועית לגילוי חוזקות ומיפוי כיוונים תעסוקתיים
             </p>
           </div>
@@ -64,17 +62,17 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
       </div>
 
       {/* Content below hero */}
-      <div className="flex-1 flex flex-col items-center px-6 -mt-8 relative z-20">
-        <div className="max-w-2xl w-full space-y-10">
+      <div className="flex-1 flex flex-col items-center px-6 -mt-10 relative z-20">
+        <div className="max-w-2xl w-full space-y-12">
 
           {/* Greeting card */}
           <div
-            className={`transition-all duration-700 ${
-              showIntro ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            className={`transition-all duration-1000 ease-out ${
+              showIntro ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
           >
-            <div className="bg-card rounded-2xl p-8 shadow-xl border border-border">
-              <h2 className="text-2xl font-bold font-serif text-foreground mb-3">
+            <div className="bg-card rounded-3xl p-10 shadow-[var(--shadow-card)] border border-border/60">
+              <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground mb-4 tracking-wide">
                 {owlWelcome.greeting}
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
@@ -83,39 +81,47 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
             </div>
           </div>
 
-          {/* Journey steps */}
+          {/* Journey steps — editorial numbered list */}
           <div
-            className={`transition-all duration-700 ${
-              showDetails ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            className={`transition-all duration-1000 ease-out ${
+              showDetails ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-3">
               {journeySteps.map((step, i) => (
-                <div key={i} className="flex items-start gap-3 bg-card rounded-xl p-4 border border-border shadow-sm text-right">
-                  <span className="text-2xl mt-0.5">{step.icon}</span>
-                  <div>
-                    <p className="font-semibold text-foreground text-sm font-serif">{step.title}</p>
-                    <p className="text-xs text-muted-foreground">{step.desc}</p>
+                <div
+                  key={i}
+                  className="flex items-center gap-5 bg-card rounded-2xl p-5 border border-border/60 shadow-[var(--shadow-card)] text-right group hover:border-secondary/30 transition-all duration-300"
+                >
+                  <span className="text-xs font-display text-muted-foreground/50 tracking-widest w-8 text-center flex-shrink-0">
+                    {step.num}
+                  </span>
+                  <div className="h-8 w-px bg-border/60" />
+                  <div className="flex-1">
+                    <p className="font-semibold text-foreground font-display tracking-wide">{step.title}</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">{step.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
-            <p className="text-muted-foreground text-sm mt-4 text-center">⏱️ זמן משוער: 40-50 דקות | ההתקדמות נשמרת אוטומטית</p>
+            <p className="text-muted-foreground/60 text-sm mt-6 text-center tracking-wide">
+              ⏱ זמן משוער: 40–50 דקות · ההתקדמות נשמרת אוטומטית
+            </p>
           </div>
 
           {/* CTA */}
           <div
-            className={`transition-all duration-700 text-center pb-12 ${
-              showCTA ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'
+            className={`transition-all duration-1000 ease-out text-center pb-16 ${
+              showCTA ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95'
             }`}
           >
             <button
               onClick={onStart}
-              className="px-12 py-5 bg-secondary text-secondary-foreground rounded-xl text-xl font-semibold hover:bg-secondary/90 transition-all duration-300 hover:scale-105 shadow-lg group font-serif"
+              className="px-14 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] group"
             >
-              <span className="flex items-center gap-2 justify-center">
+              <span className="flex items-center gap-3 justify-center">
                 {owlWelcome.cta}
-                <span className="inline-block transition-transform group-hover:translate-x-[-4px]">→</span>
+                <span className="inline-block transition-transform duration-300 group-hover:translate-x-[-6px]">→</span>
               </span>
             </button>
           </div>

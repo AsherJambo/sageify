@@ -227,21 +227,20 @@ const SageAdvisor = ({
   if (phase === 'loading') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6">
-        <div className="max-w-md text-center space-y-6">
-          <img src={owlLogo} alt="Sage Advisor" className="w-28 h-28 mx-auto animate-float" />
-          <h2 className="text-2xl font-bold font-serif text-foreground">
-            ה-Sage Advisor מנתח את התשובות שלך...
+        <div className="max-w-md text-center space-y-8">
+          <img src={owlLogo} alt="Sage Advisor" className="w-28 h-28 mx-auto animate-float rounded-full shadow-[var(--shadow-elevated)]" />
+          <h2 className="text-3xl font-bold font-display text-foreground tracking-wide">
+            מנתח את התוצאות שלך...
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-lg">
             מעבד את הפרופיל שלך ומכין תובנות מותאמות אישית
           </p>
-          <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-muted/40 rounded-full overflow-hidden">
             <div
               className="h-full bg-secondary rounded-full progress-bar-fill animate-pulse"
               style={{ width: '85%' }}
             />
           </div>
-          <p className="text-sm text-muted-foreground">85%</p>
         </div>
       </div>
     );
@@ -251,24 +250,24 @@ const SageAdvisor = ({
   const latestAssistantMsg = [...messages].reverse().find(m => m.role === 'assistant');
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8">
-      <div className="w-full max-w-3xl flex flex-col gap-8">
+    <div className="min-h-screen flex flex-col items-center px-4 py-12">
+      <div className="w-full max-w-3xl flex flex-col gap-10">
         
         {/* Header */}
-        <div className="text-center space-y-3">
+        <div className="text-center space-y-4">
           <div className="relative inline-block">
-            <img src={owlLogo} alt="" className="w-20 h-20 mx-auto rounded-full ring-3 ring-secondary/30 shadow-lg" />
+            <img src={owlLogo} alt="" className="w-20 h-20 mx-auto rounded-full ring-2 ring-secondary/20 shadow-[var(--shadow-elevated)]" />
             <span className="absolute bottom-1 right-1 w-4 h-4 bg-secondary rounded-full border-2 border-background" />
           </div>
-          <h2 className="text-3xl font-bold font-serif text-foreground">Sage Career Advisor</h2>
-          <p className="text-muted-foreground text-sm">
-            {isStreaming ? '🟢 מנתח ומייצר תובנות...' : '🟢 מוכן לייעוץ'}
+          <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">Sage Career Advisor</h2>
+          <p className="text-muted-foreground text-sm tracking-wide">
+            {isStreaming ? '● מנתח ומייצר תובנות...' : '● מוכן לייעוץ'}
           </p>
         </div>
 
         {/* Profile Summary Card */}
-        <div className="bg-card rounded-2xl border border-border p-6 shadow-lg" dir="rtl">
-          <h3 className="text-lg font-bold font-serif text-foreground mb-4 flex items-center gap-2">
+        <div className="bg-card rounded-3xl border border-border/60 p-8 shadow-[var(--shadow-card)]" dir="rtl">
+          <h3 className="text-lg font-bold font-display text-foreground mb-4 flex items-center gap-3 tracking-wide">
             <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm">📊</span>
             סיכום הפרופיל האישי שלך
           </h3>
@@ -321,15 +320,15 @@ const SageAdvisor = ({
 
         {/* Advisor Response Card — Guided Journey style */}
         {latestAssistantMsg && (
-          <div className="bg-card rounded-2xl border border-border p-8 shadow-lg" dir="rtl">
-            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-border">
-              <img src={owlLogo} alt="" className="w-10 h-10 rounded-full ring-1 ring-secondary/30" />
+          <div className="bg-card rounded-3xl border border-border/60 p-10 shadow-[var(--shadow-card)]" dir="rtl">
+            <div className="flex items-center gap-4 mb-6 pb-5 border-b border-border/60">
+              <img src={owlLogo} alt="" className="w-12 h-12 rounded-full ring-1 ring-secondary/20" />
               <div>
-                <p className="font-semibold font-serif text-foreground">סגי – יועץ הקריירה שלך</p>
+                <p className="font-semibold font-display text-foreground tracking-wide">סגי – יועץ הקריירה שלך</p>
                 <p className="text-xs text-muted-foreground">ניתוח מבוסס AI</p>
               </div>
             </div>
-            <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-serif [&_h2]:text-secondary [&_h2]:font-serif [&_h3]:text-secondary [&_h3]:font-serif [&_strong]:text-secondary [&_li]:mb-1.5 text-foreground leading-relaxed">
+            <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h2]:text-secondary [&_h2]:font-display [&_h3]:text-secondary [&_h3]:font-display [&_strong]:text-secondary [&_li]:mb-1.5 text-foreground leading-relaxed">
               <ReactMarkdown>{latestAssistantMsg.content}</ReactMarkdown>
             </div>
           </div>
@@ -337,28 +336,28 @@ const SageAdvisor = ({
 
         {/* Streaming indicator */}
         {isStreaming && !latestAssistantMsg && (
-          <div className="bg-card rounded-2xl border border-border p-8 shadow-lg text-center">
-            <div className="flex items-center justify-center gap-3">
-              <span className="w-2.5 h-2.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-              <span className="w-2.5 h-2.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-              <span className="w-2.5 h-2.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+          <div className="bg-card rounded-3xl border border-border/60 p-10 shadow-[var(--shadow-card)] text-center">
+            <div className="flex items-center justify-center gap-4">
+              <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
             </div>
-            <p className="text-muted-foreground text-sm mt-3">סגי מנתח את הנתונים שלך...</p>
+            <p className="text-muted-foreground text-sm mt-4">סגי מנתח את הנתונים שלך...</p>
           </div>
         )}
 
         {/* Roadmap detected → finish */}
         {roadmapDetected && !isStreaming && (
-          <div className="bg-card rounded-2xl border-2 border-secondary/30 p-8 shadow-lg text-center space-y-4">
-            <div className="w-16 h-16 mx-auto rounded-full bg-secondary/10 flex items-center justify-center text-3xl">✅</div>
-            <h3 className="text-xl font-bold font-serif text-foreground">מפת הדרכים שלך מוכנה!</h3>
+          <div className="bg-card rounded-3xl border border-secondary/20 p-10 shadow-[var(--shadow-elevated)] text-center space-y-5">
+            <div className="w-16 h-16 mx-auto rounded-full bg-secondary/8 flex items-center justify-center text-3xl">✓</div>
+            <h3 className="text-xl font-bold font-display text-foreground tracking-wide">מפת הדרכים שלך מוכנה</h3>
             <p className="text-muted-foreground text-sm">כל התובנות וההמלצות מחכות לך בסיכום</p>
             <Button
               onClick={() => {
                 setPhase('done');
                 onFinish?.();
               }}
-              className="w-full max-w-sm mx-auto py-6 text-lg bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl shadow-md"
+              className="w-full max-w-sm mx-auto py-6 text-lg bg-primary text-primary-foreground hover:bg-primary/85 rounded-2xl shadow-[var(--shadow-elevated)] font-display tracking-wide"
             >
               סיום והמשך לסיכום
             </Button>
@@ -367,17 +366,17 @@ const SageAdvisor = ({
 
         {/* Journey Action Cards — replaces chat input */}
         {!roadmapDetected && !isStreaming && messages.length >= 2 && (
-          <div dir="rtl" className="space-y-3">
-            <p className="text-sm font-semibold text-muted-foreground text-center">בחרו את הצעד הבא:</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div dir="rtl" className="space-y-4">
+            <p className="text-sm font-medium text-muted-foreground text-center tracking-wide">בחרו את הצעד הבא:</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {journeyActions.map((action) => (
                 <button
                   key={action.label}
                   onClick={() => sendMessage(action.msg)}
-                  className="group bg-card hover:bg-muted border border-border hover:border-secondary/40 rounded-xl p-5 text-right transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="group bg-card hover:bg-muted/50 border border-border/60 hover:border-secondary/30 rounded-2xl p-6 text-right transition-all duration-300 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)]"
                 >
-                  <span className="text-2xl mb-2 block">{action.icon}</span>
-                  <p className="font-semibold text-foreground group-hover:text-secondary transition-colors font-serif">
+                  <span className="text-2xl mb-3 block">{action.icon}</span>
+                  <p className="font-semibold text-foreground group-hover:text-secondary transition-colors font-display tracking-wide">
                     {action.label}
                   </p>
                 </button>

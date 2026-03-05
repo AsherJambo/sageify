@@ -95,24 +95,24 @@ const ResultsDashboard = ({
   }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, staticRecommendations]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8">
-      <div className="w-full max-w-3xl space-y-8">
+    <div className="min-h-screen flex flex-col items-center px-4 py-12">
+      <div className="w-full max-w-3xl space-y-10">
         {/* Header */}
-        <div className={`text-center space-y-4 transition-all duration-700 ${showHeader ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto rounded-full shadow-lg animate-float" />
-          <p className="text-lg text-secondary font-semibold">{owlCelebrations.profileReady}</p>
-          <h1 className="text-3xl font-bold font-serif text-foreground">
+        <div className={`text-center space-y-5 transition-all duration-1000 ${showHeader ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto rounded-full shadow-[var(--shadow-elevated)] animate-float" />
+          <p className="text-lg text-secondary font-medium tracking-wide">{owlCelebrations.profileReady}</p>
+          <h1 className="text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">
             הפרופיל שלכם ב-<span className="text-secondary">Sageify</span>
           </h1>
         </div>
 
         {/* AI Narrative */}
-        <div className={`transition-all duration-700 ${showNarrative ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-lg">
-            <div className="flex items-start gap-3">
+        <div className={`transition-all duration-1000 ${showNarrative ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
+            <div className="flex items-start gap-4">
               <img src={owlLogo} alt="" className="w-12 h-12 rounded-full flex-shrink-0" />
               <div>
-                <h3 className="text-lg font-bold font-serif text-secondary mb-2">{owlCelebrations.narrative}תובנה מרכזית</h3>
+                <h3 className="text-lg font-bold font-display text-secondary mb-3 tracking-wide">{owlCelebrations.narrative}תובנה מרכזית</h3>
                 <p className="text-foreground leading-relaxed text-lg">{generateNarrative()}</p>
               </div>
             </div>
@@ -120,13 +120,13 @@ const ResultsDashboard = ({
         </div>
 
         {/* Top Highlights */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 transition-all duration-700 ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-            <h3 className="text-lg font-bold font-serif text-foreground mb-1">🌟 חוזקות מובילות (VIA)</h3>
-            <p className="text-sm text-muted-foreground mb-4">{owlCelebrations.topStrength}</p>
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-5 transition-all duration-1000 ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+            <h3 className="text-lg font-bold font-display text-foreground mb-1 tracking-wide">חוזקות מובילות (VIA)</h3>
+            <p className="text-sm text-muted-foreground mb-5">{owlCelebrations.topStrength}</p>
             {topVIA.map((item, i) => (
-              <div key={item.category} className="flex items-center gap-3 mb-3">
-                <span className="w-8 h-8 rounded-full bg-secondary/15 text-secondary flex items-center justify-center font-bold text-lg">{i + 1}</span>
+              <div key={item.category} className="flex items-center gap-4 mb-4">
+                <span className="w-9 h-9 rounded-full bg-secondary/8 text-secondary flex items-center justify-center font-display font-bold text-lg">{i + 1}</span>
                 <div className="flex-1">
                   <p className="font-semibold text-foreground">{item.category}</p>
                   <p className="text-sm text-muted-foreground">{viaCategoryDescriptions[item.category] || ''}</p>
@@ -134,12 +134,12 @@ const ResultsDashboard = ({
               </div>
             ))}
           </div>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-            <h3 className="text-lg font-bold font-serif text-foreground mb-1">🧭 עוגנים מובילים (שיין)</h3>
-            <p className="text-sm text-muted-foreground mb-4">{owlCelebrations.topAnchor}</p>
+          <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+            <h3 className="text-lg font-bold font-display text-foreground mb-1 tracking-wide">עוגנים מובילים (שיין)</h3>
+            <p className="text-sm text-muted-foreground mb-5">{owlCelebrations.topAnchor}</p>
             {topSchein.map((item, i) => (
-              <div key={item.category} className="flex items-center gap-3 mb-3">
-                <span className="w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-lg">{i + 1}</span>
+              <div key={item.category} className="flex items-center gap-4 mb-4">
+                <span className="w-9 h-9 rounded-full bg-primary/8 text-primary flex items-center justify-center font-display font-bold text-lg">{i + 1}</span>
                 <div className="flex-1">
                   <p className="font-semibold text-foreground">{item.category}</p>
                   <p className="text-sm text-muted-foreground">{scheinCategoryDescriptions[item.category] || ''}</p>
@@ -150,20 +150,20 @@ const ResultsDashboard = ({
         </div>
 
         {/* Recommendations */}
-        <div className={`transition-all duration-700 ${showRecommendations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-lg">
-            <div className="flex items-center gap-3 mb-5">
-              <img src={owlLogo} alt="" className="w-10 h-10 rounded-full" />
+        <div className={`transition-all duration-1000 ${showRecommendations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
+            <div className="flex items-center gap-4 mb-6">
+              <img src={owlLogo} alt="" className="w-12 h-12 rounded-full" />
               <div>
-              <h3 className="text-lg font-bold font-serif text-foreground">ההמלצות של סגי</h3>
+              <h3 className="text-lg font-bold font-display text-foreground tracking-wide">ההמלצות של סגי</h3>
                 <p className="text-sm text-muted-foreground">
-                  {aiRecommendations ? 'תובנות והמלצות מהשיחה עם היועץ' : 'הנה כיוונים שמתאימים בדיוק לפרופיל שלכם'}
+                  {aiRecommendations ? 'תובנות והמלצות מהשיחה עם היועץ' : 'כיוונים שמתאימים בדיוק לפרופיל שלכם'}
                 </p>
               </div>
             </div>
             {aiRecommendations ? (
-              <div className="bg-background rounded-xl p-5 border border-border">
-                <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_h1]:text-lg [&_h1]:font-serif [&_h2]:text-base [&_h2]:font-serif [&_h3]:text-sm [&_h3]:font-serif [&_ul]:mr-4 [&_ol]:mr-4 [&_li]:mb-1" dir="rtl">
+              <div className="bg-background rounded-2xl p-6 border border-border/60">
+                <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_h1]:text-lg [&_h1]:font-display [&_h2]:text-base [&_h2]:font-display [&_h3]:text-sm [&_h3]:font-display [&_ul]:mr-4 [&_ol]:mr-4 [&_li]:mb-1" dir="rtl">
                   <ReactMarkdown>{aiRecommendations}</ReactMarkdown>
                 </div>
               </div>
@@ -175,14 +175,14 @@ const ResultsDashboard = ({
                     href={rec.platformUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-background rounded-xl p-5 border border-border hover:border-secondary/50 hover:shadow-md transition-all duration-300 group"
+                    className="block bg-background rounded-2xl p-6 border border-border/60 hover:border-secondary/30 hover:shadow-[var(--shadow-card)] transition-all duration-300 group"
                   >
                     <div className="flex items-start gap-4">
                       <span className="text-3xl flex-shrink-0">{rec.icon}</span>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <h4 className="font-bold font-serif text-foreground group-hover:text-secondary transition-colors">{rec.title}</h4>
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                          <h4 className="font-bold font-display text-foreground group-hover:text-secondary transition-colors tracking-wide">{rec.title}</h4>
+                          <span className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${
                             rec.type === 'volunteer' ? 'bg-secondary/15 text-secondary' :
                             rec.type === 'freelance' ? 'bg-primary/15 text-primary' :
                             'bg-muted text-muted-foreground'
@@ -205,19 +205,19 @@ const ResultsDashboard = ({
         </div>
 
         {/* Charts */}
-        <div className={`space-y-6 transition-all duration-700 ${showCharts ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-            <h3 className="text-lg font-bold font-serif text-foreground mb-4">חוזקות VIA – כל הקטגוריות</h3>
-            <div className="space-y-3">
+        <div className={`space-y-8 transition-all duration-1000 ${showCharts ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+            <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">חוזקות VIA – כל הקטגוריות</h3>
+            <div className="space-y-4">
               {Object.entries(viaScores)
                 .sort(([, a], [, b]) => b - a)
                 .map(([cat, score]) => (
-                  <div key={cat} className="space-y-1">
+                  <div key={cat} className="space-y-1.5">
                     <div className="flex justify-between text-sm">
                       <span className="font-medium text-foreground">{cat}</span>
                     </div>
                     <p className="text-xs text-muted-foreground">{viaCategoryDescriptions[cat] || ''}</p>
-                    <div className="w-full h-4 bg-muted rounded-full overflow-hidden">
+                    <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-secondary rounded-full progress-bar-fill"
                         style={{ width: `${(score / 5) * 100}%` }}
@@ -228,18 +228,18 @@ const ResultsDashboard = ({
             </div>
           </div>
 
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-            <h3 className="text-lg font-bold font-serif text-foreground mb-4">עוגנים תעסוקתיים – כל הקטגוריות</h3>
-            <div className="space-y-3">
+          <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+            <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">עוגנים תעסוקתיים – כל הקטגוריות</h3>
+            <div className="space-y-4">
               {Object.entries(scheinScores)
                 .sort(([, a], [, b]) => b - a)
                 .map(([cat, score]) => (
-                  <div key={cat} className="space-y-1">
+                  <div key={cat} className="space-y-1.5">
                     <div className="flex justify-between text-sm">
                       <span className="font-medium text-foreground">{cat}</span>
                     </div>
                     <p className="text-xs text-muted-foreground">{scheinCategoryDescriptions[cat] || ''}</p>
-                    <div className="w-full h-4 bg-muted rounded-full overflow-hidden">
+                    <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-primary rounded-full progress-bar-fill"
                         style={{ width: `${(score / 7) * 100}%` }}
