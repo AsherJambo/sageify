@@ -366,17 +366,17 @@ const SageAdvisor = ({
 
         {/* Journey Action Cards — replaces chat input */}
         {!roadmapDetected && !isStreaming && messages.length >= 2 && (
-          <div dir="rtl" className="space-y-3">
-            <p className="text-sm font-semibold text-muted-foreground text-center">בחרו את הצעד הבא:</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div dir="rtl" className="space-y-4">
+            <p className="text-sm font-medium text-muted-foreground text-center tracking-wide">בחרו את הצעד הבא:</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {journeyActions.map((action) => (
                 <button
                   key={action.label}
                   onClick={() => sendMessage(action.msg)}
-                  className="group bg-card hover:bg-muted border border-border hover:border-secondary/40 rounded-xl p-5 text-right transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="group bg-card hover:bg-muted/50 border border-border/60 hover:border-secondary/30 rounded-2xl p-6 text-right transition-all duration-300 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)]"
                 >
-                  <span className="text-2xl mb-2 block">{action.icon}</span>
-                  <p className="font-semibold text-foreground group-hover:text-secondary transition-colors font-serif">
+                  <span className="text-2xl mb-3 block">{action.icon}</span>
+                  <p className="font-semibold text-foreground group-hover:text-secondary transition-colors font-display tracking-wide">
                     {action.label}
                   </p>
                 </button>
