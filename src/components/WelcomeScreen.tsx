@@ -42,8 +42,8 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
         
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-6 text-center">
           <div
-            className={`transition-all duration-1000 ease-out ${
-              showGreeting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              showGreeting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
             <img
