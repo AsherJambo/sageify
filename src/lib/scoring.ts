@@ -28,10 +28,18 @@ export function calculateCategoryScores(
 
 export function getMaxScoredQuestions(
   answers: Answers,
-  questions: { id: number; text: string; category: string }[]
+  questions: { id: number; text: string; category: string }[],
+  minCount: number = 6
 ): { id: number; text: string; category: string }[] {
-  const maxScore = Math.max(...Object.values(answers));
-  return questions.filter(q => answers[q.id] === maxScore);
+  const answeredQuestions = questions.filter(q => answers[q.id] !== undefined);
+  const sorted = [...answeredQuestions].sort((a, b) => (answers[b.id] || 0) - (answers[a.id] || 0));
+  
+  if (sorted.length <= minCount) return sorted;
+  
+  // Include at least minCount questions, expanding to include all ties at the cutoff score
+  const cutoffScore = answers[sorted[minCount - 1].id];
+  const result = sorted.filter(q => answers[q.id] >= cutoffScore);
+  return result;
 }
 
 export function applyBonus(
