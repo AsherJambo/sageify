@@ -144,9 +144,9 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
         <div className="flex items-center gap-4">
           <img src={owlLogo} alt="" className="w-16 h-16 rounded-full animate-float" />
           <div className="flex-1">
-            <h3 className="text-xl font-bold font-serif text-foreground mb-1">🦉 שיחה עם הינשוף היועץ</h3>
+            <h3 className="text-xl font-bold font-serif text-foreground mb-1">שיחה עם סגי – יועץ Sageify</h3>
             <p className="text-muted-foreground">
-              רוצים להפוך את התוצאות לתכנית עבודה? הינשוף החכם כאן כדי לעזור לכם לבנות את הצעד הבא – בשיחה פתוחה ואישית.
+              רוצים להפוך את התוצאות לתכנית עבודה? סגי כאן כדי לעזור לכם לבנות את הצעד הבא – בשיחה פתוחה ואישית.
             </p>
           </div>
         </div>
@@ -154,7 +154,7 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
           onClick={startChat}
           className="w-full mt-4 text-lg py-6 bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl font-serif"
         >
-          {hasStarted ? 'חזרה לשיחה 🦉' : 'בואו נדבר! 🦉'}
+          {hasStarted ? 'חזרה לשיחה' : 'בואו נדבר!'}
         </Button>
       </div>
     );
@@ -166,7 +166,7 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
       <div className="bg-primary/5 px-5 py-3 flex items-center gap-3 border-b border-border">
         <img src={owlLogo} alt="" className="w-10 h-10 rounded-full" />
         <div className="flex-1">
-          <h3 className="font-bold font-serif text-foreground">🦉 הינשוף היועץ</h3>
+          <h3 className="font-bold font-serif text-foreground">סגי – יועץ Sageify</h3>
           <p className="text-xs text-muted-foreground">יועץ קריירה AI אישי</p>
         </div>
         <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
@@ -205,7 +205,7 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
           <div className="flex gap-3">
             <img src={owlLogo} alt="" className="w-8 h-8 rounded-full flex-shrink-0 mt-1" />
             <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-3">
-              <span className="text-muted-foreground text-sm animate-pulse">🦉 הינשוף חושב...</span>
+              <span className="text-muted-foreground text-sm animate-pulse">🌿 סגי חושב...</span>
             </div>
           </div>
         )}
@@ -219,7 +219,7 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="כתבו הודעה לינשוף..."
+          placeholder="כתבו הודעה לסגי..."
           className="resize-none min-h-[44px] max-h-[120px] rounded-xl"
           rows={1}
           disabled={isLoading}

@@ -21,12 +21,12 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
   };
 
   const feedbackMessage = selected.length === 0
-    ? '🦉 הינשוף ממתין לבחירה שלכם – סמכו על התחושה הראשונית'
+    ? '🌿 סגי ממתין לבחירה שלכם – סמכו על התחושה הראשונית'
     : selected.length === 1
     ? '🪶 בחירה ראשונה מצוינת! עוד שתיים...'
     : selected.length === 2
     ? '✨ כמעט שם – עוד אחת אחרונה!'
-    : '🌟 שלוש בחירות מושלמות! הינשוף מאשר';
+    : '🌟 שלוש בחירות מושלמות! סגי מאשר';
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
@@ -84,7 +84,7 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
             disabled={selected.length !== 3}
             className="px-10 py-4 rounded-xl bg-primary text-primary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
           >
-            🦉 אישור הבחירה →
+            אישור הבחירה →
           </button>
         </div>
       </div>

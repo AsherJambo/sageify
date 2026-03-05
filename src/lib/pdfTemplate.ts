@@ -53,7 +53,7 @@ export function generatePrintHTML(username: string, bodyContent: string, idNumbe
     }
 
     .header::after {
-      content: '🦉';
+      content: '🌿';
       font-size: 28px;
       position: absolute;
       bottom: -18px;
@@ -286,7 +286,7 @@ export function generatePrintHTML(username: string, bodyContent: string, idNumbe
     </div>
     ${bodyContent}
     <div class="footer-brand">
-      נוצר באמצעות <strong>Sageify</strong> 🦉 — המסע החכם שלך לקריירה
+      נוצר באמצעות <strong>Sageify</strong> — המסע החכם שלך לקריירה
     </div>
   </div>
 </body>
