@@ -22,27 +22,27 @@ const SectionIntro = ({
   buttonText = 'בואו נמשיך →',
 }: SectionIntroProps) => {
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
-      <div className="w-full max-w-2xl space-y-6">
+    <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <div className="w-full max-w-2xl space-y-8">
         {/* Logo */}
         <div className="text-center">
           <img
             src={owlLogo}
             alt="Sageify"
-            className="w-20 h-20 mx-auto mb-4 rounded-full shadow-md animate-float"
+            className="w-20 h-20 mx-auto mb-6 rounded-full shadow-[var(--shadow-card)] animate-float"
           />
           {badge && (
-            <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm mb-2">
+            <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm mb-3 tracking-wide border border-secondary/15">
               {badge}
             </div>
           )}
           {title && (
-            <h2 className="text-2xl font-bold font-serif text-foreground">{title}</h2>
+            <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">{title}</h2>
           )}
         </div>
 
         {/* Main content card */}
-        <div className="bg-card rounded-2xl p-6 border border-border shadow-md space-y-4">
+        <div className="bg-card rounded-3xl p-8 md:p-10 border border-border/60 shadow-[var(--shadow-card)] space-y-5">
           {paragraphs.map((p, i) => (
             <p key={i} className="text-foreground leading-relaxed text-base">
               {p}
@@ -50,10 +50,10 @@ const SectionIntro = ({
           ))}
 
           {bulletPoints && bulletPoints.length > 0 && (
-            <ul className="space-y-2 pr-2">
+            <ul className="space-y-3 pr-2">
               {bulletPoints.map((bp, i) => (
-                <li key={i} className="flex items-start gap-2 text-foreground text-base">
-                  <span className="text-secondary mt-1 flex-shrink-0">•</span>
+                <li key={i} className="flex items-start gap-3 text-foreground text-base">
+                  <span className="text-secondary/60 mt-1 flex-shrink-0 text-xs">◆</span>
                   <span>{bp}</span>
                 </li>
               ))}
@@ -69,25 +69,25 @@ const SectionIntro = ({
 
         {/* Notes block */}
         {notes && notes.length > 0 && (
-          <div className="bg-primary/5 rounded-2xl p-5 border border-primary/15 space-y-3">
-            <p className="font-semibold font-serif text-foreground text-base">וכמה הערות אחרונות לפני המעבר לאבחון:</p>
-            <ul className="space-y-2 pr-2">
+          <div className="bg-card rounded-3xl p-8 border border-secondary/15 shadow-[var(--shadow-card)] space-y-4">
+            <p className="font-semibold font-display text-foreground text-base tracking-wide">הערות אחרונות לפני שמתחילים:</p>
+            <ul className="space-y-3 pr-2">
               {notes.map((note, i) => (
-                <li key={i} className="flex items-start gap-2 text-foreground text-sm">
-                  <span className="text-secondary mt-0.5 flex-shrink-0">✦</span>
+                <li key={i} className="flex items-start gap-3 text-foreground text-sm">
+                  <span className="text-secondary/50 mt-0.5 flex-shrink-0 text-xs">✦</span>
                   <span>{note}</span>
                 </li>
               ))}
             </ul>
-            <p className="text-foreground text-base font-medium mt-2">בהצלחה, ונתראה שוב בהמשך! 🦉</p>
+            <p className="text-foreground text-base font-medium mt-2">בהצלחה, ונתראה בהמשך!</p>
           </div>
         )}
 
         {/* CTA */}
-        <div className="text-center pt-4">
+        <div className="text-center pt-6">
           <button
             onClick={onContinue}
-            className="px-10 py-4 bg-primary text-primary-foreground rounded-xl text-xl font-semibold font-serif hover:opacity-90 transition-all duration-300 hover:scale-105 shadow-lg"
+            className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)]"
           >
             {buttonText}
           </button>

@@ -15,7 +15,8 @@ export default {
     extend: {
       fontFamily: {
         heebo: ['Heebo', 'sans-serif'],
-        serif: ['Frank Ruhl Libre', 'serif'],
+        serif: ['Playfair Display', 'serif'],
+        display: ['Playfair Display', 'serif'],
       },
       fontSize: {
         'question': '20px',
