@@ -25,4 +25,4 @@ export const skills: Skill[] = [
   { id: 19, text: 'עבודה בטבע, בחוץ, עם צמחים או בעלי חיים.' },
 ];
 
-export type SkillColumn = 'winner' | 'burnout' | 'irrelevant';
+export type SkillColumn = 'winner' | 'burnout' | 'aspire' | 'irrelevant';

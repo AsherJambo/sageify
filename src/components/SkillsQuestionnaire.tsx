@@ -59,7 +59,7 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
           {skills.map((skill) => (
             <div key={skill.id} className="bg-card rounded-xl p-4 border border-border slide-up">
               <p className="text-foreground font-medium mb-3">{skill.id}. {skill.text}</p>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {(Object.keys(columnLabels) as SkillColumn[]).map(col => (
                   <button
                     key={col}
