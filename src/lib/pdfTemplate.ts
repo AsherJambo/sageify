@@ -53,7 +53,7 @@ export function generatePrintHTML(username: string, bodyContent: string, idNumbe
     }
 
     .header::after {
-      content: '🦉';
+      content: '🌿';
       font-size: 28px;
       position: absolute;
       bottom: -18px;
