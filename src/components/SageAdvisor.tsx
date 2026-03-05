@@ -336,13 +336,13 @@ const SageAdvisor = ({
 
         {/* Streaming indicator */}
         {isStreaming && !latestAssistantMsg && (
-          <div className="bg-card rounded-2xl border border-border p-8 shadow-lg text-center">
-            <div className="flex items-center justify-center gap-3">
-              <span className="w-2.5 h-2.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-              <span className="w-2.5 h-2.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-              <span className="w-2.5 h-2.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+          <div className="bg-card rounded-3xl border border-border/60 p-10 shadow-[var(--shadow-card)] text-center">
+            <div className="flex items-center justify-center gap-4">
+              <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
             </div>
-            <p className="text-muted-foreground text-sm mt-3">סגי מנתח את הנתונים שלך...</p>
+            <p className="text-muted-foreground text-sm mt-4">סגי מנתח את הנתונים שלך...</p>
           </div>
         )}
 
