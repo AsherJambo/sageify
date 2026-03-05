@@ -259,8 +259,8 @@ const ResultsDashboard = ({
                   <div key={cat} className="space-y-1">
                     <div className="flex justify-between text-sm">
                       <span className="font-medium text-foreground">{cat}</span>
-                      <span className="text-muted-foreground">{score.toFixed(1)}</span>
                     </div>
+                    <p className="text-xs text-muted-foreground">{scheinCategoryDescriptions[cat] || ''}</p>
                     <div className="w-full h-4 bg-muted rounded-full overflow-hidden">
                       <div
                         className="h-full bg-accent rounded-full progress-bar-fill"
