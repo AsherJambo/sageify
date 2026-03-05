@@ -43,7 +43,6 @@ const SageAdvisor = ({
   const [roadmapDetected, setRoadmapDetected] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Check if roadmap already exists in initial messages
   useEffect(() => {
     if (initialMessages?.some(m => m.content.includes('Sage Action Roadmap'))) {
       setRoadmapDetected(true);
@@ -60,19 +59,15 @@ const SageAdvisor = ({
     if (messages.length > 0) onMessagesChange?.(messages);
   }, [messages]);
 
-  // Build profile summary with recommendations
   const topVIA = getTopCategories(viaScores, 3);
   const topSchein = getTopCategories(scheinScores, 3);
   const recommendations = getRecommendations(viaScores, scheinScores);
-
-  // Bottom VIA & Schein (least suitable)
   const bottomVIA = getTopCategories(viaScores, 100).slice(-2);
   const bottomSchein = getTopCategories(scheinScores, 100).slice(-2);
 
   const topHolland = hollandScores
     ? Object.entries(hollandScores).sort(([, a], [, b]) => b - a).slice(0, 3)
     : [];
-
   const bottomHolland = hollandScores
     ? Object.entries(hollandScores).sort(([, a], [, b]) => a - b).slice(0, 2)
     : [];
@@ -108,7 +103,6 @@ const SageAdvisor = ({
     if (burnoutSkills.length > 0) parts.push(`כישורי שחיקה (להימנע): ${burnoutSkills.join(', ')}`);
     if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
     if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
-    // Include recommendations from the report
     parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
     recommendations.forEach((rec, i) => {
       parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.reason}`);
@@ -163,7 +157,6 @@ const SageAdvisor = ({
               }
               return [...prev, { role: 'assistant', content: current }];
             });
-            // Detect roadmap
             if (current.includes('Sage Action Roadmap') && !roadmapDetected) {
               setRoadmapDetected(true);
               onRoadmapReady?.();
@@ -177,7 +170,6 @@ const SageAdvisor = ({
     }
   };
 
-  // Auto-start on mount
   useEffect(() => {
     if (phase !== 'loading') return;
     const timer = setTimeout(async () => {
@@ -199,13 +191,13 @@ const SageAdvisor = ({
     return () => clearTimeout(timer);
   }, [phase]);
 
-  const sendMessage = async () => {
-    const trimmed = input.trim();
+  const sendMessage = async (text?: string) => {
+    const trimmed = (text || input).trim();
     if (!trimmed || isStreaming) return;
     const userMsg: ChatMessage = { role: 'user', content: trimmed };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
-    setInput('');
+    if (!text) setInput('');
     setIsStreaming(true);
     try {
       await streamChat(newMessages);
@@ -223,13 +215,21 @@ const SageAdvisor = ({
     }
   };
 
+  // Journey action cards
+  const journeyActions = [
+    { icon: '🔍', label: 'מה פחות מתאים לי?', msg: 'ספר לי עוד על מה שפחות מתאים לי ולמה כדאי להימנע מזה' },
+    { icon: '🎯', label: 'בניית תכנית פעולה', msg: 'אני מוכן! בוא נבנה תכנית פעולה קונקרטית' },
+    { icon: '📊', label: 'דירוג כיוונים', msg: 'תן לי דירוג של 1-10 לכל כיוון תעסוקתי שעלה, עם הסבר קצר' },
+    { icon: '💡', label: 'כיוונים יצירתיים', msg: 'תציע לי כיוונים יצירתיים ולא שגרתיים שאולי לא חשבתי עליהם' },
+  ];
+
   // Loading phase
   if (phase === 'loading') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6">
         <div className="max-w-md text-center space-y-6">
           <img src={owlLogo} alt="Sage Advisor" className="w-28 h-28 mx-auto animate-float" />
-          <h2 className="text-2xl font-bold text-foreground">
+          <h2 className="text-2xl font-bold font-serif text-foreground">
             ה-Sage Advisor מנתח את התשובות שלך...
           </h2>
           <p className="text-muted-foreground">
@@ -237,7 +237,7 @@ const SageAdvisor = ({
           </p>
           <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
             <div
-              className="h-full bg-accent rounded-full progress-bar-fill animate-pulse"
+              className="h-full bg-secondary rounded-full progress-bar-fill animate-pulse"
               style={{ width: '85%' }}
             />
           </div>
@@ -247,185 +247,173 @@ const SageAdvisor = ({
     );
   }
 
-  // Chat phase
+  // Get the latest assistant message for the journey card display
+  const latestAssistantMsg = [...messages].reverse().find(m => m.role === 'assistant');
+
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-6">
-      <div className="w-full max-w-2xl flex flex-col" style={{ minHeight: 'calc(100vh - 48px)' }}>
+    <div className="min-h-screen flex flex-col items-center px-4 py-8">
+      <div className="w-full max-w-3xl flex flex-col gap-8">
+        
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6 px-2">
-          <div className="relative">
-            <img src={owlLogo} alt="" className="w-14 h-14 rounded-full ring-2 ring-accent/40" />
-            <span className="absolute bottom-0 right-0 w-4 h-4 bg-accent rounded-full border-2 border-background" />
+        <div className="text-center space-y-3">
+          <div className="relative inline-block">
+            <img src={owlLogo} alt="" className="w-20 h-20 mx-auto rounded-full ring-3 ring-secondary/30 shadow-lg" />
+            <span className="absolute bottom-1 right-1 w-4 h-4 bg-secondary rounded-full border-2 border-background" />
           </div>
-          <div>
-            <h2 className="text-xl font-bold text-foreground">Sage Career Advisor</h2>
-            <p className="text-sm text-muted-foreground">
-              {isStreaming ? '🟢 כותב...' : '🟢 מחובר'}
-            </p>
-          </div>
+          <h2 className="text-3xl font-bold font-serif text-foreground">Sage Career Advisor</h2>
+          <p className="text-muted-foreground text-sm">
+            {isStreaming ? '🟢 מנתח ומייצר תובנות...' : '🟢 מוכן לייעוץ'}
+          </p>
         </div>
 
-        {/* Personal Report Summary Card – shown before chat */}
-        <div className="mb-6 bg-card rounded-2xl border border-accent/30 p-5 shadow-md" dir="rtl">
-          <h3 className="text-lg font-bold text-accent mb-3">📊 סיכום הפרופיל האישי שלך</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-            <div className="space-y-1">
+        {/* Profile Summary Card */}
+        <div className="bg-card rounded-2xl border border-border p-6 shadow-lg" dir="rtl">
+          <h3 className="text-lg font-bold font-serif text-foreground mb-4 flex items-center gap-2">
+            <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm">📊</span>
+            סיכום הפרופיל האישי שלך
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            <div className="space-y-1.5">
               <p className="font-semibold text-foreground">🌟 חוזקות מובילות</p>
               {topVIA.map(t => (
-                <p key={t.category} className="text-muted-foreground">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
+                <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
               ))}
             </div>
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <p className="font-semibold text-foreground">🧭 עוגני קריירה</p>
               {topSchein.map(t => (
-                <p key={t.category} className="text-muted-foreground">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
+                <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
               ))}
             </div>
             {topHolland.length > 0 && (
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <p className="font-semibold text-foreground">🔍 נטיות הולנד</p>
                 {topHolland.map(([c]) => (
-                  <p key={c} className="text-muted-foreground">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
+                  <p key={c} className="text-muted-foreground pr-2">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
                 ))}
               </div>
             )}
             {winnerSkills.length > 0 && (
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <p className="font-semibold text-foreground">🏆 כישורים מובילים</p>
                 {winnerSkills.slice(0, 4).map((s, i) => (
-                  <p key={i} className="text-muted-foreground">• {s}</p>
+                  <p key={i} className="text-muted-foreground pr-2">• {s}</p>
                 ))}
               </div>
             )}
           </div>
           {recommendations.length > 0 && (
-            <div className="mt-3 pt-3 border-t border-border">
-              <p className="font-semibold text-foreground mb-1">💡 הצעות עיסוק מהדו"ח</p>
+            <div className="mt-4 pt-4 border-t border-border">
+              <p className="font-semibold text-foreground mb-2">💡 הצעות עיסוק מהדו"ח</p>
               {recommendations.map((rec, i) => (
-                <p key={i} className="text-muted-foreground text-sm">
+                <p key={i} className="text-muted-foreground text-sm pr-2">
                   {rec.icon} {rec.title} – {rec.reason}
                 </p>
               ))}
             </div>
           )}
           {preferencesData?.dream && (
-            <div className="mt-2">
-              <p className="text-accent font-semibold text-sm">⭐ חלום המגירה: {preferencesData.dream}</p>
+            <div className="mt-3">
+              <p className="text-secondary font-semibold text-sm">⭐ חלום המגירה: {preferencesData.dream}</p>
             </div>
           )}
         </div>
 
-        {/* Messages area */}
-        <div className="flex-1 overflow-y-auto space-y-5 px-1 pb-4" dir="rtl">
-          {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
-            >
-              {msg.role === 'assistant' && (
-                <img src={owlLogo} alt="" className="w-9 h-9 rounded-full flex-shrink-0 mt-1 ring-1 ring-accent/30" />
-              )}
-              <div
-                className={`max-w-[85%] rounded-2xl px-5 py-4 text-sm leading-relaxed shadow-sm ${
-                  msg.role === 'user'
-                    ? 'bg-primary text-primary-foreground rounded-br-sm'
-                    : 'bg-card border border-accent/20 text-foreground rounded-bl-sm'
-                }`}
-              >
-                {msg.role === 'assistant' ? (
-                  <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_h1]:text-accent [&_h2]:text-accent [&_h3]:text-accent [&_strong]:text-accent [&_li]:mb-1">
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  </div>
-                ) : (
-                  <p>{msg.content}</p>
-                )}
+        {/* Advisor Response Card — Guided Journey style */}
+        {latestAssistantMsg && (
+          <div className="bg-card rounded-2xl border border-border p-8 shadow-lg" dir="rtl">
+            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-border">
+              <img src={owlLogo} alt="" className="w-10 h-10 rounded-full ring-1 ring-secondary/30" />
+              <div>
+                <p className="font-semibold font-serif text-foreground">סגי – יועץ הקריירה שלך</p>
+                <p className="text-xs text-muted-foreground">ניתוח מבוסס AI</p>
               </div>
             </div>
-          ))}
-          {isStreaming && messages[messages.length - 1]?.role === 'user' && (
-            <div className="flex gap-3">
-              <img src={owlLogo} alt="" className="w-9 h-9 rounded-full flex-shrink-0 mt-1 ring-1 ring-accent/30" />
-              <div className="bg-card border border-accent/20 rounded-2xl rounded-bl-sm px-5 py-4">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                </div>
-              </div>
+            <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-serif [&_h2]:text-secondary [&_h2]:font-serif [&_h3]:text-secondary [&_h3]:font-serif [&_strong]:text-secondary [&_li]:mb-1.5 text-foreground leading-relaxed">
+              <ReactMarkdown>{latestAssistantMsg.content}</ReactMarkdown>
             </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
+          </div>
+        )}
 
-        {/* Roadmap detected → finish button */}
+        {/* Streaming indicator */}
+        {isStreaming && !latestAssistantMsg && (
+          <div className="bg-card rounded-2xl border border-border p-8 shadow-lg text-center">
+            <div className="flex items-center justify-center gap-3">
+              <span className="w-2.5 h-2.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-2.5 h-2.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-2.5 h-2.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
+            <p className="text-muted-foreground text-sm mt-3">סגי מנתח את הנתונים שלך...</p>
+          </div>
+        )}
+
+        {/* Roadmap detected → finish */}
         {roadmapDetected && !isStreaming && (
-          <div className="px-2 py-4 border-t border-border">
-            <div className="bg-accent/10 border border-accent/30 rounded-xl p-4 text-center space-y-3">
-              <p className="text-foreground font-semibold">✅ מפת הדרכים שלך מוכנה!</p>
+          <div className="bg-card rounded-2xl border-2 border-secondary/30 p-8 shadow-lg text-center space-y-4">
+            <div className="w-16 h-16 mx-auto rounded-full bg-secondary/10 flex items-center justify-center text-3xl">✅</div>
+            <h3 className="text-xl font-bold font-serif text-foreground">מפת הדרכים שלך מוכנה!</h3>
+            <p className="text-muted-foreground text-sm">כל התובנות וההמלצות מחכות לך בסיכום</p>
+            <Button
+              onClick={() => {
+                setPhase('done');
+                onFinish?.();
+              }}
+              className="w-full max-w-sm mx-auto py-6 text-lg bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl shadow-md"
+            >
+              סיום והמשך לסיכום 🦉
+            </Button>
+          </div>
+        )}
+
+        {/* Journey Action Cards — replaces chat input */}
+        {!roadmapDetected && !isStreaming && messages.length >= 2 && (
+          <div dir="rtl" className="space-y-3">
+            <p className="text-sm font-semibold text-muted-foreground text-center">בחרו את הצעד הבא:</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {journeyActions.map((action) => (
+                <button
+                  key={action.label}
+                  onClick={() => sendMessage(action.msg)}
+                  className="group bg-card hover:bg-muted border border-border hover:border-secondary/40 rounded-xl p-5 text-right transition-all duration-200 shadow-sm hover:shadow-md"
+                >
+                  <span className="text-2xl mb-2 block">{action.icon}</span>
+                  <p className="font-semibold text-foreground group-hover:text-secondary transition-colors font-serif">
+                    {action.label}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Free-text input — collapsible, secondary to action cards */}
+        {!roadmapDetected && !isStreaming && messages.length >= 2 && (
+          <div className="border-t border-border pt-4" dir="rtl">
+            <p className="text-xs text-muted-foreground mb-2 text-center">או כתבו שאלה חופשית:</p>
+            <div className="flex gap-2">
+              <Textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="כתבו שאלה ליועץ..."
+                className="resize-none min-h-[48px] max-h-[100px] bg-card border-border rounded-xl"
+                rows={1}
+                disabled={isStreaming}
+              />
               <Button
-                onClick={() => {
-                  setPhase('done');
-                  onFinish?.();
-                }}
-                className="w-full py-6 text-lg bg-accent text-accent-foreground hover:bg-accent/90"
+                onClick={() => sendMessage()}
+                disabled={!input.trim() || isStreaming}
+                className="px-5 self-end bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl"
               >
-                סיום והמשך לסיכום 🦉
+                שלח
               </Button>
             </div>
           </div>
         )}
 
-        {/* Quick replies */}
-        {!roadmapDetected && !isStreaming && messages.length >= 2 && (
-          <div className="flex flex-wrap gap-2 px-1 pt-2" dir="rtl">
-            {[
-              { label: '🔍 לא מתאים', msg: 'ספר לי עוד על מה שפחות מתאים לי ולמה כדאי להימנע מזה' },
-              { label: '🎯 תכנית פעולה', msg: 'אני מוכן! בוא נבנה תכנית פעולה קונקרטית' },
-              { label: '📊 דירוג', msg: 'תן לי דירוג של 1-10 לכל כיוון תעסוקתי שעלה, עם הסבר קצר' },
-              { label: '💡 יצירתי', msg: 'תציע לי כיוונים יצירתיים ולא שגרתיים שאולי לא חשבתי עליהם' },
-            ].map((qr) => (
-              <button
-                key={qr.label}
-                onClick={() => {
-                  const userMsg: ChatMessage = { role: 'user', content: qr.msg };
-                  const newMessages = [...messages, userMsg];
-                  setMessages(newMessages);
-                  setIsStreaming(true);
-                  streamChat(newMessages).catch(console.error).finally(() => setIsStreaming(false));
-                }}
-                className="px-3 py-2 text-sm rounded-xl border border-accent/30 bg-accent/5 text-accent hover:bg-accent/15 transition-colors"
-              >
-                {qr.label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Input area */}
-        {!roadmapDetected && (
-          <div className="border-t border-border pt-3 flex gap-2" dir="rtl">
-            <Textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="כתבו הודעה ל-Sage Advisor..."
-              className="resize-none min-h-[48px] max-h-[120px] bg-card border-accent/20"
-              rows={1}
-              disabled={isStreaming}
-            />
-            <Button
-              onClick={sendMessage}
-              disabled={!input.trim() || isStreaming}
-              className="px-5 self-end bg-accent text-accent-foreground hover:bg-accent/90"
-            >
-              שלח
-            </Button>
-          </div>
-        )}
-
-        {/* Continue chatting even after roadmap */}
+        {/* Continue chatting after roadmap */}
         {roadmapDetected && !isStreaming && (
-          <div className="flex gap-2 mt-2" dir="rtl">
+          <div className="flex gap-2" dir="rtl">
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -436,20 +424,51 @@ const SageAdvisor = ({
                 }
               }}
               placeholder="יש עוד שאלות? המשיכו לשוחח..."
-              className="resize-none min-h-[44px] max-h-[100px] bg-card border-accent/20"
+              className="resize-none min-h-[44px] max-h-[100px] bg-card border-border rounded-xl"
               rows={1}
               disabled={isStreaming}
             />
             <Button
-              onClick={sendMessage}
+              onClick={() => sendMessage()}
               disabled={!input.trim() || isStreaming}
-              className="px-4 self-end"
+              className="px-4 self-end rounded-xl"
               variant="outline"
             >
               שלח
             </Button>
           </div>
         )}
+
+        {/* Previous messages — expandable history */}
+        {messages.filter(m => m.role === 'user').length > 1 && (
+          <details className="text-sm" dir="rtl">
+            <summary className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors text-center py-2">
+              📜 הצג היסטוריית שיחה ({messages.length} הודעות)
+            </summary>
+            <div className="mt-3 space-y-3 max-h-[400px] overflow-y-auto px-2">
+              {messages.slice(0, -1).map((msg, i) => (
+                <div
+                  key={i}
+                  className={`rounded-xl px-4 py-3 text-sm ${
+                    msg.role === 'user'
+                      ? 'bg-primary/5 border border-primary/10 mr-auto max-w-[85%]'
+                      : 'bg-card border border-border ml-auto max-w-[85%]'
+                  }`}
+                >
+                  {msg.role === 'assistant' ? (
+                    <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-1 [&_p:last-child]:mb-0">
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </div>
+                  ) : (
+                    <p className="text-muted-foreground">{msg.content}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </details>
+        )}
+
+        <div ref={messagesEndRef} />
       </div>
     </div>
   );
