@@ -67,8 +67,8 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
 
           {/* Greeting card */}
           <div
-            className={`transition-all duration-1000 ease-out ${
-              showIntro ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              showIntro ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             <div className="bg-card rounded-3xl p-10 shadow-[var(--shadow-card)] border border-border/60">
