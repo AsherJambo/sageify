@@ -109,7 +109,7 @@ const ResultsDashboard = ({
     // Sync recommendations from report
     parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
     staticRecommendations.forEach((rec, i) => {
-      parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.description}`);
+      parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.reason}`);
     });
     return parts.join('\n');
   }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, staticRecommendations]);

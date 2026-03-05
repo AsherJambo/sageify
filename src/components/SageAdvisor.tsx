@@ -111,7 +111,7 @@ const SageAdvisor = ({
     // Include recommendations from the report
     parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
     recommendations.forEach((rec, i) => {
-      parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.description}`);
+      parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.reason}`);
     });
     return parts.join('\n');
   }, []);
