@@ -44,7 +44,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
           <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
             🌟 חלק א׳
           </div>
-          <h2 className="text-2xl font-bold text-foreground">שאלון חוזקות VIA</h2>
+          <h2 className="text-2xl font-bold font-serif text-foreground">שאלון חוזקות VIA</h2>
           <p className="text-muted-foreground">דרגו כל אמירה מ-1 (לא מתאים) עד 5 (מתאים מאוד)</p>
         </div>
 
@@ -63,19 +63,13 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
         </div>
 
         {/* Owl encouragement */}
-        {encouragement && (
-          <OwlMessage message={encouragement} variant="encouragement" />
-        )}
-
-        {/* Wisdom tip between pages */}
-        {page > 0 && !encouragement && (
-          <OwlMessage message={wisdomTip} variant="tip" />
-        )}
+        {encouragement && <OwlMessage message={encouragement} variant="encouragement" />}
+        {page > 0 && !encouragement && <OwlMessage message={wisdomTip} variant="tip" />}
 
         {/* Questions */}
         <div className="space-y-6" key={page}>
           {currentQuestions.map((q, idx) => (
-            <div key={q.id} className="bg-card rounded-xl p-6 shadow-sm border border-border card-enter" style={{ animationDelay: `${idx * 0.1}s` }}>
+            <div key={q.id} className="bg-card rounded-2xl p-6 shadow-md border border-border card-enter" style={{ animationDelay: `${idx * 0.1}s` }}>
               <p className="text-question font-medium text-foreground mb-4">
                 {q.id}. {q.text}
               </p>
@@ -92,7 +86,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
           <button
             onClick={() => setPage(p => p - 1)}
             disabled={page === 0}
-            className="px-6 py-3 rounded-lg bg-muted text-foreground font-medium disabled:opacity-30 hover:bg-muted/80 transition-colors"
+            className="px-6 py-3 rounded-xl bg-muted text-foreground font-medium disabled:opacity-30 hover:bg-muted/80 transition-colors"
           >
             ← הקודם
           </button>
@@ -101,7 +95,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
             <button
               onClick={() => setPage(p => p + 1)}
               disabled={answeredOnPage < currentQuestions.length}
-              className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium disabled:opacity-30 hover:opacity-90 transition-colors"
+              className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium disabled:opacity-30 hover:opacity-90 transition-colors"
             >
               הבא →
             </button>
@@ -109,7 +103,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
             <button
               onClick={onComplete}
               disabled={!allAnswered}
-              className="px-8 py-3 rounded-lg bg-secondary text-secondary-foreground font-semibold disabled:opacity-30 hover:opacity-90 transition-colors"
+              className="px-8 py-3 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif disabled:opacity-30 hover:opacity-90 transition-colors"
             >
               🦉 סיום חלק א׳ ✓
             </button>

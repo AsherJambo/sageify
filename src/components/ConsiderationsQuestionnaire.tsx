@@ -59,10 +59,10 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
     <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
       <div className="w-full max-w-2xl space-y-6">
         <div className="text-center space-y-2">
-          <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold text-sm">
+          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
             📋 חלק ג׳
           </div>
-          <h2 className="text-2xl font-bold text-foreground">שיקולים בבחירת עיסוק</h2>
+          <h2 className="text-2xl font-bold font-serif text-foreground">שיקולים בבחירת עיסוק</h2>
           {phase === 'select' ? (
             <p className="text-muted-foreground">בחרו 6 שיקולים שיגרמו לכם לבחור בעיסוק ספציפי</p>
           ) : (
@@ -92,7 +92,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
               <button
                 onClick={handleSelectComplete}
                 disabled={selected.length !== 6}
-                className="px-10 py-4 rounded-lg bg-secondary text-secondary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
+                className="px-10 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
               >
                 המשך לחלוקת נקודות →
               </button>
@@ -102,12 +102,12 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
 
         {phase === 'distribute' && (
           <>
-            <div className={`text-center font-bold text-xl ${remaining === 0 ? 'text-secondary' : remaining < 0 ? 'text-destructive' : 'text-accent'}`}>
+            <div className={`text-center font-bold font-serif text-xl ${remaining === 0 ? 'text-secondary' : remaining < 0 ? 'text-destructive' : 'text-primary'}`}>
               נותרו: {remaining} נקודות מתוך 100
             </div>
             <div className="space-y-4">
               {selected.map((item) => (
-                <div key={item} className="bg-card rounded-xl p-4 border border-border">
+                <div key={item} className="bg-card rounded-2xl p-4 border border-border shadow-md">
                   <p className="font-medium text-foreground mb-2">{item}</p>
                   <div className="flex items-center gap-3">
                     <input
@@ -116,7 +116,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
                       max={100}
                       value={points[item] || 0}
                       onChange={e => handlePointChange(item, Number(e.target.value))}
-                      className="flex-1"
+                      className="flex-1 accent-secondary"
                     />
                     <input
                       type="number"
@@ -124,7 +124,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
                       max={100}
                       value={points[item] || 0}
                       onChange={e => handlePointChange(item, Number(e.target.value))}
-                      className="w-16 text-center rounded-lg border border-border bg-background p-2 font-bold"
+                      className="w-16 text-center rounded-xl border border-border bg-background p-2 font-bold"
                     />
                   </div>
                 </div>
@@ -134,7 +134,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
               <button
                 onClick={() => onComplete(selected, points)}
                 disabled={remaining !== 0}
-                className="px-10 py-4 rounded-lg bg-secondary text-secondary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
+                className="px-10 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
               >
                 🦉 סיום חלק ג׳ ✓
               </button>

@@ -26,7 +26,7 @@ const StarRating = ({ value, onChange, max = 5 }: StarRatingProps) => {
               size={28}
               className={`transition-colors duration-150 ${
                 star <= (hovered || value)
-                  ? 'fill-gold text-gold'
+                  ? 'fill-secondary text-secondary'
                   : 'fill-none text-muted-foreground/40'
               }`}
             />

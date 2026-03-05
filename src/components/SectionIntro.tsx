@@ -5,9 +5,7 @@ interface SectionIntroProps {
   badge?: string;
   paragraphs: string[];
   bulletPoints?: string[];
-  /** Additional paragraphs shown after bullet points */
   paragraphs2?: string[];
-  /** Final notes shown in a separate styled block */
   notes?: string[];
   onContinue: () => void;
   buttonText?: string;
@@ -26,25 +24,25 @@ const SectionIntro = ({
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
       <div className="w-full max-w-2xl space-y-6">
-        {/* Owl logo */}
+        {/* Logo */}
         <div className="text-center">
           <img
             src={owlLogo}
             alt="Sageify"
-            className="w-20 h-20 mx-auto mb-4 animate-float"
+            className="w-20 h-20 mx-auto mb-4 rounded-full shadow-md animate-float"
           />
           {badge && (
-            <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold text-sm mb-2">
+            <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm mb-2">
               {badge}
             </div>
           )}
           {title && (
-            <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+            <h2 className="text-2xl font-bold font-serif text-foreground">{title}</h2>
           )}
         </div>
 
         {/* Main content card */}
-        <div className="bg-card rounded-2xl p-6 border border-accent/20 shadow-sm space-y-4">
+        <div className="bg-card rounded-2xl p-6 border border-border shadow-md space-y-4">
           {paragraphs.map((p, i) => (
             <p key={i} className="text-foreground leading-relaxed text-base">
               {p}
@@ -55,7 +53,7 @@ const SectionIntro = ({
             <ul className="space-y-2 pr-2">
               {bulletPoints.map((bp, i) => (
                 <li key={i} className="flex items-start gap-2 text-foreground text-base">
-                  <span className="text-accent mt-1 flex-shrink-0">•</span>
+                  <span className="text-secondary mt-1 flex-shrink-0">•</span>
                   <span>{bp}</span>
                 </li>
               ))}
@@ -71,12 +69,12 @@ const SectionIntro = ({
 
         {/* Notes block */}
         {notes && notes.length > 0 && (
-          <div className="bg-accent/5 rounded-2xl p-5 border border-accent/20 space-y-3">
-            <p className="font-semibold text-foreground text-base">וכמה הערות אחרונות לפני המעבר לאבחון:</p>
+          <div className="bg-primary/5 rounded-2xl p-5 border border-primary/15 space-y-3">
+            <p className="font-semibold font-serif text-foreground text-base">וכמה הערות אחרונות לפני המעבר לאבחון:</p>
             <ul className="space-y-2 pr-2">
               {notes.map((note, i) => (
                 <li key={i} className="flex items-start gap-2 text-foreground text-sm">
-                  <span className="text-accent mt-0.5 flex-shrink-0">✦</span>
+                  <span className="text-secondary mt-0.5 flex-shrink-0">✦</span>
                   <span>{note}</span>
                 </li>
               ))}
@@ -89,7 +87,7 @@ const SectionIntro = ({
         <div className="text-center pt-4">
           <button
             onClick={onContinue}
-            className="px-10 py-4 bg-primary text-primary-foreground rounded-xl text-xl font-semibold hover:opacity-90 transition-all duration-300 hover:scale-105 shadow-lg"
+            className="px-10 py-4 bg-primary text-primary-foreground rounded-xl text-xl font-semibold font-serif hover:opacity-90 transition-all duration-300 hover:scale-105 shadow-lg"
           >
             {buttonText}
           </button>

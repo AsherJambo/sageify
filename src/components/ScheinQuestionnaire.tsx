@@ -25,10 +25,10 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete }: ScheinQuestionna
       <div className="w-full max-w-2xl space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold text-sm">
+          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
             🧭 חלק ב׳
           </div>
-          <h2 className="text-2xl font-bold text-foreground">עוגנים תעסוקתיים של שיין</h2>
+          <h2 className="text-2xl font-bold font-serif text-foreground">עוגנים תעסוקתיים של שיין</h2>
           <p className="text-muted-foreground">דרגו כל אמירה מ-1 (לא מסכים כלל) עד 7 (מסכים לחלוטין)</p>
         </div>
 
@@ -46,14 +46,12 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete }: ScheinQuestionna
         </div>
 
         {/* Owl encouragement */}
-        {encouragement && (
-          <OwlMessage message={encouragement} variant="encouragement" />
-        )}
+        {encouragement && <OwlMessage message={encouragement} variant="encouragement" />}
 
         {/* Questions */}
         <div className="space-y-4">
           {scheinQuestions.map((q, idx) => (
-            <div key={q.id} className="bg-card rounded-xl p-5 shadow-sm border border-border slide-up" style={{ animationDelay: `${Math.min(idx * 0.03, 0.5)}s` }}>
+            <div key={q.id} className="bg-card rounded-2xl p-5 shadow-md border border-border slide-up" style={{ animationDelay: `${Math.min(idx * 0.03, 0.5)}s` }}>
               <p className="text-question font-medium text-foreground mb-4">
                 {q.id}. {q.text}
               </p>
@@ -83,7 +81,7 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete }: ScheinQuestionna
           <button
             onClick={onComplete}
             disabled={!allAnswered}
-            className="px-10 py-4 rounded-lg bg-secondary text-secondary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
+            className="px-10 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
           >
             🦉 סיום חלק ב׳ ✓
           </button>

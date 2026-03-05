@@ -32,17 +32,17 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
     <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
       <div className="w-full max-w-2xl space-y-6">
         <div className="text-center space-y-2">
-          <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold text-sm">
+          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
             ⚙️ חלק ו׳
           </div>
-          <h2 className="text-2xl font-bold text-foreground">העדפות וחלום המגירה</h2>
+          <h2 className="text-2xl font-bold font-serif text-foreground">העדפות וחלום המגירה</h2>
           <p className="text-muted-foreground">ענו על שאלות ההעדפה ובחרו את חלום המגירה שלכם</p>
         </div>
 
         {/* Preference Questions */}
         {preferenceQuestions.map((q) => (
-          <div key={q.id} className="bg-card rounded-xl p-5 border border-border slide-up">
-            <h3 className="font-bold text-foreground text-lg mb-1">{q.title}</h3>
+          <div key={q.id} className="bg-card rounded-2xl p-5 border border-border shadow-md slide-up">
+            <h3 className="font-bold font-serif text-foreground text-lg mb-1">{q.title}</h3>
             {q.multiSelect && <p className="text-sm text-muted-foreground mb-3">ניתן לסמן מספר אפשרויות</p>}
             <div className="space-y-2">
               {q.options.map((opt, i) => {
@@ -66,8 +66,8 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
         ))}
 
         {/* Dream drawer */}
-        <div className="bg-card rounded-xl p-5 border border-accent/30 shadow-md slide-up">
-          <h3 className="font-bold text-foreground text-lg mb-1">🌟 חלום המגירה</h3>
+        <div className="bg-card rounded-2xl p-5 border-2 border-secondary/30 shadow-lg slide-up">
+          <h3 className="font-bold font-serif text-foreground text-lg mb-1">🌟 חלום המגירה</h3>
           <p className="text-sm text-muted-foreground mb-3">
             אם תבחר/י תחום אחד שתמיד רצית ללמוד או לעשות – מה יהיה?
           </p>
@@ -78,8 +78,8 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
                 onClick={() => setDream(opt)}
                 className={`w-full text-right px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
                   dream === opt
-                    ? 'bg-accent text-accent-foreground border-accent'
-                    : 'bg-background text-foreground border-border hover:border-accent/50'
+                    ? 'bg-secondary text-secondary-foreground border-secondary'
+                    : 'bg-background text-foreground border-border hover:border-secondary/50'
                 }`}
               >
                 {opt}
@@ -92,7 +92,7 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
           <button
             onClick={() => onComplete(preferences, dream)}
             disabled={!canComplete}
-            className="px-10 py-4 rounded-lg bg-secondary text-secondary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
+            className="px-10 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
           >
             🦉 סיום חלק ו׳ וצפייה בתוצאות ✓
           </button>

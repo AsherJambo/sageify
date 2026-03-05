@@ -23,7 +23,7 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
 
   const assign = (id: number, column: SkillColumn) => {
     if (column === 'winner' && winnerCount >= 7 && assignments[id] !== 'winner') {
-      return; // Max 7 in winner column
+      return;
     }
     setAssignments(prev => ({ ...prev, [id]: column }));
   };
@@ -32,10 +32,10 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
     <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
       <div className="w-full max-w-3xl space-y-6">
         <div className="text-center space-y-2">
-          <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold text-sm">
+          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
             🧰 חלק ה׳
           </div>
-          <h2 className="text-2xl font-bold text-foreground">כישורים ותנאי סף</h2>
+          <h2 className="text-2xl font-bold font-serif text-foreground">כישורים ותנאי סף</h2>
           <p className="text-muted-foreground">מיינו כל כישור לאחת מ-4 העמודות (מינימום 5 ומקסימום 7 בעמודת "הארגז המנצח")</p>
         </div>
 
@@ -57,7 +57,7 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
         {/* Skills list */}
         <div className="space-y-3">
           {skills.map((skill) => (
-            <div key={skill.id} className="bg-card rounded-xl p-4 border border-border slide-up">
+            <div key={skill.id} className="bg-card rounded-2xl p-4 border border-border shadow-md slide-up">
               <p className="text-foreground font-medium mb-3">{skill.id}. {skill.text}</p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {(Object.keys(columnLabels) as SkillColumn[]).map(col => (
@@ -65,12 +65,12 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
                     key={col}
                     onClick={() => assign(skill.id, col)}
                     disabled={col === 'winner' && winnerCount >= 7 && assignments[skill.id] !== 'winner'}
-                    className={`px-2 py-2 rounded-lg text-sm font-medium transition-all duration-200 border-2 ${
+                    className={`px-2 py-2 rounded-xl text-sm font-medium transition-all duration-200 border-2 ${
                       assignments[skill.id] === col
                         ? col === 'winner'
                           ? 'bg-secondary text-secondary-foreground border-secondary'
                           : col === 'burnout'
-                          ? 'bg-accent text-accent-foreground border-accent'
+                          ? 'bg-primary text-primary-foreground border-primary'
                           : col === 'aspire'
                           ? 'bg-primary/20 text-primary border-primary'
                           : 'bg-muted text-muted-foreground border-muted-foreground/30'
@@ -89,7 +89,7 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
           <button
             onClick={() => onComplete(assignments)}
             disabled={!allAssigned || winnerCount < 5}
-            className="px-10 py-4 rounded-lg bg-secondary text-secondary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
+            className="px-10 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
           >
             🦉 סיום חלק ה׳ ✓
           </button>
