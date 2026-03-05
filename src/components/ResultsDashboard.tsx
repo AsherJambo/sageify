@@ -107,12 +107,12 @@ const ResultsDashboard = ({
         </div>
 
         {/* AI Narrative */}
-        <div className={`transition-all duration-700 ${showNarrative ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-lg">
-            <div className="flex items-start gap-3">
+        <div className={`transition-all duration-1000 ${showNarrative ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
+            <div className="flex items-start gap-4">
               <img src={owlLogo} alt="" className="w-12 h-12 rounded-full flex-shrink-0" />
               <div>
-                <h3 className="text-lg font-bold font-serif text-secondary mb-2">{owlCelebrations.narrative}תובנה מרכזית</h3>
+                <h3 className="text-lg font-bold font-display text-secondary mb-3 tracking-wide">{owlCelebrations.narrative}תובנה מרכזית</h3>
                 <p className="text-foreground leading-relaxed text-lg">{generateNarrative()}</p>
               </div>
             </div>
