@@ -219,7 +219,7 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="כתבו הודעה לינשוף..."
+          placeholder="כתבו הודעה לסגי..."
           className="resize-none min-h-[44px] max-h-[120px] rounded-xl"
           rows={1}
           disabled={isLoading}

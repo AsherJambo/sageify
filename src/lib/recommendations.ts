@@ -77,7 +77,7 @@ const recommendationPool: Record<string, Recommendation[]> = {
 
 // Default/fallback recommendations
 const defaultRecommendations: Recommendation[] = [
-  { title: 'מנטור מקצועי מנוסה', description: 'שתפו את שנות הניסיון עם הדור הבא', reason: 'מתאים לך כי יש לך ניסיון חיים עשיר שאפשר להעביר הלאה', type: 'volunteer', platform: 'Points of Light', platformUrl: 'https://engage.pointsoflight.org', icon: '🦉' },
+  { title: 'מנטור מקצועי מנוסה', description: 'שתפו את שנות הניסיון עם הדור הבא', reason: 'מתאים לך כי יש לך ניסיון חיים עשיר שאפשר להעביר הלאה', type: 'volunteer', platform: 'Points of Light', platformUrl: 'https://engage.pointsoflight.org', icon: '🌿' },
   { title: 'יועץ פרילנסר בתחום המומחיות', description: 'הפכו את הידע שצברתם לפעילות מניבה', reason: 'מנצל את הידע המקצועי שצברת לאורך השנים', type: 'freelance', platform: 'Upwork', platformUrl: 'https://www.upwork.com', icon: '💼' },
   { title: 'מתנדב בארגון חברתי', description: 'תרמו מזמנכם ומניסיונכם לקהילה', reason: 'מאפשר לך למצוא משמעות דרך נתינה וקשרים חברתיים', type: 'volunteer', platform: 'Idealist', platformUrl: 'https://www.idealist.org', icon: '❤️' },
   { title: 'מנחה סדנאות קהילתיות', description: 'העבירו ידע וניסיון בפורמט קבוצתי מעשיר', reason: 'משלב בין אינטראקציה אנושית לשיתוף ידע מעשי', type: 'volunteer', platform: 'Points of Light', platformUrl: 'https://engage.pointsoflight.org', icon: '🎓' },

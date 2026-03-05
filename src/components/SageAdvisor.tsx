@@ -360,7 +360,7 @@ const SageAdvisor = ({
               }}
               className="w-full max-w-sm mx-auto py-6 text-lg bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl shadow-md"
             >
-              סיום והמשך לסיכום 🦉
+              סיום והמשך לסיכום
             </Button>
           </div>
         )}

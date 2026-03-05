@@ -84,7 +84,7 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
             disabled={selected.length !== 3}
             className="px-10 py-4 rounded-xl bg-primary text-primary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
           >
-            🦉 אישור הבחירה →
+            אישור הבחירה →
           </button>
         </div>
       </div>

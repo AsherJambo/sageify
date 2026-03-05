@@ -345,7 +345,7 @@ const ResultsDashboard = ({
             📄 הורדה כ-PDF
           </button>
           <br />
-          <p className="text-muted-foreground mb-3 text-sm">🦉 הינשוף תמיד כאן אם תרצו לעבור שוב</p>
+          <p className="text-muted-foreground mb-3 text-sm">סגי תמיד כאן אם תרצו לעבור שוב</p>
           <button
             onClick={() => {
               localStorage.clear();

@@ -28,7 +28,7 @@ const OwlMessage = ({ message, variant = 'encouragement' }: OwlMessageProps) => 
     >
       <img
         src={owlLogo}
-        alt="הינשוף של Sageify"
+        alt="Sageify"
         className="w-10 h-10 rounded-full flex-shrink-0 animate-bounce-gentle"
       />
       <p className="text-foreground text-base leading-relaxed pt-1">{message}</p>

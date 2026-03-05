@@ -115,7 +115,7 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
             >
               <span className="flex items-center gap-2 justify-center">
                 {owlWelcome.cta}
-                <span className="inline-block transition-transform group-hover:translate-x-[-4px]">🦉</span>
+                <span className="inline-block transition-transform group-hover:translate-x-[-4px]">→</span>
               </span>
             </button>
           </div>
