@@ -320,15 +320,15 @@ const SageAdvisor = ({
 
         {/* Advisor Response Card — Guided Journey style */}
         {latestAssistantMsg && (
-          <div className="bg-card rounded-2xl border border-border p-8 shadow-lg" dir="rtl">
-            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-border">
-              <img src={owlLogo} alt="" className="w-10 h-10 rounded-full ring-1 ring-secondary/30" />
+          <div className="bg-card rounded-3xl border border-border/60 p-10 shadow-[var(--shadow-card)]" dir="rtl">
+            <div className="flex items-center gap-4 mb-6 pb-5 border-b border-border/60">
+              <img src={owlLogo} alt="" className="w-12 h-12 rounded-full ring-1 ring-secondary/20" />
               <div>
-                <p className="font-semibold font-serif text-foreground">סגי – יועץ הקריירה שלך</p>
+                <p className="font-semibold font-display text-foreground tracking-wide">סגי – יועץ הקריירה שלך</p>
                 <p className="text-xs text-muted-foreground">ניתוח מבוסס AI</p>
               </div>
             </div>
-            <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-serif [&_h2]:text-secondary [&_h2]:font-serif [&_h3]:text-secondary [&_h3]:font-serif [&_strong]:text-secondary [&_li]:mb-1.5 text-foreground leading-relaxed">
+            <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h2]:text-secondary [&_h2]:font-display [&_h3]:text-secondary [&_h3]:font-display [&_strong]:text-secondary [&_li]:mb-1.5 text-foreground leading-relaxed">
               <ReactMarkdown>{latestAssistantMsg.content}</ReactMarkdown>
             </div>
           </div>
