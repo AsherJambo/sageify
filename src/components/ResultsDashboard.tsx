@@ -150,14 +150,14 @@ const ResultsDashboard = ({
         </div>
 
         {/* Recommendations */}
-        <div className={`transition-all duration-700 ${showRecommendations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-lg">
-            <div className="flex items-center gap-3 mb-5">
-              <img src={owlLogo} alt="" className="w-10 h-10 rounded-full" />
+        <div className={`transition-all duration-1000 ${showRecommendations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
+            <div className="flex items-center gap-4 mb-6">
+              <img src={owlLogo} alt="" className="w-12 h-12 rounded-full" />
               <div>
-              <h3 className="text-lg font-bold font-serif text-foreground">ההמלצות של סגי</h3>
+              <h3 className="text-lg font-bold font-display text-foreground tracking-wide">ההמלצות של סגי</h3>
                 <p className="text-sm text-muted-foreground">
-                  {aiRecommendations ? 'תובנות והמלצות מהשיחה עם היועץ' : 'הנה כיוונים שמתאימים בדיוק לפרופיל שלכם'}
+                  {aiRecommendations ? 'תובנות והמלצות מהשיחה עם היועץ' : 'כיוונים שמתאימים בדיוק לפרופיל שלכם'}
                 </p>
               </div>
             </div>
