@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cloudClient } from '@/lib/cloudClient';
-import owlLogo from '@/assets/owl-logo.png';
+import owlLogo from '@/assets/sageify-logo.jpeg';
 import { toast } from 'sonner';
 import ResponseViewer from '@/components/ResponseViewer';
 import { generatePrintHTML } from '@/lib/pdfTemplate';
