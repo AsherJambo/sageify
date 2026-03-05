@@ -14,10 +14,10 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
   const [showCTA, setShowCTA] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setShowGreeting(true), 300);
-    setTimeout(() => setShowIntro(true), 900);
-    setTimeout(() => setShowDetails(true), 1500);
-    setTimeout(() => setShowCTA(true), 2200);
+    setTimeout(() => setShowGreeting(true), 500);
+    setTimeout(() => setShowIntro(true), 1400);
+    setTimeout(() => setShowDetails(true), 2400);
+    setTimeout(() => setShowCTA(true), 3400);
   }, []);
 
   const journeySteps = [
@@ -42,8 +42,8 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
         
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-6 text-center">
           <div
-            className={`transition-all duration-1000 ease-out ${
-              showGreeting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              showGreeting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
             <img
@@ -63,12 +63,12 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
 
       {/* Content below hero */}
       <div className="flex-1 flex flex-col items-center px-6 -mt-10 relative z-20">
-        <div className="max-w-2xl w-full space-y-12">
+        <div className="max-w-2xl w-full space-y-16">
 
           {/* Greeting card */}
           <div
-            className={`transition-all duration-1000 ease-out ${
-              showIntro ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              showIntro ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             <div className="bg-card rounded-3xl p-10 shadow-[var(--shadow-card)] border border-border/60">
@@ -83,8 +83,8 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
 
           {/* Journey steps — editorial numbered list */}
           <div
-            className={`transition-all duration-1000 ease-out ${
-              showDetails ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              showDetails ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             <div className="space-y-3">
@@ -111,8 +111,8 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
 
           {/* CTA */}
           <div
-            className={`transition-all duration-1000 ease-out text-center pb-16 ${
-              showCTA ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95'
+            className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] text-center pb-20 ${
+              showCTA ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
             }`}
           >
             <button

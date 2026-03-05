@@ -22,8 +22,8 @@ const SectionIntro = ({
   buttonText = 'בואו נמשיך →',
 }: SectionIntroProps) => {
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
-      <div className="w-full max-w-2xl space-y-8">
+    <div className="min-h-screen flex flex-col items-center px-4 py-16 fade-in">
+      <div className="w-full max-w-2xl space-y-10">
         {/* Logo */}
         <div className="text-center">
           <img
@@ -84,7 +84,7 @@ const SectionIntro = ({
         )}
 
         {/* CTA */}
-        <div className="text-center pt-6">
+        <div className="text-center pt-10">
           <button
             onClick={onContinue}
             className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)]"
