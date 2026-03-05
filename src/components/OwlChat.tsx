@@ -140,21 +140,21 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
 
   if (!isOpen) {
     return (
-      <div className="bg-card rounded-2xl p-6 border-2 border-secondary/30 shadow-lg">
+      <div className="bg-card rounded-3xl p-8 border border-secondary/15 shadow-[var(--shadow-card)]">
         <div className="flex items-center gap-4">
           <img src={owlLogo} alt="" className="w-16 h-16 rounded-full animate-float" />
           <div className="flex-1">
-            <h3 className="text-xl font-bold font-serif text-foreground mb-1">שיחה עם סגי – יועץ Sageify</h3>
+            <h3 className="text-xl font-bold font-display text-foreground mb-1 tracking-wide">שיחה עם סגי – יועץ Sageify</h3>
             <p className="text-muted-foreground">
-              רוצים להפוך את התוצאות לתכנית עבודה? סגי כאן כדי לעזור לכם לבנות את הצעד הבא – בשיחה פתוחה ואישית.
+              רוצים להפוך את התוצאות לתכנית עבודה? סגי כאן כדי לעזור לכם לבנות את הצעד הבא.
             </p>
           </div>
         </div>
         <Button
           onClick={startChat}
-          className="w-full mt-4 text-lg py-6 bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl font-serif"
+          className="w-full mt-5 text-lg py-6 bg-primary text-primary-foreground hover:bg-primary/85 rounded-2xl font-display tracking-wide shadow-[var(--shadow-elevated)]"
         >
-          {hasStarted ? 'חזרה לשיחה' : 'בואו נדבר!'}
+          {hasStarted ? 'חזרה לשיחה' : 'בואו נדבר'}
         </Button>
       </div>
     );
