@@ -266,8 +266,8 @@ const SageAdvisor = ({
         </div>
 
         {/* Profile Summary Card */}
-        <div className="bg-card rounded-2xl border border-border p-6 shadow-lg" dir="rtl">
-          <h3 className="text-lg font-bold font-serif text-foreground mb-4 flex items-center gap-2">
+        <div className="bg-card rounded-3xl border border-border/60 p-8 shadow-[var(--shadow-card)]" dir="rtl">
+          <h3 className="text-lg font-bold font-display text-foreground mb-4 flex items-center gap-3 tracking-wide">
             <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm">📊</span>
             סיכום הפרופיל האישי שלך
           </h3>
