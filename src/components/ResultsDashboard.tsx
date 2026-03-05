@@ -177,7 +177,7 @@ const ResultsDashboard = ({
               <div>
                 <h3 className="text-lg font-bold text-foreground">🦉 ההמלצות של הינשוף</h3>
                 <p className="text-sm text-muted-foreground">
-                  {aiRecommendations ? 'תובנות והמלצות מהשיחה עם היועץ' : 'הנה 3 כיוונים שמתאימים בדיוק לפרופיל שלכם'}
+                  {aiRecommendations ? 'תובנות והמלצות מהשיחה עם היועץ' : 'הנה כיוונים שמתאימים בדיוק לפרופיל שלכם'}
                 </p>
               </div>
             </div>
