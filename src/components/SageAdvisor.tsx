@@ -8,6 +8,7 @@ import { getTopCategories } from '@/lib/scoring';
 import { getRecommendations } from '@/lib/recommendations';
 import type { SkillColumn } from '@/data/skillsData';
 import { skills } from '@/data/skillsData';
+import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
 
 interface SageAdvisorProps {
   username?: string;
