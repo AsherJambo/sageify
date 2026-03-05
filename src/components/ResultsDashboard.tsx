@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
-import owlLogo from '@/assets/owl-logo.png';
+import owlLogo from '@/assets/sageify-logo.jpeg';
 import { getTopCategories } from '@/lib/scoring';
 import { owlCelebrations } from '@/lib/owlMessages';
 import { getRecommendations, type Recommendation } from '@/lib/recommendations';

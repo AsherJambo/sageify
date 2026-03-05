@@ -1,4 +1,4 @@
-import owlLogo from '@/assets/owl-logo.png';
+import owlLogo from '@/assets/sageify-logo.jpeg';
 
 interface SectionIntroProps {
   title?: string;
