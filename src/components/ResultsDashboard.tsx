@@ -120,13 +120,13 @@ const ResultsDashboard = ({
         </div>
 
         {/* Top Highlights */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 transition-all duration-700 ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-            <h3 className="text-lg font-bold font-serif text-foreground mb-1">🌟 חוזקות מובילות (VIA)</h3>
-            <p className="text-sm text-muted-foreground mb-4">{owlCelebrations.topStrength}</p>
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-5 transition-all duration-1000 ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+            <h3 className="text-lg font-bold font-display text-foreground mb-1 tracking-wide">חוזקות מובילות (VIA)</h3>
+            <p className="text-sm text-muted-foreground mb-5">{owlCelebrations.topStrength}</p>
             {topVIA.map((item, i) => (
-              <div key={item.category} className="flex items-center gap-3 mb-3">
-                <span className="w-8 h-8 rounded-full bg-secondary/15 text-secondary flex items-center justify-center font-bold text-lg">{i + 1}</span>
+              <div key={item.category} className="flex items-center gap-4 mb-4">
+                <span className="w-9 h-9 rounded-full bg-secondary/8 text-secondary flex items-center justify-center font-display font-bold text-lg">{i + 1}</span>
                 <div className="flex-1">
                   <p className="font-semibold text-foreground">{item.category}</p>
                   <p className="text-sm text-muted-foreground">{viaCategoryDescriptions[item.category] || ''}</p>
@@ -134,12 +134,12 @@ const ResultsDashboard = ({
               </div>
             ))}
           </div>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-            <h3 className="text-lg font-bold font-serif text-foreground mb-1">🧭 עוגנים מובילים (שיין)</h3>
-            <p className="text-sm text-muted-foreground mb-4">{owlCelebrations.topAnchor}</p>
+          <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+            <h3 className="text-lg font-bold font-display text-foreground mb-1 tracking-wide">עוגנים מובילים (שיין)</h3>
+            <p className="text-sm text-muted-foreground mb-5">{owlCelebrations.topAnchor}</p>
             {topSchein.map((item, i) => (
-              <div key={item.category} className="flex items-center gap-3 mb-3">
-                <span className="w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-lg">{i + 1}</span>
+              <div key={item.category} className="flex items-center gap-4 mb-4">
+                <span className="w-9 h-9 rounded-full bg-primary/8 text-primary flex items-center justify-center font-display font-bold text-lg">{i + 1}</span>
                 <div className="flex-1">
                   <p className="font-semibold text-foreground">{item.category}</p>
                   <p className="text-sm text-muted-foreground">{scheinCategoryDescriptions[item.category] || ''}</p>
