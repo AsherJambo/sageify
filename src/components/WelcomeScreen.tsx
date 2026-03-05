@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import sageifyLogo from '@/assets/sageify-logo.jpeg';
+import sageifyLogo from '@/assets/sageify-owl-icon.jpeg';
 import heroBanner from '@/assets/hero-banner.png';
 import { owlWelcome } from '@/lib/owlMessages';
 
