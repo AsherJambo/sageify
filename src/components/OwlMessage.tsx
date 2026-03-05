@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import owlLogo from '@/assets/sageify-logo.jpeg';
+import owlLogo from '@/assets/sageify-owl-icon.jpeg';
 
 interface OwlMessageProps {
   message: string;

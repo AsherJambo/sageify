@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CheckCircle } from 'lucide-react';
-import owlLogo from '@/assets/sageify-logo.jpeg';
+import owlLogo from '@/assets/sageify-owl-icon.jpeg';
 
 interface BonusSelectionProps {
   title: string;

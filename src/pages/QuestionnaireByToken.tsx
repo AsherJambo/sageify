@@ -23,7 +23,7 @@ import {
 import {
   type Answers, calculateCategoryScores, getMaxScoredQuestions, applyBonus,
 } from '@/lib/scoring';
-import owlLogo from '@/assets/sageify-logo.jpeg';
+import owlLogo from '@/assets/sageify-owl-icon.jpeg';
 
 type Step =
   | 'loading' | 'invalid' | 'used'
