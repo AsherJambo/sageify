@@ -161,15 +161,15 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
   }
 
   return (
-    <div className="bg-card rounded-2xl border-2 border-secondary/30 shadow-lg overflow-hidden">
+    <div className="bg-card rounded-3xl border border-secondary/15 shadow-[var(--shadow-card)] overflow-hidden">
       {/* Header */}
-      <div className="bg-primary/5 px-5 py-3 flex items-center gap-3 border-b border-border">
+      <div className="bg-primary/3 px-6 py-4 flex items-center gap-4 border-b border-border/60">
         <img src={owlLogo} alt="" className="w-10 h-10 rounded-full" />
         <div className="flex-1">
-          <h3 className="font-bold font-serif text-foreground">סגי – יועץ Sageify</h3>
+          <h3 className="font-bold font-display text-foreground tracking-wide">סגי – יועץ Sageify</h3>
           <p className="text-xs text-muted-foreground">יועץ קריירה AI אישי</p>
         </div>
-        <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
+        <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} className="text-muted-foreground">
           ▾ מזער
         </Button>
       </div>
