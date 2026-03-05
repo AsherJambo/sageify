@@ -64,7 +64,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
           </div>
           <h2 className="text-2xl font-bold text-foreground">שיקולים בבחירת עיסוק</h2>
           {phase === 'select' ? (
-            <p className="text-muted-foreground">בחרו 6 שיקולים שהכי חשובים לכם מהרשימה</p>
+            <p className="text-muted-foreground">בחרו 6 שיקולים שיגרמו לכם לבחור בעיסוק ספציפי</p>
           ) : (
             <p className="text-muted-foreground">חלקו 100 נקודות בין 6 השיקולים שבחרתם לפי חשיבותם</p>
           )}
