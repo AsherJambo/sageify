@@ -166,7 +166,7 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
       <div className="bg-primary/5 px-5 py-3 flex items-center gap-3 border-b border-border">
         <img src={owlLogo} alt="" className="w-10 h-10 rounded-full" />
         <div className="flex-1">
-          <h3 className="font-bold font-serif text-foreground">🦉 הינשוף היועץ</h3>
+          <h3 className="font-bold font-serif text-foreground">סגי – יועץ Sageify</h3>
           <p className="text-xs text-muted-foreground">יועץ קריירה AI אישי</p>
         </div>
         <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
