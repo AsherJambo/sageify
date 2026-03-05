@@ -175,7 +175,7 @@ const ResultsDashboard = ({
                     href={rec.platformUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-background rounded-xl p-5 border border-border hover:border-secondary/50 hover:shadow-md transition-all duration-300 group"
+                    className="block bg-background rounded-2xl p-6 border border-border/60 hover:border-secondary/30 hover:shadow-[var(--shadow-card)] transition-all duration-300 group"
                   >
                     <div className="flex items-start gap-4">
                       <span className="text-3xl flex-shrink-0">{rec.icon}</span>
