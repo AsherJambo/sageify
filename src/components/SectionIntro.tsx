@@ -22,8 +22,8 @@ const SectionIntro = ({
   buttonText = 'בואו נמשיך →',
 }: SectionIntroProps) => {
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
-      <div className="w-full max-w-2xl space-y-8">
+    <div className="min-h-screen flex flex-col items-center px-4 py-16 fade-in">
+      <div className="w-full max-w-2xl space-y-10">
         {/* Logo */}
         <div className="text-center">
           <img
