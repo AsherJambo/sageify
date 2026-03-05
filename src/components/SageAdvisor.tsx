@@ -227,21 +227,20 @@ const SageAdvisor = ({
   if (phase === 'loading') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6">
-        <div className="max-w-md text-center space-y-6">
-          <img src={owlLogo} alt="Sage Advisor" className="w-28 h-28 mx-auto animate-float" />
-          <h2 className="text-2xl font-bold font-serif text-foreground">
-            ה-Sage Advisor מנתח את התשובות שלך...
+        <div className="max-w-md text-center space-y-8">
+          <img src={owlLogo} alt="Sage Advisor" className="w-28 h-28 mx-auto animate-float rounded-full shadow-[var(--shadow-elevated)]" />
+          <h2 className="text-3xl font-bold font-display text-foreground tracking-wide">
+            מנתח את התוצאות שלך...
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-lg">
             מעבד את הפרופיל שלך ומכין תובנות מותאמות אישית
           </p>
-          <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-muted/40 rounded-full overflow-hidden">
             <div
               className="h-full bg-secondary rounded-full progress-bar-fill animate-pulse"
               style={{ width: '85%' }}
             />
           </div>
-          <p className="text-sm text-muted-foreground">85%</p>
         </div>
       </div>
     );
