@@ -162,8 +162,8 @@ const ResultsDashboard = ({
               </div>
             </div>
             {aiRecommendations ? (
-              <div className="bg-background rounded-xl p-5 border border-border">
-                <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_h1]:text-lg [&_h1]:font-serif [&_h2]:text-base [&_h2]:font-serif [&_h3]:text-sm [&_h3]:font-serif [&_ul]:mr-4 [&_ol]:mr-4 [&_li]:mb-1" dir="rtl">
+              <div className="bg-background rounded-2xl p-6 border border-border/60">
+                <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_h1]:text-lg [&_h1]:font-display [&_h2]:text-base [&_h2]:font-display [&_h3]:text-sm [&_h3]:font-display [&_ul]:mr-4 [&_ol]:mr-4 [&_li]:mb-1" dir="rtl">
                   <ReactMarkdown>{aiRecommendations}</ReactMarkdown>
                 </div>
               </div>
