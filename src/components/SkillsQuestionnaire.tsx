@@ -71,6 +71,8 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
                           ? 'bg-secondary text-secondary-foreground border-secondary'
                           : col === 'burnout'
                           ? 'bg-accent text-accent-foreground border-accent'
+                          : col === 'aspire'
+                          ? 'bg-primary/20 text-primary border-primary'
                           : 'bg-muted text-muted-foreground border-muted-foreground/30'
                         : 'bg-background text-foreground border-border hover:border-primary/30 disabled:opacity-30'
                     }`}
