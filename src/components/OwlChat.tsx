@@ -205,7 +205,7 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
           <div className="flex gap-3">
             <img src={owlLogo} alt="" className="w-8 h-8 rounded-full flex-shrink-0 mt-1" />
             <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-3">
-              <span className="text-muted-foreground text-sm animate-pulse">🦉 הינשוף חושב...</span>
+              <span className="text-muted-foreground text-sm animate-pulse">🌿 סגי חושב...</span>
             </div>
           </div>
         )}
