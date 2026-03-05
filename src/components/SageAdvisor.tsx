@@ -104,7 +104,7 @@ const SageAdvisor = ({
     parts.push(`עוגני קריירה חלשים: ${bottomSchein.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
     if (topHolland.length > 0) parts.push(`נטיות הולנד חזקות: ${topHolland.map(([c, s]) => `${c} (${s})`).join(', ')}`);
     if (bottomHolland.length > 0) parts.push(`נטיות הולנד חלשות: ${bottomHolland.map(([c, s]) => `${c} (${s})`).join(', ')}`);
-    if (winnerSkills.length > 0) parts.push(`כישורי מנצח: ${winnerSkills.join(', ')}`);
+    if (winnerSkills.length > 0) parts.push(`כישורים מובילים: ${winnerSkills.join(', ')}`);
     if (burnoutSkills.length > 0) parts.push(`כישורי שחיקה (להימנע): ${burnoutSkills.join(', ')}`);
     if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
     if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
