@@ -144,9 +144,9 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
         <div className="flex items-center gap-4">
           <img src={owlLogo} alt="" className="w-16 h-16 rounded-full animate-float" />
           <div className="flex-1">
-            <h3 className="text-xl font-bold font-serif text-foreground mb-1">🦉 שיחה עם הינשוף היועץ</h3>
+            <h3 className="text-xl font-bold font-serif text-foreground mb-1">שיחה עם סגי – יועץ Sageify</h3>
             <p className="text-muted-foreground">
-              רוצים להפוך את התוצאות לתכנית עבודה? הינשוף החכם כאן כדי לעזור לכם לבנות את הצעד הבא – בשיחה פתוחה ואישית.
+              רוצים להפוך את התוצאות לתכנית עבודה? סגי כאן כדי לעזור לכם לבנות את הצעד הבא – בשיחה פתוחה ואישית.
             </p>
           </div>
         </div>
