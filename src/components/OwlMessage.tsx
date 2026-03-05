@@ -15,10 +15,10 @@ const OwlMessage = ({ message, variant = 'encouragement' }: OwlMessageProps) => 
   }, [message]);
 
   const bgClass = variant === 'celebration'
-    ? 'bg-accent/10 border-accent/40'
-    : variant === 'tip'
     ? 'bg-secondary/10 border-secondary/30'
-    : 'bg-card border-accent/20';
+    : variant === 'tip'
+    ? 'bg-primary/5 border-primary/15'
+    : 'bg-card border-border';
 
   return (
     <div

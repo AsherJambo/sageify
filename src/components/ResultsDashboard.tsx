@@ -21,30 +21,19 @@ interface ResultsDashboardProps {
 }
 
 const ResultsDashboard = ({
-  viaScores,
-  scheinScores,
-  hollandScores,
-  considerationsData,
-  skillsAssignments,
-  preferencesData,
-  chatMessages,
-  onChatMessagesChange,
+  viaScores, scheinScores, hollandScores,
+  considerationsData, skillsAssignments, preferencesData,
+  chatMessages, onChatMessagesChange,
 }: ResultsDashboardProps) => {
   const topVIA = getTopCategories(viaScores, 2);
   const topSchein = getTopCategories(scheinScores, 2);
 
-  // Extract only the Sage Action Roadmap from chat messages
   const aiRecommendations = useMemo(() => {
     if (!chatMessages || chatMessages.length === 0) return null;
-    
-    // Look for the roadmap marker in assistant messages
     const roadmapMessage = chatMessages
       .filter(m => m.role === 'assistant')
       .find(m => m.content.includes('🗺️'));
-    
     if (!roadmapMessage) return null;
-    
-    // Extract content starting from the roadmap marker
     const roadmapIndex = roadmapMessage.content.indexOf('🗺️');
     return roadmapMessage.content.slice(roadmapIndex);
   }, [chatMessages]);
@@ -75,7 +64,6 @@ const ResultsDashboard = ({
     return `הפרופיל שלכם מראה שהחוזקות המרכזיות שלכם הן "${v1}" ו"${v2}", בשילוב עם צורך עמוק ב"${s1}" ו"${s2}". שילוב ייחודי זה מעיד על כך שתפרחו בתפקידים שמאפשרים לכם להביא את החוכמה והניסיון שלכם לידי ביטוי, תוך שמירה על הערכים שחשובים לכם ביותר.`;
   };
 
-  // Winner skills
   const winnerSkills = skillsAssignments
     ? Object.entries(skillsAssignments)
         .filter(([, col]) => col === 'winner')
@@ -83,21 +71,14 @@ const ResultsDashboard = ({
         .filter(Boolean)
     : [];
 
-  // Top Holland
   const topHolland = hollandScores
-    ? Object.entries(hollandScores)
-        .sort(([, a], [, b]) => b - a)
-        .slice(0, 3)
+    ? Object.entries(hollandScores).sort(([, a], [, b]) => b - a).slice(0, 3)
     : [];
 
-  // Top considerations
   const topConsiderations = considerationsData
-    ? Object.entries(considerationsData.points)
-        .sort(([, a], [, b]) => b - a)
-        .slice(0, 6)
+    ? Object.entries(considerationsData.points).sort(([, a], [, b]) => b - a).slice(0, 6)
     : [];
 
-  // Build profile summary for AI (synced with SageAdvisor)
   const profileSummary = useMemo(() => {
     const parts: string[] = [];
     parts.push(`חוזקות VIA מובילות: ${topVIA.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
@@ -106,7 +87,6 @@ const ResultsDashboard = ({
     if (winnerSkills.length > 0) parts.push(`כישורים מובילים: ${winnerSkills.join(', ')}`);
     if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
     if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
-    // Sync recommendations from report
     parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
     staticRecommendations.forEach((rec, i) => {
       parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.reason}`);
@@ -117,22 +97,22 @@ const ResultsDashboard = ({
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8">
       <div className="w-full max-w-3xl space-y-8">
-        {/* Header with celebration */}
+        {/* Header */}
         <div className={`text-center space-y-4 transition-all duration-700 ${showHeader ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto animate-float" />
-          <p className="text-lg text-accent font-semibold">{owlCelebrations.profileReady}</p>
-          <h1 className="text-3xl font-bold text-foreground">
-            הפרופיל שלכם ב-<span className="text-accent">Sageify</span>
+          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto rounded-full shadow-lg animate-float" />
+          <p className="text-lg text-secondary font-semibold">{owlCelebrations.profileReady}</p>
+          <h1 className="text-3xl font-bold font-serif text-foreground">
+            הפרופיל שלכם ב-<span className="text-secondary">Sageify</span>
           </h1>
         </div>
 
-        {/* AI Narrative with owl */}
+        {/* AI Narrative */}
         <div className={`transition-all duration-700 ${showNarrative ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="bg-card rounded-2xl p-6 border border-accent/30 shadow-md">
+          <div className="bg-card rounded-2xl p-6 border border-border shadow-lg">
             <div className="flex items-start gap-3">
               <img src={owlLogo} alt="" className="w-12 h-12 rounded-full flex-shrink-0" />
               <div>
-                <h3 className="text-lg font-bold text-accent mb-2">{owlCelebrations.narrative}תובנה מרכזית</h3>
+                <h3 className="text-lg font-bold font-serif text-secondary mb-2">{owlCelebrations.narrative}תובנה מרכזית</h3>
                 <p className="text-foreground leading-relaxed text-lg">{generateNarrative()}</p>
               </div>
             </div>
@@ -141,12 +121,12 @@ const ResultsDashboard = ({
 
         {/* Top Highlights */}
         <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 transition-all duration-700 ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-sm">
-            <h3 className="text-lg font-bold text-foreground mb-1">🌟 חוזקות מובילות (VIA)</h3>
+          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
+            <h3 className="text-lg font-bold font-serif text-foreground mb-1">🌟 חוזקות מובילות (VIA)</h3>
             <p className="text-sm text-muted-foreground mb-4">{owlCelebrations.topStrength}</p>
             {topVIA.map((item, i) => (
               <div key={item.category} className="flex items-center gap-3 mb-3">
-                <span className="w-8 h-8 rounded-full bg-accent/15 text-accent flex items-center justify-center font-bold text-lg">{i + 1}</span>
+                <span className="w-8 h-8 rounded-full bg-secondary/15 text-secondary flex items-center justify-center font-bold text-lg">{i + 1}</span>
                 <div className="flex-1">
                   <p className="font-semibold text-foreground">{item.category}</p>
                   <p className="text-sm text-muted-foreground">{viaCategoryDescriptions[item.category] || ''}</p>
@@ -154,12 +134,12 @@ const ResultsDashboard = ({
               </div>
             ))}
           </div>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-sm">
-            <h3 className="text-lg font-bold text-foreground mb-1">🧭 עוגנים מובילים (שיין)</h3>
+          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
+            <h3 className="text-lg font-bold font-serif text-foreground mb-1">🧭 עוגנים מובילים (שיין)</h3>
             <p className="text-sm text-muted-foreground mb-4">{owlCelebrations.topAnchor}</p>
             {topSchein.map((item, i) => (
               <div key={item.category} className="flex items-center gap-3 mb-3">
-                <span className="w-8 h-8 rounded-full bg-secondary/15 text-secondary flex items-center justify-center font-bold text-lg">{i + 1}</span>
+                <span className="w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-lg">{i + 1}</span>
                 <div className="flex-1">
                   <p className="font-semibold text-foreground">{item.category}</p>
                   <p className="text-sm text-muted-foreground">{scheinCategoryDescriptions[item.category] || ''}</p>
@@ -169,13 +149,13 @@ const ResultsDashboard = ({
           </div>
         </div>
 
-        {/* Recommendations - AI-based from advisor chat */}
+        {/* Recommendations */}
         <div className={`transition-all duration-700 ${showRecommendations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="bg-card rounded-2xl p-6 border border-accent/30 shadow-md">
+          <div className="bg-card rounded-2xl p-6 border border-border shadow-lg">
             <div className="flex items-center gap-3 mb-5">
               <img src={owlLogo} alt="" className="w-10 h-10 rounded-full" />
               <div>
-                <h3 className="text-lg font-bold text-foreground">🦉 ההמלצות של הינשוף</h3>
+                <h3 className="text-lg font-bold font-serif text-foreground">🦉 ההמלצות של הינשוף</h3>
                 <p className="text-sm text-muted-foreground">
                   {aiRecommendations ? 'תובנות והמלצות מהשיחה עם היועץ' : 'הנה כיוונים שמתאימים בדיוק לפרופיל שלכם'}
                 </p>
@@ -183,7 +163,7 @@ const ResultsDashboard = ({
             </div>
             {aiRecommendations ? (
               <div className="bg-background rounded-xl p-5 border border-border">
-                <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_h1]:text-lg [&_h2]:text-base [&_h3]:text-sm [&_ul]:mr-4 [&_ol]:mr-4 [&_li]:mb-1" dir="rtl">
+                <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_h1]:text-lg [&_h1]:font-serif [&_h2]:text-base [&_h2]:font-serif [&_h3]:text-sm [&_h3]:font-serif [&_ul]:mr-4 [&_ol]:mr-4 [&_li]:mb-1" dir="rtl">
                   <ReactMarkdown>{aiRecommendations}</ReactMarkdown>
                 </div>
               </div>
@@ -195,24 +175,24 @@ const ResultsDashboard = ({
                     href={rec.platformUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-background rounded-xl p-5 border border-border hover:border-accent/50 hover:shadow-md transition-all duration-300 group"
+                    className="block bg-background rounded-xl p-5 border border-border hover:border-secondary/50 hover:shadow-md transition-all duration-300 group"
                   >
                     <div className="flex items-start gap-4">
                       <span className="text-3xl flex-shrink-0">{rec.icon}</span>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <h4 className="font-bold text-foreground group-hover:text-accent transition-colors">{rec.title}</h4>
+                          <h4 className="font-bold font-serif text-foreground group-hover:text-secondary transition-colors">{rec.title}</h4>
                           <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                             rec.type === 'volunteer' ? 'bg-secondary/15 text-secondary' :
-                            rec.type === 'freelance' ? 'bg-accent/15 text-accent' :
-                            'bg-primary/15 text-primary'
+                            rec.type === 'freelance' ? 'bg-primary/15 text-primary' :
+                            'bg-muted text-muted-foreground'
                           }`}>
                             {rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}
                           </span>
                         </div>
                         <p className="text-sm text-muted-foreground leading-relaxed mb-1">{rec.description}</p>
-                        <p className="text-xs text-accent italic">{rec.reason}</p>
-                        <span className="text-xs text-accent font-medium">
+                        <p className="text-xs text-secondary italic">{rec.reason}</p>
+                        <span className="text-xs text-secondary font-medium">
                           מצאו הזדמנויות ב-{rec.platform} ←
                         </span>
                       </div>
@@ -226,9 +206,8 @@ const ResultsDashboard = ({
 
         {/* Charts */}
         <div className={`space-y-6 transition-all duration-700 ${showCharts ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          {/* VIA Chart */}
-          <div className="bg-card rounded-2xl p-6 border border-border">
-            <h3 className="text-lg font-bold text-foreground mb-4">חוזקות VIA – כל הקטגוריות</h3>
+          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
+            <h3 className="text-lg font-bold font-serif text-foreground mb-4">חוזקות VIA – כל הקטגוריות</h3>
             <div className="space-y-3">
               {Object.entries(viaScores)
                 .sort(([, a], [, b]) => b - a)
@@ -249,9 +228,8 @@ const ResultsDashboard = ({
             </div>
           </div>
 
-          {/* Schein Chart */}
-          <div className="bg-card rounded-2xl p-6 border border-border">
-            <h3 className="text-lg font-bold text-foreground mb-4">עוגנים תעסוקתיים – כל הקטגוריות</h3>
+          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
+            <h3 className="text-lg font-bold font-serif text-foreground mb-4">עוגנים תעסוקתיים – כל הקטגוריות</h3>
             <div className="space-y-3">
               {Object.entries(scheinScores)
                 .sort(([, a], [, b]) => b - a)
@@ -263,7 +241,7 @@ const ResultsDashboard = ({
                     <p className="text-xs text-muted-foreground">{scheinCategoryDescriptions[cat] || ''}</p>
                     <div className="w-full h-4 bg-muted rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-accent rounded-full progress-bar-fill"
+                        className="h-full bg-primary rounded-full progress-bar-fill"
                         style={{ width: `${(score / 7) * 100}%` }}
                       />
                     </div>
@@ -273,12 +251,11 @@ const ResultsDashboard = ({
           </div>
         </div>
 
-        {/* Extra results from new questionnaires */}
+        {/* Extra results */}
         <div className={`space-y-6 transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          {/* Holland RIASEC */}
           {topHolland.length > 0 && (
-            <div className="bg-card rounded-2xl p-6 border border-border">
-              <h3 className="text-lg font-bold text-foreground mb-4">🔍 נטיות תעסוקתיות (הולנד)</h3>
+            <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
+              <h3 className="text-lg font-bold font-serif text-foreground mb-4">🔍 נטיות תעסוקתיות (הולנד)</h3>
               <div className="space-y-3">
                 {Object.entries(hollandScores || {})
                   .sort(([, a], [, b]) => b - a)
@@ -300,25 +277,23 @@ const ResultsDashboard = ({
             </div>
           )}
 
-          {/* Considerations */}
           {topConsiderations.length > 0 && (
-            <div className="bg-card rounded-2xl p-6 border border-border">
-              <h3 className="text-lg font-bold text-foreground mb-4">📋 שיקולים מובילים</h3>
+            <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
+              <h3 className="text-lg font-bold font-serif text-foreground mb-4">📋 שיקולים מובילים</h3>
               <div className="space-y-3">
                 {topConsiderations.map(([item, pts]) => (
                   <div key={item} className="flex justify-between items-center bg-background rounded-xl px-4 py-3 border border-border">
                     <span className="font-medium text-foreground">{item}</span>
-                    <span className="text-accent font-bold text-lg">{pts} נק׳</span>
+                    <span className="text-secondary font-bold text-lg">{pts} נק׳</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Winner Skills */}
           {winnerSkills.length > 0 && (
-            <div className="bg-card rounded-2xl p-6 border border-border">
-              <h3 className="text-lg font-bold text-foreground mb-4">🏆 כישורים מובילים</h3>
+            <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
+              <h3 className="text-lg font-bold font-serif text-foreground mb-4">🏆 כישורים מובילים</h3>
               <div className="space-y-2">
                 {winnerSkills.map((skill, i) => (
                   <div key={i} className="flex items-center gap-3 bg-background rounded-xl px-4 py-3 border border-border">
@@ -330,10 +305,9 @@ const ResultsDashboard = ({
             </div>
           )}
 
-          {/* Preferences & Dream */}
           {preferencesData && (
-            <div className="bg-card rounded-2xl p-6 border border-accent/30 shadow-md">
-              <h3 className="text-lg font-bold text-foreground mb-4">⚙️ העדפות אישיות</h3>
+            <div className="bg-card rounded-2xl p-6 border border-border shadow-lg">
+              <h3 className="text-lg font-bold font-serif text-foreground mb-4">⚙️ העדפות אישיות</h3>
               <div className="space-y-3">
                 {Object.entries(preferencesData.preferences).map(([key, values]) => (
                   <div key={key} className="bg-background rounded-xl px-4 py-3 border border-border">
@@ -344,9 +318,9 @@ const ResultsDashboard = ({
                 ))}
               </div>
               {preferencesData.dream && (
-                <div className="mt-4 bg-accent/10 rounded-xl px-4 py-3 border border-accent/30">
-                  <p className="font-bold text-foreground">🌟 חלום המגירה:</p>
-                  <p className="text-accent font-semibold text-lg">{preferencesData.dream}</p>
+                <div className="mt-4 bg-secondary/10 rounded-xl px-4 py-3 border border-secondary/30">
+                  <p className="font-bold font-serif text-foreground">🌟 חלום המגירה:</p>
+                  <p className="text-secondary font-semibold text-lg">{preferencesData.dream}</p>
                 </div>
               )}
             </div>
@@ -366,7 +340,7 @@ const ResultsDashboard = ({
         <div className="text-center pb-8 space-y-4 print:hidden">
           <button
             onClick={() => window.print()}
-            className="px-8 py-3 rounded-lg bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-colors mx-2"
+            className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-medium font-serif hover:bg-primary/90 transition-colors mx-2 shadow-md"
           >
             📄 הורדה כ-PDF
           </button>
@@ -377,7 +351,7 @@ const ResultsDashboard = ({
               localStorage.clear();
               window.location.reload();
             }}
-            className="px-8 py-3 rounded-lg bg-muted text-foreground font-medium hover:bg-muted/80 transition-colors"
+            className="px-8 py-3 rounded-xl bg-muted text-foreground font-medium hover:bg-muted/80 transition-colors"
           >
             התחלה מחדש
           </button>

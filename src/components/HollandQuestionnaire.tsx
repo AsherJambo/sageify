@@ -8,7 +8,6 @@ interface HollandQuestionnaireProps {
 
 const QUESTIONS_PER_PAGE = 11;
 
-// Deterministic shuffle using a simple seed
 function seededShuffle<T>(arr: T[], seed: number): T[] {
   const result = [...arr];
   let s = seed;
@@ -31,7 +30,6 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
     });
   };
 
-  // Shuffle questions once per mount (consistent within session)
   const shuffledQuestions = useMemo(() => seededShuffle(hollandQuestions, 42), []);
 
   const totalPages = Math.ceil(shuffledQuestions.length / QUESTIONS_PER_PAGE);
@@ -39,7 +37,6 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
   const totalAnswered = Object.keys(answers).length;
   const progress = (totalAnswered / shuffledQuestions.length) * 100;
   const allAnswered = totalAnswered >= shuffledQuestions.length;
-
   const pageAllAnswered = pageQuestions.every(q => answers[q.id] !== undefined);
 
   const handleAnswer = (id: number, value: boolean) => {
@@ -50,10 +47,10 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
     <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
       <div className="w-full max-w-2xl space-y-6">
         <div className="text-center space-y-2">
-          <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold text-sm">
+          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
             🔍 חלק ד׳
           </div>
-          <h2 className="text-2xl font-bold text-foreground">נטיות תעסוקתיות</h2>
+          <h2 className="text-2xl font-bold font-serif text-foreground">נטיות תעסוקתיות</h2>
           <p className="text-muted-foreground">סמנו "כן" או "לא" עבור כל פעילות</p>
         </div>
 
@@ -71,7 +68,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
         {/* Questions */}
         <div className="space-y-3">
           {pageQuestions.map((q, idx) => (
-            <div key={q.id} className="bg-card rounded-xl p-4 shadow-sm border border-border slide-up" style={{ animationDelay: `${idx * 0.03}s` }}>
+            <div key={q.id} className="bg-card rounded-2xl p-4 shadow-md border border-border slide-up" style={{ animationDelay: `${idx * 0.03}s` }}>
               <p className="text-foreground font-medium mb-3">{q.text}</p>
               <div className="flex gap-3 justify-center" dir="ltr">
                 <button
@@ -104,7 +101,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
           <button
             onClick={() => setPage(p => p - 1)}
             disabled={page === 0}
-            className="px-6 py-3 rounded-lg bg-muted text-foreground font-medium disabled:opacity-30 hover:bg-muted/80 transition-all"
+            className="px-6 py-3 rounded-xl bg-muted text-foreground font-medium disabled:opacity-30 hover:bg-muted/80 transition-all"
           >
             ← הקודם
           </button>
@@ -113,7 +110,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
             <button
               onClick={() => setPage(p => p + 1)}
               disabled={!pageAllAnswered}
-              className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium disabled:opacity-30 hover:opacity-90 transition-all"
+              className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium disabled:opacity-30 hover:opacity-90 transition-all"
             >
               הבא →
             </button>
@@ -121,7 +118,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
             <button
               onClick={() => onComplete(answers)}
               disabled={!allAnswered}
-              className="px-10 py-4 rounded-lg bg-secondary text-secondary-foreground font-semibold text-xl disabled:opacity-30 hover:opacity-90 transition-all"
+              className="px-10 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
             >
               🦉 סיום חלק ד׳ ✓
             </button>
