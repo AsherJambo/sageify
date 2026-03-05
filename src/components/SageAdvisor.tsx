@@ -272,26 +272,26 @@ const SageAdvisor = ({
             <div className="space-y-1">
               <p className="font-semibold text-foreground">🌟 חוזקות מובילות</p>
               {topVIA.map(t => (
-                <p key={t.category} className="text-muted-foreground">• {t.category} ({t.score.toFixed(1)})</p>
+                <p key={t.category} className="text-muted-foreground">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
               ))}
             </div>
             <div className="space-y-1">
               <p className="font-semibold text-foreground">🧭 עוגני קריירה</p>
               {topSchein.map(t => (
-                <p key={t.category} className="text-muted-foreground">• {t.category} ({t.score.toFixed(1)})</p>
+                <p key={t.category} className="text-muted-foreground">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
               ))}
             </div>
             {topHolland.length > 0 && (
               <div className="space-y-1">
                 <p className="font-semibold text-foreground">🔍 נטיות הולנד</p>
-                {topHolland.map(([c, s]) => (
-                  <p key={c} className="text-muted-foreground">• {c} ({s})</p>
+                {topHolland.map(([c]) => (
+                  <p key={c} className="text-muted-foreground">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
                 ))}
               </div>
             )}
             {winnerSkills.length > 0 && (
               <div className="space-y-1">
-                <p className="font-semibold text-foreground">🏆 כישורי מנצח</p>
+                <p className="font-semibold text-foreground">🏆 כישורים מובילים</p>
                 {winnerSkills.slice(0, 4).map((s, i) => (
                   <p key={i} className="text-muted-foreground">• {s}</p>
                 ))}
@@ -303,7 +303,7 @@ const SageAdvisor = ({
               <p className="font-semibold text-foreground mb-1">💡 הצעות עיסוק מהדו"ח</p>
               {recommendations.map((rec, i) => (
                 <p key={i} className="text-muted-foreground text-sm">
-                  {rec.icon} {rec.title} – {rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}
+                  {rec.icon} {rec.title} – {rec.reason}
                 </p>
               ))}
             </div>
