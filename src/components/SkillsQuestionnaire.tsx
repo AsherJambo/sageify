@@ -36,7 +36,7 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
             🧰 חלק ה׳
           </div>
           <h2 className="text-2xl font-bold text-foreground">כישורים ותנאי סף</h2>
-          <p className="text-muted-foreground">מיינו כל כישור לאחת משלוש העמודות (5-7 ב"ארגז המנצח")</p>
+          <p className="text-muted-foreground">מיינו כל כישור לאחת מ-4 העמודות (מינימום 5 ומקסימום 7 בעמודת "הארגז המנצח")</p>
         </div>
 
         {/* Progress */}
