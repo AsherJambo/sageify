@@ -205,19 +205,19 @@ const ResultsDashboard = ({
         </div>
 
         {/* Charts */}
-        <div className={`space-y-6 transition-all duration-700 ${showCharts ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-            <h3 className="text-lg font-bold font-serif text-foreground mb-4">חוזקות VIA – כל הקטגוריות</h3>
-            <div className="space-y-3">
+        <div className={`space-y-8 transition-all duration-1000 ${showCharts ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+            <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">חוזקות VIA – כל הקטגוריות</h3>
+            <div className="space-y-4">
               {Object.entries(viaScores)
                 .sort(([, a], [, b]) => b - a)
                 .map(([cat, score]) => (
-                  <div key={cat} className="space-y-1">
+                  <div key={cat} className="space-y-1.5">
                     <div className="flex justify-between text-sm">
                       <span className="font-medium text-foreground">{cat}</span>
                     </div>
                     <p className="text-xs text-muted-foreground">{viaCategoryDescriptions[cat] || ''}</p>
-                    <div className="w-full h-4 bg-muted rounded-full overflow-hidden">
+                    <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-secondary rounded-full progress-bar-fill"
                         style={{ width: `${(score / 5) * 100}%` }}
@@ -228,18 +228,18 @@ const ResultsDashboard = ({
             </div>
           </div>
 
-          <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-            <h3 className="text-lg font-bold font-serif text-foreground mb-4">עוגנים תעסוקתיים – כל הקטגוריות</h3>
-            <div className="space-y-3">
+          <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+            <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">עוגנים תעסוקתיים – כל הקטגוריות</h3>
+            <div className="space-y-4">
               {Object.entries(scheinScores)
                 .sort(([, a], [, b]) => b - a)
                 .map(([cat, score]) => (
-                  <div key={cat} className="space-y-1">
+                  <div key={cat} className="space-y-1.5">
                     <div className="flex justify-between text-sm">
                       <span className="font-medium text-foreground">{cat}</span>
                     </div>
                     <p className="text-xs text-muted-foreground">{scheinCategoryDescriptions[cat] || ''}</p>
-                    <div className="w-full h-4 bg-muted rounded-full overflow-hidden">
+                    <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-primary rounded-full progress-bar-fill"
                         style={{ width: `${(score / 7) * 100}%` }}

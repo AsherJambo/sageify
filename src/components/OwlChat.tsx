@@ -213,21 +213,21 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
       </div>
 
       {/* Input */}
-      <div className="border-t border-border p-3 flex gap-2" dir="rtl">
+      <div className="border-t border-border/60 p-4 flex gap-3" dir="rtl">
         <Textarea
           ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="כתבו הודעה לסגי..."
-          className="resize-none min-h-[44px] max-h-[120px] rounded-xl"
+          className="resize-none min-h-[44px] max-h-[120px] rounded-2xl border-border/60"
           rows={1}
           disabled={isLoading}
         />
         <Button
           onClick={sendMessage}
           disabled={!input.trim() || isLoading}
-          className="px-4 self-end bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl"
+          className="px-5 self-end bg-primary text-primary-foreground hover:bg-primary/85 rounded-2xl"
         >
           שלח
         </Button>
