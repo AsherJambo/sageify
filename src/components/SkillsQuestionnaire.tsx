@@ -9,6 +9,7 @@ interface SkillsQuestionnaireProps {
 const columnLabels: Record<SkillColumn, { title: string; desc: string; emoji: string }> = {
   winner: { title: 'ארגז הכלים המנצח', desc: 'טוב/ה בזה, נהנה/ית, רוצה להמשיך', emoji: '🏆' },
   burnout: { title: 'טוב/ה אבל מיציתי', desc: 'הצטיינתי בזה, אבל לא בא לי יותר', emoji: '😮‍💨' },
+  aspire: { title: 'אשמח ללמוד', desc: 'לא טוב/ה בזה, אבל אשמח ללמוד ולעסוק', emoji: '📚' },
   irrelevant: { title: 'פחות מדבר אליי', desc: 'לא החוזקה שלי או לא מעניין כרגע', emoji: '🤷' },
 };
 
