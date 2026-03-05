@@ -9,6 +9,7 @@ interface SkillsQuestionnaireProps {
 const columnLabels: Record<SkillColumn, { title: string; desc: string; emoji: string }> = {
   winner: { title: 'ארגז הכלים המנצח', desc: 'טוב/ה בזה, נהנה/ית, רוצה להמשיך', emoji: '🏆' },
   burnout: { title: 'טוב/ה אבל מיציתי', desc: 'הצטיינתי בזה, אבל לא בא לי יותר', emoji: '😮‍💨' },
+  aspire: { title: 'אשמח ללמוד', desc: 'לא טוב/ה בזה, אבל אשמח ללמוד ולעסוק', emoji: '📚' },
   irrelevant: { title: 'פחות מדבר אליי', desc: 'לא החוזקה שלי או לא מעניין כרגע', emoji: '🤷' },
 };
 
@@ -58,7 +59,7 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
           {skills.map((skill) => (
             <div key={skill.id} className="bg-card rounded-xl p-4 border border-border slide-up">
               <p className="text-foreground font-medium mb-3">{skill.id}. {skill.text}</p>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {(Object.keys(columnLabels) as SkillColumn[]).map(col => (
                   <button
                     key={col}
@@ -70,6 +71,8 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
                           ? 'bg-secondary text-secondary-foreground border-secondary'
                           : col === 'burnout'
                           ? 'bg-accent text-accent-foreground border-accent'
+                          : col === 'aspire'
+                          ? 'bg-primary/20 text-primary border-primary'
                           : 'bg-muted text-muted-foreground border-muted-foreground/30'
                         : 'bg-background text-foreground border-border hover:border-primary/30 disabled:opacity-30'
                     }`}
