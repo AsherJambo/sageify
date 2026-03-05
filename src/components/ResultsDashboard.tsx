@@ -95,13 +95,13 @@ const ResultsDashboard = ({
   }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, staticRecommendations]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8">
-      <div className="w-full max-w-3xl space-y-8">
+    <div className="min-h-screen flex flex-col items-center px-4 py-12">
+      <div className="w-full max-w-3xl space-y-10">
         {/* Header */}
-        <div className={`text-center space-y-4 transition-all duration-700 ${showHeader ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto rounded-full shadow-lg animate-float" />
-          <p className="text-lg text-secondary font-semibold">{owlCelebrations.profileReady}</p>
-          <h1 className="text-3xl font-bold font-serif text-foreground">
+        <div className={`text-center space-y-5 transition-all duration-1000 ${showHeader ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto rounded-full shadow-[var(--shadow-elevated)] animate-float" />
+          <p className="text-lg text-secondary font-medium tracking-wide">{owlCelebrations.profileReady}</p>
+          <h1 className="text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">
             הפרופיל שלכם ב-<span className="text-secondary">Sageify</span>
           </h1>
         </div>
