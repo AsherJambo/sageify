@@ -154,7 +154,7 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
           onClick={startChat}
           className="w-full mt-4 text-lg py-6 bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl font-serif"
         >
-          {hasStarted ? 'חזרה לשיחה 🦉' : 'בואו נדבר! 🦉'}
+          {hasStarted ? 'חזרה לשיחה' : 'בואו נדבר!'}
         </Button>
       </div>
     );
