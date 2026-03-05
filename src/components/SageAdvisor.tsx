@@ -250,18 +250,18 @@ const SageAdvisor = ({
   const latestAssistantMsg = [...messages].reverse().find(m => m.role === 'assistant');
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8">
-      <div className="w-full max-w-3xl flex flex-col gap-8">
+    <div className="min-h-screen flex flex-col items-center px-4 py-12">
+      <div className="w-full max-w-3xl flex flex-col gap-10">
         
         {/* Header */}
-        <div className="text-center space-y-3">
+        <div className="text-center space-y-4">
           <div className="relative inline-block">
-            <img src={owlLogo} alt="" className="w-20 h-20 mx-auto rounded-full ring-3 ring-secondary/30 shadow-lg" />
+            <img src={owlLogo} alt="" className="w-20 h-20 mx-auto rounded-full ring-2 ring-secondary/20 shadow-[var(--shadow-elevated)]" />
             <span className="absolute bottom-1 right-1 w-4 h-4 bg-secondary rounded-full border-2 border-background" />
           </div>
-          <h2 className="text-3xl font-bold font-serif text-foreground">Sage Career Advisor</h2>
-          <p className="text-muted-foreground text-sm">
-            {isStreaming ? '🟢 מנתח ומייצר תובנות...' : '🟢 מוכן לייעוץ'}
+          <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">Sage Career Advisor</h2>
+          <p className="text-muted-foreground text-sm tracking-wide">
+            {isStreaming ? '● מנתח ומייצר תובנות...' : '● מוכן לייעוץ'}
           </p>
         </div>
 
