@@ -111,8 +111,8 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
 
           {/* CTA */}
           <div
-            className={`transition-all duration-1000 ease-out text-center pb-16 ${
-              showCTA ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95'
+            className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] text-center pb-20 ${
+              showCTA ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
             }`}
           >
             <button
