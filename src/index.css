@@ -158,7 +158,7 @@
 @keyframes cardEnter {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.97);
+    transform: translateY(32px) scale(0.96);
   }
   to {
     opacity: 1;
@@ -167,14 +167,14 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
