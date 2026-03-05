@@ -83,8 +83,8 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
 
           {/* Journey steps — editorial numbered list */}
           <div
-            className={`transition-all duration-1000 ease-out ${
-              showDetails ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              showDetails ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             <div className="space-y-3">
