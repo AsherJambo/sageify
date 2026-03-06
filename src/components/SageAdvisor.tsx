@@ -413,7 +413,7 @@ const SageAdvisor = ({
           {isStreaming && visibleMessages[visibleMessages.length - 1]?.role !== 'assistant' && (
             <div className="flex gap-3 items-start">
               <div className="flex-shrink-0 pt-1">
-                <img src={owlLogo} alt="סגי" className="w-10 h-10 rounded-full ring-1 ring-secondary/20 shadow-sm animate-pulse" />
+                <img src={owlLogo} alt="סגי" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full ring-1 ring-secondary/20 shadow-sm animate-pulse" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1.5">
