@@ -240,7 +240,7 @@ const QuestionnaireByToken = () => {
           <div className="max-w-lg text-center space-y-6">
             <img src={owlLogo} alt="Sageify" className="w-36 h-36 mx-auto animate-float" />
             <h1 className="text-3xl font-bold text-foreground">
-              שלום, <span className="text-accent">{tokenRow?.username}</span>! 🦉
+              שלום, <span className="text-accent">{tokenRow?.username}</span>!
             </h1>
             <p className="text-lg text-muted-foreground">ברוכים הבאים לשאלון Sageify. הזינו את מספר תעודת הזהות שלכם ולחצו להתחיל.</p>
             <div className="max-w-xs mx-auto">
@@ -270,14 +270,14 @@ const QuestionnaireByToken = () => {
               disabled={idNumber.length < 5}
               className="px-10 py-4 bg-primary text-primary-foreground rounded-xl text-xl font-semibold hover:opacity-90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              בואו נתחיל! 🦉
+              בואו נתחיל! →
             </button>
           </div>
         </div>
       );
 
     case 'general-intro':
-      return <>{ProgressBar}<SectionIntro title={generalIntro.title} paragraphs={generalIntro.paragraphs} bulletPoints={generalIntro.bulletPoints} paragraphs2={generalIntro.paragraphs2} notes={generalIntro.notes} onContinue={() => updateState({ step: 'via-intro' })} buttonText="יוצאים לדרך! 🦉" /></>;
+      return <>{ProgressBar}<SectionIntro title={generalIntro.title} paragraphs={generalIntro.paragraphs} bulletPoints={generalIntro.bulletPoints} paragraphs2={generalIntro.paragraphs2} notes={generalIntro.notes} onContinue={() => updateState({ step: 'via-intro' })} buttonText="יוצאים לדרך! →" /></>;
     case 'via-intro':
       return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} onContinue={() => updateState({ step: 'via' })} /></>;
     case 'via':

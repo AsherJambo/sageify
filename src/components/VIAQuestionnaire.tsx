@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { viaQuestions } from '@/data/viaQuestions';
 import StarRating from './StarRating';
 import OwlMessage from './OwlMessage';
+import owlLogo from '@/assets/owl-logo.png';
 import type { Answers } from '@/lib/scoring';
 import { getVIAEncouragement, getRandomWisdomTip } from '@/lib/owlMessages';
 
@@ -105,7 +106,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
               disabled={!allAnswered}
               className="px-8 py-3 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif disabled:opacity-30 hover:opacity-90 transition-colors"
             >
-              🦉 סיום חלק א׳ ✓
+              <img src={owlLogo} alt="" className="w-5 h-5 rounded-full inline-block" /> סיום חלק א׳ ✓
             </button>
           )}
         </div>

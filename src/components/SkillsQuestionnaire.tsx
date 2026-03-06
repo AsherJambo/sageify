@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { skills, type SkillColumn } from '@/data/skillsData';
 import OwlMessage from './OwlMessage';
+import owlLogo from '@/assets/owl-logo.png';
 
 interface SkillsQuestionnaireProps {
   onComplete: (assignments: Record<number, SkillColumn>) => void;
@@ -91,7 +92,7 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
             disabled={!allAssigned || winnerCount < 5}
             className="px-10 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
           >
-            🦉 סיום חלק ה׳ ✓
+            <img src={owlLogo} alt="" className="w-5 h-5 rounded-full inline-block" /> סיום חלק ה׳ ✓
           </button>
         </div>
       </div>
