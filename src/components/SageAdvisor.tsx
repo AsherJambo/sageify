@@ -246,12 +246,12 @@ const SageAdvisor = ({
     );
   }
 
-  // Get the latest assistant message for the journey card display
-  const latestAssistantMsg = [...messages].reverse().find(m => m.role === 'assistant');
+  // Separate messages for display
+  const visibleMessages = messages.filter(m => m.role !== 'user' || m.content !== 'שלום! סיימתי את כל שאלוני האבחון. אשמח לשמוע את הניתוח שלך ולבנות תכנית פעולה.');
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12">
-      <div className="w-full max-w-3xl flex flex-col gap-10">
+      <div className="w-full max-w-3xl flex flex-col gap-8">
         
         {/* Header */}
         <div className="text-center space-y-4">
@@ -261,90 +261,176 @@ const SageAdvisor = ({
           </div>
           <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">Sage Career Advisor</h2>
           <p className="text-muted-foreground text-sm tracking-wide">
-            {isStreaming ? '● מנתח ומייצר תובנות...' : '● מוכן לייעוץ'}
+            {isStreaming ? (
+              <span className="inline-flex items-center gap-1.5">
+                <span className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
+                מנתח ומייצר תובנות...
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5">
+                <span className="w-2 h-2 bg-secondary/60 rounded-full" />
+                מוכן לייעוץ
+              </span>
+            )}
           </p>
         </div>
 
-        {/* Profile Summary Card */}
-        <div className="bg-card rounded-3xl border border-border/60 p-8 shadow-[var(--shadow-card)]" dir="rtl">
-          <h3 className="text-lg font-bold font-display text-foreground mb-4 flex items-center gap-3 tracking-wide">
-            <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm">📊</span>
-            סיכום הפרופיל האישי שלך
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-            <div className="space-y-1.5">
-              <p className="font-semibold text-foreground">🌟 חוזקות מובילות</p>
-              {topVIA.map(t => (
-                <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
-              ))}
-            </div>
-            <div className="space-y-1.5">
-              <p className="font-semibold text-foreground">🧭 עוגני קריירה</p>
-              {topSchein.map(t => (
-                <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
-              ))}
-            </div>
-            {topHolland.length > 0 && (
+        {/* Profile Summary Card — collapsible after first response */}
+        {visibleMessages.length <= 1 ? (
+          <div className="bg-card rounded-3xl border border-border/60 p-8 shadow-[var(--shadow-card)]" dir="rtl">
+            <h3 className="text-lg font-bold font-display text-foreground mb-4 flex items-center gap-3 tracking-wide">
+              <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm">📊</span>
+              סיכום הפרופיל האישי שלך
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div className="space-y-1.5">
-                <p className="font-semibold text-foreground">🔍 נטיות הולנד</p>
-                {topHolland.map(([c]) => (
-                  <p key={c} className="text-muted-foreground pr-2">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
+                <p className="font-semibold text-foreground">🌟 חוזקות מובילות</p>
+                {topVIA.map(t => (
+                  <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
+                ))}
+              </div>
+              <div className="space-y-1.5">
+                <p className="font-semibold text-foreground">🧭 עוגני קריירה</p>
+                {topSchein.map(t => (
+                  <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
+                ))}
+              </div>
+              {topHolland.length > 0 && (
+                <div className="space-y-1.5">
+                  <p className="font-semibold text-foreground">🔍 נטיות הולנד</p>
+                  {topHolland.map(([c]) => (
+                    <p key={c} className="text-muted-foreground pr-2">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
+                  ))}
+                </div>
+              )}
+              {winnerSkills.length > 0 && (
+                <div className="space-y-1.5">
+                  <p className="font-semibold text-foreground">🏆 כישורים מובילים</p>
+                  {winnerSkills.slice(0, 4).map((s, i) => (
+                    <p key={i} className="text-muted-foreground pr-2">• {s}</p>
+                  ))}
+                </div>
+              )}
+            </div>
+            {recommendations.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-border">
+                <p className="font-semibold text-foreground mb-2">💡 הצעות עיסוק מהדו"ח</p>
+                {recommendations.map((rec, i) => (
+                  <p key={i} className="text-muted-foreground text-sm pr-2">
+                    {rec.icon} {rec.title} – {rec.reason}
+                  </p>
                 ))}
               </div>
             )}
-            {winnerSkills.length > 0 && (
-              <div className="space-y-1.5">
-                <p className="font-semibold text-foreground">🏆 כישורים מובילים</p>
-                {winnerSkills.slice(0, 4).map((s, i) => (
-                  <p key={i} className="text-muted-foreground pr-2">• {s}</p>
-                ))}
+            {preferencesData?.dream && (
+              <div className="mt-3">
+                <p className="text-secondary font-semibold text-sm">⭐ חלום המגירה: {preferencesData.dream}</p>
               </div>
             )}
           </div>
-          {recommendations.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-border">
-              <p className="font-semibold text-foreground mb-2">💡 הצעות עיסוק מהדו"ח</p>
-              {recommendations.map((rec, i) => (
-                <p key={i} className="text-muted-foreground text-sm pr-2">
-                  {rec.icon} {rec.title} – {rec.reason}
-                </p>
-              ))}
+        ) : (
+          <details className="group" dir="rtl">
+            <summary className="cursor-pointer flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-2">
+              <span className="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center text-xs">📊</span>
+              <span>הצגת סיכום הפרופיל</span>
+              <span className="text-xs transition-transform group-open:rotate-180">▼</span>
+            </summary>
+            <div className="mt-3 bg-card rounded-2xl border border-border/60 p-6 shadow-[var(--shadow-card)]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                <div className="space-y-1">
+                  <p className="font-semibold text-foreground text-xs">🌟 חוזקות</p>
+                  {topVIA.map(t => <p key={t.category} className="text-muted-foreground text-xs pr-2">• {t.category}</p>)}
+                </div>
+                <div className="space-y-1">
+                  <p className="font-semibold text-foreground text-xs">🧭 עוגנים</p>
+                  {topSchein.map(t => <p key={t.category} className="text-muted-foreground text-xs pr-2">• {t.category}</p>)}
+                </div>
+              </div>
             </div>
-          )}
-          {preferencesData?.dream && (
-            <div className="mt-3">
-              <p className="text-secondary font-semibold text-sm">⭐ חלום המגירה: {preferencesData.dream}</p>
+          </details>
+        )}
+
+        {/* Conversation Thread */}
+        <div className="space-y-6" dir="rtl">
+          {visibleMessages.map((msg, i) => (
+            <div
+              key={i}
+              className={`flex gap-3 items-start transition-all duration-700 ${
+                i === visibleMessages.length - 1 ? 'opacity-100' : 'opacity-100'
+              }`}
+              style={{
+                animationDelay: `${i * 100}ms`,
+              }}
+            >
+              {msg.role === 'assistant' ? (
+                <>
+                  {/* Sagi avatar */}
+                  <div className="flex-shrink-0 pt-1">
+                    <img
+                      src={owlLogo}
+                      alt="סגי"
+                      className="w-10 h-10 rounded-full ring-1 ring-secondary/20 shadow-sm"
+                    />
+                  </div>
+                  {/* Sagi message bubble */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="text-sm font-semibold font-display text-foreground tracking-wide">סגי</span>
+                      <span className="text-[10px] text-muted-foreground/60">יועץ קריירה</span>
+                    </div>
+                    <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 p-6 shadow-[var(--shadow-card)]">
+                      <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h1]:text-lg [&_h2]:text-secondary [&_h2]:font-display [&_h2]:text-base [&_h3]:text-secondary [&_h3]:font-display [&_h3]:text-sm [&_strong]:text-secondary [&_li]:mb-1.5 [&_ul]:mr-4 [&_ol]:mr-4 text-foreground leading-relaxed text-sm">
+                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* User avatar */}
+                  <div className="flex-shrink-0 pt-1">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+                      <span className="text-primary font-display font-bold text-sm">
+                        {username ? username.charAt(0) : '👤'}
+                      </span>
+                    </div>
+                  </div>
+                  {/* User message bubble */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="text-sm font-semibold text-foreground">{username || 'אני'}</span>
+                    </div>
+                    <div className="bg-primary/5 rounded-2xl rounded-tr-md border border-primary/10 px-5 py-4">
+                      <p className="text-foreground text-sm leading-relaxed">{msg.content}</p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+
+          {/* Streaming indicator inline */}
+          {isStreaming && visibleMessages[visibleMessages.length - 1]?.role !== 'assistant' && (
+            <div className="flex gap-3 items-start">
+              <div className="flex-shrink-0 pt-1">
+                <img src={owlLogo} alt="סגי" className="w-10 h-10 rounded-full ring-1 ring-secondary/20 shadow-sm animate-pulse" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-sm font-semibold font-display text-foreground tracking-wide">סגי</span>
+                </div>
+                <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 px-6 py-5 shadow-[var(--shadow-card)]">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <span className="text-muted-foreground text-xs mr-2">מנסח תשובה...</span>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
-
-        {/* Advisor Response Card — Guided Journey style */}
-        {latestAssistantMsg && (
-          <div className="bg-card rounded-3xl border border-border/60 p-10 shadow-[var(--shadow-card)]" dir="rtl">
-            <div className="flex items-center gap-4 mb-6 pb-5 border-b border-border/60">
-              <img src={owlLogo} alt="" className="w-12 h-12 rounded-full ring-1 ring-secondary/20" />
-              <div>
-                <p className="font-semibold font-display text-foreground tracking-wide">סגי – יועץ הקריירה שלך</p>
-                <p className="text-xs text-muted-foreground">ניתוח מבוסס AI</p>
-              </div>
-            </div>
-            <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h2]:text-secondary [&_h2]:font-display [&_h3]:text-secondary [&_h3]:font-display [&_strong]:text-secondary [&_li]:mb-1.5 text-foreground leading-relaxed">
-              <ReactMarkdown>{latestAssistantMsg.content}</ReactMarkdown>
-            </div>
-          </div>
-        )}
-
-        {/* Streaming indicator */}
-        {isStreaming && !latestAssistantMsg && (
-          <div className="bg-card rounded-3xl border border-border/60 p-10 shadow-[var(--shadow-card)] text-center">
-            <div className="flex items-center justify-center gap-4">
-              <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-              <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-              <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-            </div>
-            <p className="text-muted-foreground text-sm mt-4">סגי מנתח את הנתונים שלך...</p>
-          </div>
-        )}
 
         {/* Roadmap detected → finish */}
         {roadmapDetected && !isStreaming && (
@@ -364,107 +450,63 @@ const SageAdvisor = ({
           </div>
         )}
 
-        {/* Journey Action Cards — replaces chat input */}
+        {/* Journey Action Cards */}
         {!roadmapDetected && !isStreaming && messages.length >= 2 && (
           <div dir="rtl" className="space-y-4">
-            <p className="text-sm font-medium text-muted-foreground text-center tracking-wide">בחרו את הצעד הבא:</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-border/60" />
+              <p className="text-xs font-medium text-muted-foreground tracking-wide">בחרו את הצעד הבא</p>
+              <div className="h-px flex-1 bg-border/60" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {journeyActions.map((action) => (
                 <button
                   key={action.label}
                   onClick={() => sendMessage(action.msg)}
-                  className="group bg-card hover:bg-muted/50 border border-border/60 hover:border-secondary/30 rounded-2xl p-6 text-right transition-all duration-300 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)]"
+                  className="group bg-card hover:bg-muted/50 border border-border/60 hover:border-secondary/30 rounded-2xl p-5 text-right transition-all duration-300 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)]"
                 >
-                  <span className="text-2xl mb-3 block">{action.icon}</span>
-                  <p className="font-semibold text-foreground group-hover:text-secondary transition-colors font-display tracking-wide">
-                    {action.label}
-                  </p>
+                  <div className="flex items-center gap-3">
+                    <span className="w-10 h-10 rounded-xl bg-secondary/8 flex items-center justify-center text-lg flex-shrink-0 group-hover:bg-secondary/15 transition-colors">{action.icon}</span>
+                    <p className="font-semibold text-sm text-foreground group-hover:text-secondary transition-colors font-display tracking-wide">
+                      {action.label}
+                    </p>
+                  </div>
                 </button>
               ))}
             </div>
           </div>
         )}
 
-        {/* Free-text input — collapsible, secondary to action cards */}
-        {!roadmapDetected && !isStreaming && messages.length >= 2 && (
-          <div className="border-t border-border pt-4" dir="rtl">
-            <p className="text-xs text-muted-foreground mb-2 text-center">או כתבו שאלה חופשית:</p>
-            <div className="flex gap-2">
+        {/* Chat input — unified for all states */}
+        {!isStreaming && messages.length >= 2 && (
+          <div dir="rtl" className="bg-card rounded-2xl border border-border/60 p-3 shadow-[var(--shadow-card)]">
+            <div className="flex gap-2 items-end">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <span className="text-primary font-display font-bold text-xs">
+                    {username ? username.charAt(0) : '👤'}
+                  </span>
+                </div>
+              </div>
               <Textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="כתבו שאלה ליועץ..."
-                className="resize-none min-h-[48px] max-h-[100px] bg-card border-border rounded-xl"
+                placeholder={roadmapDetected ? 'יש עוד שאלות? המשיכו לשוחח...' : 'כתבו שאלה חופשית ליועץ...'}
+                className="resize-none min-h-[40px] max-h-[100px] bg-transparent border-0 focus-visible:ring-0 shadow-none text-sm placeholder:text-muted-foreground/50"
                 rows={1}
                 disabled={isStreaming}
               />
               <Button
                 onClick={() => sendMessage()}
                 disabled={!input.trim() || isStreaming}
-                className="px-5 self-end bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl"
+                size="icon"
+                className="flex-shrink-0 w-9 h-9 rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/90 disabled:opacity-30"
               >
-                שלח
+                <span className="text-base">→</span>
               </Button>
             </div>
           </div>
-        )}
-
-        {/* Continue chatting after roadmap */}
-        {roadmapDetected && !isStreaming && (
-          <div className="flex gap-2" dir="rtl">
-            <Textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  sendMessage();
-                }
-              }}
-              placeholder="יש עוד שאלות? המשיכו לשוחח..."
-              className="resize-none min-h-[44px] max-h-[100px] bg-card border-border rounded-xl"
-              rows={1}
-              disabled={isStreaming}
-            />
-            <Button
-              onClick={() => sendMessage()}
-              disabled={!input.trim() || isStreaming}
-              className="px-4 self-end rounded-xl"
-              variant="outline"
-            >
-              שלח
-            </Button>
-          </div>
-        )}
-
-        {/* Previous messages — expandable history */}
-        {messages.filter(m => m.role === 'user').length > 1 && (
-          <details className="text-sm" dir="rtl">
-            <summary className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors text-center py-2">
-              📜 הצג היסטוריית שיחה ({messages.length} הודעות)
-            </summary>
-            <div className="mt-3 space-y-3 max-h-[400px] overflow-y-auto px-2">
-              {messages.slice(0, -1).map((msg, i) => (
-                <div
-                  key={i}
-                  className={`rounded-xl px-4 py-3 text-sm ${
-                    msg.role === 'user'
-                      ? 'bg-primary/5 border border-primary/10 mr-auto max-w-[85%]'
-                      : 'bg-card border border-border ml-auto max-w-[85%]'
-                  }`}
-                >
-                  {msg.role === 'assistant' ? (
-                    <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-1 [&_p:last-child]:mb-0">
-                      <ReactMarkdown>{msg.content}</ReactMarkdown>
-                    </div>
-                  ) : (
-                    <p className="text-muted-foreground">{msg.content}</p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </details>
         )}
 
         <div ref={messagesEndRef} />
