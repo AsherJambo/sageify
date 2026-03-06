@@ -419,7 +419,7 @@ const SageAdvisor = ({
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="text-sm font-semibold font-display text-foreground tracking-wide">סגי</span>
                 </div>
-                <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 px-6 py-5 shadow-[var(--shadow-card)]">
+                <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 px-4 py-3 sm:px-6 sm:py-5 shadow-[var(--shadow-card)]">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                     <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
