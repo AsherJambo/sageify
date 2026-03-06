@@ -45,23 +45,23 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
-      <div className="w-full max-w-2xl space-y-6">
-        <div className="text-center space-y-2">
-          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
-            🔍 חלק ד׳
+    <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <div className="w-full max-w-2xl space-y-8">
+        <div className="text-center space-y-3">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
+            ✦ חלק ד׳
           </div>
-          <h2 className="text-2xl font-bold font-serif text-foreground">נטיות תעסוקתיות</h2>
-          <p className="text-muted-foreground">סמנו "כן" או "לא" עבור כל פעילות</p>
+          <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">נטיות תעסוקתיות</h2>
+          <p className="text-muted-foreground text-lg">סמנו "כן" או "לא" עבור כל פעילות</p>
         </div>
 
         {/* Progress */}
-        <div className="space-y-1">
+        <div className="space-y-2">
           <div className="flex justify-between text-sm text-muted-foreground">
             <span>{totalAnswered} / {shuffledQuestions.length} שאלות</span>
             <span>עמוד {page + 1} / {totalPages}</span>
           </div>
-          <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
             <div className="h-full bg-secondary rounded-full progress-bar-fill" style={{ width: `${progress}%` }} />
           </div>
         </div>
@@ -69,25 +69,25 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
         {/* Questions */}
         <div className="space-y-3">
           {pageQuestions.map((q, idx) => (
-            <div key={q.id} className="bg-card rounded-2xl p-4 shadow-md border border-border slide-up" style={{ animationDelay: `${idx * 0.03}s` }}>
-              <p className="text-foreground font-medium mb-3">{q.text}</p>
+            <div key={q.id} className="bg-card rounded-3xl p-5 md:p-6 shadow-[var(--shadow-card)] border border-border/60 slide-up" style={{ animationDelay: `${idx * 0.03}s` }}>
+              <p className="text-foreground font-medium mb-4 text-lg leading-relaxed">{q.text}</p>
               <div className="flex gap-3 justify-center" dir="ltr">
                 <button
                   onClick={() => handleAnswer(q.id, true)}
-                  className={`px-6 py-2 rounded-full font-bold transition-all duration-200 border-2 ${
+                  className={`px-8 py-2.5 rounded-2xl font-semibold font-display tracking-wide transition-all duration-300 border-2 ${
                     answers[q.id] === true
-                      ? 'bg-secondary text-secondary-foreground border-secondary scale-105'
-                      : 'bg-background text-foreground border-border hover:border-secondary/50'
+                      ? 'bg-secondary text-secondary-foreground border-secondary scale-[1.03] shadow-[var(--shadow-card)]'
+                      : 'bg-card text-foreground border-border/60 hover:border-secondary/40'
                   }`}
                 >
                   כן ✓
                 </button>
                 <button
                   onClick={() => handleAnswer(q.id, false)}
-                  className={`px-6 py-2 rounded-full font-bold transition-all duration-200 border-2 ${
+                  className={`px-8 py-2.5 rounded-2xl font-semibold font-display tracking-wide transition-all duration-300 border-2 ${
                     answers[q.id] === false
-                      ? 'bg-destructive/80 text-destructive-foreground border-destructive scale-105'
-                      : 'bg-background text-foreground border-border hover:border-destructive/50'
+                      ? 'bg-muted text-foreground border-muted-foreground/30 scale-[1.03]'
+                      : 'bg-card text-foreground border-border/60 hover:border-muted-foreground/30'
                   }`}
                 >
                   לא ✗
@@ -102,7 +102,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
           <button
             onClick={() => setPage(p => p - 1)}
             disabled={page === 0}
-            className="px-6 py-3 rounded-xl bg-muted text-foreground font-medium disabled:opacity-30 hover:bg-muted/80 transition-all"
+            className="px-6 py-3 rounded-2xl bg-card text-foreground font-medium font-display tracking-wide border border-border/60 disabled:opacity-25 hover:border-secondary/30 hover:shadow-[var(--shadow-card)] transition-all duration-300"
           >
             ← הקודם
           </button>
@@ -111,7 +111,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
             <button
               onClick={() => setPage(p => p + 1)}
               disabled={!pageAllAnswered}
-              className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium disabled:opacity-30 hover:opacity-90 transition-all"
+              className="px-8 py-3 rounded-2xl bg-primary text-primary-foreground font-medium font-display tracking-wide disabled:opacity-25 hover:bg-primary/85 transition-all duration-300 shadow-[var(--shadow-card)]"
             >
               הבא →
             </button>

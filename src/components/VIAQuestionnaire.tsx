@@ -38,24 +38,24 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
   const wisdomTip = useMemo(() => getRandomWisdomTip(), [page]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
-      <div className="w-full max-w-2xl space-y-6">
+    <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <div className="w-full max-w-2xl space-y-8">
         {/* Header */}
-        <div className="text-center space-y-2">
-          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
-            🌟 חלק א׳
+        <div className="text-center space-y-3">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
+            ✦ חלק א׳
           </div>
-          <h2 className="text-2xl font-bold font-serif text-foreground">שאלון חוזקות VIA</h2>
-          <p className="text-muted-foreground">דרגו כל אמירה מ-1 (לא מתאים) עד 5 (מתאים מאוד)</p>
+          <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">שאלון חוזקות VIA</h2>
+          <p className="text-muted-foreground text-lg">דרגו כל אמירה מ-1 (לא מתאים) עד 5 (מתאים מאוד)</p>
         </div>
 
         {/* Progress */}
-        <div className="space-y-1">
+        <div className="space-y-2">
           <div className="flex justify-between text-sm text-muted-foreground">
             <span>עמוד {page + 1} מתוך {totalPages}</span>
             <span>{totalAnswered} / {viaQuestions.length} שאלות</span>
           </div>
-          <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
             <div
               className="h-full bg-secondary rounded-full progress-bar-fill"
               style={{ width: `${progress}%` }}
@@ -68,10 +68,10 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
         {page > 0 && !encouragement && <OwlMessage message={wisdomTip} variant="tip" />}
 
         {/* Questions */}
-        <div className="space-y-6" key={page}>
+        <div className="space-y-5" key={page}>
           {currentQuestions.map((q, idx) => (
-            <div key={q.id} className="bg-card rounded-2xl p-6 shadow-md border border-border card-enter" style={{ animationDelay: `${idx * 0.1}s` }}>
-              <p className="text-question font-medium text-foreground mb-4">
+            <div key={q.id} className="bg-card rounded-3xl p-6 md:p-8 shadow-[var(--shadow-card)] border border-border/60 card-enter" style={{ animationDelay: `${idx * 0.08}s` }}>
+              <p className="text-lg font-medium text-foreground mb-5 leading-relaxed">
                 {q.id}. {q.text}
               </p>
               <StarRating
@@ -83,11 +83,11 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
         </div>
 
         {/* Navigation */}
-        <div className="flex justify-between pt-4">
+        <div className="flex justify-between items-center pt-4">
           <button
             onClick={() => setPage(p => p - 1)}
             disabled={page === 0}
-            className="px-6 py-3 rounded-xl bg-muted text-foreground font-medium disabled:opacity-30 hover:bg-muted/80 transition-colors"
+            className="px-6 py-3 rounded-2xl bg-card text-foreground font-medium font-display tracking-wide border border-border/60 disabled:opacity-25 hover:border-secondary/30 hover:shadow-[var(--shadow-card)] transition-all duration-300"
           >
             ← הקודם
           </button>
@@ -96,7 +96,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
             <button
               onClick={() => setPage(p => p + 1)}
               disabled={answeredOnPage < currentQuestions.length}
-              className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium disabled:opacity-30 hover:opacity-90 transition-colors"
+              className="px-8 py-3 rounded-2xl bg-primary text-primary-foreground font-medium font-display tracking-wide disabled:opacity-25 hover:bg-primary/85 transition-all duration-300 shadow-[var(--shadow-card)]"
             >
               הבא →
             </button>

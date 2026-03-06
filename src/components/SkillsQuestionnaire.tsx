@@ -7,11 +7,11 @@ interface SkillsQuestionnaireProps {
   onComplete: (assignments: Record<number, SkillColumn>) => void;
 }
 
-const columnLabels: Record<SkillColumn, { title: string; desc: string; emoji: string }> = {
-  winner: { title: 'ארגז הכלים המנצח', desc: 'טוב/ה בזה, נהנה/ית, רוצה להמשיך', emoji: '🏆' },
-  burnout: { title: 'טוב/ה אבל מיציתי', desc: 'הצטיינתי בזה, אבל לא בא לי יותר', emoji: '😮‍💨' },
-  aspire: { title: 'אשמח ללמוד', desc: 'לא טוב/ה בזה, אבל אשמח ללמוד ולעסוק', emoji: '📚' },
-  irrelevant: { title: 'פחות מדבר אליי', desc: 'לא החוזקה שלי או לא מעניין כרגע', emoji: '🤷' },
+const columnLabels: Record<SkillColumn, { title: string; desc: string; symbol: string }> = {
+  winner: { title: 'ארגז הכלים המנצח', desc: 'טוב/ה בזה, נהנה/ית, רוצה להמשיך', symbol: '◆' },
+  burnout: { title: 'טוב/ה אבל מיציתי', desc: 'הצטיינתי בזה, אבל לא בא לי יותר', symbol: '●' },
+  aspire: { title: 'אשמח ללמוד', desc: 'לא טוב/ה בזה, אבל אשמח ללמוד ולעסוק', symbol: '✦' },
+  irrelevant: { title: 'פחות מדבר אליי', desc: 'לא החוזקה שלי או לא מעניין כרגע', symbol: '○' },
 };
 
 const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
@@ -30,55 +30,55 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
-      <div className="w-full max-w-3xl space-y-6">
-        <div className="text-center space-y-2">
-          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
-            🧰 חלק ה׳
+    <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <div className="w-full max-w-3xl space-y-8">
+        <div className="text-center space-y-3">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
+            ✦ חלק ה׳
           </div>
-          <h2 className="text-2xl font-bold font-serif text-foreground">כישורים ותנאי סף</h2>
-          <p className="text-muted-foreground">מיינו כל כישור לאחת מ-4 העמודות (מינימום 5 ומקסימום 7 בעמודת "הארגז המנצח")</p>
+          <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">כישורים ותנאי סף</h2>
+          <p className="text-muted-foreground text-lg">מיינו כל כישור לאחת מ-4 העמודות (מינימום 5 ומקסימום 7 בעמודת "הארגז המנצח")</p>
         </div>
 
         {/* Progress */}
-        <div className="space-y-1">
+        <div className="space-y-2">
           <div className="flex justify-between text-sm text-muted-foreground">
             <span>{totalAssigned} / {skills.length} כישורים מוינו</span>
-            <span>🏆 ארגז מנצח: {winnerCount}/7</span>
+            <span>◆ ארגז מנצח: {winnerCount}/7</span>
           </div>
-          <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
             <div className="h-full bg-secondary rounded-full progress-bar-fill" style={{ width: `${progress}%` }} />
           </div>
         </div>
 
         {winnerCount >= 5 && winnerCount <= 7 && (
-          <OwlMessage message="מעולה! בחרתם בין 5 ל-7 כישורים לארגז המנצח 💪" variant="encouragement" />
+          <OwlMessage message="מעולה! בחרתם בין 5 ל-7 כישורים לארגז המנצח" variant="celebration" />
         )}
 
         {/* Skills list */}
         <div className="space-y-3">
           {skills.map((skill) => (
-            <div key={skill.id} className="bg-card rounded-2xl p-4 border border-border shadow-md slide-up">
-              <p className="text-foreground font-medium mb-3">{skill.id}. {skill.text}</p>
+            <div key={skill.id} className="bg-card rounded-3xl p-5 border border-border/60 shadow-[var(--shadow-card)] slide-up">
+              <p className="text-foreground font-medium mb-4 text-lg leading-relaxed">{skill.id}. {skill.text}</p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {(Object.keys(columnLabels) as SkillColumn[]).map(col => (
                   <button
                     key={col}
                     onClick={() => assign(skill.id, col)}
                     disabled={col === 'winner' && winnerCount >= 7 && assignments[skill.id] !== 'winner'}
-                    className={`px-2 py-2 rounded-xl text-sm font-medium transition-all duration-200 border-2 ${
+                    className={`px-3 py-2.5 rounded-2xl text-sm font-medium transition-all duration-300 border-2 ${
                       assignments[skill.id] === col
                         ? col === 'winner'
-                          ? 'bg-secondary text-secondary-foreground border-secondary'
+                          ? 'bg-secondary/10 text-secondary border-secondary/40 shadow-[var(--shadow-card)]'
                           : col === 'burnout'
-                          ? 'bg-primary text-primary-foreground border-primary'
+                          ? 'bg-primary/10 text-primary border-primary/40'
                           : col === 'aspire'
-                          ? 'bg-primary/20 text-primary border-primary'
-                          : 'bg-muted text-muted-foreground border-muted-foreground/30'
-                        : 'bg-background text-foreground border-border hover:border-primary/30 disabled:opacity-30'
+                          ? 'bg-accent/10 text-accent border-accent/40'
+                          : 'bg-muted text-muted-foreground border-muted-foreground/20'
+                        : 'bg-card text-foreground border-border/60 hover:border-secondary/30 disabled:opacity-25'
                     }`}
                   >
-                    {columnLabels[col].emoji} {columnLabels[col].title}
+                    <span className="text-xs opacity-60">{columnLabels[col].symbol}</span> {columnLabels[col].title}
                   </button>
                 ))}
               </div>

@@ -57,17 +57,17 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
-      <div className="w-full max-w-2xl space-y-6">
-        <div className="text-center space-y-2">
-          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
-            📋 חלק ג׳
+    <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <div className="w-full max-w-2xl space-y-8">
+        <div className="text-center space-y-3">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
+            ✦ חלק ג׳
           </div>
-          <h2 className="text-2xl font-bold font-serif text-foreground">שיקולים בבחירת עיסוק</h2>
+          <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">שיקולים בבחירת עיסוק</h2>
           {phase === 'select' ? (
-            <p className="text-muted-foreground">בחרו 6 שיקולים שיגרמו לכם לבחור בעיסוק ספציפי</p>
+            <p className="text-muted-foreground text-lg">בחרו 6 שיקולים שיגרמו לכם לבחור בעיסוק ספציפי</p>
           ) : (
-            <p className="text-muted-foreground">חלקו 100 נקודות בין 6 השיקולים שבחרתם לפי חשיבותם</p>
+            <p className="text-muted-foreground text-lg">חלקו 100 נקודות בין 6 השיקולים שבחרתם לפי חשיבותם</p>
           )}
         </div>
 
@@ -79,13 +79,13 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
                 <button
                   key={idx}
                   onClick={() => toggleItem(item)}
-                  className={`w-full text-right px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
+                  className={`w-full text-right px-5 py-4 rounded-2xl border-2 transition-all duration-300 ${
                     selected.includes(item)
-                      ? 'bg-primary text-primary-foreground border-primary'
-                      : 'bg-card text-foreground border-border hover:border-primary/50'
+                      ? 'bg-primary/5 text-foreground border-primary/40 shadow-[var(--shadow-card)]'
+                      : 'bg-card text-foreground border-border/60 hover:border-secondary/30 hover:shadow-[var(--shadow-card)]'
                   }`}
                 >
-                  {item}
+                  <span className="text-base font-medium">{item}</span>
                 </button>
               ))}
             </div>
@@ -93,7 +93,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
               <button
                 onClick={handleSelectComplete}
                 disabled={selected.length !== 6}
-                className="px-10 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
+                className="px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-semibold font-display text-lg tracking-wide disabled:opacity-25 hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)]"
               >
                 המשך לחלוקת נקודות →
               </button>
@@ -103,13 +103,13 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
 
         {phase === 'distribute' && (
           <>
-            <div className={`text-center font-bold font-serif text-xl ${remaining === 0 ? 'text-secondary' : remaining < 0 ? 'text-destructive' : 'text-primary'}`}>
+            <div className={`text-center font-bold font-display text-xl tracking-wide ${remaining === 0 ? 'text-secondary' : remaining < 0 ? 'text-destructive' : 'text-foreground'}`}>
               נותרו: {remaining} נקודות מתוך 100
             </div>
             <div className="space-y-4">
               {selected.map((item) => (
-                <div key={item} className="bg-card rounded-2xl p-4 border border-border shadow-md">
-                  <p className="font-medium text-foreground mb-2">{item}</p>
+                <div key={item} className="bg-card rounded-3xl p-5 border border-border/60 shadow-[var(--shadow-card)]">
+                  <p className="font-medium text-foreground mb-3 text-base">{item}</p>
                   <div className="flex items-center gap-3">
                     <input
                       type="range"
@@ -125,7 +125,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
                       max={100}
                       value={points[item] || 0}
                       onChange={e => handlePointChange(item, Number(e.target.value))}
-                      className="w-16 text-center rounded-xl border border-border bg-background p-2 font-bold"
+                      className="w-16 text-center rounded-2xl border border-border/60 bg-card p-2 font-bold font-display"
                     />
                   </div>
                 </div>

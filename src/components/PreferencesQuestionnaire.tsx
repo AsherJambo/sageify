@@ -30,21 +30,21 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
   const canComplete = allPrefsAnswered && dream !== '';
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8 fade-in">
-      <div className="w-full max-w-2xl space-y-6">
-        <div className="text-center space-y-2">
-          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary font-semibold text-sm">
-            ⚙️ חלק ו׳
+    <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <div className="w-full max-w-2xl space-y-8">
+        <div className="text-center space-y-3">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
+            ✦ חלק ו׳
           </div>
-          <h2 className="text-2xl font-bold font-serif text-foreground">העדפות וחלום המגירה</h2>
-          <p className="text-muted-foreground">ענו על שאלות ההעדפה ובחרו את חלום המגירה שלכם</p>
+          <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">העדפות וחלום המגירה</h2>
+          <p className="text-muted-foreground text-lg">ענו על שאלות ההעדפה ובחרו את חלום המגירה שלכם</p>
         </div>
 
         {/* Preference Questions */}
         {preferenceQuestions.map((q) => (
-          <div key={q.id} className="bg-card rounded-2xl p-5 border border-border shadow-md slide-up">
-            <h3 className="font-bold font-serif text-foreground text-lg mb-1">{q.title}</h3>
-            {q.multiSelect && <p className="text-sm text-muted-foreground mb-3">ניתן לסמן מספר אפשרויות</p>}
+          <div key={q.id} className="bg-card rounded-3xl p-6 md:p-8 border border-border/60 shadow-[var(--shadow-card)] slide-up">
+            <h3 className="font-bold font-display text-foreground text-lg mb-1 tracking-wide">{q.title}</h3>
+            {q.multiSelect && <p className="text-sm text-muted-foreground mb-4">ניתן לסמן מספר אפשרויות</p>}
             <div className="space-y-2">
               {q.options.map((opt, i) => {
                 const isSelected = (preferences[q.id] || []).includes(opt);
@@ -52,10 +52,10 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
                   <button
                     key={i}
                     onClick={() => handleSelect(q.id, opt, q.multiSelect)}
-                    className={`w-full text-right px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
+                    className={`w-full text-right px-5 py-3.5 rounded-2xl border-2 transition-all duration-300 text-base ${
                       isSelected
-                        ? 'bg-primary text-primary-foreground border-primary'
-                        : 'bg-background text-foreground border-border hover:border-primary/50'
+                        ? 'bg-primary/5 text-foreground border-primary/40 shadow-[var(--shadow-card)]'
+                        : 'bg-card text-foreground border-border/60 hover:border-secondary/30'
                     }`}
                   >
                     {opt}
@@ -67,9 +67,9 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
         ))}
 
         {/* Dream drawer */}
-        <div className="bg-card rounded-2xl p-5 border-2 border-secondary/30 shadow-lg slide-up">
-          <h3 className="font-bold font-serif text-foreground text-lg mb-1">🌟 חלום המגירה</h3>
-          <p className="text-sm text-muted-foreground mb-3">
+        <div className="bg-card rounded-3xl p-6 md:p-8 border-2 border-secondary/20 shadow-[var(--shadow-card)] slide-up">
+          <h3 className="font-bold font-display text-foreground text-lg mb-1 tracking-wide">✦ חלום המגירה</h3>
+          <p className="text-sm text-muted-foreground mb-4">
             אם תבחר/י תחום אחד שתמיד רצית ללמוד או לעשות – מה יהיה?
           </p>
           <div className="space-y-2">
@@ -77,10 +77,10 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
               <button
                 key={i}
                 onClick={() => setDream(opt)}
-                className={`w-full text-right px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
+                className={`w-full text-right px-5 py-3.5 rounded-2xl border-2 transition-all duration-300 text-base ${
                   dream === opt
-                    ? 'bg-secondary text-secondary-foreground border-secondary'
-                    : 'bg-background text-foreground border-border hover:border-secondary/50'
+                    ? 'bg-secondary/8 text-foreground border-secondary/40 shadow-[var(--shadow-card)]'
+                    : 'bg-card text-foreground border-border/60 hover:border-secondary/30'
                 }`}
               >
                 {opt}
