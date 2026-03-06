@@ -369,7 +369,7 @@ const SageAdvisor = ({
                     <img
                       src={owlLogo}
                       alt="סגי"
-                      className="w-10 h-10 rounded-full ring-1 ring-secondary/20 shadow-sm"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full ring-1 ring-secondary/20 shadow-sm"
                     />
                   </div>
                   {/* Sagi message bubble */}
