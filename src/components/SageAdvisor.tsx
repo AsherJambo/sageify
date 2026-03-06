@@ -389,7 +389,7 @@ const SageAdvisor = ({
                 <>
                   {/* User avatar */}
                   <div className="flex-shrink-0 pt-1">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
                       <span className="text-primary font-display font-bold text-sm">
                         {username ? username.charAt(0) : '👤'}
                       </span>
