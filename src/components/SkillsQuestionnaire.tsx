@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { skills, type SkillColumn } from '@/data/skillsData';
 import OwlMessage from './OwlMessage';
+import owlLogo from '@/assets/owl-logo.png';
 
 interface SkillsQuestionnaireProps {
   onComplete: (assignments: Record<number, SkillColumn>) => void;
