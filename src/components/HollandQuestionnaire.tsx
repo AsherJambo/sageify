@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import OwlMessage from './OwlMessage';
+import owlLogo from '@/assets/owl-logo.png';
 
 interface HollandQuestionnaireProps {
   onComplete: (answers: Record<number, boolean>) => void;
