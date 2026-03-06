@@ -11,8 +11,8 @@ const StarRating = ({ value, onChange, max = 5 }: StarRatingProps) => {
   const [hovered, setHovered] = useState(0);
 
   return (
-    <div className="flex flex-col items-center gap-1">
-      <div className="flex gap-1 justify-center items-center" dir="ltr">
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex gap-2 justify-center items-center" dir="ltr">
         {Array.from({ length: max }, (_, i) => i + 1).map((star) => (
           <button
             key={star}
@@ -20,22 +20,22 @@ const StarRating = ({ value, onChange, max = 5 }: StarRatingProps) => {
             onClick={() => onChange(star)}
             onMouseEnter={() => setHovered(star)}
             onMouseLeave={() => setHovered(0)}
-            className="transition-all duration-200 hover:scale-125 focus:outline-none"
+            className="transition-all duration-300 hover:scale-125 focus:outline-none"
           >
             <Star
-              size={28}
-              className={`transition-colors duration-150 ${
+              size={30}
+              className={`transition-all duration-300 ${
                 star <= (hovered || value)
-                  ? 'fill-secondary text-secondary'
-                  : 'fill-none text-muted-foreground/40'
+                  ? 'fill-secondary text-secondary drop-shadow-sm'
+                  : 'fill-none text-border'
               }`}
             />
           </button>
         ))}
       </div>
-      <div className="flex justify-between w-full max-w-[180px]" dir="rtl">
-        <span className="text-[11px] text-muted-foreground/60">מתאים מאוד</span>
-        <span className="text-[11px] text-muted-foreground/60">לא מתאים</span>
+      <div className="flex justify-between w-full max-w-[200px]" dir="rtl">
+        <span className="text-xs text-muted-foreground/50 tracking-wide">מתאים מאוד</span>
+        <span className="text-xs text-muted-foreground/50 tracking-wide">לא מתאים</span>
       </div>
     </div>
   );

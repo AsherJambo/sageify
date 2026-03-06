@@ -14,24 +14,24 @@ const OwlMessage = ({ message, variant = 'encouragement' }: OwlMessageProps) => 
     return () => clearTimeout(timer);
   }, [message]);
 
-  const bgClass = variant === 'celebration'
-    ? 'bg-secondary/10 border-secondary/30'
-    : variant === 'tip'
-    ? 'bg-primary/5 border-primary/15'
-    : 'bg-card border-border';
-
   return (
     <div
-      className={`flex items-start gap-3 p-4 rounded-2xl border shadow-sm transition-all duration-500 ${bgClass} ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+      className={`flex items-start gap-4 p-5 rounded-3xl border shadow-[var(--shadow-card)] transition-all duration-700 ${
+        variant === 'celebration'
+          ? 'bg-secondary/5 border-secondary/20'
+          : variant === 'tip'
+          ? 'bg-card border-border/60'
+          : 'bg-card border-border/60'
+      } ${
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
       }`}
     >
       <img
         src={owlLogo}
-        alt="Sageify"
-        className="w-10 h-10 rounded-full flex-shrink-0 animate-bounce-gentle"
+        alt="סגי"
+        className="w-10 h-10 rounded-full flex-shrink-0 ring-1 ring-secondary/20 shadow-sm"
       />
-      <p className="text-foreground text-base leading-relaxed pt-1">{message}</p>
+      <p className="text-foreground text-base leading-relaxed pt-0.5">{message}</p>
     </div>
   );
 };
