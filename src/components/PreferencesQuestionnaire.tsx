@@ -93,9 +93,11 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
           <button
             onClick={() => onComplete(preferences, dream)}
             disabled={!canComplete}
-            className="px-10 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
+            className="group inline-flex items-center gap-3 px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-semibold font-display text-lg tracking-wide disabled:opacity-25 hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)]"
           >
-            <img src={owlLogo} alt="" className="w-5 h-5 rounded-full inline-block" /> סיום חלק ו׳ וצפייה בתוצאות ✓
+            <img src={owlLogo} alt="" className="w-6 h-6 rounded-full ring-1 ring-white/20 transition-transform duration-500 group-hover:scale-110" />
+            <span>סיום חלק ו׳ וצפייה בתוצאות</span>
+            <span className="text-primary-foreground/60 transition-transform duration-300 group-hover:translate-x-[-4px]">✓</span>
           </button>
         </div>
       </div>
