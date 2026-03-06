@@ -270,7 +270,7 @@ const QuestionnaireByToken = () => {
               disabled={idNumber.length < 5}
               className="px-10 py-4 bg-primary text-primary-foreground rounded-xl text-xl font-semibold hover:opacity-90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              בואו נתחיל! 🦉
+              בואו נתחיל! →
             </button>
           </div>
         </div>
