@@ -3,6 +3,7 @@ import { considerations } from '@/data/considerationsData';
 import { considerationsDistributeIntro } from '@/data/sectionIntros';
 import SectionIntro from './SectionIntro';
 import OwlMessage from './OwlMessage';
+import owlLogo from '@/assets/owl-logo.png';
 
 interface ConsiderationsQuestionnaireProps {
   onComplete: (selected: string[], points: Record<string, number>) => void;
