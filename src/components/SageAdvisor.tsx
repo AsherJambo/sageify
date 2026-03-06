@@ -434,7 +434,7 @@ const SageAdvisor = ({
 
         {/* Roadmap detected → finish */}
         {roadmapDetected && !isStreaming && (
-          <div className="bg-card rounded-3xl border border-secondary/20 p-10 shadow-[var(--shadow-elevated)] text-center space-y-5">
+          <div className="bg-card rounded-3xl border border-secondary/20 p-6 sm:p-10 shadow-[var(--shadow-elevated)] text-center space-y-5">
             <div className="w-16 h-16 mx-auto rounded-full bg-secondary/8 flex items-center justify-center text-3xl">✓</div>
             <h3 className="text-xl font-bold font-display text-foreground tracking-wide">מפת הדרכים שלך מוכנה</h3>
             <p className="text-muted-foreground text-sm">כל התובנות וההמלצות מחכות לך בסיכום</p>
