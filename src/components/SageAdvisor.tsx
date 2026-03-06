@@ -250,8 +250,8 @@ const SageAdvisor = ({
   const visibleMessages = messages.filter(m => m.role !== 'user' || m.content !== 'שלום! סיימתי את כל שאלוני האבחון. אשמח לשמוע את הניתוח שלך ולבנות תכנית פעולה.');
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-12">
-      <div className="w-full max-w-3xl flex flex-col gap-8">
+    <div className="min-h-screen flex flex-col items-center px-3 sm:px-4 py-6 sm:py-12">
+      <div className="w-full max-w-3xl flex flex-col gap-5 sm:gap-8">
         
         {/* Header */}
         <div className="text-center space-y-4">
