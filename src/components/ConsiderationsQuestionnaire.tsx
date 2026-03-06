@@ -137,7 +137,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
                 disabled={remaining !== 0}
                 className="px-10 py-4 rounded-xl bg-secondary text-secondary-foreground font-semibold font-serif text-xl disabled:opacity-30 hover:opacity-90 transition-all shadow-lg"
               >
-                🦉 סיום חלק ג׳ ✓
+                <img src={owlLogo} alt="" className="w-5 h-5 rounded-full inline-block" /> סיום חלק ג׳ ✓
               </button>
             </div>
           </>

@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { viaQuestions } from '@/data/viaQuestions';
 import StarRating from './StarRating';
 import OwlMessage from './OwlMessage';
+import owlLogo from '@/assets/owl-logo.png';
 import type { Answers } from '@/lib/scoring';
 import { getVIAEncouragement, getRandomWisdomTip } from '@/lib/owlMessages';
 

@@ -242,7 +242,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
                   }`}
                 >
                   <p className="text-xs font-bold mb-1 text-muted-foreground">
-                    {msg.role === 'user' ? '👤 המשתמש' : '🦉 הינשוף'}
+                    {msg.role === 'user' ? '👤 המשתמש' : '🌿 סגי'}
                   </p>
                   <p className="whitespace-pre-wrap">{msg.content}</p>
                 </div>

@@ -140,7 +140,7 @@ const Index = () => {
     case 'welcome':
       return <WelcomeScreen onStart={() => updateState({ step: 'general-intro' })} />;
     case 'general-intro':
-      return <>{ProgressBar}<SectionIntro title={generalIntro.title} paragraphs={generalIntro.paragraphs} bulletPoints={generalIntro.bulletPoints} paragraphs2={generalIntro.paragraphs2} notes={generalIntro.notes} onContinue={() => updateState({ step: 'via-intro' })} buttonText="יוצאים לדרך! 🦉" /></>;
+      return <>{ProgressBar}<SectionIntro title={generalIntro.title} paragraphs={generalIntro.paragraphs} bulletPoints={generalIntro.bulletPoints} paragraphs2={generalIntro.paragraphs2} notes={generalIntro.notes} onContinue={() => updateState({ step: 'via-intro' })} buttonText="יוצאים לדרך! →" /></>;
     case 'via-intro':
       return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} onContinue={() => updateState({ step: 'via' })} /></>;
     case 'via':
