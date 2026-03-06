@@ -240,7 +240,7 @@ const QuestionnaireByToken = () => {
           <div className="max-w-lg text-center space-y-6">
             <img src={owlLogo} alt="Sageify" className="w-36 h-36 mx-auto animate-float" />
             <h1 className="text-3xl font-bold text-foreground">
-              שלום, <span className="text-accent">{tokenRow?.username}</span>! 🦉
+              שלום, <span className="text-accent">{tokenRow?.username}</span>!
             </h1>
             <p className="text-lg text-muted-foreground">ברוכים הבאים לשאלון Sageify. הזינו את מספר תעודת הזהות שלכם ולחצו להתחיל.</p>
             <div className="max-w-xs mx-auto">
