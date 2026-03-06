@@ -230,7 +230,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
 
         {/* Chat Messages */}
         {data.chatMessages && data.chatMessages.length > 0 && (
-          <Section title="🦉 שיחה עם הינשוף היועץ">
+          <Section title="שיחה עם סגי היועץ">
             <div className="space-y-3 max-h-96 overflow-y-auto">
               {data.chatMessages.map((msg, i) => (
                 <div
