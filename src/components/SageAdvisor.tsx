@@ -250,16 +250,16 @@ const SageAdvisor = ({
   const visibleMessages = messages.filter(m => m.role !== 'user' || m.content !== 'שלום! סיימתי את כל שאלוני האבחון. אשמח לשמוע את הניתוח שלך ולבנות תכנית פעולה.');
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-12">
-      <div className="w-full max-w-3xl flex flex-col gap-8">
+    <div className="min-h-screen flex flex-col items-center px-3 sm:px-4 py-6 sm:py-12">
+      <div className="w-full max-w-3xl flex flex-col gap-5 sm:gap-8">
         
         {/* Header */}
         <div className="text-center space-y-4">
           <div className="relative inline-block">
-            <img src={owlLogo} alt="" className="w-20 h-20 mx-auto rounded-full ring-2 ring-secondary/20 shadow-[var(--shadow-elevated)]" />
+            <img src={owlLogo} alt="" className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full ring-2 ring-secondary/20 shadow-[var(--shadow-elevated)]" />
             <span className="absolute bottom-1 right-1 w-4 h-4 bg-secondary rounded-full border-2 border-background" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">Sage Career Advisor</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">Sage Career Advisor</h2>
           <p className="text-muted-foreground text-sm tracking-wide">
             {isStreaming ? (
               <span className="inline-flex items-center gap-1.5">
@@ -277,7 +277,7 @@ const SageAdvisor = ({
 
         {/* Profile Summary Card — collapsible after first response */}
         {visibleMessages.length <= 1 ? (
-          <div className="bg-card rounded-3xl border border-border/60 p-8 shadow-[var(--shadow-card)]" dir="rtl">
+          <div className="bg-card rounded-3xl border border-border/60 p-5 sm:p-8 shadow-[var(--shadow-card)]" dir="rtl">
             <h3 className="text-lg font-bold font-display text-foreground mb-4 flex items-center gap-3 tracking-wide">
               <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm">📊</span>
               סיכום הפרופיל האישי שלך
@@ -369,7 +369,7 @@ const SageAdvisor = ({
                     <img
                       src={owlLogo}
                       alt="סגי"
-                      className="w-10 h-10 rounded-full ring-1 ring-secondary/20 shadow-sm"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full ring-1 ring-secondary/20 shadow-sm"
                     />
                   </div>
                   {/* Sagi message bubble */}
@@ -378,7 +378,7 @@ const SageAdvisor = ({
                       <span className="text-sm font-semibold font-display text-foreground tracking-wide">סגי</span>
                       <span className="text-[10px] text-muted-foreground/60">יועץ קריירה</span>
                     </div>
-                    <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 p-6 shadow-[var(--shadow-card)]">
+                    <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 p-4 sm:p-6 shadow-[var(--shadow-card)]">
                       <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h1]:text-lg [&_h2]:text-secondary [&_h2]:font-display [&_h2]:text-base [&_h3]:text-secondary [&_h3]:font-display [&_h3]:text-sm [&_strong]:text-secondary [&_li]:mb-1.5 [&_ul]:mr-4 [&_ol]:mr-4 text-foreground leading-relaxed text-sm">
                         <ReactMarkdown>{msg.content}</ReactMarkdown>
                       </div>
@@ -389,7 +389,7 @@ const SageAdvisor = ({
                 <>
                   {/* User avatar */}
                   <div className="flex-shrink-0 pt-1">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
                       <span className="text-primary font-display font-bold text-sm">
                         {username ? username.charAt(0) : '👤'}
                       </span>
@@ -400,7 +400,7 @@ const SageAdvisor = ({
                     <div className="flex items-center gap-2 mb-1.5">
                       <span className="text-sm font-semibold text-foreground">{username || 'אני'}</span>
                     </div>
-                    <div className="bg-primary/5 rounded-2xl rounded-tr-md border border-primary/10 px-5 py-4">
+                    <div className="bg-primary/5 rounded-2xl rounded-tr-md border border-primary/10 px-4 py-3 sm:px-5 sm:py-4">
                       <p className="text-foreground text-sm leading-relaxed">{msg.content}</p>
                     </div>
                   </div>
@@ -413,13 +413,13 @@ const SageAdvisor = ({
           {isStreaming && visibleMessages[visibleMessages.length - 1]?.role !== 'assistant' && (
             <div className="flex gap-3 items-start">
               <div className="flex-shrink-0 pt-1">
-                <img src={owlLogo} alt="סגי" className="w-10 h-10 rounded-full ring-1 ring-secondary/20 shadow-sm animate-pulse" />
+                <img src={owlLogo} alt="סגי" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full ring-1 ring-secondary/20 shadow-sm animate-pulse" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="text-sm font-semibold font-display text-foreground tracking-wide">סגי</span>
                 </div>
-                <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 px-6 py-5 shadow-[var(--shadow-card)]">
+                <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 px-4 py-3 sm:px-6 sm:py-5 shadow-[var(--shadow-card)]">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                     <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -434,7 +434,7 @@ const SageAdvisor = ({
 
         {/* Roadmap detected → finish */}
         {roadmapDetected && !isStreaming && (
-          <div className="bg-card rounded-3xl border border-secondary/20 p-10 shadow-[var(--shadow-elevated)] text-center space-y-5">
+          <div className="bg-card rounded-3xl border border-secondary/20 p-6 sm:p-10 shadow-[var(--shadow-elevated)] text-center space-y-5">
             <div className="w-16 h-16 mx-auto rounded-full bg-secondary/8 flex items-center justify-center text-3xl">✓</div>
             <h3 className="text-xl font-bold font-display text-foreground tracking-wide">מפת הדרכים שלך מוכנה</h3>
             <p className="text-muted-foreground text-sm">כל התובנות וההמלצות מחכות לך בסיכום</p>
