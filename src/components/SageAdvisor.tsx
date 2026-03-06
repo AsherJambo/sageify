@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
-import owlLogo from '@/assets/sageify-owl-icon.jpeg';
+import owlLogo from '@/assets/owl-logo.png';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import type { ChatMessage } from '@/components/OwlChat';
