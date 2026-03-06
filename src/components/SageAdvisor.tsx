@@ -400,7 +400,7 @@ const SageAdvisor = ({
                     <div className="flex items-center gap-2 mb-1.5">
                       <span className="text-sm font-semibold text-foreground">{username || 'אני'}</span>
                     </div>
-                    <div className="bg-primary/5 rounded-2xl rounded-tr-md border border-primary/10 px-5 py-4">
+                    <div className="bg-primary/5 rounded-2xl rounded-tr-md border border-primary/10 px-4 py-3 sm:px-5 sm:py-4">
                       <p className="text-foreground text-sm leading-relaxed">{msg.content}</p>
                     </div>
                   </div>
