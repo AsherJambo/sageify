@@ -279,7 +279,7 @@ const SageAdvisor = ({
         {visibleMessages.length <= 1 ? (
           <div className="bg-card rounded-3xl border border-border/60 p-5 sm:p-8 shadow-[var(--shadow-card)]" dir="rtl">
             <h3 className="text-lg font-bold font-display text-foreground mb-4 flex items-center gap-3 tracking-wide">
-              <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm">📊</span>
+              <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm text-secondary">✦</span>
               סיכום הפרופיל האישי שלך
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
