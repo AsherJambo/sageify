@@ -104,7 +104,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
             disabled={page === 0}
             className="px-6 py-3 rounded-2xl bg-card text-foreground font-medium font-display tracking-wide border border-border/60 disabled:opacity-25 hover:border-secondary/30 hover:shadow-[var(--shadow-card)] transition-all duration-300"
           >
-            ← הקודם
+            הקודם →
           </button>
 
           {page < totalPages - 1 ? (
