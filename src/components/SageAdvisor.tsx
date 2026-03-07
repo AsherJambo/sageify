@@ -290,7 +290,7 @@ const SageAdvisor = ({
                 ))}
               </div>
               <div className="space-y-1.5">
-                <p className="font-semibold text-foreground">🧭 עוגני קריירה</p>
+                <p className="font-semibold text-foreground">◆ עוגני קריירה</p>
                 {topSchein.map(t => (
                   <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
                 ))}
