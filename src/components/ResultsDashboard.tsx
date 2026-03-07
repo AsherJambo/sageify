@@ -252,20 +252,20 @@ const ResultsDashboard = ({
         </div>
 
         {/* Extra results */}
-        <div className={`space-y-6 transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <div className={`space-y-8 transition-all duration-1000 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           {topHolland.length > 0 && (
-            <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ נטיות תעסוקתיות (הולנד)</h3>
-              <div className="space-y-3">
+            <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+              <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">נטיות תעסוקתיות (הולנד)</h3>
+              <div className="space-y-4">
                 {Object.entries(hollandScores || {})
                   .sort(([, a], [, b]) => b - a)
                   .map(([cat, score]) => (
-                    <div key={cat} className="space-y-1">
+                    <div key={cat} className="space-y-1.5">
                       <div className="flex justify-between text-sm">
                         <span className="font-medium text-foreground">{cat}</span>
                       </div>
                       <p className="text-xs text-muted-foreground">{hollandCategoryDescriptions[cat] || ''}</p>
-                      <div className="w-full h-4 bg-muted rounded-full overflow-hidden">
+                      <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden">
                         <div
                           className="h-full bg-primary rounded-full progress-bar-fill"
                           style={{ width: `${(score / 11) * 100}%` }}
@@ -278,13 +278,13 @@ const ResultsDashboard = ({
           )}
 
           {topConsiderations.length > 0 && (
-            <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ שיקולים מובילים</h3>
+            <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+              <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">שיקולים מובילים</h3>
               <div className="space-y-3">
                 {topConsiderations.map(([item, pts]) => (
-                  <div key={item} className="flex justify-between items-center bg-background rounded-xl px-4 py-3 border border-border">
+                  <div key={item} className="flex justify-between items-center bg-background rounded-2xl px-5 py-3.5 border border-border/60">
                     <span className="font-medium text-foreground">{item}</span>
-                    <span className="text-secondary font-bold text-lg">{pts} נק׳</span>
+                    <span className="text-secondary font-bold font-display text-lg">{pts} נק׳</span>
                   </div>
                 ))}
               </div>
@@ -292,12 +292,12 @@ const ResultsDashboard = ({
           )}
 
           {winnerSkills.length > 0 && (
-            <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ כישורים מובילים</h3>
-              <div className="space-y-2">
+            <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+              <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">כישורים מובילים</h3>
+              <div className="space-y-3">
                 {winnerSkills.map((skill, i) => (
-                  <div key={i} className="flex items-center gap-3 bg-background rounded-xl px-4 py-3 border border-border">
-                    <span className="w-7 h-7 rounded-full bg-secondary/15 text-secondary flex items-center justify-center font-bold text-sm">{i + 1}</span>
+                  <div key={i} className="flex items-center gap-3 bg-background rounded-2xl px-5 py-3.5 border border-border/60">
+                    <span className="w-8 h-8 rounded-full bg-secondary/8 text-secondary flex items-center justify-center font-display font-bold text-sm">{i + 1}</span>
                     <span className="text-foreground">{skill}</span>
                   </div>
                 ))}
@@ -306,11 +306,11 @@ const ResultsDashboard = ({
           )}
 
           {preferencesData && (
-            <div className="bg-card rounded-2xl p-6 border border-border shadow-lg">
-              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ העדפות אישיות</h3>
+            <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+              <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">העדפות אישיות</h3>
               <div className="space-y-3">
                 {Object.entries(preferencesData.preferences).map(([key, values]) => (
-                  <div key={key} className="bg-background rounded-xl px-4 py-3 border border-border">
+                  <div key={key} className="bg-background rounded-2xl px-5 py-3.5 border border-border/60">
                     {values.map((v, i) => (
                       <p key={i} className="text-foreground text-sm">✓ {v}</p>
                     ))}
@@ -318,8 +318,8 @@ const ResultsDashboard = ({
                 ))}
               </div>
               {preferencesData.dream && (
-                <div className="mt-4 bg-secondary/10 rounded-xl px-4 py-3 border border-secondary/30">
-                  <p className="font-bold font-display text-foreground">✦ חלום המגירה:</p>
+                <div className="mt-5 bg-secondary/5 rounded-2xl px-5 py-4 border border-secondary/20">
+                  <p className="font-bold font-display text-foreground tracking-wide">✦ חלום המגירה:</p>
                   <p className="text-secondary font-semibold text-lg">{preferencesData.dream}</p>
                 </div>
               )}
@@ -351,7 +351,7 @@ const ResultsDashboard = ({
               localStorage.clear();
               window.location.reload();
             }}
-            className="px-8 py-3 rounded-xl bg-muted text-foreground font-medium hover:bg-muted/80 transition-colors"
+            className="px-8 py-3 rounded-2xl bg-muted text-foreground font-medium font-display tracking-wide hover:bg-muted/80 transition-all duration-300"
           >
             התחלה מחדש
           </button>
