@@ -190,7 +190,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
 
         {/* Considerations */}
         {considerations && considerations.selected?.length > 0 && (
-          <Section title="⚖️ שיקולים בבחירת מקצוע">
+          <Section title="◆ שיקולים בבחירת מקצוע">
             <div className="space-y-1.5">
               {considerations.selected
                 .sort((a, b) => (considerations.points[b] || 0) - (considerations.points[a] || 0))
