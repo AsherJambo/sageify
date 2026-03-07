@@ -82,7 +82,7 @@ export const hollandIntro = {
 };
 
 export const skillsIntro = {
-  badge: '🧰 חלק חמישי',
+  badge: '✦ חלק חמישי',
   title: 'כישורים ותנאי סף',
   paragraphs: [
     'בחלק הבא, משימה מסוג חדש:',
