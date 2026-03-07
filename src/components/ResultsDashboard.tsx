@@ -340,9 +340,9 @@ const ResultsDashboard = ({
         <div className="text-center pb-8 space-y-4 print:hidden">
           <button
             onClick={() => window.print()}
-            className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-medium font-serif hover:bg-primary/90 transition-colors mx-2 shadow-md"
+            className="px-8 py-3 rounded-2xl bg-primary text-primary-foreground font-medium font-display tracking-wide hover:bg-primary/85 transition-all duration-300 mx-2 shadow-[var(--shadow-card)]"
           >
-            📄 הורדה כ-PDF
+            הורדה כ-PDF
           </button>
           <br />
           <p className="text-muted-foreground mb-3 text-sm">סגי תמיד כאן אם תרצו לעבור שוב</p>
