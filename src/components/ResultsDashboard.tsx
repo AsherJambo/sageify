@@ -319,7 +319,7 @@ const ResultsDashboard = ({
               </div>
               {preferencesData.dream && (
                 <div className="mt-4 bg-secondary/10 rounded-xl px-4 py-3 border border-secondary/30">
-                  <p className="font-bold font-serif text-foreground">🌟 חלום המגירה:</p>
+                  <p className="font-bold font-display text-foreground">✦ חלום המגירה:</p>
                   <p className="text-secondary font-semibold text-lg">{preferencesData.dream}</p>
                 </div>
               )}
