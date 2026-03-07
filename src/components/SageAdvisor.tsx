@@ -331,7 +331,7 @@ const SageAdvisor = ({
         ) : (
           <details className="group" dir="rtl">
             <summary className="cursor-pointer flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-2">
-              <span className="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center text-xs">📊</span>
+              <span className="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center text-xs text-secondary">✦</span>
               <span>הצגת סיכום הפרופיל</span>
               <span className="text-xs transition-transform group-open:rotate-180">▼</span>
             </summary>
