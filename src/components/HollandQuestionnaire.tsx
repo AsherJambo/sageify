@@ -113,7 +113,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
               disabled={!pageAllAnswered}
               className="px-8 py-3 rounded-2xl bg-primary text-primary-foreground font-medium font-display tracking-wide disabled:opacity-25 hover:bg-primary/85 transition-all duration-300 shadow-[var(--shadow-card)]"
             >
-              הבא →
+              ← הבא
             </button>
           ) : (
             <button
