@@ -307,7 +307,7 @@ const ResultsDashboard = ({
 
           {preferencesData && (
             <div className="bg-card rounded-2xl p-6 border border-border shadow-lg">
-              <h3 className="text-lg font-bold font-serif text-foreground mb-4">⚙️ העדפות אישיות</h3>
+              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ העדפות אישיות</h3>
               <div className="space-y-3">
                 {Object.entries(preferencesData.preferences).map(([key, values]) => (
                   <div key={key} className="bg-background rounded-xl px-4 py-3 border border-border">
