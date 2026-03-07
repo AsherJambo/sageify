@@ -123,7 +123,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
             >
               <img src={owlLogo} alt="" className="w-6 h-6 rounded-full ring-1 ring-white/20 transition-transform duration-500 group-hover:scale-110" />
               <span>סיום חלק ד׳</span>
-              <span className="text-primary-foreground/60 transition-transform duration-300 group-hover:translate-x-[-4px]">✓</span>
+              <span className="text-primary-foreground/60 transition-transform duration-300 group-hover:translate-x-[4px]">✓</span>
             </button>
           )}
         </div>

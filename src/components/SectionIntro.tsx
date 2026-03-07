@@ -19,7 +19,7 @@ const SectionIntro = ({
   paragraphs2,
   notes,
   onContinue,
-  buttonText = 'בואו נמשיך →',
+  buttonText = '← בואו נמשיך',
 }: SectionIntroProps) => {
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-16 fade-in">
