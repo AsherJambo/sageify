@@ -351,7 +351,7 @@ const ResultsDashboard = ({
               localStorage.clear();
               window.location.reload();
             }}
-            className="px-8 py-3 rounded-xl bg-muted text-foreground font-medium hover:bg-muted/80 transition-colors"
+            className="px-8 py-3 rounded-2xl bg-muted text-foreground font-medium font-display tracking-wide hover:bg-muted/80 transition-all duration-300"
           >
             התחלה מחדש
           </button>
