@@ -98,7 +98,7 @@ export const skillsIntro = {
 };
 
 export const preferencesIntro = {
-  badge: '⚙️ חלק שישי',
+  badge: '✦ חלק שישי',
   title: 'שאלון העדפות',
   paragraphs: [
     'עוד דחיפה קטנה אחרונה וסיימנו:',
