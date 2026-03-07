@@ -221,7 +221,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
             })}
             {preferences.dream && (
               <div className="mt-2">
-                <p className="text-sm font-semibold mb-1">🌟 מגירת חלומות:</p>
+                <p className="text-sm font-semibold mb-1">✦ מגירת חלומות:</p>
                 <Badge variant="warning">{preferences.dream}</Badge>
               </div>
             )}
