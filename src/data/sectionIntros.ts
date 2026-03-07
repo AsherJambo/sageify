@@ -43,7 +43,7 @@ export const viaBonusIntro = {
 };
 
 export const scheinIntro = {
-  badge: '🧭 חלק שני',
+  badge: '✦ חלק שני',
   title: 'עוגנים תעסוקתיים',
   paragraphs: [
     'בחלק הבא, נבקש שתחשוב/י על העיסוק הבא שלך בחיים.',
