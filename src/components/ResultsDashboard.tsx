@@ -279,7 +279,7 @@ const ResultsDashboard = ({
 
           {topConsiderations.length > 0 && (
             <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-              <h3 className="text-lg font-bold font-serif text-foreground mb-4">📋 שיקולים מובילים</h3>
+              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ שיקולים מובילים</h3>
               <div className="space-y-3">
                 {topConsiderations.map(([item, pts]) => (
                   <div key={item} className="flex justify-between items-center bg-background rounded-xl px-4 py-3 border border-border">
