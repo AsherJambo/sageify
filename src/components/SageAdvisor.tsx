@@ -314,7 +314,7 @@ const SageAdvisor = ({
             </div>
             {recommendations.length > 0 && (
               <div className="mt-4 pt-4 border-t border-border">
-                <p className="font-semibold text-foreground mb-2">💡 הצעות עיסוק מהדו"ח</p>
+                <p className="font-semibold text-foreground mb-2">✦ הצעות עיסוק מהדו״ח</p>
                 {recommendations.map((rec, i) => (
                   <p key={i} className="text-muted-foreground text-sm pr-2">
                     {rec.icon} {rec.title} – {rec.reason}
