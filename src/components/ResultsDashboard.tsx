@@ -293,7 +293,7 @@ const ResultsDashboard = ({
 
           {winnerSkills.length > 0 && (
             <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-              <h3 className="text-lg font-bold font-serif text-foreground mb-4">🏆 כישורים מובילים</h3>
+              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ כישורים מובילים</h3>
               <div className="space-y-2">
                 {winnerSkills.map((skill, i) => (
                   <div key={i} className="flex items-center gap-3 bg-background rounded-xl px-4 py-3 border border-border">
