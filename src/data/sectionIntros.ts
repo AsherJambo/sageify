@@ -73,7 +73,7 @@ export const considerationsDistributeIntro = {
 };
 
 export const hollandIntro = {
-  badge: '🔍 חלק רביעי',
+  badge: '✦ חלק רביעי',
   title: 'נטיות תעסוקתיות',
   paragraphs: [
     'בחלק הבא, יופיעו כל מיני יכולות או כישורים שיש לאנשים.',
