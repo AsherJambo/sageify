@@ -171,7 +171,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
           <Section title="◆ כישורים">
             {winnerSkills.length > 0 && (
               <div className="mb-3">
-                <p className="text-sm font-semibold mb-1 text-green-700 dark:text-green-400">✅ כישורי מנצח:</p>
+                <p className="text-sm font-semibold mb-1 text-green-700 dark:text-green-400">◆ כישורי מנצח:</p>
                 <ul className="text-sm space-y-1 mr-4">
                   {winnerSkills.map((s, i) => <li key={i}>• {s}</li>)}
                 </ul>
