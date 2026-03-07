@@ -255,7 +255,7 @@ const ResultsDashboard = ({
         <div className={`space-y-6 transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
           {topHolland.length > 0 && (
             <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-              <h3 className="text-lg font-bold font-serif text-foreground mb-4">🔍 נטיות תעסוקתיות (הולנד)</h3>
+              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ נטיות תעסוקתיות (הולנד)</h3>
               <div className="space-y-3">
                 {Object.entries(hollandScores || {})
                   .sort(([, a], [, b]) => b - a)
