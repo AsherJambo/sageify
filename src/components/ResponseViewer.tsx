@@ -179,7 +179,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
             )}
             {burnoutSkills.length > 0 && (
               <div>
-                <p className="text-sm font-semibold mb-1 text-yellow-700 dark:text-yellow-400">⚠️ כישורי שחיקה:</p>
+                <p className="text-sm font-semibold mb-1 text-yellow-700 dark:text-yellow-400">● כישורי שחיקה:</p>
                 <ul className="text-sm space-y-1 mr-4">
                   {burnoutSkills.map((s, i) => <li key={i}>• {s}</li>)}
                 </ul>
