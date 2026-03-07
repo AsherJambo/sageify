@@ -255,7 +255,7 @@ const ResultsDashboard = ({
         <div className={`space-y-6 transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
           {topHolland.length > 0 && (
             <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-              <h3 className="text-lg font-bold font-serif text-foreground mb-4">🔍 נטיות תעסוקתיות (הולנד)</h3>
+              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ נטיות תעסוקתיות (הולנד)</h3>
               <div className="space-y-3">
                 {Object.entries(hollandScores || {})
                   .sort(([, a], [, b]) => b - a)
@@ -279,7 +279,7 @@ const ResultsDashboard = ({
 
           {topConsiderations.length > 0 && (
             <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-              <h3 className="text-lg font-bold font-serif text-foreground mb-4">📋 שיקולים מובילים</h3>
+              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ שיקולים מובילים</h3>
               <div className="space-y-3">
                 {topConsiderations.map(([item, pts]) => (
                   <div key={item} className="flex justify-between items-center bg-background rounded-xl px-4 py-3 border border-border">
@@ -293,7 +293,7 @@ const ResultsDashboard = ({
 
           {winnerSkills.length > 0 && (
             <div className="bg-card rounded-2xl p-6 border border-border shadow-md">
-              <h3 className="text-lg font-bold font-serif text-foreground mb-4">🏆 כישורים מובילים</h3>
+              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ כישורים מובילים</h3>
               <div className="space-y-2">
                 {winnerSkills.map((skill, i) => (
                   <div key={i} className="flex items-center gap-3 bg-background rounded-xl px-4 py-3 border border-border">
@@ -307,7 +307,7 @@ const ResultsDashboard = ({
 
           {preferencesData && (
             <div className="bg-card rounded-2xl p-6 border border-border shadow-lg">
-              <h3 className="text-lg font-bold font-serif text-foreground mb-4">⚙️ העדפות אישיות</h3>
+              <h3 className="text-lg font-bold font-display text-foreground mb-4">◆ העדפות אישיות</h3>
               <div className="space-y-3">
                 {Object.entries(preferencesData.preferences).map(([key, values]) => (
                   <div key={key} className="bg-background rounded-xl px-4 py-3 border border-border">
@@ -319,7 +319,7 @@ const ResultsDashboard = ({
               </div>
               {preferencesData.dream && (
                 <div className="mt-4 bg-secondary/10 rounded-xl px-4 py-3 border border-secondary/30">
-                  <p className="font-bold font-serif text-foreground">🌟 חלום המגירה:</p>
+                  <p className="font-bold font-display text-foreground">✦ חלום המגירה:</p>
                   <p className="text-secondary font-semibold text-lg">{preferencesData.dream}</p>
                 </div>
               )}
@@ -340,9 +340,9 @@ const ResultsDashboard = ({
         <div className="text-center pb-8 space-y-4 print:hidden">
           <button
             onClick={() => window.print()}
-            className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-medium font-serif hover:bg-primary/90 transition-colors mx-2 shadow-md"
+            className="px-8 py-3 rounded-2xl bg-primary text-primary-foreground font-medium font-display tracking-wide hover:bg-primary/85 transition-all duration-300 mx-2 shadow-[var(--shadow-card)]"
           >
-            📄 הורדה כ-PDF
+            הורדה כ-PDF
           </button>
           <br />
           <p className="text-muted-foreground mb-3 text-sm">סגי תמיד כאן אם תרצו לעבור שוב</p>

@@ -217,10 +217,10 @@ const SageAdvisor = ({
 
   // Journey action cards
   const journeyActions = [
-    { icon: '🔍', label: 'מה פחות מתאים לי?', msg: 'ספר לי עוד על מה שפחות מתאים לי ולמה כדאי להימנע מזה' },
-    { icon: '🎯', label: 'בניית תכנית פעולה', msg: 'אני מוכן! בוא נבנה תכנית פעולה קונקרטית' },
-    { icon: '📊', label: 'דירוג כיוונים', msg: 'תן לי דירוג של 1-10 לכל כיוון תעסוקתי שעלה, עם הסבר קצר' },
-    { icon: '💡', label: 'כיוונים יצירתיים', msg: 'תציע לי כיוונים יצירתיים ולא שגרתיים שאולי לא חשבתי עליהם' },
+    { icon: '◇', label: 'מה פחות מתאים לי?', msg: 'ספר לי עוד על מה שפחות מתאים לי ולמה כדאי להימנע מזה' },
+    { icon: '◆', label: 'בניית תכנית פעולה', msg: 'אני מוכן! בוא נבנה תכנית פעולה קונקרטית' },
+    { icon: '✦', label: 'דירוג כיוונים', msg: 'תן לי דירוג של 1-10 לכל כיוון תעסוקתי שעלה, עם הסבר קצר' },
+    { icon: '●', label: 'כיוונים יצירתיים', msg: 'תציע לי כיוונים יצירתיים ולא שגרתיים שאולי לא חשבתי עליהם' },
   ];
 
   // Loading phase
@@ -279,25 +279,25 @@ const SageAdvisor = ({
         {visibleMessages.length <= 1 ? (
           <div className="bg-card rounded-3xl border border-border/60 p-5 sm:p-8 shadow-[var(--shadow-card)]" dir="rtl">
             <h3 className="text-lg font-bold font-display text-foreground mb-4 flex items-center gap-3 tracking-wide">
-              <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm">📊</span>
+              <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm text-secondary">✦</span>
               סיכום הפרופיל האישי שלך
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div className="space-y-1.5">
-                <p className="font-semibold text-foreground">🌟 חוזקות מובילות</p>
+                <p className="font-semibold text-foreground">◆ חוזקות מובילות</p>
                 {topVIA.map(t => (
                   <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
                 ))}
               </div>
               <div className="space-y-1.5">
-                <p className="font-semibold text-foreground">🧭 עוגני קריירה</p>
+                <p className="font-semibold text-foreground">◆ עוגני קריירה</p>
                 {topSchein.map(t => (
                   <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
                 ))}
               </div>
               {topHolland.length > 0 && (
                 <div className="space-y-1.5">
-                  <p className="font-semibold text-foreground">🔍 נטיות הולנד</p>
+                  <p className="font-semibold text-foreground">◆ נטיות הולנד</p>
                   {topHolland.map(([c]) => (
                     <p key={c} className="text-muted-foreground pr-2">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
                   ))}
@@ -305,7 +305,7 @@ const SageAdvisor = ({
               )}
               {winnerSkills.length > 0 && (
                 <div className="space-y-1.5">
-                  <p className="font-semibold text-foreground">🏆 כישורים מובילים</p>
+                  <p className="font-semibold text-foreground">◆ כישורים מובילים</p>
                   {winnerSkills.slice(0, 4).map((s, i) => (
                     <p key={i} className="text-muted-foreground pr-2">• {s}</p>
                   ))}
@@ -314,7 +314,7 @@ const SageAdvisor = ({
             </div>
             {recommendations.length > 0 && (
               <div className="mt-4 pt-4 border-t border-border">
-                <p className="font-semibold text-foreground mb-2">💡 הצעות עיסוק מהדו"ח</p>
+                <p className="font-semibold text-foreground mb-2">✦ הצעות עיסוק מהדו״ח</p>
                 {recommendations.map((rec, i) => (
                   <p key={i} className="text-muted-foreground text-sm pr-2">
                     {rec.icon} {rec.title} – {rec.reason}
@@ -324,25 +324,25 @@ const SageAdvisor = ({
             )}
             {preferencesData?.dream && (
               <div className="mt-3">
-                <p className="text-secondary font-semibold text-sm">⭐ חלום המגירה: {preferencesData.dream}</p>
+                <p className="text-secondary font-semibold text-sm">✦ חלום המגירה: {preferencesData.dream}</p>
               </div>
             )}
           </div>
         ) : (
           <details className="group" dir="rtl">
             <summary className="cursor-pointer flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-2">
-              <span className="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center text-xs">📊</span>
+              <span className="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center text-xs text-secondary">✦</span>
               <span>הצגת סיכום הפרופיל</span>
               <span className="text-xs transition-transform group-open:rotate-180">▼</span>
             </summary>
             <div className="mt-3 bg-card rounded-2xl border border-border/60 p-6 shadow-[var(--shadow-card)]">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div className="space-y-1">
-                  <p className="font-semibold text-foreground text-xs">🌟 חוזקות</p>
+                  <p className="font-semibold text-foreground text-xs">◆ חוזקות</p>
                   {topVIA.map(t => <p key={t.category} className="text-muted-foreground text-xs pr-2">• {t.category}</p>)}
                 </div>
                 <div className="space-y-1">
-                  <p className="font-semibold text-foreground text-xs">🧭 עוגנים</p>
+                  <p className="font-semibold text-foreground text-xs">◆ עוגנים</p>
                   {topSchein.map(t => <p key={t.category} className="text-muted-foreground text-xs pr-2">• {t.category}</p>)}
                 </div>
               </div>

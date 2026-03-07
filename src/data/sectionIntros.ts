@@ -26,7 +26,7 @@ export const generalIntro = {
 };
 
 export const viaIntro = {
-  badge: '🌟 חלק ראשון',
+  badge: '✦ חלק ראשון',
   title: 'חוזקות VIA',
   paragraphs: [
     'בשאלון הבא, ננסה לזהות את החוזקות הייחודיות שלך - שיכולות לבוא לידי ביטוי בעיסוק שלך בהמשך החיים.',
@@ -35,7 +35,7 @@ export const viaIntro = {
 };
 
 export const viaBonusIntro = {
-  badge: '✨ חלק ראשון ב׳',
+  badge: '✦ חלק ראשון ב׳',
   title: 'כוח ה-3 – חוזקות VIA',
   paragraphs: [
     'מתוך השאלות שנתת להן את הציון הגבוה ביותר, בחר 3 שהכי מהדהדות או מדויקות לגביך',
@@ -43,7 +43,7 @@ export const viaBonusIntro = {
 };
 
 export const scheinIntro = {
-  badge: '🧭 חלק שני',
+  badge: '✦ חלק שני',
   title: 'עוגנים תעסוקתיים',
   paragraphs: [
     'בחלק הבא, נבקש שתחשוב/י על העיסוק הבא שלך בחיים.',
@@ -52,7 +52,7 @@ export const scheinIntro = {
 };
 
 export const considerationsIntro = {
-  badge: '📋 חלק שלישי',
+  badge: '✦ חלק שלישי',
   title: 'שיקולים בבחירת עיסוק',
   paragraphs: [
     'נמשיך לחשוב על העתיד הקרוב שלך.',
@@ -61,7 +61,7 @@ export const considerationsIntro = {
 };
 
 export const considerationsDistributeIntro = {
-  badge: '📋 חלק שלישי ב׳',
+  badge: '✦ חלק שלישי ב׳',
   title: 'חלוקת נקודות השפעה',
   paragraphs: [
     'הנה 6 השיקולים שבחרת.',
@@ -73,7 +73,7 @@ export const considerationsDistributeIntro = {
 };
 
 export const hollandIntro = {
-  badge: '🔍 חלק רביעי',
+  badge: '✦ חלק רביעי',
   title: 'נטיות תעסוקתיות',
   paragraphs: [
     'בחלק הבא, יופיעו כל מיני יכולות או כישורים שיש לאנשים.',
@@ -82,7 +82,7 @@ export const hollandIntro = {
 };
 
 export const skillsIntro = {
-  badge: '🧰 חלק חמישי',
+  badge: '✦ חלק חמישי',
   title: 'כישורים ותנאי סף',
   paragraphs: [
     'בחלק הבא, משימה מסוג חדש:',
@@ -98,7 +98,7 @@ export const skillsIntro = {
 };
 
 export const preferencesIntro = {
-  badge: '⚙️ חלק שישי',
+  badge: '✦ חלק שישי',
   title: 'שאלון העדפות',
   paragraphs: [
     'עוד דחיפה קטנה אחרונה וסיימנו:',

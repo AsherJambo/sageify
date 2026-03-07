@@ -156,9 +156,9 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
 
         {/* Holland */}
         {hasData(hollandAnswers) && (
-          <Section title="🔍 קוד הולנד">
+          <Section title="◆ קוד הולנד">
             <div className="mb-3 flex gap-2 flex-wrap">
-              {topHolland.map(([cat]) => <Badge key={cat} variant="success">⭐ {cat}</Badge>)}
+              {topHolland.map(([cat]) => <Badge key={cat} variant="success">✦ {cat}</Badge>)}
             </div>
             {Object.entries(hollandScores).sort(([,a],[,b]) => b - a).map(([cat, score]) => (
               <ScoreBar key={cat} label={cat} score={score} max={hollandMax} />
@@ -168,10 +168,10 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
 
         {/* Skills */}
         {hasData(skillsAssignments) && (
-          <Section title="🏆 כישורים">
+          <Section title="◆ כישורים">
             {winnerSkills.length > 0 && (
               <div className="mb-3">
-                <p className="text-sm font-semibold mb-1 text-green-700 dark:text-green-400">✅ כישורי מנצח:</p>
+                <p className="text-sm font-semibold mb-1 text-green-700 dark:text-green-400">◆ כישורי מנצח:</p>
                 <ul className="text-sm space-y-1 mr-4">
                   {winnerSkills.map((s, i) => <li key={i}>• {s}</li>)}
                 </ul>
@@ -179,7 +179,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
             )}
             {burnoutSkills.length > 0 && (
               <div>
-                <p className="text-sm font-semibold mb-1 text-yellow-700 dark:text-yellow-400">⚠️ כישורי שחיקה:</p>
+                <p className="text-sm font-semibold mb-1 text-yellow-700 dark:text-yellow-400">● כישורי שחיקה:</p>
                 <ul className="text-sm space-y-1 mr-4">
                   {burnoutSkills.map((s, i) => <li key={i}>• {s}</li>)}
                 </ul>
@@ -190,7 +190,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
 
         {/* Considerations */}
         {considerations && considerations.selected?.length > 0 && (
-          <Section title="⚖️ שיקולים בבחירת מקצוע">
+          <Section title="◆ שיקולים בבחירת מקצוע">
             <div className="space-y-1.5">
               {considerations.selected
                 .sort((a, b) => (considerations.points[b] || 0) - (considerations.points[a] || 0))
@@ -206,7 +206,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
 
         {/* Preferences */}
         {preferences && (
-          <Section title="🎯 העדפות">
+          <Section title="◆ העדפות">
             {preferenceQuestions.map(q => {
               const selected = preferences.preferences?.[q.id];
               if (!selected?.length) return null;
@@ -221,7 +221,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
             })}
             {preferences.dream && (
               <div className="mt-2">
-                <p className="text-sm font-semibold mb-1">🌟 מגירת חלומות:</p>
+                <p className="text-sm font-semibold mb-1">✦ מגירת חלומות:</p>
                 <Badge variant="warning">{preferences.dream}</Badge>
               </div>
             )}
