@@ -284,7 +284,7 @@ const SageAdvisor = ({
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div className="space-y-1.5">
-                <p className="font-semibold text-foreground">🌟 חוזקות מובילות</p>
+                <p className="font-semibold text-foreground">◆ חוזקות מובילות</p>
                 {topVIA.map(t => (
                   <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
                 ))}
