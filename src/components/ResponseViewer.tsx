@@ -156,7 +156,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
 
         {/* Holland */}
         {hasData(hollandAnswers) && (
-          <Section title="🔍 קוד הולנד">
+          <Section title="◆ קוד הולנד">
             <div className="mb-3 flex gap-2 flex-wrap">
               {topHolland.map(([cat]) => <Badge key={cat} variant="success">⭐ {cat}</Badge>)}
             </div>
