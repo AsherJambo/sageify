@@ -158,7 +158,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
         {hasData(hollandAnswers) && (
           <Section title="◆ קוד הולנד">
             <div className="mb-3 flex gap-2 flex-wrap">
-              {topHolland.map(([cat]) => <Badge key={cat} variant="success">⭐ {cat}</Badge>)}
+              {topHolland.map(([cat]) => <Badge key={cat} variant="success">✦ {cat}</Badge>)}
             </div>
             {Object.entries(hollandScores).sort(([,a],[,b]) => b - a).map(([cat, score]) => (
               <ScoreBar key={cat} label={cat} score={score} max={hollandMax} />
