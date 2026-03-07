@@ -305,7 +305,7 @@ const SageAdvisor = ({
               )}
               {winnerSkills.length > 0 && (
                 <div className="space-y-1.5">
-                  <p className="font-semibold text-foreground">🏆 כישורים מובילים</p>
+                  <p className="font-semibold text-foreground">◆ כישורים מובילים</p>
                   {winnerSkills.slice(0, 4).map((s, i) => (
                     <p key={i} className="text-muted-foreground pr-2">• {s}</p>
                   ))}
