@@ -206,7 +206,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
 
         {/* Preferences */}
         {preferences && (
-          <Section title="🎯 העדפות">
+          <Section title="◆ העדפות">
             {preferenceQuestions.map(q => {
               const selected = preferences.preferences?.[q.id];
               if (!selected?.length) return null;
