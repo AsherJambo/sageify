@@ -338,7 +338,7 @@ const SageAdvisor = ({
             <div className="mt-3 bg-card rounded-2xl border border-border/60 p-6 shadow-[var(--shadow-card)]">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div className="space-y-1">
-                  <p className="font-semibold text-foreground text-xs">🌟 חוזקות</p>
+                  <p className="font-semibold text-foreground text-xs">◆ חוזקות</p>
                   {topVIA.map(t => <p key={t.category} className="text-muted-foreground text-xs pr-2">• {t.category}</p>)}
                 </div>
                 <div className="space-y-1">
