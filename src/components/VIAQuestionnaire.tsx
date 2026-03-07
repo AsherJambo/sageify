@@ -89,7 +89,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
             disabled={page === 0}
             className="px-6 py-3 rounded-2xl bg-card text-foreground font-medium font-display tracking-wide border border-border/60 disabled:opacity-25 hover:border-secondary/30 hover:shadow-[var(--shadow-card)] transition-all duration-300"
           >
-            ← הקודם
+            הקודם →
           </button>
 
           {page < totalPages - 1 ? (
@@ -98,7 +98,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
               disabled={answeredOnPage < currentQuestions.length}
               className="px-8 py-3 rounded-2xl bg-primary text-primary-foreground font-medium font-display tracking-wide disabled:opacity-25 hover:bg-primary/85 transition-all duration-300 shadow-[var(--shadow-card)]"
             >
-              הבא →
+              ← הבא
             </button>
           ) : (
             <button
@@ -108,7 +108,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
             >
               <img src={owlLogo} alt="" className="w-6 h-6 rounded-full ring-1 ring-white/20 transition-transform duration-500 group-hover:scale-110" />
               <span>סיום חלק א׳</span>
-              <span className="text-primary-foreground/60 transition-transform duration-300 group-hover:translate-x-[-4px]">✓</span>
+              <span className="text-primary-foreground/60 transition-transform duration-300 group-hover:translate-x-[4px]">✓</span>
             </button>
           )}
         </div>

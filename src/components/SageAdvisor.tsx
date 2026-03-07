@@ -503,7 +503,7 @@ const SageAdvisor = ({
                 size="icon"
                 className="flex-shrink-0 w-9 h-9 rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/90 disabled:opacity-30"
               >
-                <span className="text-base">→</span>
+                <span className="text-base">←</span>
               </Button>
             </div>
           </div>

@@ -193,7 +193,7 @@ const ResultsDashboard = ({
                         <p className="text-sm text-muted-foreground leading-relaxed mb-1">{rec.description}</p>
                         <p className="text-xs text-secondary italic">{rec.reason}</p>
                         <span className="text-xs text-secondary font-medium">
-                          מצאו הזדמנויות ב-{rec.platform} ←
+                          מצאו הזדמנויות ב-{rec.platform} →
                         </span>
                       </div>
                     </div>
