@@ -168,7 +168,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
 
         {/* Skills */}
         {hasData(skillsAssignments) && (
-          <Section title="🏆 כישורים">
+          <Section title="◆ כישורים">
             {winnerSkills.length > 0 && (
               <div className="mb-3">
                 <p className="text-sm font-semibold mb-1 text-green-700 dark:text-green-400">✅ כישורי מנצח:</p>
