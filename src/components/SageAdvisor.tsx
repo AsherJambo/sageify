@@ -297,7 +297,7 @@ const SageAdvisor = ({
               </div>
               {topHolland.length > 0 && (
                 <div className="space-y-1.5">
-                  <p className="font-semibold text-foreground">🔍 נטיות הולנד</p>
+                  <p className="font-semibold text-foreground">◆ נטיות הולנד</p>
                   {topHolland.map(([c]) => (
                     <p key={c} className="text-muted-foreground pr-2">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
                   ))}
