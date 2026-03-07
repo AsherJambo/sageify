@@ -324,7 +324,7 @@ const SageAdvisor = ({
             )}
             {preferencesData?.dream && (
               <div className="mt-3">
-                <p className="text-secondary font-semibold text-sm">⭐ חלום המגירה: {preferencesData.dream}</p>
+                <p className="text-secondary font-semibold text-sm">✦ חלום המגירה: {preferencesData.dream}</p>
               </div>
             )}
           </div>
