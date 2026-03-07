@@ -35,7 +35,7 @@ export const viaIntro = {
 };
 
 export const viaBonusIntro = {
-  badge: '✨ חלק ראשון ב׳',
+  badge: '✦ חלק ראשון ב׳',
   title: 'כוח ה-3 – חוזקות VIA',
   paragraphs: [
     'מתוך השאלות שנתת להן את הציון הגבוה ביותר, בחר 3 שהכי מהדהדות או מדויקות לגביך',
