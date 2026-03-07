@@ -52,7 +52,7 @@ export const scheinIntro = {
 };
 
 export const considerationsIntro = {
-  badge: '📋 חלק שלישי',
+  badge: '✦ חלק שלישי',
   title: 'שיקולים בבחירת עיסוק',
   paragraphs: [
     'נמשיך לחשוב על העתיד הקרוב שלך.',
