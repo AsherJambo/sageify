@@ -21,12 +21,12 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
   };
 
   const feedbackMessage = selected.length === 0
-    ? '🌿 סגי ממתין לבחירה שלכם – סמכו על התחושה הראשונית'
+    ? 'סגי ממתין לבחירה שלכם – סמכו על התחושה הראשונית'
     : selected.length === 1
-    ? '🪶 בחירה ראשונה מצוינת! עוד שתיים...'
+    ? 'בחירה ראשונה מצוינת! עוד שתיים...'
     : selected.length === 2
-    ? '✨ כמעט שם – עוד אחת אחרונה!'
-    : '🌟 שלוש בחירות מושלמות! סגי מאשר';
+    ? 'כמעט שם – עוד אחת אחרונה!'
+    : 'שלוש בחירות מושלמות! סגי מאשר';
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">

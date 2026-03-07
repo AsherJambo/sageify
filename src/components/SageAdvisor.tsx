@@ -342,7 +342,7 @@ const SageAdvisor = ({
                   {topVIA.map(t => <p key={t.category} className="text-muted-foreground text-xs pr-2">• {t.category}</p>)}
                 </div>
                 <div className="space-y-1">
-                  <p className="font-semibold text-foreground text-xs">🧭 עוגנים</p>
+                  <p className="font-semibold text-foreground text-xs">◆ עוגנים</p>
                   {topSchein.map(t => <p key={t.category} className="text-muted-foreground text-xs pr-2">• {t.category}</p>)}
                 </div>
               </div>
