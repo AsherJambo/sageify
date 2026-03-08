@@ -7,8 +7,10 @@ import { toast } from 'sonner';
 import ResponseViewer from '@/components/ResponseViewer';
 import { generatePrintHTML } from '@/lib/pdfTemplate';
 import AIAnalysisModal from '@/components/AIAnalysisModal';
-import { Sparkles } from 'lucide-react';
+import AdminIntelligence from '@/components/AdminIntelligence';
+import { Sparkles, BarChart3 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
@@ -308,161 +310,179 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen p-6 max-w-5xl mx-auto" dir="rtl">
+    <div className="min-h-screen p-6 max-w-6xl mx-auto" dir="rtl">
       <div className="flex items-center gap-3 mb-8">
         <img src={owlLogo} alt="Sageify" className="w-10 h-10" />
         <h1 className="text-2xl font-bold text-foreground">ניהול שאלונים</h1>
       </div>
 
-      {/* Create single token */}
-      <div className="bg-card border border-border rounded-xl p-5 mb-6">
-        <h2 className="font-semibold text-lg mb-3">יצירת קישור חדש</h2>
-        <div className="flex gap-3">
-          <Input
-            placeholder="שם המשתמש"
-            value={newUsername}
-            onChange={e => setNewUsername(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && createToken()}
-          />
-          <Button onClick={createToken} disabled={loading}>צור קישור</Button>
-        </div>
-      </div>
+      <Tabs defaultValue="tokens" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="tokens" className="gap-2">
+            📋 ניהול קישורים
+          </TabsTrigger>
+          <TabsTrigger value="intelligence" className="gap-2">
+            <BarChart3 className="w-4 h-4" />
+            לוח בינה
+          </TabsTrigger>
+        </TabsList>
 
-      {/* Bulk create */}
-      <div className="bg-card border border-border rounded-xl p-5 mb-6">
-        <h2 className="font-semibold text-lg mb-3">יצירה מרובה</h2>
-        <textarea
-          className="w-full border border-border rounded-lg p-3 bg-background text-foreground text-sm min-h-[100px] mb-3"
-          placeholder="שם בכל שורה..."
-          value={bulkNames}
-          onChange={e => setBulkNames(e.target.value)}
-        />
-        <Button onClick={createBulk} disabled={loading}>צור קישורים</Button>
-      </div>
+        <TabsContent value="tokens" className="space-y-6">
+          {/* Create single token */}
+          <div className="bg-card border border-border rounded-xl p-5">
+            <h2 className="font-semibold text-lg mb-3">יצירת קישור חדש</h2>
+            <div className="flex gap-3">
+              <Input
+                placeholder="שם המשתמש"
+                value={newUsername}
+                onChange={e => setNewUsername(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && createToken()}
+              />
+              <Button onClick={createToken} disabled={loading}>צור קישור</Button>
+            </div>
+          </div>
 
-      {/* Filters & Actions */}
-      <div className="bg-card border border-border rounded-xl p-5 mb-6">
-        <h2 className="font-semibold text-lg mb-3">סינון וייצוא</h2>
-        <div className="flex gap-3 mb-4 flex-wrap items-end">
-          <div className="space-y-1">
-            <label className="text-xs text-muted-foreground">סטטוס</label>
-            <Select value={filterStatus} onValueChange={setFilterStatus}>
-              <SelectTrigger className="w-[160px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">הכל</SelectItem>
-                <SelectItem value="completed">הושלם</SelectItem>
-                <SelectItem value="in_progress">בתהליך</SelectItem>
-                <SelectItem value="not_started">טרם נפתח</SelectItem>
-              </SelectContent>
-            </Select>
+          {/* Bulk create */}
+          <div className="bg-card border border-border rounded-xl p-5">
+            <h2 className="font-semibold text-lg mb-3">יצירה מרובה</h2>
+            <textarea
+              className="w-full border border-border rounded-lg p-3 bg-background text-foreground text-sm min-h-[100px] mb-3"
+              placeholder="שם בכל שורה..."
+              value={bulkNames}
+              onChange={e => setBulkNames(e.target.value)}
+            />
+            <Button onClick={createBulk} disabled={loading}>צור קישורים</Button>
           </div>
-          <div className="space-y-1">
-            <label className="text-xs text-muted-foreground">מתאריך</label>
-            <Input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="w-[160px]" />
+
+          {/* Filters & Actions */}
+          <div className="bg-card border border-border rounded-xl p-5">
+            <h2 className="font-semibold text-lg mb-3">סינון וייצוא</h2>
+            <div className="flex gap-3 mb-4 flex-wrap items-end">
+              <div className="space-y-1">
+                <label className="text-xs text-muted-foreground">סטטוס</label>
+                <Select value={filterStatus} onValueChange={setFilterStatus}>
+                  <SelectTrigger className="w-[160px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">הכל</SelectItem>
+                    <SelectItem value="completed">הושלם</SelectItem>
+                    <SelectItem value="in_progress">בתהליך</SelectItem>
+                    <SelectItem value="not_started">טרם נפתח</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs text-muted-foreground">מתאריך</label>
+                <Input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="w-[160px]" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs text-muted-foreground">עד תאריך</label>
+                <Input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="w-[160px]" />
+              </div>
+              {(filterStatus !== 'all' || filterDateFrom || filterDateTo) && (
+                <Button variant="ghost" size="sm" onClick={() => { setFilterStatus('all'); setFilterDateFrom(''); setFilterDateTo(''); }}>
+                  נקה סינון
+                </Button>
+              )}
+            </div>
+            <div className="flex gap-3 flex-wrap">
+              <Button variant="outline" onClick={loadTokens} disabled={loading}>
+                {loading ? 'טוען...' : 'רענן רשימה'}
+              </Button>
+              <Button variant="outline" onClick={() => exportCSV(true)}>
+                ייצוא CSV {filteredTokens.length !== tokens.length ? `(${filteredTokens.length})` : ''}
+              </Button>
+              <Button variant="outline" onClick={exportResponses}>ייצוא תשובות (JSON)</Button>
+              <Button onClick={() => setShowAnalysis(true)} className="gap-2">
+                <Sparkles className="w-4 h-4" />
+                ניתוח דאטה אסטרטגי (AI)
+              </Button>
+            </div>
           </div>
-          <div className="space-y-1">
-            <label className="text-xs text-muted-foreground">עד תאריך</label>
-            <Input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="w-[160px]" />
+
+          {/* Token list */}
+          <div className="bg-card border border-border rounded-xl overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/50">
+                <tr>
+                  <th className="p-3 text-right font-semibold">שם</th>
+                  <th className="p-3 text-right font-semibold">ת.ז</th>
+                  <th className="p-3 text-right font-semibold">סטטוס</th>
+                  <th className="p-3 text-right font-semibold">תאריך</th>
+                  <th className="p-3 text-right font-semibold">פעולות</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredTokens.map(t => (
+                  <tr key={t.id} className="border-t border-border hover:bg-muted/30">
+                    <td className="p-3 font-medium">{t.username}</td>
+                    <td className="p-3 text-muted-foreground">{t.id_number || '—'}</td>
+                    <td className="p-3">
+                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                        t.completed_at
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                          : t.used
+                          ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
+                          : 'bg-muted text-muted-foreground'
+                      }`}>
+                        {t.completed_at ? '✅ הושלם' : t.used ? '⏳ בתהליך' : '🔗 טרם נפתח'}
+                      </span>
+                    </td>
+                    <td className="p-3 text-muted-foreground">{new Date(t.created_at).toLocaleDateString('he-IL')}</td>
+                    <td className="p-3">
+                      <div className="flex gap-2">
+                        {t.questionnaire_responses && (!Array.isArray(t.questionnaire_responses) || t.questionnaire_responses.length > 0) ? (
+                          <>
+                            <Button size="sm" variant="ghost" onClick={() => setSelectedToken(t)}>👁️ צפה</Button>
+                            <Button size="sm" variant="ghost" onClick={() => {
+                              setSelectedToken(t);
+                              setTimeout(() => {
+                                const content = document.getElementById('response-viewer-content');
+                                if (!content) return;
+                                const win = window.open('', '_blank');
+                                if (!win) return;
+                                win.document.write(generatePrintHTML(t.username, content.innerHTML, t.id_number));
+                                win.document.close();
+                                setTimeout(() => { win.print(); }, 400);
+                              }, 200);
+                            }}>📄 PDF</Button>
+                          </>
+                        ) : null}
+                        <Button size="sm" variant="ghost" onClick={() => copyLink(t.token)}>📋 העתק</Button>
+                        <Button size="sm" variant="ghost" onClick={() => deleteToken(t.id)} className="text-destructive">🗑️</Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {tokens.length === 0 && (
+                  <tr><td colSpan={5} className="p-8 text-center text-muted-foreground">אין קישורים עדיין. צרו את הראשון!</td></tr>
+                )}
+              </tbody>
+            </table>
           </div>
-          {(filterStatus !== 'all' || filterDateFrom || filterDateTo) && (
-            <Button variant="ghost" size="sm" onClick={() => { setFilterStatus('all'); setFilterDateFrom(''); setFilterDateTo(''); }}>
-              נקה סינון
-            </Button>
+
+          {/* Response viewer modal */}
+          {selectedToken && (
+            <ResponseViewer
+              username={selectedToken.username}
+              idNumber={selectedToken.id_number}
+              responseData={(Array.isArray(selectedToken.questionnaire_responses) ? selectedToken.questionnaire_responses[0]?.response_data : selectedToken.questionnaire_responses?.response_data) as Record<string, unknown> || {}}
+              onClose={() => setSelectedToken(null)}
+            />
           )}
-        </div>
-        <div className="flex gap-3 flex-wrap">
-          <Button variant="outline" onClick={loadTokens} disabled={loading}>
-            {loading ? 'טוען...' : 'רענן רשימה'}
-          </Button>
-          <Button variant="outline" onClick={() => exportCSV(true)}>
-            ייצוא CSV {filteredTokens.length !== tokens.length ? `(${filteredTokens.length})` : ''}
-          </Button>
-          <Button variant="outline" onClick={exportResponses}>ייצוא תשובות (JSON)</Button>
-          <Button onClick={() => setShowAnalysis(true)} className="gap-2">
-            <Sparkles className="w-4 h-4" />
-            ניתוח דאטה אסטרטגי (AI)
-          </Button>
-        </div>
-      </div>
 
-      {/* Token list */}
-      <div className="bg-card border border-border rounded-xl overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-muted/50">
-            <tr>
-              <th className="p-3 text-right font-semibold">שם</th>
-              <th className="p-3 text-right font-semibold">ת.ז</th>
-              <th className="p-3 text-right font-semibold">סטטוס</th>
-              <th className="p-3 text-right font-semibold">תאריך</th>
-              <th className="p-3 text-right font-semibold">פעולות</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredTokens.map(t => (
-              <tr key={t.id} className="border-t border-border hover:bg-muted/30">
-                <td className="p-3 font-medium">{t.username}</td>
-                <td className="p-3 text-muted-foreground">{t.id_number || '—'}</td>
-                <td className="p-3">
-                  <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-                    t.completed_at
-                      ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                      : t.used
-                      ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
-                      : 'bg-muted text-muted-foreground'
-                  }`}>
-                    {t.completed_at ? '✅ הושלם' : t.used ? '⏳ בתהליך' : '🔗 טרם נפתח'}
-                  </span>
-                </td>
-                <td className="p-3 text-muted-foreground">{new Date(t.created_at).toLocaleDateString('he-IL')}</td>
-                <td className="p-3">
-                  <div className="flex gap-2">
-                    {t.questionnaire_responses && (!Array.isArray(t.questionnaire_responses) || t.questionnaire_responses.length > 0) ? (
-                      <>
-                        <Button size="sm" variant="ghost" onClick={() => setSelectedToken(t)}>👁️ צפה</Button>
-                        <Button size="sm" variant="ghost" onClick={() => {
-                          setSelectedToken(t);
-                          setTimeout(() => {
-                            const content = document.getElementById('response-viewer-content');
-                            if (!content) return;
-                            const win = window.open('', '_blank');
-                            if (!win) return;
-                            win.document.write(generatePrintHTML(t.username, content.innerHTML, t.id_number));
-                            win.document.close();
-                            setTimeout(() => { win.print(); }, 400);
-                          }, 200);
-                        }}>📄 PDF</Button>
-                      </>
-                    ) : null}
-                    <Button size="sm" variant="ghost" onClick={() => copyLink(t.token)}>📋 העתק</Button>
-                    <Button size="sm" variant="ghost" onClick={() => deleteToken(t.id)} className="text-destructive">🗑️</Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-            {tokens.length === 0 && (
-              <tr><td colSpan={5} className="p-8 text-center text-muted-foreground">אין קישורים עדיין. צרו את הראשון!</td></tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+          <AIAnalysisModal
+            open={showAnalysis}
+            onClose={() => setShowAnalysis(false)}
+            adminPassword={storedPassword}
+          />
+        </TabsContent>
 
-      {/* Response viewer modal */}
-      {selectedToken && (
-        <ResponseViewer
-          username={selectedToken.username}
-          idNumber={selectedToken.id_number}
-          responseData={(Array.isArray(selectedToken.questionnaire_responses) ? selectedToken.questionnaire_responses[0]?.response_data : selectedToken.questionnaire_responses?.response_data) as Record<string, unknown> || {}}
-          onClose={() => setSelectedToken(null)}
-        />
-      )}
-
-      <AIAnalysisModal
-        open={showAnalysis}
-        onClose={() => setShowAnalysis(false)}
-        adminPassword={storedPassword}
-      />
+        <TabsContent value="intelligence">
+          <AdminIntelligence adminPassword={storedPassword} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

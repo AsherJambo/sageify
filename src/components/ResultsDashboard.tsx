@@ -9,6 +9,7 @@ import type { SkillColumn } from '@/data/skillsData';
 import { skills } from '@/data/skillsData';
 import OwlChat, { type ChatMessage } from '@/components/OwlChat';
 import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
+import MatchCards from '@/components/MatchCards';
 
 interface ResultsDashboardProps {
   viaScores: Record<string, number>;
@@ -19,12 +20,13 @@ interface ResultsDashboardProps {
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
   chatMessages?: ChatMessage[];
   onChatMessagesChange?: (messages: ChatMessage[]) => void;
+  tokenId?: string;
 }
 
 const ResultsDashboard = ({
   viaScores, scheinScores, hollandScores,
   considerationsData, skillsAssignments, preferencesData,
-  chatMessages, onChatMessagesChange,
+  chatMessages, onChatMessagesChange, tokenId,
 }: ResultsDashboardProps) => {
   const topVIA = getTopCategories(viaScores, 2);
   const topSchein = getTopCategories(scheinScores, 2);
@@ -142,8 +144,20 @@ const ResultsDashboard = ({
           </div>
         </motion.div>
 
-        {/* Recommendations */}
+        {/* Smart Match Cards - Top 3 Paths */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={3}>
+          <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
+            <MatchCards
+              viaScores={viaScores}
+              scheinScores={scheinScores}
+              hollandScores={hollandScores}
+              tokenId={tokenId}
+            />
+          </div>
+        </motion.div>
+
+        {/* AI Advisor Recommendations (fallback / additional) */}
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={4}>
           <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
             <div className="flex items-center gap-4 mb-6">
               <img src={owlLogo} alt="" className="w-12 h-12 rounded-full" />
@@ -198,7 +212,7 @@ const ResultsDashboard = ({
         </motion.div>
 
         {/* Charts */}
-        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={4} className="space-y-8">
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={5} className="space-y-8">
           <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
             <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">חוזקות VIA – כל הקטגוריות</h3>
             <div className="space-y-4">
@@ -245,7 +259,7 @@ const ResultsDashboard = ({
         </motion.div>
 
         {/* Extra results */}
-        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={5} className="space-y-8">
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={6} className="space-y-8">
           {topHolland.length > 0 && (
             <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
               <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">נטיות תעסוקתיות (הולנד)</h3>
@@ -321,7 +335,7 @@ const ResultsDashboard = ({
         </motion.div>
 
         {/* Owl AI Chat */}
-        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={6} className="print:hidden">
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={7} className="print:hidden">
           <OwlChat
             profileSummary={profileSummary}
             initialMessages={chatMessages}
