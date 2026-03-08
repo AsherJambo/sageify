@@ -242,7 +242,7 @@ const QuestionnaireByToken = () => {
             <h1 className="text-3xl font-bold text-foreground">
               שלום, <span className="text-accent">{tokenRow?.username}</span>!
             </h1>
-            <p className="text-lg text-muted-foreground">ברוכים הבאים לשאלון Sageify. הזינו את מספר תעודת הזהות שלכם ולחצו להתחיל.</p>
+            <p className="text-lg text-muted-foreground leading-relaxed">ברוכים הבאים לשאלון Sageify. הזינו את מספר תעודת הזהות שלכם כדי להתחיל.</p>
             <div className="max-w-xs mx-auto">
               <input
                 type="text"
