@@ -351,6 +351,7 @@ const SageAdvisor = ({
         if (prev[lastIdx]?.role === 'assistant') {
           processSearchQueries(prev[lastIdx].content, lastIdx);
           extractAndSaveOpportunities(prev[lastIdx].content);
+          extractAndSaveActivityChoices(prev[lastIdx].content);
         }
         return prev;
       });
