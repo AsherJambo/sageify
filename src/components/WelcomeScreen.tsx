@@ -24,19 +24,19 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
 
   const pillars = [
     {
-      icon: '🔬',
+      icon: '◆',
       title: 'דיוק פסיכולוגי',
       desc: 'מערכת שנבנתה על ידי מומחי פסיכולוגיה תעסוקתית – מגשרת בין "מי שאתם" ל"מה תעשו מחר"',
     },
     {
-      icon: '🔍',
+      icon: '✦',
       title: 'סריקת שוק בזמן אמת',
-      desc: 'מונע ע"י Perplexity AI – לידים חיים וספציפיים: משרות, התנדבויות ותפקידים בישראל',
+      desc: 'חיפוש AI חי שמוצא לידים ספציפיים: משרות, התנדבויות ותפקידים בישראל – לא רק קטגוריות כלליות',
     },
     {
-      icon: '🧠',
+      icon: '●',
       title: 'סינון שיתופי',
-      desc: 'ה-AI שלנו מזהה דפוסים בהשוואה לפרופילים דומים – ומראה לכם מה הוביל אחרים לשביעות רצון גבוהה',
+      desc: 'ה-AI מזהה דפוסים בהשוואה לפרופילים דומים – ומראה מה הוביל אחרים לשביעות רצון גבוהה',
     },
   ];
 
@@ -47,7 +47,7 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
     { num: '04', title: 'נטיות תעסוקתיות', desc: '66 שאלות – גלו את הנטיות שלכם' },
     { num: '05', title: 'כישורים ותנאי סף', desc: '20 כישורים – מיינו לארגז הכלים' },
     { num: '06', title: 'העדפות וחלום המגירה', desc: 'העדפות אישיות + תחום החלום שלכם' },
-    { num: '07', title: 'יועץ AI והתאמת עיסוק', desc: 'שיחה עם יועץ חכם + התאמה ממאגר הדאטה הראשון בישראל לפורשים ולגיל השלישי' },
+    { num: '07', title: 'יועץ AI והתאמת עיסוק', desc: 'שיחה אישית עם יועץ חכם + התאמה ממאגר עיסוקים ייחודי לגיל השלישי' },
   ];
 
   return (
@@ -117,7 +117,7 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
                   key={i}
                   className="bg-card rounded-2xl p-6 border border-border/60 shadow-[var(--shadow-card)] text-center space-y-3 hover:border-secondary/30 transition-all duration-300"
                 >
-                  <div className="w-12 h-12 mx-auto rounded-full bg-secondary/8 flex items-center justify-center text-2xl">
+                  <div className="w-12 h-12 mx-auto rounded-full bg-secondary/8 border border-secondary/15 flex items-center justify-center text-lg text-secondary font-display">
                     {pillar.icon}
                   </div>
                   <p className="font-bold font-display text-foreground tracking-wide text-sm">
@@ -138,21 +138,37 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
             }`}
           >
             <div className="space-y-3">
-              {journeySteps.map((step, i) => (
+              {journeySteps.map((step, i) => {
+                const isHighlight = step.num === '07';
+                return (
                 <div
                   key={i}
-                  className="flex items-center gap-5 bg-card rounded-2xl p-5 border border-border/60 shadow-[var(--shadow-card)] text-right group hover:border-secondary/30 transition-all duration-300"
+                  className={`flex items-center gap-5 bg-card rounded-2xl p-5 border shadow-[var(--shadow-card)] text-right group transition-all duration-300 ${
+                    isHighlight
+                      ? 'border-secondary/30 bg-secondary/[0.03]'
+                      : 'border-border/60 hover:border-secondary/30'
+                  }`}
                 >
-                  <span className="text-xs font-display text-muted-foreground/50 tracking-widest w-8 text-center flex-shrink-0">
+                  <span className={`text-xs font-display tracking-widest w-8 text-center flex-shrink-0 ${
+                    isHighlight ? 'text-secondary font-bold' : 'text-muted-foreground/50'
+                  }`}>
                     {step.num}
                   </span>
-                  <div className="h-8 w-px bg-border/60" />
+                  <div className={`h-8 w-px ${isHighlight ? 'bg-secondary/30' : 'bg-border/60'}`} />
                   <div className="flex-1">
-                    <p className="font-semibold text-foreground font-display tracking-wide">{step.title}</p>
+                    <p className={`font-semibold font-display tracking-wide ${
+                      isHighlight ? 'text-secondary' : 'text-foreground'
+                    }`}>{step.title}</p>
                     <p className="text-sm text-muted-foreground mt-0.5">{step.desc}</p>
                   </div>
+                  {isHighlight && (
+                    <span className="text-xs px-2.5 py-1 rounded-full bg-secondary/10 text-secondary font-medium flex-shrink-0">
+                      חדש
+                    </span>
+                  )}
                 </div>
-              ))}
+                );
+              })}
             </div>
             <p className="text-muted-foreground/60 text-sm mt-6 text-center tracking-wide">
               ⏱ זמן משוער: 40–50 דקות · ההתקדמות נשמרת אוטומטית

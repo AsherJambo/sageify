@@ -225,12 +225,12 @@ const QuestionnaireByToken = () => {
   const showProgressBar = globalProgress > 0 && state.step !== 'results';
 
   const ProgressBar = showProgressBar ? (
-    <div className="fixed top-0 left-0 right-0 z-50 h-2 bg-muted/50 backdrop-blur-sm">
-      <div
-        className="h-full bg-primary rounded-l-full progress-bar-fill"
-        style={{ width: `${globalProgress}%` }}
-      />
-    </div>
+      <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-muted/30 backdrop-blur-sm">
+        <div
+          className="h-full bg-secondary rounded-l-full progress-bar-fill"
+          style={{ width: `${globalProgress}%` }}
+        />
+      </div>
   ) : null;
 
   switch (state.step) {
@@ -238,11 +238,11 @@ const QuestionnaireByToken = () => {
       return (
         <div className="min-h-screen flex flex-col items-center justify-center px-6">
           <div className="max-w-lg text-center space-y-6">
-            <img src={owlLogo} alt="Sageify" className="w-36 h-36 mx-auto animate-float" />
+            <img src={owlLogo} alt="Sageify" className="w-28 h-28 mx-auto rounded-full shadow-[var(--shadow-elevated)] border-2 border-border/30" />
             <h1 className="text-3xl font-bold text-foreground">
               שלום, <span className="text-accent">{tokenRow?.username}</span>!
             </h1>
-            <p className="text-lg text-muted-foreground">ברוכים הבאים לשאלון Sageify. הזינו את מספר תעודת הזהות שלכם ולחצו להתחיל.</p>
+            <p className="text-lg text-muted-foreground leading-relaxed">ברוכים הבאים לשאלון Sageify. הזינו את מספר תעודת הזהות שלכם כדי להתחיל.</p>
             <div className="max-w-xs mx-auto">
               <input
                 type="text"
@@ -268,9 +268,9 @@ const QuestionnaireByToken = () => {
                 updateState({ step: 'general-intro' });
               }}
               disabled={idNumber.length < 5}
-              className="px-10 py-4 bg-primary text-primary-foreground rounded-xl text-xl font-semibold hover:opacity-90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              ← !בואו נתחיל
+              בואו נתחיל! ←
             </button>
           </div>
         </div>
