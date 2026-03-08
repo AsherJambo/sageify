@@ -116,6 +116,53 @@ const SageAdvisor = ({
 
   const { searchState, executeSearch, extractSearchQueries, cleanSearchTags } = useLiveSearch(profileSummary);
 
+  // Auto-extract and save opportunities from AI responses
+  const savedOpportunityTitles = useRef<Set<string>>(new Set());
+
+  const extractAndSaveOpportunities = useCallback(async (text: string) => {
+    const regex = /\[OPPORTUNITY_LOG:\s*(\{[\s\S]*?\})\]/g;
+    let match;
+    const opportunities: Array<{
+      title: string; category: string; organization: string;
+      description: string; whyFits: string; location: string; link: string;
+    }> = [];
+
+    while ((match = regex.exec(text)) !== null) {
+      try {
+        const parsed = JSON.parse(match[1]);
+        if (parsed.title && !savedOpportunityTitles.current.has(parsed.title)) {
+          opportunities.push(parsed);
+        }
+      } catch { /* skip malformed */ }
+    }
+
+    for (const opp of opportunities) {
+      try {
+        await supabase.from('opportunities').insert([{
+          title: opp.title,
+          organization_name: opp.organization || 'לא צוין',
+          category: opp.category || 'work',
+          description: opp.description || '',
+          link: opp.link || '',
+          location: opp.location || null,
+          target_traits: JSON.parse(JSON.stringify({
+            source: 'ai-advisor',
+            whyFits: opp.whyFits || '',
+            tokenId: tokenId || '',
+          })),
+        }]);
+        savedOpportunityTitles.current.add(opp.title);
+        console.log('Auto-saved opportunity:', opp.title);
+      } catch (e) {
+        console.error('Auto-save opportunity error:', e);
+      }
+    }
+  }, [tokenId]);
+
+  const cleanOpportunityTags = useCallback((text: string): string => {
+    return text.replace(/\[OPPORTUNITY_LOG:\s*\{[\s\S]*?\}\]/g, '').trim();
+  }, []);
+
   const streamChat = async (allMessages: ChatMessage[]) => {
     const resp = await fetch(CHAT_URL, {
       method: 'POST',
