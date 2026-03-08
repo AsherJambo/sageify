@@ -184,6 +184,11 @@ const SageAdvisor = ({
   }, []);
 
   const streamChat = async (allMessages: ChatMessage[]) => {
+    console.group('%c🦉 Advisor Chat Request', 'color: #d4a017; font-weight: bold');
+    console.log('%c💬 Messages count:', 'color: #2196F3', allMessages.length);
+    console.log('%c📤 Payload:', 'color: #4CAF50', { messagesCount: allMessages.length, hasProfileSummary: !!profileSummary, profileSummaryLength: profileSummary.length, tokenId: tokenId || 'anonymous' });
+    console.groupEnd();
+
     const resp = await fetch(CHAT_URL, {
       method: 'POST',
       headers: {
