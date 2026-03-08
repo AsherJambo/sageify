@@ -175,6 +175,23 @@ const SageAdvisor = ({
     }
   };
 
+  // Process search queries from AI response
+  const processSearchQueries = async (assistantContent: string, msgIndex: number) => {
+    const queries = extractSearchQueries(assistantContent);
+    if (queries.length === 0) return;
+
+    // Clean search tags from the displayed message
+    setMessages(prev => prev.map((m, i) => 
+      i === msgIndex ? { ...m, content: cleanSearchTags(m.content) } : m
+    ));
+
+    // Execute first search query
+    const results = await executeSearch(queries[0]);
+    if (results.length > 0) {
+      setSearchResultsByMessage(prev => ({ ...prev, [msgIndex]: results }));
+    }
+  };
+
   useEffect(() => {
     if (phase !== 'loading') return;
     const timer = setTimeout(async () => {
@@ -187,6 +204,14 @@ const SageAdvisor = ({
         };
         setMessages([initialMsg]);
         await streamChat([initialMsg]);
+        // After streaming, check for search queries in the latest assistant message
+        setMessages(prev => {
+          const lastAssistant = prev.findIndex((m, i) => m.role === 'assistant' && i === prev.length - 1);
+          if (lastAssistant >= 0) {
+            processSearchQueries(prev[lastAssistant].content, lastAssistant);
+          }
+          return prev;
+        });
       } catch (e) {
         console.error(e);
       } finally {
