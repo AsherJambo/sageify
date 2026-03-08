@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      opportunities: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          id: string
+          is_active: boolean
+          link: string
+          location: string | null
+          logo_url: string | null
+          organization_name: string
+          target_traits: Json
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_active?: boolean
+          link?: string
+          location?: string | null
+          logo_url?: string | null
+          organization_name: string
+          target_traits?: Json
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_active?: boolean
+          link?: string
+          location?: string | null
+          logo_url?: string | null
+          organization_name?: string
+          target_traits?: Json
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       questionnaire_responses: {
         Row: {
           created_at: string
@@ -75,6 +120,45 @@ export type Database = {
           username?: string
         }
         Relationships: []
+      }
+      user_feedback: {
+        Row: {
+          created_at: string
+          feedback: string
+          id: string
+          opportunity_id: string
+          token_id: string
+        }
+        Insert: {
+          created_at?: string
+          feedback: string
+          id?: string
+          opportunity_id: string
+          token_id: string
+        }
+        Update: {
+          created_at?: string
+          feedback?: string
+          id?: string
+          opportunity_id?: string
+          token_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_feedback_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_feedback_token_id_fkey"
+            columns: ["token_id"]
+            isOneToOne: false
+            referencedRelation: "questionnaire_tokens"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
