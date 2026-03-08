@@ -138,21 +138,37 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
             }`}
           >
             <div className="space-y-3">
-              {journeySteps.map((step, i) => (
+              {journeySteps.map((step, i) => {
+                const isHighlight = step.num === '07';
+                return (
                 <div
                   key={i}
-                  className="flex items-center gap-5 bg-card rounded-2xl p-5 border border-border/60 shadow-[var(--shadow-card)] text-right group hover:border-secondary/30 transition-all duration-300"
+                  className={`flex items-center gap-5 bg-card rounded-2xl p-5 border shadow-[var(--shadow-card)] text-right group transition-all duration-300 ${
+                    isHighlight
+                      ? 'border-secondary/30 bg-secondary/[0.03]'
+                      : 'border-border/60 hover:border-secondary/30'
+                  }`}
                 >
-                  <span className="text-xs font-display text-muted-foreground/50 tracking-widest w-8 text-center flex-shrink-0">
+                  <span className={`text-xs font-display tracking-widest w-8 text-center flex-shrink-0 ${
+                    isHighlight ? 'text-secondary font-bold' : 'text-muted-foreground/50'
+                  }`}>
                     {step.num}
                   </span>
-                  <div className="h-8 w-px bg-border/60" />
+                  <div className={`h-8 w-px ${isHighlight ? 'bg-secondary/30' : 'bg-border/60'}`} />
                   <div className="flex-1">
-                    <p className="font-semibold text-foreground font-display tracking-wide">{step.title}</p>
+                    <p className={`font-semibold font-display tracking-wide ${
+                      isHighlight ? 'text-secondary' : 'text-foreground'
+                    }`}>{step.title}</p>
                     <p className="text-sm text-muted-foreground mt-0.5">{step.desc}</p>
                   </div>
+                  {isHighlight && (
+                    <span className="text-xs px-2.5 py-1 rounded-full bg-secondary/10 text-secondary font-medium flex-shrink-0">
+                      חדש
+                    </span>
+                  )}
                 </div>
-              ))}
+                );
+              })}
             </div>
             <p className="text-muted-foreground/60 text-sm mt-6 text-center tracking-wide">
               ⏱ זמן משוער: 40–50 דקות · ההתקדמות נשמרת אוטומטית

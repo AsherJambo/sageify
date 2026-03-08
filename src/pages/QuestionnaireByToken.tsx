@@ -268,7 +268,7 @@ const QuestionnaireByToken = () => {
                 updateState({ step: 'general-intro' });
               }}
               disabled={idNumber.length < 5}
-              className="px-10 py-4 bg-primary text-primary-foreground rounded-xl text-xl font-semibold hover:opacity-90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               בואו נתחיל! ←
             </button>
