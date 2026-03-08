@@ -516,7 +516,7 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="intelligence">
-          <AdminIntelligence adminPassword={storedPassword} />
+          <AdminIntelligence adminPassword={storedPassword} tokens={filteredTokens} />
         </TabsContent>
       </Tabs>
     </div>
