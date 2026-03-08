@@ -231,6 +231,14 @@ const SageAdvisor = ({
     setIsStreaming(true);
     try {
       await streamChat(newMessages);
+      // Check for search queries after streaming
+      setMessages(prev => {
+        const lastIdx = prev.length - 1;
+        if (prev[lastIdx]?.role === 'assistant') {
+          processSearchQueries(prev[lastIdx].content, lastIdx);
+        }
+        return prev;
+      });
     } catch (e) {
       console.error(e);
     } finally {
