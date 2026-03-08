@@ -149,13 +149,16 @@ describe('Power 3 Bonus Flow', () => {
     const selected = maxQ.slice(0, 3).map(q => q.id);
     const bonused = applyBonus(answers, selected);
 
-    // Selected questions should now be 9
+    // Selected questions should have bonus applied
     selected.forEach(id => {
-      expect(bonused[id]).toBe(9);
+      expect(bonused[id]).toBe(answers[id] + 4);
     });
 
-    // Unselected max question stays at 5
-    expect(bonused[maxQ[3].id]).toBe(5);
+    // Non-selected questions stay unchanged
+    const unselected = maxQ.filter(q => !selected.includes(q.id));
+    unselected.forEach(q => {
+      expect(bonused[q.id]).toBe(answers[q.id]);
+    });
 
     // Category scores should reflect bonus
     const beforeScores = calculateCategoryScores(answers, viaQuestions, viaCategories);
