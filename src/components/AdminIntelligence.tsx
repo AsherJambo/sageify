@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { cloudClient } from '@/lib/cloudClient';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, AreaChart, Area, CartesianGrid, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, TrendingUp, Users, Target, Sparkles, Brain, Heart, Compass } from 'lucide-react';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
@@ -41,6 +41,8 @@ interface Analytics {
     topActivities: [string, number][];
     topReasons: [string, number][];
     byPsychProfile: Array<{ profile: string; activities: string[]; count: number }>;
+    timeSeries?: Array<{ week: string; total: number; [key: string]: string | number }>;
+    reasonTrends?: Array<{ month: string; topReasons: [string, number][] }>;
   };
 }
 
@@ -569,7 +571,90 @@ const AdminIntelligence = ({ adminPassword, tokens }: AdminIntelligenceProps) =>
                   </div>
                 </div>
 
-                {/* Activity by Psychological Profile */}
+                {/* === TREND CHARTS === */}
+                {data.activityChoices.timeSeries && data.activityChoices.timeSeries.length > 1 && (
+                  <div className="bg-card rounded-2xl border border-border p-6 mt-6">
+                    <h3 className="text-lg font-bold font-display mb-2">📈 מגמת בחירות פעילות לאורך זמן</h3>
+                    <p className="text-xs text-muted-foreground mb-4">כמות בחירות חדשות לפי שבוע · מחולק לפי סוג פעילות</p>
+                    <ResponsiveContainer width="100%" height={280}>
+                      <AreaChart data={data.activityChoices.timeSeries}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                        <XAxis
+                          dataKey="week"
+                          tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+                          tickFormatter={(v: string) => {
+                            const d = new Date(v);
+                            return `${d.getDate()}/${d.getMonth() + 1}`;
+                          }}
+                        />
+                        <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
+                        <Tooltip
+                          contentStyle={{ direction: 'rtl', fontSize: 12, borderRadius: 12 }}
+                          labelFormatter={(v: string) => {
+                            const d = new Date(v);
+                            return `שבוע ${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+                          }}
+                          formatter={(value: number, name: string) => {
+                            const label = name === 'volunteer' ? 'התנדבות' : name === 'work' ? 'עבודה' : name === 'course' ? 'קורסים' : name === 'freelance' ? 'פרילנס' : name === 'total' ? 'סה"כ' : name;
+                            return [value, label];
+                          }}
+                        />
+                        <Legend formatter={(value: string) => value === 'volunteer' ? 'התנדבות' : value === 'work' ? 'עבודה' : value === 'course' ? 'קורסים' : value === 'freelance' ? 'פרילנס' : value === 'total' ? 'סה"כ' : value} />
+                        <Area type="monotone" dataKey="volunteer" stackId="1" stroke="hsl(158, 64%, 40%)" fill="hsl(158, 64%, 40%)" fillOpacity={0.6} name="volunteer" />
+                        <Area type="monotone" dataKey="work" stackId="1" stroke="hsl(210, 45%, 35%)" fill="hsl(210, 45%, 35%)" fillOpacity={0.6} name="work" />
+                        <Area type="monotone" dataKey="course" stackId="1" stroke="hsl(260, 60%, 60%)" fill="hsl(260, 60%, 60%)" fillOpacity={0.6} name="course" />
+                        <Area type="monotone" dataKey="freelance" stackId="1" stroke="hsl(35, 80%, 55%)" fill="hsl(35, 80%, 55%)" fillOpacity={0.6} name="freelance" />
+                        <Area type="monotone" dataKey="other" stackId="1" stroke="hsl(var(--muted-foreground))" fill="hsl(var(--muted-foreground))" fillOpacity={0.3} name="other" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
+
+                {/* Reason Evolution Over Time */}
+                {data.activityChoices.reasonTrends && data.activityChoices.reasonTrends.length > 0 && (
+                  <div className="bg-card rounded-2xl border border-border p-6 mt-6">
+                    <h3 className="text-lg font-bold font-display mb-2">🔄 אבולוציית הסיבות לבחירה</h3>
+                    <p className="text-xs text-muted-foreground mb-4">5 הסיבות המובילות לכל חודש — עוקב אחרי שינויי מוטיבציה</p>
+                    <div className="space-y-4">
+                      {data.activityChoices.reasonTrends.map((monthData, i) => {
+                        const monthLabel = (() => {
+                          const [y, m] = monthData.month.split('-');
+                          const months = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+                          return `${months[parseInt(m) - 1]} ${y}`;
+                        })();
+                        const maxCount = monthData.topReasons[0]?.[1] || 1;
+                        return (
+                          <div key={i} className="bg-muted/20 rounded-xl p-4 border border-border/50">
+                            <div className="flex items-center gap-2 mb-3">
+                              <span className="text-sm font-bold text-foreground">{monthLabel}</span>
+                              <span className="text-xs text-muted-foreground">({monthData.topReasons.reduce((s, [,c]) => s + c, 0)} ציונים)</span>
+                            </div>
+                            <div className="space-y-2">
+                              {monthData.topReasons.map(([reason, count], j) => (
+                                <div key={j} className="flex items-center gap-3">
+                                  <span className="text-xs font-bold text-secondary w-5 text-center">{j + 1}</span>
+                                  <div className="flex-1">
+                                    <div className="flex items-center justify-between mb-1">
+                                      <span className="text-xs text-foreground truncate max-w-[300px]">{reason}</span>
+                                      <span className="text-xs text-muted-foreground font-mono">{count}×</span>
+                                    </div>
+                                    <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                                      <div
+                                        className="h-full rounded-full bg-gradient-to-l from-secondary to-primary transition-all"
+                                        style={{ width: `${(count / maxCount) * 100}%` }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 {data.activityChoices.byPsychProfile.length > 0 && (
                   <div className="bg-card rounded-2xl border border-border p-6 mt-6">
                     <h3 className="text-lg font-bold font-display mb-2">🧬 בחירות לפי פרופיל פסיכולוגי</h3>

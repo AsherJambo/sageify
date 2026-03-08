@@ -360,6 +360,45 @@ Deno.serve(async (req) => {
         }
       });
 
+      // Time-series: group by week
+      const timeSeriesMap: Record<string, Record<string, number>> = {};
+      (activityChoices || []).forEach((c: any) => {
+        const d = new Date(c.created_at);
+        // Weekly bucket (start of week)
+        const weekStart = new Date(d);
+        weekStart.setDate(d.getDate() - d.getDay());
+        const key = weekStart.toISOString().slice(0, 10);
+        if (!timeSeriesMap[key]) timeSeriesMap[key] = {};
+        const type = c.activity_type || 'other';
+        timeSeriesMap[key][type] = (timeSeriesMap[key][type] || 0) + 1;
+      });
+
+      const timeSeries = Object.entries(timeSeriesMap)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([week, types]) => ({
+          week,
+          ...types,
+          total: Object.values(types).reduce((s, v) => s + v, 0),
+        }));
+
+      // Reason trends: group reasons by month
+      const reasonTrendMap: Record<string, Record<string, number>> = {};
+      (activityChoices || []).forEach((c: any) => {
+        const month = new Date(c.created_at).toISOString().slice(0, 7);
+        const reasons = (c.reasons || []) as string[];
+        if (!reasonTrendMap[month]) reasonTrendMap[month] = {};
+        for (const r of reasons) {
+          reasonTrendMap[month][r] = (reasonTrendMap[month][r] || 0) + 1;
+        }
+      });
+
+      const reasonTrends = Object.entries(reasonTrendMap)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([month, reasons]) => ({
+          month,
+          topReasons: Object.entries(reasons).sort(([,a],[,b]) => b - a).slice(0, 5),
+        }));
+
       return jsonResponse({
         totalResponses: responses?.length || 0,
         totalOpportunities: opps?.length || 0,
@@ -378,7 +417,6 @@ Deno.serve(async (req) => {
           .sort(([, a], [, b]) => b - a)
           .slice(0, 20)
           .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {}),
-        // Activity choices data
         activityChoices: {
           total: activityChoices?.length || 0,
           byType: Object.entries(activityTypeCounts).sort(([,a],[,b]) => b - a),
@@ -388,6 +426,8 @@ Deno.serve(async (req) => {
             .sort(([,a],[,b]) => b.count - a.count)
             .slice(0, 10)
             .map(([key, val]) => ({ profile: key, ...val })),
+          timeSeries,
+          reasonTrends,
         },
       });
     }
