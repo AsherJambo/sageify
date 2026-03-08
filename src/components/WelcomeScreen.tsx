@@ -108,9 +108,6 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
               showPillars ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <h3 className="text-center text-lg font-display font-bold text-foreground mb-6 tracking-wide">
-              ✦ למה אנחנו שונים ✦
-            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {pillars.map((pillar, i) => (
                 <div
