@@ -322,6 +322,7 @@ const SageAdvisor = ({
           if (lastAssistant >= 0) {
             processSearchQueries(prev[lastAssistant].content, lastAssistant);
             extractAndSaveOpportunities(prev[lastAssistant].content);
+            extractAndSaveActivityChoices(prev[lastAssistant].content);
           }
           return prev;
         });
