@@ -9,6 +9,7 @@ import type { SkillColumn } from '@/data/skillsData';
 import { skills } from '@/data/skillsData';
 import OwlChat, { type ChatMessage } from '@/components/OwlChat';
 import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
+import MatchCards from '@/components/MatchCards';
 
 interface ResultsDashboardProps {
   viaScores: Record<string, number>;
