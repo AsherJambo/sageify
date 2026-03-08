@@ -348,6 +348,7 @@ const QuestionnaireByToken = () => {
           preferencesData={state.preferencesData}
           chatMessages={state.chatMessages}
           onChatMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
+          tokenId={tokenRow?.id}
         />
       );
     default:
