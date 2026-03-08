@@ -113,6 +113,8 @@ const SageAdvisor = ({
     return parts.join('\n');
   }, []);
 
+  const { searchState, executeSearch, extractSearchQueries, cleanSearchTags } = useLiveSearch(profileSummary);
+
   const streamChat = async (allMessages: ChatMessage[]) => {
     const resp = await fetch(CHAT_URL, {
       method: 'POST',
