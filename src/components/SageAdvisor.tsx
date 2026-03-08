@@ -114,6 +114,26 @@ const SageAdvisor = ({
     return parts.join('\n');
   }, []);
 
+  // === Debug Logging: Data sent to AI Advisor ===
+  useEffect(() => {
+    console.group('%c🦉 Sageify Advisor — Data Pipeline', 'color: #d4a017; font-weight: bold; font-size: 14px');
+    console.log('%c📊 VIA Scores:', 'color: #4CAF50; font-weight: bold', viaScores);
+    console.log('%c⚓ Schein Scores:', 'color: #2196F3; font-weight: bold', scheinScores);
+    console.log('%c🔬 Holland Scores:', 'color: #9C27B0; font-weight: bold', hollandScores || 'N/A');
+    console.log('%c🎯 Top VIA:', 'color: #4CAF50', topVIA);
+    console.log('%c🎯 Top Schein:', 'color: #2196F3', topSchein);
+    console.log('%c🎯 Top Holland:', 'color: #9C27B0', topHolland);
+    console.log('%c🏆 Winner Skills:', 'color: #FF9800; font-weight: bold', winnerSkills);
+    console.log('%c🔥 Burnout Skills:', 'color: #f44336', burnoutSkills);
+    console.log('%c⚖️ Top Considerations:', 'color: #00BCD4', topConsiderations);
+    console.log('%c💭 Dream:', 'color: #E91E63', preferencesData?.dream || 'N/A');
+    console.log('%c📋 Preferences:', 'color: #795548', preferencesData?.preferences || 'N/A');
+    console.log('%c📝 Profile Summary (sent to AI):\n', 'color: #607D8B; font-weight: bold', profileSummary);
+    console.log('%c🎫 Token ID:', 'color: #9E9E9E', tokenId || 'anonymous');
+    console.log('%c📦 Recommendations:', 'color: #FF5722', recommendations);
+    console.groupEnd();
+  }, []);
+
   const { searchState, executeSearch, extractSearchQueries, cleanSearchTags } = useLiveSearch(profileSummary);
 
   // Auto-extract and save opportunities from AI responses
@@ -164,6 +184,11 @@ const SageAdvisor = ({
   }, []);
 
   const streamChat = async (allMessages: ChatMessage[]) => {
+    console.group('%c🦉 Advisor Chat Request', 'color: #d4a017; font-weight: bold');
+    console.log('%c💬 Messages count:', 'color: #2196F3', allMessages.length);
+    console.log('%c📤 Payload:', 'color: #4CAF50', { messagesCount: allMessages.length, hasProfileSummary: !!profileSummary, profileSummaryLength: profileSummary.length, tokenId: tokenId || 'anonymous' });
+    console.groupEnd();
+
     const resp = await fetch(CHAT_URL, {
       method: 'POST',
       headers: {
@@ -175,8 +200,10 @@ const SageAdvisor = ({
 
     if (!resp.ok || !resp.body) {
       const errData = await resp.json().catch(() => ({}));
+      console.error('%c❌ Advisor Response Error:', 'color: #f44336; font-weight: bold', resp.status, errData);
       throw new Error(errData.error || 'שגיאה בחיבור ליועץ');
     }
+    console.log('%c✅ Advisor Stream Started:', 'color: #4CAF50; font-weight: bold', `Status ${resp.status}`);
 
     const reader = resp.body.getReader();
     const decoder = new TextDecoder();
