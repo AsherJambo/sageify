@@ -141,9 +141,9 @@ describe('Power 3 Bonus Flow', () => {
     answers[10] = 5; // אומץ לב
     answers[28] = 5; // אנושיות
 
-    // Get max-scored questions
+    // Get max-scored questions (minCount=6, all 48 answered, 4 scored 5 + ties at cutoff expand)
     const maxQ = getMaxScoredQuestions(answers, viaQuestions);
-    expect(maxQ.length).toBe(4); // 4 questions with score 5
+    expect(maxQ.length).toBeGreaterThanOrEqual(6); // At least minCount with tie expansion
 
     // User selects 3 of them
     const selected = maxQ.slice(0, 3).map(q => q.id);
