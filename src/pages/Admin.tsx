@@ -434,22 +434,22 @@ const Admin = () => {
           </div>
 
           {/* Token list */}
-          <div className="bg-card border border-border rounded-xl overflow-hidden">
-            <table className="w-full text-sm">
+          <div className="bg-card border border-border rounded-xl overflow-x-auto">
+            <table className="w-full text-sm min-w-[800px]">
               <thead className="bg-muted/50">
                 <tr>
-                  <th className="p-3 text-right font-semibold">שם</th>
-                  <th className="p-3 text-right font-semibold">ת.ז</th>
-                  <th className="p-3 text-right font-semibold">סטטוס</th>
-                  <th className="p-3 text-right font-semibold">תאריך</th>
-                  <th className="p-3 text-right font-semibold">פעולות</th>
+                  <th className="p-3 text-right font-semibold whitespace-nowrap">שם</th>
+                  <th className="p-3 text-right font-semibold whitespace-nowrap">ת.ז</th>
+                  <th className="p-3 text-right font-semibold whitespace-nowrap">סטטוס</th>
+                  <th className="p-3 text-right font-semibold whitespace-nowrap">תאריך</th>
+                  <th className="p-3 text-right font-semibold whitespace-nowrap">פעולות</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredTokens.map(t => (
                   <tr key={t.id} className="border-t border-border hover:bg-muted/30">
-                    <td className="p-3 font-medium">{t.username}</td>
-                    <td className="p-3 text-muted-foreground">{t.id_number || '—'}</td>
+                    <td className="p-3 font-medium whitespace-nowrap">{t.username}</td>
+                    <td className="p-3 text-muted-foreground whitespace-nowrap">{t.id_number || '—'}</td>
                     <td className="p-3">
                       <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
                         t.completed_at
