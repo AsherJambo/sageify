@@ -9,6 +9,8 @@ import { getRecommendations } from '@/lib/recommendations';
 import type { SkillColumn } from '@/data/skillsData';
 import { skills } from '@/data/skillsData';
 import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
+import { useLiveSearch, type SearchResult } from '@/hooks/useLiveSearch';
+import SearchResultsCards from '@/components/SearchResultsCards';
 
 interface SageAdvisorProps {
   username?: string;
