@@ -92,7 +92,7 @@ const ResultsDashboard = ({
     <div className="min-h-screen flex flex-col items-center px-4 py-12">
       <div className="w-full max-w-3xl space-y-10">
         {/* Header */}
-        <div className={`text-center space-y-5 transition-all duration-1000 ${showHeader ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={0} className="text-center space-y-5">
           <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto rounded-full shadow-[var(--shadow-elevated)] animate-float" />
           <p className="text-lg text-secondary font-medium tracking-wide">{owlCelebrations.profileReady}</p>
           <h1 className="text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">
