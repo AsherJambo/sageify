@@ -507,6 +507,100 @@ const AdminIntelligence = ({ adminPassword, tokens }: AdminIntelligenceProps) =>
                 </PieChart>
               </ResponsiveContainer>
             </div>
+
+            {/* === ACTIVITY CHOICES DATA ASSET === */}
+            {data.activityChoices && data.activityChoices.total > 0 && (
+              <div className="border-t border-border pt-8 mt-8">
+                <h2 className="text-xl font-bold font-display text-foreground tracking-wide mb-2 flex items-center gap-2">
+                  🎯 מאגר בחירות פעילות — מה פורשים בוחרים ולמה
+                </h2>
+                <p className="text-sm text-muted-foreground mb-6">
+                  {data.activityChoices.total} בחירות מתועדות · נכס דאטה ייחודי על תהליכי קבלת החלטות של פורשים
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Activity Types */}
+                  <div className="bg-card rounded-2xl border border-border p-6">
+                    <h3 className="text-lg font-bold font-display mb-4">📊 סוגי פעילויות שנבחרו</h3>
+                    <div className="space-y-3">
+                      {data.activityChoices.byType.map(([type, count]) => {
+                        const label = type === 'volunteer' ? '🤝 התנדבות' : type === 'work' ? '💼 עבודה' : type === 'course' ? '📚 קורס/לימודים' : type === 'freelance' ? '🚀 פרילנס' : `📌 ${type}`;
+                        const pct = Math.round((count / data.activityChoices!.total) * 100);
+                        return (
+                          <div key={type} className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-foreground">{label}</span>
+                            <div className="flex items-center gap-3">
+                              <div className="w-24 h-2.5 rounded-full bg-muted overflow-hidden">
+                                <div className="h-full rounded-full bg-secondary transition-all" style={{ width: `${pct}%` }} />
+                              </div>
+                              <span className="text-xs text-muted-foreground font-mono w-16 text-left">{count} ({pct}%)</span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Top Reasons */}
+                  <div className="bg-card rounded-2xl border border-border p-6">
+                    <h3 className="text-lg font-bold font-display mb-4">💡 הסיבות המובילות לבחירת פעילות</h3>
+                    <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                      {data.activityChoices.topReasons.map(([reason, count], i) => (
+                        <div key={i} className="flex items-start gap-3 bg-muted/30 rounded-xl px-4 py-2.5">
+                          <span className="text-xs font-bold text-secondary mt-0.5">{i + 1}.</span>
+                          <span className="text-sm text-foreground flex-1">{reason}</span>
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold flex-shrink-0">{count}×</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Top Activities */}
+                <div className="bg-card rounded-2xl border border-border p-6 mt-6">
+                  <h3 className="text-lg font-bold font-display mb-4">🏆 הפעילויות הנבחרות ביותר</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {data.activityChoices.topActivities.map(([name, count], i) => (
+                      <div key={i} className="flex items-center gap-3 bg-muted/20 rounded-xl px-4 py-3 border border-border/50">
+                        <span className="text-lg font-bold text-secondary font-mono">{count}</span>
+                        <span className="text-sm font-medium text-foreground truncate">{name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Activity by Psychological Profile */}
+                {data.activityChoices.byPsychProfile.length > 0 && (
+                  <div className="bg-card rounded-2xl border border-border p-6 mt-6">
+                    <h3 className="text-lg font-bold font-display mb-2">🧬 בחירות לפי פרופיל פסיכולוגי</h3>
+                    <p className="text-xs text-muted-foreground mb-4">שילוב VIA × שיין → מה אנשים עם הפרופיל הזה בחרו</p>
+                    <div className="space-y-3">
+                      {data.activityChoices.byPsychProfile.map((item, i) => {
+                        const [via, schein] = item.profile.split('|');
+                        return (
+                          <div key={i} className="bg-muted/20 rounded-xl p-4 border border-border/50">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="text-xs px-2.5 py-1 rounded-full bg-secondary/10 text-secondary font-medium">{via}</span>
+                              <span className="text-xs text-muted-foreground">×</span>
+                              <span className="text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary font-medium">{schein}</span>
+                              <span className="text-xs text-muted-foreground mr-auto">{item.count} בחירות</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1.5">
+                              {item.activities.slice(0, 5).map((act, j) => (
+                                <span key={j} className="text-xs bg-card border border-border rounded-lg px-2.5 py-1 text-foreground">{act}</span>
+                              ))}
+                              {item.activities.length > 5 && (
+                                <span className="text-xs text-muted-foreground">+{item.activities.length - 5}</span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </>
         )}
       </div>
