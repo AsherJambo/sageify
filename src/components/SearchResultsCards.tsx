@@ -1,4 +1,7 @@
+import { useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import type { SearchResult } from '@/hooks/useLiveSearch';
+import { Button } from '@/components/ui/button';
 
 interface SearchResultsCardsProps {
   results: SearchResult[];
@@ -14,6 +17,30 @@ const categoryLabels: Record<string, { label: string; icon: string; color: strin
 };
 
 const SearchResultsCards = ({ results, isSearching, query }: SearchResultsCardsProps) => {
+  const [savedIds, setSavedIds] = useState<Set<number>>(new Set());
+  const [savingId, setSavingId] = useState<number | null>(null);
+
+  const saveToDb = async (result: SearchResult, index: number) => {
+    setSavingId(index);
+    try {
+      const { error } = await supabase.from('opportunities').insert([{
+        title: result.title,
+        organization_name: result.organization || 'לא צוין',
+        category: result.category || 'work',
+        description: result.description || '',
+        link: result.link || '',
+        location: result.location || null,
+        target_traits: JSON.parse(JSON.stringify({ source: 'live-search', whyFits: result.whyFits })),
+      }]);
+      if (error) throw error;
+      setSavedIds(prev => new Set(prev).add(index));
+    } catch (e) {
+      console.error('Save opportunity error:', e);
+    } finally {
+      setSavingId(null);
+    }
+  };
+
   if (isSearching) {
     return (
       <div className="my-4 bg-card rounded-2xl border border-secondary/20 p-5 shadow-[var(--shadow-card)]" dir="rtl">
@@ -47,6 +74,8 @@ const SearchResultsCards = ({ results, isSearching, query }: SearchResultsCardsP
       </div>
       {results.map((result, i) => {
         const cat = categoryLabels[result.category] || categoryLabels.work;
+        const isSaved = savedIds.has(i);
+        const isSaving = savingId === i;
         return (
           <div
             key={i}
@@ -68,16 +97,27 @@ const SearchResultsCards = ({ results, isSearching, query }: SearchResultsCardsP
                 {result.whyFits && (
                   <p className="text-xs text-secondary font-medium">✦ {result.whyFits}</p>
                 )}
-                {result.link && result.link !== '' && (
-                  <a
-                    href={result.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 mt-2 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
+                <div className="flex items-center gap-3 mt-2">
+                  {result.link && result.link !== '' && (
+                    <a
+                      href={result.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
+                    >
+                      למידע נוסף ←
+                    </a>
+                  )}
+                  <Button
+                    size="sm"
+                    variant={isSaved ? 'secondary' : 'outline'}
+                    disabled={isSaved || isSaving}
+                    onClick={() => saveToDb(result, i)}
+                    className="h-7 px-3 text-[11px] rounded-lg"
                   >
-                    למידע נוסף ←
-                  </a>
-                )}
+                    {isSaved ? '✓ נשמר' : isSaving ? '...' : '💾 שמור למאגר'}
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
