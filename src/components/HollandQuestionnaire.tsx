@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import OwlMessage from './OwlMessage';
-import owlLogo from '@/assets/owl-logo.png';
+import QuestionnaireNav from './QuestionnaireNav';
 
 interface HollandQuestionnaireProps {
   onComplete: (answers: Record<number, boolean>) => void;
@@ -97,36 +97,18 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
           ))}
         </div>
 
-        {/* Navigation */}
-        <div className="flex justify-between items-center pt-4">
-          <button
-            onClick={() => setPage(p => p - 1)}
-            disabled={page === 0}
-            className="px-6 py-3 rounded-2xl bg-card text-foreground font-medium font-display tracking-wide border border-border/60 disabled:opacity-25 hover:border-secondary/30 hover:shadow-[var(--shadow-card)] transition-all duration-300"
-          >
-            הקודם →
-          </button>
-
-          {page < totalPages - 1 ? (
-            <button
-              onClick={() => setPage(p => p + 1)}
-              disabled={!pageAllAnswered}
-              className="px-8 py-3 rounded-2xl bg-primary text-primary-foreground font-medium font-display tracking-wide disabled:opacity-25 hover:bg-primary/85 transition-all duration-300 shadow-[var(--shadow-card)]"
-            >
-              ← הבא
-            </button>
-          ) : (
-            <button
-              onClick={() => onComplete(answers)}
-              disabled={!allAnswered}
-              className="group inline-flex items-center gap-3 px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-semibold font-display text-lg tracking-wide disabled:opacity-25 hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)]"
-            >
-              <img src={owlLogo} alt="" className="w-6 h-6 rounded-full ring-1 ring-white/20 transition-transform duration-500 group-hover:scale-110" />
-              <span>סיום חלק ד׳</span>
-              <span className="text-primary-foreground/60 transition-transform duration-300 group-hover:translate-x-[4px]">✓</span>
-            </button>
-          )}
-        </div>
+        <QuestionnaireNav
+          onPrev={() => setPage(p => p - 1)}
+          prevDisabled={page === 0}
+          showPrev
+          showNext={page < totalPages - 1}
+          onNext={() => setPage(p => p + 1)}
+          nextDisabled={!pageAllAnswered}
+          showComplete={page === totalPages - 1}
+          onComplete={() => onComplete(answers)}
+          completeDisabled={!allAnswered}
+          completeLabel="סיום חלק ד׳"
+        />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { skills, type SkillColumn } from '@/data/skillsData';
 import OwlMessage from './OwlMessage';
-import owlLogo from '@/assets/owl-logo.png';
+import QuestionnaireNav from './QuestionnaireNav';
 
 interface SkillsQuestionnaireProps {
   onComplete: (assignments: Record<number, SkillColumn>) => void;
@@ -86,17 +86,13 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
           ))}
         </div>
 
-        <div className="text-center pt-6">
-          <button
-            onClick={() => onComplete(assignments)}
-            disabled={!allAssigned || winnerCount < 5}
-            className="group inline-flex items-center gap-3 px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-semibold font-display text-lg tracking-wide disabled:opacity-25 hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)]"
-          >
-            <img src={owlLogo} alt="" className="w-6 h-6 rounded-full ring-1 ring-white/20 transition-transform duration-500 group-hover:scale-110" />
-            <span>סיום חלק ה׳</span>
-            <span className="text-primary-foreground/60 transition-transform duration-300 group-hover:translate-x-[-4px]">✓</span>
-          </button>
-        </div>
+        <QuestionnaireNav
+          showPrev={false}
+          showComplete
+          onComplete={() => onComplete(assignments)}
+          completeDisabled={!allAssigned || winnerCount < 5}
+          completeLabel="סיום חלק ה׳"
+        />
       </div>
     </div>
   );
