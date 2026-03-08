@@ -345,15 +345,15 @@ const Admin = () => {
       </div>
 
       <Tabs defaultValue="tokens" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="tokens" className="gap-2">
+        <TabsList className="flex flex-col md:grid md:grid-cols-3 w-full h-auto gap-2 p-1">
+          <TabsTrigger value="tokens" className="gap-2 w-full">
             📋 ניהול קישורים
           </TabsTrigger>
-          <TabsTrigger value="intelligence" className="gap-2">
+          <TabsTrigger value="intelligence" className="gap-2 w-full">
             <BarChart3 className="w-4 h-4" />
             🧠 מודיעין פסיכולוגי
           </TabsTrigger>
-          <TabsTrigger value="enrichment" className="gap-2">
+          <TabsTrigger value="enrichment" className="gap-2 w-full">
             <Search className="w-4 h-4" />
             העשרת מאגר
           </TabsTrigger>
@@ -363,14 +363,14 @@ const Admin = () => {
           {/* Create single token */}
           <div className="bg-card border border-border rounded-xl p-5">
             <h2 className="font-semibold text-lg mb-3">יצירת קישור חדש</h2>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Input
                 placeholder="שם המשתמש"
                 value={newUsername}
                 onChange={e => setNewUsername(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && createToken()}
               />
-              <Button onClick={createToken} disabled={loading}>צור קישור</Button>
+              <Button onClick={createToken} disabled={loading} className="w-full sm:w-auto">צור קישור</Button>
             </div>
           </div>
 
@@ -383,17 +383,17 @@ const Admin = () => {
               value={bulkNames}
               onChange={e => setBulkNames(e.target.value)}
             />
-            <Button onClick={createBulk} disabled={loading}>צור קישורים</Button>
+            <Button onClick={createBulk} disabled={loading} className="w-full sm:w-auto">צור קישורים</Button>
           </div>
 
           {/* Filters & Actions */}
           <div className="bg-card border border-border rounded-xl p-5">
             <h2 className="font-semibold text-lg mb-3">סינון וייצוא</h2>
             <div className="flex gap-3 mb-4 flex-wrap items-end">
-              <div className="space-y-1">
+              <div className="space-y-1 w-full sm:w-auto">
                 <label className="text-xs text-muted-foreground">סטטוס</label>
                 <Select value={filterStatus} onValueChange={setFilterStatus}>
-                  <SelectTrigger className="w-[160px]">
+                  <SelectTrigger className="w-full sm:w-[160px]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -404,13 +404,13 @@ const Admin = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 w-full sm:w-auto">
                 <label className="text-xs text-muted-foreground">מתאריך</label>
-                <Input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="w-[160px]" />
+                <Input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="w-full sm:w-[160px]" />
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 w-full sm:w-auto">
                 <label className="text-xs text-muted-foreground">עד תאריך</label>
-                <Input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="w-[160px]" />
+                <Input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="w-full sm:w-[160px]" />
               </div>
               {(filterStatus !== 'all' || filterDateFrom || filterDateTo) && (
                 <Button variant="ghost" size="sm" onClick={() => { setFilterStatus('all'); setFilterDateFrom(''); setFilterDateTo(''); }}>
@@ -434,22 +434,22 @@ const Admin = () => {
           </div>
 
           {/* Token list */}
-          <div className="bg-card border border-border rounded-xl overflow-hidden">
-            <table className="w-full text-sm">
+          <div className="bg-card border border-border rounded-xl overflow-x-auto">
+            <table className="w-full text-sm min-w-[800px]">
               <thead className="bg-muted/50">
                 <tr>
-                  <th className="p-3 text-right font-semibold">שם</th>
-                  <th className="p-3 text-right font-semibold">ת.ז</th>
-                  <th className="p-3 text-right font-semibold">סטטוס</th>
-                  <th className="p-3 text-right font-semibold">תאריך</th>
-                  <th className="p-3 text-right font-semibold">פעולות</th>
+                  <th className="p-3 text-right font-semibold whitespace-nowrap">שם</th>
+                  <th className="p-3 text-right font-semibold whitespace-nowrap">ת.ז</th>
+                  <th className="p-3 text-right font-semibold whitespace-nowrap">סטטוס</th>
+                  <th className="p-3 text-right font-semibold whitespace-nowrap">תאריך</th>
+                  <th className="p-3 text-right font-semibold whitespace-nowrap">פעולות</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredTokens.map(t => (
                   <tr key={t.id} className="border-t border-border hover:bg-muted/30">
-                    <td className="p-3 font-medium">{t.username}</td>
-                    <td className="p-3 text-muted-foreground">{t.id_number || '—'}</td>
+                    <td className="p-3 font-medium whitespace-nowrap">{t.username}</td>
+                    <td className="p-3 text-muted-foreground whitespace-nowrap">{t.id_number || '—'}</td>
                     <td className="p-3">
                       <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
                         t.completed_at
@@ -461,8 +461,8 @@ const Admin = () => {
                         {t.completed_at ? '✅ הושלם' : t.used ? '⏳ בתהליך' : '🔗 טרם נפתח'}
                       </span>
                     </td>
-                    <td className="p-3 text-muted-foreground">{new Date(t.created_at).toLocaleDateString('he-IL')}</td>
-                    <td className="p-3">
+                    <td className="p-3 text-muted-foreground whitespace-nowrap">{new Date(t.created_at).toLocaleDateString('he-IL')}</td>
+                    <td className="p-3 whitespace-nowrap">
                       <div className="flex gap-2">
                         {t.questionnaire_responses && (!Array.isArray(t.questionnaire_responses) || t.questionnaire_responses.length > 0) ? (
                           <>
