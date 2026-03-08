@@ -240,14 +240,81 @@ Deno.serve(async (req) => {
         .from("opportunities")
         .select("id, title, organization_name, category, target_traits");
 
-      // Aggregate profile distribution
-      const profileDist: Record<string, number> = {};
-      const scheinDist: Record<string, number> = {};
+      // Aggregate psychological trait heatmap from all responses
+      const viaHeatmap: Record<string, number> = {};
+      const scheinHeatmap: Record<string, number> = {};
+      const hollandHeatmap: Record<string, number> = {};
+      const dreamKeywords: Record<string, number> = {};
+      let totalProfilesAnalyzed = 0;
+
       (responses || []).forEach((r: any) => {
         const data = r.response_data;
-        if (data?.finalViaAnswers || data?.viaAnswers) {
-          // We'd need full scoring here but we can approximate from stored step
-          // For now count top categories if available in chatMessages or directly
+        if (!data) return;
+
+        // VIA scoring approximation from raw answers
+        if (data.viaScores || data.finalViaAnswers || data.viaAnswers) {
+          totalProfilesAnalyzed++;
+          const scores = data.viaScores as Record<string, number> | undefined;
+          if (scores) {
+            for (const [cat, score] of Object.entries(scores)) {
+              viaHeatmap[cat] = (viaHeatmap[cat] || 0) + (score as number);
+            }
+          }
+        }
+
+        // Schein scores
+        if (data.scheinScores) {
+          const scores = data.scheinScores as Record<string, number>;
+          for (const [cat, score] of Object.entries(scores)) {
+            scheinHeatmap[cat] = (scheinHeatmap[cat] || 0) + (score as number);
+          }
+        }
+
+        // Holland answers
+        if (data.hollandAnswers) {
+          const h = data.hollandAnswers as Record<string, boolean>;
+          // Group by category prefix would require question mapping
+          // For now count yes answers
+        }
+
+        // Holland scores if stored
+        if (data.hollandScores) {
+          const scores = data.hollandScores as Record<string, number>;
+          for (const [cat, score] of Object.entries(scores)) {
+            hollandHeatmap[cat] = (hollandHeatmap[cat] || 0) + (score as number);
+          }
+        }
+
+        // Dream keywords
+        if (data.preferencesData) {
+          const pd = data.preferencesData as { dream?: string };
+          if (pd.dream) {
+            const words = pd.dream.split(/\s+/).filter((w: string) => w.length > 2);
+            for (const word of words) {
+              dreamKeywords[word] = (dreamKeywords[word] || 0) + 1;
+            }
+          }
+        }
+      });
+
+      // Normalize heatmap values
+      const normalize = (map: Record<string, number>) => {
+        if (totalProfilesAnalyzed === 0) return map;
+        const result: Record<string, number> = {};
+        for (const [k, v] of Object.entries(map)) {
+          result[k] = Math.round((v / totalProfilesAnalyzed) * 100) / 100;
+        }
+        return result;
+      };
+
+      // User demand analysis: what users want vs what exists
+      const userDemands: Record<string, number> = {};
+      (responses || []).forEach((r: any) => {
+        const data = r.response_data;
+        if (data?.considerationsData?.selected) {
+          for (const s of (data.considerationsData.selected as string[])) {
+            userDemands[s] = (userDemands[s] || 0) + 1;
+          }
         }
       });
 
@@ -272,9 +339,20 @@ Deno.serve(async (req) => {
         totalResponses: responses?.length || 0,
         totalOpportunities: opps?.length || 0,
         totalFeedback: feedback?.length || 0,
+        totalProfilesAnalyzed,
         feedbackByOpportunity: feedbackByOpp,
         opportunities: opps,
         traitCoverage,
+        heatmap: {
+          via: normalize(viaHeatmap),
+          schein: normalize(scheinHeatmap),
+          holland: normalize(hollandHeatmap),
+        },
+        userDemands,
+        dreamKeywords: Object.entries(dreamKeywords)
+          .sort(([, a], [, b]) => b - a)
+          .slice(0, 20)
+          .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {}),
       });
     }
 
