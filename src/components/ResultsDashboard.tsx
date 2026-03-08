@@ -111,7 +111,7 @@ const ResultsDashboard = ({
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Top Highlights */}
         <div className={`grid grid-cols-1 md:grid-cols-2 gap-5 transition-all duration-1000 ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
