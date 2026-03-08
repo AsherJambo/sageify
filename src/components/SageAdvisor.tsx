@@ -471,7 +471,7 @@ const SageAdvisor = ({
                     </div>
                     <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 p-4 sm:p-6 shadow-[var(--shadow-card)]">
                       <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h1]:text-lg [&_h2]:text-secondary [&_h2]:font-display [&_h2]:text-base [&_h3]:text-secondary [&_h3]:font-display [&_h3]:text-sm [&_strong]:text-secondary [&_li]:mb-1.5 [&_ul]:mr-4 [&_ol]:mr-4 text-foreground leading-relaxed text-sm">
-                        <ReactMarkdown>{cleanSearchTags(msg.content)}</ReactMarkdown>
+                        <ReactMarkdown>{cleanOpportunityTags(cleanSearchTags(msg.content))}</ReactMarkdown>
                       </div>
                     </div>
                     {/* Search results inline after assistant message */}
