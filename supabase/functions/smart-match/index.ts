@@ -339,9 +339,20 @@ Deno.serve(async (req) => {
         totalResponses: responses?.length || 0,
         totalOpportunities: opps?.length || 0,
         totalFeedback: feedback?.length || 0,
+        totalProfilesAnalyzed,
         feedbackByOpportunity: feedbackByOpp,
         opportunities: opps,
         traitCoverage,
+        heatmap: {
+          via: normalize(viaHeatmap),
+          schein: normalize(scheinHeatmap),
+          holland: normalize(hollandHeatmap),
+        },
+        userDemands,
+        dreamKeywords: Object.entries(dreamKeywords)
+          .sort(([, a], [, b]) => b - a)
+          .slice(0, 20)
+          .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {}),
       });
     }
 
