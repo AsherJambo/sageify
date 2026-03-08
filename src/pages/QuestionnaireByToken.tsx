@@ -238,7 +238,7 @@ const QuestionnaireByToken = () => {
       return (
         <div className="min-h-screen flex flex-col items-center justify-center px-6">
           <div className="max-w-lg text-center space-y-6">
-            <img src={owlLogo} alt="Sageify" className="w-36 h-36 mx-auto animate-float" />
+            <img src={owlLogo} alt="Sageify" className="w-28 h-28 mx-auto rounded-full shadow-[var(--shadow-elevated)] border-2 border-border/30" />
             <h1 className="text-3xl font-bold text-foreground">
               שלום, <span className="text-accent">{tokenRow?.username}</span>!
             </h1>
