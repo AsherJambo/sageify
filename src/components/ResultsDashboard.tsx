@@ -198,7 +198,7 @@ const ResultsDashboard = ({
         </motion.div>
 
         {/* Charts */}
-        <div className={`space-y-8 transition-all duration-1000 ${showCharts ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={4} className="space-y-8">
           <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
             <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">חוזקות VIA – כל הקטגוריות</h3>
             <div className="space-y-4">
