@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { cloudClient } from '@/lib/cloudClient';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, AreaChart, Area, CartesianGrid, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, TrendingUp, Users, Target, Sparkles, Brain, Heart, Compass } from 'lucide-react';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
