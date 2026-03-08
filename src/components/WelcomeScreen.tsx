@@ -158,11 +158,6 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
                     }`}>{step.title}</p>
                     <p className="text-sm text-muted-foreground mt-0.5">{step.desc}</p>
                   </div>
-                  {isHighlight && (
-                    <span className="text-xs px-2.5 py-1 rounded-full bg-secondary/10 text-secondary font-medium flex-shrink-0">
-                      חדש
-                    </span>
-                  )}
                 </div>
                 );
               })}
