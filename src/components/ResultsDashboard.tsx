@@ -41,21 +41,14 @@ const ResultsDashboard = ({
 
   const staticRecommendations = getRecommendations(viaScores, scheinScores);
 
-  const [showHeader, setShowHeader] = useState(false);
-  const [showNarrative, setShowNarrative] = useState(false);
-  const [showCards, setShowCards] = useState(false);
-  const [showRecommendations, setShowRecommendations] = useState(false);
-  const [showCharts, setShowCharts] = useState(false);
-  const [showExtra, setShowExtra] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => setShowHeader(true), 200);
-    setTimeout(() => setShowNarrative(true), 800);
-    setTimeout(() => setShowCards(true), 1400);
-    setTimeout(() => setShowRecommendations(true), 2000);
-    setTimeout(() => setShowCharts(true), 2600);
-    setTimeout(() => setShowExtra(true), 3200);
-  }, []);
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, delay: i * 0.2, ease: [0.16, 1, 0.3, 1] },
+    }),
+  };
 
   const generateNarrative = () => {
     const v1 = topVIA[0]?.category;
