@@ -318,13 +318,17 @@ const Admin = () => {
       </div>
 
       <Tabs defaultValue="tokens" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="tokens" className="gap-2">
             📋 ניהול קישורים
           </TabsTrigger>
           <TabsTrigger value="intelligence" className="gap-2">
             <BarChart3 className="w-4 h-4" />
             לוח בינה
+          </TabsTrigger>
+          <TabsTrigger value="enrichment" className="gap-2">
+            <Search className="w-4 h-4" />
+            העשרת מאגר
           </TabsTrigger>
         </TabsList>
 
