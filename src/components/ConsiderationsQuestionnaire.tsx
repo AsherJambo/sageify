@@ -89,15 +89,13 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
                 </button>
               ))}
             </div>
-            <div className="text-center pt-4">
-              <button
-                onClick={handleSelectComplete}
-                disabled={selected.length !== 6}
-                className="px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-semibold font-display text-lg tracking-wide disabled:opacity-25 hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)]"
-              >
-                ← המשך לחלוקת נקודות
-              </button>
-            </div>
+            <QuestionnaireNav
+              showPrev={false}
+              showComplete
+              onComplete={handleSelectComplete}
+              completeDisabled={selected.length !== 6}
+              completeLabel="המשך לחלוקת נקודות"
+            />
           </>
         )}
 
