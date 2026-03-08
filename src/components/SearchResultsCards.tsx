@@ -23,7 +23,7 @@ const SearchResultsCards = ({ results, isSearching, query }: SearchResultsCardsP
   const saveToDb = async (result: SearchResult, index: number) => {
     setSavingId(index);
     try {
-      const { error } = await supabase.from('opportunities').insert({
+      const { error } = await supabase.from('opportunities').insert([{
         title: result.title,
         organization_name: result.organization || 'לא צוין',
         category: result.category || 'work',
@@ -31,7 +31,7 @@ const SearchResultsCards = ({ results, isSearching, query }: SearchResultsCardsP
         link: result.link || '',
         location: result.location || null,
         target_traits: { source: 'live-search', whyFits: result.whyFits } as Record<string, unknown>,
-      });
+      }]);
       if (error) throw error;
       setSavedIds(prev => new Set(prev).add(index));
     } catch (e) {
