@@ -92,10 +92,11 @@ describe('Scoring Logic', () => {
     expect(scores['אומץ לב']).toBe(0);
   });
 
-  it('getMaxScoredQuestions returns only max-scored questions', () => {
+  it('getMaxScoredQuestions returns at least minCount questions with tie expansion', () => {
     const answers: Answers = { 1: 5, 2: 3, 3: 5, 4: 2 };
     const maxQ = getMaxScoredQuestions(answers, viaQuestions);
-    expect(maxQ.length).toBe(2);
+    // With minCount=6 default and only 4 answered questions, returns all 4
+    expect(maxQ.length).toBe(4);
     expect(maxQ.map(q => q.id)).toEqual(expect.arrayContaining([1, 3]));
   });
 
