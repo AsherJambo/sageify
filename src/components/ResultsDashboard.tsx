@@ -259,7 +259,7 @@ const ResultsDashboard = ({
         </motion.div>
 
         {/* Extra results */}
-        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={5} className="space-y-8">
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={6} className="space-y-8">
           {topHolland.length > 0 && (
             <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
               <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">נטיות תעסוקתיות (הולנד)</h3>
