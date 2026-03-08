@@ -183,6 +183,43 @@ const SageAdvisor = ({
     return text.replace(/\[OPPORTUNITY_LOG:\s*\{[\s\S]*?\}\]/g, '').trim();
   }, []);
 
+  // Auto-extract and save activity choices from AI responses
+  const savedActivityNames = useRef<Set<string>>(new Set());
+
+  const extractAndSaveActivityChoices = useCallback(async (text: string) => {
+    const regex = /\[ACTIVITY_CHOICE:\s*(\{[\s\S]*?\})\]/g;
+    let match;
+
+    while ((match = regex.exec(text)) !== null) {
+      try {
+        const parsed = JSON.parse(match[1]);
+        if (parsed.activity && !savedActivityNames.current.has(parsed.activity)) {
+          // Build psychological drivers from current scores
+          const topVIA = Object.entries(viaScores).sort(([,a],[,b]) => b - a)[0]?.[0] || '';
+          const topSchein = Object.entries(scheinScores).sort(([,a],[,b]) => b - a)[0]?.[0] || '';
+          const topHolland = hollandScores ? Object.entries(hollandScores).sort(([,a],[,b]) => b - a)[0]?.[0] || '' : '';
+
+          await supabase.from('activity_choices').insert([{
+            token_id: tokenId,
+            activity_type: parsed.type || 'other',
+            activity_name: parsed.activity,
+            organization: parsed.organization || null,
+            category: parsed.type || 'other',
+            reasons: parsed.reasons || [],
+            psychological_drivers: { via_top: topVIA, schein_top: topSchein, holland_top: topHolland },
+            source: 'ai-advisor',
+          }]);
+          savedActivityNames.current.add(parsed.activity);
+          console.log('Auto-saved activity choice:', parsed.activity);
+        }
+      } catch { /* skip malformed */ }
+    }
+  }, [tokenId, viaScores, scheinScores, hollandScores]);
+
+  const cleanActivityChoiceTags = useCallback((text: string): string => {
+    return text.replace(/\[ACTIVITY_CHOICE:\s*\{[\s\S]*?\}\]/g, '').trim();
+  }, []);
+
   const streamChat = async (allMessages: ChatMessage[]) => {
     console.group('%c🦉 Advisor Chat Request', 'color: #d4a017; font-weight: bold');
     console.log('%c💬 Messages count:', 'color: #2196F3', allMessages.length);
@@ -285,6 +322,7 @@ const SageAdvisor = ({
           if (lastAssistant >= 0) {
             processSearchQueries(prev[lastAssistant].content, lastAssistant);
             extractAndSaveOpportunities(prev[lastAssistant].content);
+            extractAndSaveActivityChoices(prev[lastAssistant].content);
           }
           return prev;
         });
@@ -313,6 +351,7 @@ const SageAdvisor = ({
         if (prev[lastIdx]?.role === 'assistant') {
           processSearchQueries(prev[lastIdx].content, lastIdx);
           extractAndSaveOpportunities(prev[lastIdx].content);
+          extractAndSaveActivityChoices(prev[lastIdx].content);
         }
         return prev;
       });
@@ -498,7 +537,7 @@ const SageAdvisor = ({
                     </div>
                     <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 p-4 sm:p-6 shadow-[var(--shadow-card)]">
                       <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h1]:text-lg [&_h2]:text-secondary [&_h2]:font-display [&_h2]:text-base [&_h3]:text-secondary [&_h3]:font-display [&_h3]:text-sm [&_strong]:text-secondary [&_li]:mb-1.5 [&_ul]:mr-4 [&_ol]:mr-4 text-foreground leading-relaxed text-sm">
-                        <ReactMarkdown>{cleanOpportunityTags(cleanSearchTags(msg.content))}</ReactMarkdown>
+                        <ReactMarkdown>{cleanActivityChoiceTags(cleanOpportunityTags(cleanSearchTags(msg.content)))}</ReactMarkdown>
                       </div>
                     </div>
                     {/* Search results inline after assistant message */}

@@ -240,6 +240,13 @@ Deno.serve(async (req) => {
         .from("opportunities")
         .select("id, title, organization_name, category, target_traits");
 
+      // Activity choices data
+      const { data: activityChoices } = await supabase
+        .from("activity_choices")
+        .select("activity_type, activity_name, organization, category, reasons, psychological_drivers, created_at")
+        .order("created_at", { ascending: false })
+        .limit(1000);
+
       // Aggregate psychological trait heatmap from all responses
       const viaHeatmap: Record<string, number> = {};
       const scheinHeatmap: Record<string, number> = {};
@@ -251,7 +258,6 @@ Deno.serve(async (req) => {
         const data = r.response_data;
         if (!data) return;
 
-        // VIA scoring approximation from raw answers
         if (data.viaScores || data.finalViaAnswers || data.viaAnswers) {
           totalProfilesAnalyzed++;
           const scores = data.viaScores as Record<string, number> | undefined;
@@ -262,7 +268,6 @@ Deno.serve(async (req) => {
           }
         }
 
-        // Schein scores
         if (data.scheinScores) {
           const scores = data.scheinScores as Record<string, number>;
           for (const [cat, score] of Object.entries(scores)) {
@@ -270,14 +275,10 @@ Deno.serve(async (req) => {
           }
         }
 
-        // Holland answers
         if (data.hollandAnswers) {
-          const h = data.hollandAnswers as Record<string, boolean>;
           // Group by category prefix would require question mapping
-          // For now count yes answers
         }
 
-        // Holland scores if stored
         if (data.hollandScores) {
           const scores = data.hollandScores as Record<string, number>;
           for (const [cat, score] of Object.entries(scores)) {
@@ -285,7 +286,6 @@ Deno.serve(async (req) => {
           }
         }
 
-        // Dream keywords
         if (data.preferencesData) {
           const pd = data.preferencesData as { dream?: string };
           if (pd.dream) {
@@ -307,7 +307,7 @@ Deno.serve(async (req) => {
         return result;
       };
 
-      // User demand analysis: what users want vs what exists
+      // User demand analysis
       const userDemands: Record<string, number> = {};
       (responses || []).forEach((r: any) => {
         const data = r.response_data;
@@ -327,12 +327,37 @@ Deno.serve(async (req) => {
         feedbackByOpp[f.opportunity_id][f.feedback as keyof typeof feedbackByOpp[string]]++;
       });
 
-      // Find gaps - opportunities per trait combo
+      // Find gaps
       const traitCoverage: Record<string, string[]> = {};
       (opps || []).forEach((o: any) => {
         const key = `${o.target_traits?.via_top || "?"}|${o.target_traits?.schein_top || "?"}`;
         if (!traitCoverage[key]) traitCoverage[key] = [];
         traitCoverage[key].push(o.title);
+      });
+
+      // === ACTIVITY CHOICES AGGREGATION ===
+      const activityTypeCounts: Record<string, number> = {};
+      const activityNameCounts: Record<string, number> = {};
+      const reasonCounts: Record<string, number> = {};
+      const activityByDriver: Record<string, { activities: string[]; count: number }> = {};
+
+      (activityChoices || []).forEach((c: any) => {
+        activityTypeCounts[c.activity_type] = (activityTypeCounts[c.activity_type] || 0) + 1;
+        activityNameCounts[c.activity_name] = (activityNameCounts[c.activity_name] || 0) + 1;
+
+        const reasons = (c.reasons || []) as string[];
+        for (const r of reasons) {
+          reasonCounts[r] = (reasonCounts[r] || 0) + 1;
+        }
+
+        // Track by psychological driver combination
+        const drivers = c.psychological_drivers || {};
+        const driverKey = `${drivers.via_top || '?'}|${drivers.schein_top || '?'}`;
+        if (!activityByDriver[driverKey]) activityByDriver[driverKey] = { activities: [], count: 0 };
+        activityByDriver[driverKey].count++;
+        if (!activityByDriver[driverKey].activities.includes(c.activity_name)) {
+          activityByDriver[driverKey].activities.push(c.activity_name);
+        }
       });
 
       return jsonResponse({
@@ -353,6 +378,17 @@ Deno.serve(async (req) => {
           .sort(([, a], [, b]) => b - a)
           .slice(0, 20)
           .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {}),
+        // Activity choices data
+        activityChoices: {
+          total: activityChoices?.length || 0,
+          byType: Object.entries(activityTypeCounts).sort(([,a],[,b]) => b - a),
+          topActivities: Object.entries(activityNameCounts).sort(([,a],[,b]) => b - a).slice(0, 15),
+          topReasons: Object.entries(reasonCounts).sort(([,a],[,b]) => b - a).slice(0, 20),
+          byPsychProfile: Object.entries(activityByDriver)
+            .sort(([,a],[,b]) => b.count - a.count)
+            .slice(0, 10)
+            .map(([key, val]) => ({ profile: key, ...val })),
+        },
       });
     }
 

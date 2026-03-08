@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_choices: {
+        Row: {
+          activity_name: string
+          activity_type: string
+          category: string | null
+          created_at: string
+          id: string
+          organization: string | null
+          psychological_drivers: Json | null
+          reasons: Json
+          source: string
+          token_id: string
+        }
+        Insert: {
+          activity_name: string
+          activity_type?: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          organization?: string | null
+          psychological_drivers?: Json | null
+          reasons?: Json
+          source?: string
+          token_id: string
+        }
+        Update: {
+          activity_name?: string
+          activity_type?: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          organization?: string | null
+          psychological_drivers?: Json | null
+          reasons?: Json
+          source?: string
+          token_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_choices_token_id_fkey"
+            columns: ["token_id"]
+            isOneToOne: false
+            referencedRelation: "questionnaire_tokens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunities: {
         Row: {
           category: string

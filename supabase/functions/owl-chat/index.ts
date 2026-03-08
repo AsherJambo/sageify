@@ -23,6 +23,7 @@ Deno.serve(async (req) => {
     // Fetch user's full historical answers from DB
     let dbContext = "";
     let crowdWisdom = "";
+    let activityWisdom = "";
 
     if (tokenId) {
       const { data: respRow } = await supabase
@@ -85,8 +86,50 @@ Deno.serve(async (req) => {
         }
       }
 
+      // === ACTIVITY CHOICES WISDOM ===
+      try {
+        const { data: allChoices } = await supabase
+          .from("activity_choices")
+          .select("activity_type, activity_name, organization, category, reasons, psychological_drivers")
+          .order("created_at", { ascending: false })
+          .limit(500);
+
+        if (allChoices && allChoices.length > 0) {
+          // Aggregate: what do people choose and why?
+          const typeCounts: Record<string, number> = {};
+          const reasonCounts: Record<string, number> = {};
+          const topActivities: Record<string, number> = {};
+
+          for (const c of allChoices) {
+            typeCounts[c.activity_type] = (typeCounts[c.activity_type] || 0) + 1;
+            topActivities[c.activity_name] = (topActivities[c.activity_name] || 0) + 1;
+            const reasons = (c.reasons || []) as string[];
+            for (const r of reasons) {
+              reasonCounts[r] = (reasonCounts[r] || 0) + 1;
+            }
+          }
+
+          const topTypes = Object.entries(typeCounts).sort(([,a],[,b]) => b - a);
+          const topReasons = Object.entries(reasonCounts).sort(([,a],[,b]) => b - a).slice(0, 10);
+          const topActs = Object.entries(topActivities).sort(([,a],[,b]) => b - a).slice(0, 5);
+
+          activityWisdom = `\n\n## 📊 מאגר בחירות פעילות נצבר (${allChoices.length} בחירות מתועדות):
+**מה פורשים בוחרים לעשות:**
+${topTypes.map(([t,c]) => `- ${t === 'volunteer' ? 'התנדבות' : t === 'work' ? 'עבודה' : t === 'course' ? 'קורסים' : t === 'freelance' ? 'פרילנס' : t}: ${c} בחירות`).join('\n')}
+
+**פעילויות פופולריות:**
+${topActs.map(([name,c]) => `- "${name}" (${c} בחירות)`).join('\n')}
+
+**הסיבות המובילות לבחירת פעילות:**
+${topReasons.map(([r,c]) => `- "${r}" (${c} ציונים)`).join('\n')}
+
+**חובה:** השתמש בנתונים אלו כדי לדייק את ההמלצות שלך. אם פורשים עם פרופיל דומה בוחרים כיוון מסוים – ציין את זה!`;
+        }
+      } catch (e) {
+        console.error("Activity wisdom error (non-fatal):", e);
+      }
+
       // === LEARNING LOOP: Collaborative Filtering ===
-      // Find similar profiles and their successful outcomes
       try {
         const { data: allResponses } = await supabase
           .from("questionnaire_responses")
@@ -102,31 +145,25 @@ Deno.serve(async (req) => {
           .select("id, title, category, organization_name");
 
         if (allResponses?.length && allFeedback?.length) {
-          // Extract current user's top traits from profileSummary
           const currentTopVIA = profileSummary?.match(/חוזקות VIA מובילות:\s*([^,]+)/)?.[1]?.trim() || "";
           const currentTopSchein = profileSummary?.match(/עוגני קריירה מובילים:\s*([^,]+)/)?.[1]?.trim() || "";
 
-          // Find users with similar top traits
           const similarTokens: string[] = [];
           for (const resp of allResponses) {
             const rd = resp.response_data as Record<string, unknown>;
-            // Check if chat messages exist (meaning they completed the journey)
             if (!rd.chatMessages || !(rd.chatMessages as unknown[]).length) continue;
             similarTokens.push(resp.token_id);
           }
 
-          // Get positive feedback from similar users
           const positiveFeedback = (allFeedback || []).filter(
             f => similarTokens.includes(f.token_id) && (f.feedback === 'accurate' || f.feedback === 'interesting')
           );
 
-          // Count opportunity popularity
           const oppPopularity: Record<string, number> = {};
           for (const fb of positiveFeedback) {
             oppPopularity[fb.opportunity_id] = (oppPopularity[fb.opportunity_id] || 0) + 1;
           }
 
-          // Get top 3 popular opportunities
           const topOppIds = Object.entries(oppPopularity)
             .sort(([, a], [, b]) => b - a)
             .slice(0, 3)
@@ -162,6 +199,7 @@ Deno.serve(async (req) => {
 ${profileSummary}
 ${dbContext}
 ${crowdWisdom}
+${activityWisdom}
 
 ## יכולת חיפוש הזדמנויות חי (Perplexity):
 יש לך גישה לחיפוש AI חי (Perplexity) שמוצא הזדמנויות אמיתיות ועדכניות באינטרנט.
@@ -185,6 +223,22 @@ ${crowdWisdom}
 **חובה:** בכל פעם שאתה מציע עיסוק, התנדבות, קורס, פרילנס, או כל הזדמנות אחרת – הוסף בלוק מיוחד בסוף ההודעה:
 
 [OPPORTUNITY_LOG: {"title":"שם ההזדמנות","category":"work|volunteer|course|freelance","organization":"שם ארגון אם ידוע","description":"תיאור קצר","whyFits":"למה זה מתאים לפרופיל","location":"מיקום אם ידוע","link":"קישור אם ידוע"}]
+
+## 📌 תיעוד בחירות פעילות (DATA COLLECTION):
+**חובה קריטית** — בכל פעם שהמשתמש מביע עניין, בוחר, או מאשר שהוא רוצה לפעול בכיוון מסוים, תעד את הבחירה עם הסיבות:
+
+[ACTIVITY_CHOICE: {"activity":"שם הפעילות/עיסוק","type":"work|volunteer|course|freelance|other","organization":"ארגון אם ידוע","reasons":["סיבה 1 למה בחר","סיבה 2","סיבה 3"]}]
+
+**מתי לתעד:**
+- כשהמשתמש אומר "זה מדבר אליי", "אני רוצה לנסות", "זה מעניין אותי", "כן, בוא נחקור את זה"
+- כשהמשתמש מדרג כיוון גבוה (7+/10)
+- כשהמשתמש בוחר משימה מתוך ה-Roadmap
+- כשהמשתמש מספר על פעילות שכבר עושה או עשה
+
+**הסיבות חייבות להיות מנוסחות כך:**
+- סיבות פסיכולוגיות מבוססות האבחון (למשל: "מתאים לעוגן שליחות/ייעוד", "ממנף חוזקה באנושיות")
+- סיבות פרקטיות (למשל: "גמישות בשעות", "קרוב לבית", "ניתן להתחיל מיד")
+- סיבות רגשיות (למשל: "נותן תחושת משמעות", "מחבר לאנשים", "ממלא חלום ישן")
 
 ## כללי זהב:
 - **לעולם אל תשאל שאלה שהתשובה עליה כבר קיימת בנתונים.**
@@ -241,6 +295,7 @@ ${crowdWisdom}
 
 **חשוב: בעת יצירת ה-Roadmap, השתמש ב-[SEARCH_QUERY: ...] כדי לחפש הזדמנויות.**
 **חשוב: ודא שכל הכיוונים מתועדים ב-[OPPORTUNITY_LOG: ...].**
+**חשוב: תעד כל בחירה שהמשתמש עשה במהלך השיחה ב-[ACTIVITY_CHOICE: ...].**
 
 ## כללים:
 - תשובות קצרות וממוקדות (3-5 משפטים), אלא אם נדרש פירוט.
