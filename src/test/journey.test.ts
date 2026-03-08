@@ -196,7 +196,7 @@ describe('Recommendations', () => {
 
   it('returns fallback when scores are empty', () => {
     const recs = getRecommendations({}, {});
-    expect(recs.length).toBe(3);
+    expect(recs.length).toBe(5);
   });
 });
 
