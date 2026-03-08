@@ -30,7 +30,7 @@ const SearchResultsCards = ({ results, isSearching, query }: SearchResultsCardsP
         description: result.description || '',
         link: result.link || '',
         location: result.location || null,
-        target_traits: { source: 'live-search', whyFits: result.whyFits } as Record<string, unknown>,
+        target_traits: JSON.parse(JSON.stringify({ source: 'live-search', whyFits: result.whyFits })),
       }]);
       if (error) throw error;
       setSavedIds(prev => new Set(prev).add(index));
