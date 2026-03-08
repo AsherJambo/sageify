@@ -200,8 +200,10 @@ const SageAdvisor = ({
 
     if (!resp.ok || !resp.body) {
       const errData = await resp.json().catch(() => ({}));
+      console.error('%c❌ Advisor Response Error:', 'color: #f44336; font-weight: bold', resp.status, errData);
       throw new Error(errData.error || 'שגיאה בחיבור ליועץ');
     }
+    console.log('%c✅ Advisor Stream Started:', 'color: #4CAF50; font-weight: bold', `Status ${resp.status}`);
 
     const reader = resp.body.getReader();
     const decoder = new TextDecoder();
