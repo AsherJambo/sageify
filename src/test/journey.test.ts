@@ -52,15 +52,15 @@ describe('Data Integrity', () => {
     });
   });
 
-  it('Skills: 19 skills with unique IDs', () => {
-    expect(skills.length).toBe(19);
+  it('Skills: 20 skills with unique IDs', () => {
+    expect(skills.length).toBe(20);
     const ids = skills.map(s => s.id);
-    expect(new Set(ids).size).toBe(19);
+    expect(new Set(ids).size).toBe(20);
   });
 
-  it('Considerations: 36 items, all unique', () => {
-    expect(considerations.length).toBe(36);
-    expect(new Set(considerations).size).toBe(36);
+  it('Considerations: 34 items, all unique', () => {
+    expect(considerations.length).toBe(34);
+    expect(new Set(considerations).size).toBe(34);
   });
 
   it('Preferences: 4 questions + dream options', () => {
@@ -92,10 +92,11 @@ describe('Scoring Logic', () => {
     expect(scores['אומץ לב']).toBe(0);
   });
 
-  it('getMaxScoredQuestions returns only max-scored questions', () => {
+  it('getMaxScoredQuestions returns at least minCount questions with tie expansion', () => {
     const answers: Answers = { 1: 5, 2: 3, 3: 5, 4: 2 };
     const maxQ = getMaxScoredQuestions(answers, viaQuestions);
-    expect(maxQ.length).toBe(2);
+    // With minCount=6 default and only 4 answered questions, returns all 4
+    expect(maxQ.length).toBe(4);
     expect(maxQ.map(q => q.id)).toEqual(expect.arrayContaining([1, 3]));
   });
 
@@ -140,21 +141,24 @@ describe('Power 3 Bonus Flow', () => {
     answers[10] = 5; // אומץ לב
     answers[28] = 5; // אנושיות
 
-    // Get max-scored questions
+    // Get max-scored questions (minCount=6, all 48 answered, 4 scored 5 + ties at cutoff expand)
     const maxQ = getMaxScoredQuestions(answers, viaQuestions);
-    expect(maxQ.length).toBe(4); // 4 questions with score 5
+    expect(maxQ.length).toBeGreaterThanOrEqual(6); // At least minCount with tie expansion
 
     // User selects 3 of them
     const selected = maxQ.slice(0, 3).map(q => q.id);
     const bonused = applyBonus(answers, selected);
 
-    // Selected questions should now be 9
+    // Selected questions should have bonus applied
     selected.forEach(id => {
-      expect(bonused[id]).toBe(9);
+      expect(bonused[id]).toBe(answers[id] + 4);
     });
 
-    // Unselected max question stays at 5
-    expect(bonused[maxQ[3].id]).toBe(5);
+    // Non-selected questions stay unchanged
+    const unselected = maxQ.filter(q => !selected.includes(q.id));
+    unselected.forEach(q => {
+      expect(bonused[q.id]).toBe(answers[q.id]);
+    });
 
     // Category scores should reflect bonus
     const beforeScores = calculateCategoryScores(answers, viaQuestions, viaCategories);
@@ -177,7 +181,7 @@ describe('Recommendations', () => {
     const viaScores = { 'אנושיות': 5, 'חכמה וידע': 3, 'אומץ לב': 2, 'חוש צדק': 1, 'מתינות וריסון': 1, 'מיקוד בטוב/נשגבות': 1 };
     const scheinScores = { 'שליחות': 7, 'מומחיות': 3, 'ניהול': 2, 'אוטונומיה': 1, 'בטחון ויציבות': 1, 'יצירתיות יזמית': 1, 'אתגר': 1, 'סגנון חיים': 1 };
     const recs = getRecommendations(viaScores, scheinScores);
-    expect(recs.length).toBe(3);
+    expect(recs.length).toBe(5);
     recs.forEach(rec => {
       expect(rec.title).toBeTruthy();
       expect(rec.description).toBeTruthy();
@@ -190,12 +194,12 @@ describe('Recommendations', () => {
     const viaScores = { 'unknownCat': 5 };
     const scheinScores = { 'unknownCat2': 5 };
     const recs = getRecommendations(viaScores, scheinScores);
-    expect(recs.length).toBe(3);
+    expect(recs.length).toBe(5);
   });
 
   it('returns fallback when scores are empty', () => {
     const recs = getRecommendations({}, {});
-    expect(recs.length).toBe(3);
+    expect(recs.length).toBe(5);
   });
 });
 
@@ -367,7 +371,7 @@ describe('Full Simulated Journey', () => {
 
     // Step 10: Get recommendations
     const recs = getRecommendations(viaScores, scheinScores);
-    expect(recs.length).toBe(3);
+    expect(recs.length).toBe(5);
 
     // Step 11: Verify top categories
     const topVIA = getTopCategories(viaScores, 2);
