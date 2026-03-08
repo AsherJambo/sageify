@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { scheinQuestions } from '@/data/scheinQuestions';
 import OwlMessage from './OwlMessage';
-import owlLogo from '@/assets/owl-logo.png';
+import QuestionnaireNav from './QuestionnaireNav';
 import type { Answers } from '@/lib/scoring';
 import { getScheinEncouragement, getRandomWisdomTip } from '@/lib/owlMessages';
 

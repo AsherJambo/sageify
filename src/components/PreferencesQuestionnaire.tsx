@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { preferenceQuestions, dreamOptions } from '@/data/preferencesData';
 import OwlMessage from './OwlMessage';
-import owlLogo from '@/assets/owl-logo.png';
+import QuestionnaireNav from './QuestionnaireNav';
 
 interface PreferencesQuestionnaireProps {
   onComplete: (preferences: Record<string, string[]>, dream: string) => void;
