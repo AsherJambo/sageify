@@ -101,7 +101,7 @@ const ResultsDashboard = ({
         </motion.div>
 
         {/* AI Narrative */}
-        <div className={`transition-all duration-1000 ${showNarrative ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={1}>
           <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
             <div className="flex items-start gap-4">
               <img src={owlLogo} alt="" className="w-12 h-12 rounded-full flex-shrink-0" />
