@@ -335,7 +335,7 @@ const ResultsDashboard = ({
         </motion.div>
 
         {/* Owl AI Chat */}
-        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={6} className="print:hidden">
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={7} className="print:hidden">
           <OwlChat
             profileSummary={profileSummary}
             initialMessages={chatMessages}
