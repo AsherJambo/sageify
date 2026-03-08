@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
+import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import owlLogo from '@/assets/owl-logo.png';
 import { getTopCategories } from '@/lib/scoring';
@@ -40,21 +41,14 @@ const ResultsDashboard = ({
 
   const staticRecommendations = getRecommendations(viaScores, scheinScores);
 
-  const [showHeader, setShowHeader] = useState(false);
-  const [showNarrative, setShowNarrative] = useState(false);
-  const [showCards, setShowCards] = useState(false);
-  const [showRecommendations, setShowRecommendations] = useState(false);
-  const [showCharts, setShowCharts] = useState(false);
-  const [showExtra, setShowExtra] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => setShowHeader(true), 200);
-    setTimeout(() => setShowNarrative(true), 800);
-    setTimeout(() => setShowCards(true), 1400);
-    setTimeout(() => setShowRecommendations(true), 2000);
-    setTimeout(() => setShowCharts(true), 2600);
-    setTimeout(() => setShowExtra(true), 3200);
-  }, []);
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, delay: i * 0.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+    }),
+  };
 
   const generateNarrative = () => {
     const v1 = topVIA[0]?.category;
@@ -98,16 +92,16 @@ const ResultsDashboard = ({
     <div className="min-h-screen flex flex-col items-center px-4 py-12">
       <div className="w-full max-w-3xl space-y-10">
         {/* Header */}
-        <div className={`text-center space-y-5 transition-all duration-1000 ${showHeader ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={0} className="text-center space-y-5">
           <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto rounded-full shadow-[var(--shadow-elevated)] animate-float" />
           <p className="text-lg text-secondary font-medium tracking-wide">{owlCelebrations.profileReady}</p>
           <h1 className="text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">
             הפרופיל שלכם ב-<span className="text-secondary">Sageify</span>
           </h1>
-        </div>
+        </motion.div>
 
         {/* AI Narrative */}
-        <div className={`transition-all duration-1000 ${showNarrative ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={1}>
           <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
             <div className="flex items-start gap-4">
               <img src={owlLogo} alt="" className="w-12 h-12 rounded-full flex-shrink-0" />
@@ -117,10 +111,9 @@ const ResultsDashboard = ({
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Top Highlights */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-5 transition-all duration-1000 ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={2} className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
             <h3 className="text-lg font-bold font-display text-foreground mb-1 tracking-wide">חוזקות מובילות (VIA)</h3>
             <p className="text-sm text-muted-foreground mb-5">{owlCelebrations.topStrength}</p>
@@ -147,10 +140,10 @@ const ResultsDashboard = ({
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Recommendations */}
-        <div className={`transition-all duration-1000 ${showRecommendations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={3}>
           <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
             <div className="flex items-center gap-4 mb-6">
               <img src={owlLogo} alt="" className="w-12 h-12 rounded-full" />
@@ -202,10 +195,10 @@ const ResultsDashboard = ({
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
 
         {/* Charts */}
-        <div className={`space-y-8 transition-all duration-1000 ${showCharts ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={4} className="space-y-8">
           <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
             <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">חוזקות VIA – כל הקטגוריות</h3>
             <div className="space-y-4">
@@ -249,10 +242,10 @@ const ResultsDashboard = ({
                 ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Extra results */}
-        <div className={`space-y-8 transition-all duration-1000 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={5} className="space-y-8">
           {topHolland.length > 0 && (
             <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
               <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">נטיות תעסוקתיות (הולנד)</h3>
@@ -325,16 +318,16 @@ const ResultsDashboard = ({
               )}
             </div>
           )}
-        </div>
+        </motion.div>
 
         {/* Owl AI Chat */}
-        <div className={`print:hidden transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={6} className="print:hidden">
           <OwlChat
             profileSummary={profileSummary}
             initialMessages={chatMessages}
             onMessagesChange={onChatMessagesChange}
           />
-        </div>
+        </motion.div>
 
         {/* Actions */}
         <div className="text-center pb-8 space-y-4 print:hidden">
