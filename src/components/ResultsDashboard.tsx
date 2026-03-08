@@ -26,7 +26,7 @@ interface ResultsDashboardProps {
 const ResultsDashboard = ({
   viaScores, scheinScores, hollandScores,
   considerationsData, skillsAssignments, preferencesData,
-  chatMessages, onChatMessagesChange,
+  chatMessages, onChatMessagesChange, tokenId,
 }: ResultsDashboardProps) => {
   const topVIA = getTopCategories(viaScores, 2);
   const topSchein = getTopCategories(scheinScores, 2);
