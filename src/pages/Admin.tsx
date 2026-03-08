@@ -390,10 +390,10 @@ const Admin = () => {
           <div className="bg-card border border-border rounded-xl p-5">
             <h2 className="font-semibold text-lg mb-3">סינון וייצוא</h2>
             <div className="flex gap-3 mb-4 flex-wrap items-end">
-              <div className="space-y-1">
+              <div className="space-y-1 w-full sm:w-auto">
                 <label className="text-xs text-muted-foreground">סטטוס</label>
                 <Select value={filterStatus} onValueChange={setFilterStatus}>
-                  <SelectTrigger className="w-[160px]">
+                  <SelectTrigger className="w-full sm:w-[160px]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -404,13 +404,13 @@ const Admin = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 w-full sm:w-auto">
                 <label className="text-xs text-muted-foreground">מתאריך</label>
-                <Input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="w-[160px]" />
+                <Input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="w-full sm:w-[160px]" />
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 w-full sm:w-auto">
                 <label className="text-xs text-muted-foreground">עד תאריך</label>
-                <Input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="w-[160px]" />
+                <Input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="w-full sm:w-[160px]" />
               </div>
               {(filterStatus !== 'all' || filterDateFrom || filterDateTo) && (
                 <Button variant="ghost" size="sm" onClick={() => { setFilterStatus('all'); setFilterDateFrom(''); setFilterDateTo(''); }}>
