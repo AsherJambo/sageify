@@ -561,28 +561,17 @@ const SageAdvisor = ({
 
         {/* Journey Action Cards */}
         {!roadmapDetected && !isStreaming && messages.length >= 2 && (
-          <div dir="rtl" className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="h-px flex-1 bg-border/60" />
-              <p className="text-xs font-medium text-muted-foreground tracking-wide">בחרו את הצעד הבא</p>
-              <div className="h-px flex-1 bg-border/60" />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {journeyActions.map((action) => (
-                <button
-                  key={action.label}
-                  onClick={() => sendMessage(action.msg)}
-                  className="group bg-card hover:bg-muted/50 border border-border/60 hover:border-secondary/30 rounded-2xl p-5 text-right transition-all duration-300 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)]"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="w-10 h-10 rounded-xl bg-secondary/8 flex items-center justify-center text-lg flex-shrink-0 group-hover:bg-secondary/15 transition-colors">{action.icon}</span>
-                    <p className="font-semibold text-sm text-foreground group-hover:text-secondary transition-colors font-display tracking-wide">
-                      {action.label}
-                    </p>
-                  </div>
-                </button>
-              ))}
-            </div>
+          <div dir="rtl" className="flex flex-wrap gap-2 justify-center">
+            {journeyActions.map((action) => (
+              <button
+                key={action.label}
+                onClick={() => sendMessage(action.msg)}
+                className="inline-flex items-center gap-1.5 bg-card hover:bg-muted/50 border border-border/60 hover:border-secondary/30 rounded-full px-3.5 py-2 text-xs font-medium text-muted-foreground hover:text-secondary transition-all duration-200"
+              >
+                <span className="text-sm">{action.icon}</span>
+                {action.label}
+              </button>
+            ))}
           </div>
         )}
 
