@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import owlLogo from '@/assets/owl-logo.png';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { skills } from '@/data/skillsData';
 import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
 import { useLiveSearch, type SearchResult } from '@/hooks/useLiveSearch';
 import SearchResultsCards from '@/components/SearchResultsCards';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SageAdvisorProps {
   username?: string;
@@ -115,6 +116,53 @@ const SageAdvisor = ({
 
   const { searchState, executeSearch, extractSearchQueries, cleanSearchTags } = useLiveSearch(profileSummary);
 
+  // Auto-extract and save opportunities from AI responses
+  const savedOpportunityTitles = useRef<Set<string>>(new Set());
+
+  const extractAndSaveOpportunities = useCallback(async (text: string) => {
+    const regex = /\[OPPORTUNITY_LOG:\s*(\{[\s\S]*?\})\]/g;
+    let match;
+    const opportunities: Array<{
+      title: string; category: string; organization: string;
+      description: string; whyFits: string; location: string; link: string;
+    }> = [];
+
+    while ((match = regex.exec(text)) !== null) {
+      try {
+        const parsed = JSON.parse(match[1]);
+        if (parsed.title && !savedOpportunityTitles.current.has(parsed.title)) {
+          opportunities.push(parsed);
+        }
+      } catch { /* skip malformed */ }
+    }
+
+    for (const opp of opportunities) {
+      try {
+        await supabase.from('opportunities').insert([{
+          title: opp.title,
+          organization_name: opp.organization || 'לא צוין',
+          category: opp.category || 'work',
+          description: opp.description || '',
+          link: opp.link || '',
+          location: opp.location || null,
+          target_traits: JSON.parse(JSON.stringify({
+            source: 'ai-advisor',
+            whyFits: opp.whyFits || '',
+            tokenId: tokenId || '',
+          })),
+        }]);
+        savedOpportunityTitles.current.add(opp.title);
+        console.log('Auto-saved opportunity:', opp.title);
+      } catch (e) {
+        console.error('Auto-save opportunity error:', e);
+      }
+    }
+  }, [tokenId]);
+
+  const cleanOpportunityTags = useCallback((text: string): string => {
+    return text.replace(/\[OPPORTUNITY_LOG:\s*\{[\s\S]*?\}\]/g, '').trim();
+  }, []);
+
   const streamChat = async (allMessages: ChatMessage[]) => {
     const resp = await fetch(CHAT_URL, {
       method: 'POST',
@@ -204,11 +252,12 @@ const SageAdvisor = ({
         };
         setMessages([initialMsg]);
         await streamChat([initialMsg]);
-        // After streaming, check for search queries in the latest assistant message
+        // After streaming, check for search queries and auto-save opportunities
         setMessages(prev => {
           const lastAssistant = prev.findIndex((m, i) => m.role === 'assistant' && i === prev.length - 1);
           if (lastAssistant >= 0) {
             processSearchQueries(prev[lastAssistant].content, lastAssistant);
+            extractAndSaveOpportunities(prev[lastAssistant].content);
           }
           return prev;
         });
@@ -231,11 +280,12 @@ const SageAdvisor = ({
     setIsStreaming(true);
     try {
       await streamChat(newMessages);
-      // Check for search queries after streaming
+      // Check for search queries and auto-save opportunities after streaming
       setMessages(prev => {
         const lastIdx = prev.length - 1;
         if (prev[lastIdx]?.role === 'assistant') {
           processSearchQueries(prev[lastIdx].content, lastIdx);
+          extractAndSaveOpportunities(prev[lastIdx].content);
         }
         return prev;
       });
@@ -421,7 +471,7 @@ const SageAdvisor = ({
                     </div>
                     <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 p-4 sm:p-6 shadow-[var(--shadow-card)]">
                       <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h1]:text-lg [&_h2]:text-secondary [&_h2]:font-display [&_h2]:text-base [&_h3]:text-secondary [&_h3]:font-display [&_h3]:text-sm [&_strong]:text-secondary [&_li]:mb-1.5 [&_ul]:mr-4 [&_ol]:mr-4 text-foreground leading-relaxed text-sm">
-                        <ReactMarkdown>{cleanSearchTags(msg.content)}</ReactMarkdown>
+                        <ReactMarkdown>{cleanOpportunityTags(cleanSearchTags(msg.content))}</ReactMarkdown>
                       </div>
                     </div>
                     {/* Search results inline after assistant message */}
