@@ -41,6 +41,8 @@ interface Analytics {
     topActivities: [string, number][];
     topReasons: [string, number][];
     byPsychProfile: Array<{ profile: string; activities: string[]; count: number }>;
+    timeSeries?: Array<{ week: string; total: number; [key: string]: string | number }>;
+    reasonTrends?: Array<{ month: string; topReasons: [string, number][] }>;
   };
 }
 
