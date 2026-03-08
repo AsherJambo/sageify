@@ -318,7 +318,7 @@ const ResultsDashboard = ({
               )}
             </div>
           )}
-        </div>
+        </motion.div>
 
         {/* Owl AI Chat */}
         <div className={`print:hidden transition-all duration-700 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
