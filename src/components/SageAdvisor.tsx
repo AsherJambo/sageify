@@ -43,6 +43,7 @@ const SageAdvisor = ({
   const [input, setInput] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [roadmapDetected, setRoadmapDetected] = useState(false);
+  const [searchResultsByMessage, setSearchResultsByMessage] = useState<Record<number, SearchResult[]>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
