@@ -327,7 +327,7 @@ const ResultsDashboard = ({
             initialMessages={chatMessages}
             onMessagesChange={onChatMessagesChange}
           />
-        </div>
+        </motion.div>
 
         {/* Actions */}
         <div className="text-center pb-8 space-y-4 print:hidden">
