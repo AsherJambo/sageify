@@ -312,9 +312,36 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen p-6 max-w-6xl mx-auto" dir="rtl">
-      <div className="flex items-center gap-3 mb-8">
-        <img src={owlLogo} alt="Sageify" className="w-10 h-10" />
-        <h1 className="text-2xl font-bold text-foreground">ניהול שאלונים</h1>
+      {/* Data Asset Header */}
+      <div className="mb-8">
+        <div className="flex items-center gap-3 mb-2">
+          <img src={owlLogo} alt="Sageify" className="w-10 h-10" />
+          <div>
+            <h1 className="text-2xl font-bold font-display text-foreground tracking-wide">Sageify Data Console</h1>
+            <p className="text-sm text-muted-foreground">נכס הדאטה המוביל בישראל על הפסיכולוגיה של הפורש הישראלי</p>
+          </div>
+        </div>
+        {/* Live KPI strip */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+          <div className="bg-card border border-border rounded-xl px-4 py-3 text-center">
+            <p className="text-2xl font-bold font-display text-foreground">{tokens.length}</p>
+            <p className="text-xs text-muted-foreground">פרופילים פסיכולוגיים</p>
+          </div>
+          <div className="bg-card border border-border rounded-xl px-4 py-3 text-center">
+            <p className="text-2xl font-bold font-display text-secondary">{tokens.filter(t => t.completed_at).length}</p>
+            <p className="text-xs text-muted-foreground">אבחונים מלאים</p>
+          </div>
+          <div className="bg-card border border-border rounded-xl px-4 py-3 text-center">
+            <p className="text-2xl font-bold font-display text-primary">{tokens.filter(t => t.used && !t.completed_at).length}</p>
+            <p className="text-xs text-muted-foreground">בתהליך אבחון</p>
+          </div>
+          <div className="bg-card border border-border rounded-xl px-4 py-3 text-center">
+            <p className="text-2xl font-bold font-display text-foreground">
+              {tokens.length > 0 ? Math.round((tokens.filter(t => t.completed_at).length / tokens.filter(t => t.used).length) * 100) || 0 : 0}%
+            </p>
+            <p className="text-xs text-muted-foreground">שיעור השלמה</p>
+          </div>
+        </div>
       </div>
 
       <Tabs defaultValue="tokens" className="space-y-6">
@@ -324,7 +351,7 @@ const Admin = () => {
           </TabsTrigger>
           <TabsTrigger value="intelligence" className="gap-2">
             <BarChart3 className="w-4 h-4" />
-            לוח בינה
+            🧠 מודיעין פסיכולוגי
           </TabsTrigger>
           <TabsTrigger value="enrichment" className="gap-2">
             <Search className="w-4 h-4" />
@@ -489,7 +516,7 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="intelligence">
-          <AdminIntelligence adminPassword={storedPassword} />
+          <AdminIntelligence adminPassword={storedPassword} tokens={filteredTokens} />
         </TabsContent>
       </Tabs>
     </div>
