@@ -363,14 +363,14 @@ const Admin = () => {
           {/* Create single token */}
           <div className="bg-card border border-border rounded-xl p-5">
             <h2 className="font-semibold text-lg mb-3">יצירת קישור חדש</h2>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Input
                 placeholder="שם המשתמש"
                 value={newUsername}
                 onChange={e => setNewUsername(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && createToken()}
               />
-              <Button onClick={createToken} disabled={loading}>צור קישור</Button>
+              <Button onClick={createToken} disabled={loading} className="w-full sm:w-auto">צור קישור</Button>
             </div>
           </div>
 
