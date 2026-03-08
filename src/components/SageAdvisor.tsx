@@ -114,6 +114,26 @@ const SageAdvisor = ({
     return parts.join('\n');
   }, []);
 
+  // === Debug Logging: Data sent to AI Advisor ===
+  useEffect(() => {
+    console.group('%c🦉 Sageify Advisor — Data Pipeline', 'color: #d4a017; font-weight: bold; font-size: 14px');
+    console.log('%c📊 VIA Scores:', 'color: #4CAF50; font-weight: bold', viaScores);
+    console.log('%c⚓ Schein Scores:', 'color: #2196F3; font-weight: bold', scheinScores);
+    console.log('%c🔬 Holland Scores:', 'color: #9C27B0; font-weight: bold', hollandScores || 'N/A');
+    console.log('%c🎯 Top VIA:', 'color: #4CAF50', topVIA);
+    console.log('%c🎯 Top Schein:', 'color: #2196F3', topSchein);
+    console.log('%c🎯 Top Holland:', 'color: #9C27B0', topHolland);
+    console.log('%c🏆 Winner Skills:', 'color: #FF9800; font-weight: bold', winnerSkills);
+    console.log('%c🔥 Burnout Skills:', 'color: #f44336', burnoutSkills);
+    console.log('%c⚖️ Top Considerations:', 'color: #00BCD4', topConsiderations);
+    console.log('%c💭 Dream:', 'color: #E91E63', preferencesData?.dream || 'N/A');
+    console.log('%c📋 Preferences:', 'color: #795548', preferencesData?.preferences || 'N/A');
+    console.log('%c📝 Profile Summary (sent to AI):\n', 'color: #607D8B; font-weight: bold', profileSummary);
+    console.log('%c🎫 Token ID:', 'color: #9E9E9E', tokenId || 'anonymous');
+    console.log('%c📦 Recommendations:', 'color: #FF5722', recommendations);
+    console.groupEnd();
+  }, []);
+
   const { searchState, executeSearch, extractSearchQueries, cleanSearchTags } = useLiveSearch(profileSummary);
 
   // Auto-extract and save opportunities from AI responses
