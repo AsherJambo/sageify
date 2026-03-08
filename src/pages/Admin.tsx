@@ -310,13 +310,24 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen p-6 max-w-5xl mx-auto" dir="rtl">
+    <div className="min-h-screen p-6 max-w-6xl mx-auto" dir="rtl">
       <div className="flex items-center gap-3 mb-8">
         <img src={owlLogo} alt="Sageify" className="w-10 h-10" />
         <h1 className="text-2xl font-bold text-foreground">ניהול שאלונים</h1>
       </div>
 
-      {/* Create single token */}
+      <Tabs defaultValue="tokens" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="tokens" className="gap-2">
+            📋 ניהול קישורים
+          </TabsTrigger>
+          <TabsTrigger value="intelligence" className="gap-2">
+            <BarChart3 className="w-4 h-4" />
+            לוח בינה
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="tokens" className="space-y-6">
       <div className="bg-card border border-border rounded-xl p-5 mb-6">
         <h2 className="font-semibold text-lg mb-3">יצירת קישור חדש</h2>
         <div className="flex gap-3">
