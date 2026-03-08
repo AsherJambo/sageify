@@ -10,15 +10,35 @@ interface WelcomeScreenProps {
 const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
   const [showGreeting, setShowGreeting] = useState(false);
   const [showIntro, setShowIntro] = useState(false);
+  const [showPillars, setShowPillars] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [showCTA, setShowCTA] = useState(false);
 
   useEffect(() => {
     setTimeout(() => setShowGreeting(true), 500);
     setTimeout(() => setShowIntro(true), 1400);
-    setTimeout(() => setShowDetails(true), 2400);
-    setTimeout(() => setShowCTA(true), 3400);
+    setTimeout(() => setShowPillars(true), 2200);
+    setTimeout(() => setShowDetails(true), 3200);
+    setTimeout(() => setShowCTA(true), 4200);
   }, []);
+
+  const pillars = [
+    {
+      icon: '🔬',
+      title: 'דיוק פסיכולוגי',
+      desc: 'מערכת שנבנתה על ידי מומחי פסיכולוגיה תעסוקתית – מגשרת בין "מי שאתם" ל"מה תעשו מחר"',
+    },
+    {
+      icon: '🔍',
+      title: 'סריקת שוק בזמן אמת',
+      desc: 'מונע ע"י Perplexity AI – לידים חיים וספציפיים: משרות, התנדבויות ותפקידים בישראל',
+    },
+    {
+      icon: '🧠',
+      title: 'סינון שיתופי',
+      desc: 'ה-AI שלנו מזהה דפוסים בהשוואה לפרופילים דומים – ומראה לכם מה הוביל אחרים לשביעות רצון גבוהה',
+    },
+  ];
 
   const journeySteps = [
     { num: '01', title: 'חוזקות VIA', desc: '48 שאלות – גלו את הכוחות הפנימיים שלכם' },
@@ -78,6 +98,35 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
               <p className="text-lg text-muted-foreground leading-relaxed">
                 {owlWelcome.intro}
               </p>
+            </div>
+          </div>
+
+          {/* 3 Pillars — Value Proposition */}
+          <div
+            className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              showPillars ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <h3 className="text-center text-lg font-display font-bold text-foreground mb-6 tracking-wide">
+              ✦ למה אנחנו שונים ✦
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {pillars.map((pillar, i) => (
+                <div
+                  key={i}
+                  className="bg-card rounded-2xl p-6 border border-border/60 shadow-[var(--shadow-card)] text-center space-y-3 hover:border-secondary/30 transition-all duration-300"
+                >
+                  <div className="w-12 h-12 mx-auto rounded-full bg-secondary/8 flex items-center justify-center text-2xl">
+                    {pillar.icon}
+                  </div>
+                  <p className="font-bold font-display text-foreground tracking-wide text-sm">
+                    {pillar.title}
+                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {pillar.desc}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 

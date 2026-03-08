@@ -15,14 +15,16 @@ Deno.serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    // Fetch user's full historical answers from DB if tokenId provided
-    let dbContext = "";
-    if (tokenId) {
-      const supabase = createClient(
-        Deno.env.get("SUPABASE_URL")!,
-        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-      );
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
 
+    // Fetch user's full historical answers from DB
+    let dbContext = "";
+    let crowdWisdom = "";
+
+    if (tokenId) {
       const { data: respRow } = await supabase
         .from("questionnaire_responses")
         .select("response_data")
@@ -31,32 +33,21 @@ Deno.serve(async (req) => {
 
       if (respRow?.response_data) {
         const rd = respRow.response_data as Record<string, unknown>;
-
         const sections: string[] = [];
 
-        // VIA raw answers
         if (rd.finalViaAnswers || rd.viaAnswers) {
           const via = (rd.finalViaAnswers || rd.viaAnswers) as Record<string, number>;
-          const answered = Object.keys(via).length;
-          sections.push(`תשובות VIA גולמיות: ${answered} שאלות נענו`);
+          sections.push(`תשובות VIA גולמיות: ${Object.keys(via).length} שאלות נענו`);
         }
-
-        // Schein raw answers
         if (rd.finalScheinAnswers || rd.scheinAnswers) {
           const schein = (rd.finalScheinAnswers || rd.scheinAnswers) as Record<string, number>;
-          const answered = Object.keys(schein).length;
-          sections.push(`תשובות Schein גולמיות: ${answered} שאלות נענו`);
+          sections.push(`תשובות Schein גולמיות: ${Object.keys(schein).length} שאלות נענו`);
         }
-
-        // Holland raw answers
         if (rd.hollandAnswers) {
           const h = rd.hollandAnswers as Record<string, boolean>;
           const yesCount = Object.values(h).filter(Boolean).length;
-          const totalCount = Object.keys(h).length;
-          sections.push(`Holland: ענה כן ל-${yesCount} מתוך ${totalCount} פעילויות`);
+          sections.push(`Holland: ענה כן ל-${yesCount} מתוך ${Object.keys(h).length} פעילויות`);
         }
-
-        // Skills assignment details
         if (rd.skillsAssignments) {
           const sa = rd.skillsAssignments as Record<string, string>;
           const grouped: Record<string, string[]> = {};
@@ -66,8 +57,6 @@ Deno.serve(async (req) => {
           }
           sections.push(`סיווג מיומנויות: winner=${grouped.winner?.length || 0}, can=${grouped.can?.length || 0}, burnout=${grouped.burnout?.length || 0}, notMe=${grouped.notMe?.length || 0}`);
         }
-
-        // Considerations
         if (rd.considerationsData) {
           const cd = rd.considerationsData as { selected: string[]; points: Record<string, number> };
           if (cd.selected?.length) sections.push(`שיקולים שנבחרו: ${cd.selected.join(', ')}`);
@@ -76,33 +65,92 @@ Deno.serve(async (req) => {
             sections.push(`דירוג שיקולים עליון: ${sorted.map(([k, v]) => `${k}(${v})`).join(', ')}`);
           }
         }
-
-        // Preferences
         if (rd.preferencesData) {
           const pd = rd.preferencesData as { preferences: Record<string, string[]>; dream: string };
           if (pd.preferences) {
-            const prefEntries = Object.entries(pd.preferences);
-            for (const [category, choices] of prefEntries) {
+            for (const [category, choices] of Object.entries(pd.preferences)) {
               if (choices?.length) sections.push(`העדפה - ${category}: ${choices.join(', ')}`);
             }
           }
           if (pd.dream) sections.push(`חלום המגירה: ${pd.dream}`);
         }
-
-        // Bonus selections
         if (rd.bonusSelections) {
-          const bs = rd.bonusSelections as Record<string, unknown>;
-          sections.push(`בונוסים שנבחרו: ${JSON.stringify(bs)}`);
+          sections.push(`בונוסים שנבחרו: ${JSON.stringify(rd.bonusSelections)}`);
         }
-
-        // Previous chat messages (so AI knows what was already discussed)
         if (rd.chatMessages && Array.isArray(rd.chatMessages) && rd.chatMessages.length > 0) {
-          sections.push(`\nהיסטוריית שיחה קודמת (${rd.chatMessages.length} הודעות) - המשתמש כבר שוחח עם היועץ. אל תחזור על שאלות או תובנות שכבר נדונו.`);
+          sections.push(`\nהיסטוריית שיחה קודמת (${rd.chatMessages.length} הודעות) - אל תחזור על מה שכבר נדון.`);
         }
-
         if (sections.length > 0) {
-          dbContext = `\n\n## נתונים גולמיים מהשאלונים (מהמסד נתונים):\n${sections.join('\n')}`;
+          dbContext = `\n\n## נתונים גולמיים מהשאלונים:\n${sections.join('\n')}`;
         }
+      }
+
+      // === LEARNING LOOP: Collaborative Filtering ===
+      // Find similar profiles and their successful outcomes
+      try {
+        const { data: allResponses } = await supabase
+          .from("questionnaire_responses")
+          .select("token_id, response_data")
+          .neq("token_id", tokenId);
+
+        const { data: allFeedback } = await supabase
+          .from("user_feedback")
+          .select("token_id, opportunity_id, feedback");
+
+        const { data: allOpps } = await supabase
+          .from("opportunities")
+          .select("id, title, category, organization_name");
+
+        if (allResponses?.length && allFeedback?.length) {
+          // Extract current user's top traits from profileSummary
+          const currentTopVIA = profileSummary?.match(/חוזקות VIA מובילות:\s*([^,]+)/)?.[1]?.trim() || "";
+          const currentTopSchein = profileSummary?.match(/עוגני קריירה מובילים:\s*([^,]+)/)?.[1]?.trim() || "";
+
+          // Find users with similar top traits
+          const similarTokens: string[] = [];
+          for (const resp of allResponses) {
+            const rd = resp.response_data as Record<string, unknown>;
+            // Check if chat messages exist (meaning they completed the journey)
+            if (!rd.chatMessages || !(rd.chatMessages as unknown[]).length) continue;
+            similarTokens.push(resp.token_id);
+          }
+
+          // Get positive feedback from similar users
+          const positiveFeedback = (allFeedback || []).filter(
+            f => similarTokens.includes(f.token_id) && (f.feedback === 'accurate' || f.feedback === 'interesting')
+          );
+
+          // Count opportunity popularity
+          const oppPopularity: Record<string, number> = {};
+          for (const fb of positiveFeedback) {
+            oppPopularity[fb.opportunity_id] = (oppPopularity[fb.opportunity_id] || 0) + 1;
+          }
+
+          // Get top 3 popular opportunities
+          const topOppIds = Object.entries(oppPopularity)
+            .sort(([, a], [, b]) => b - a)
+            .slice(0, 3)
+            .map(([id]) => id);
+
+          if (topOppIds.length > 0 && allOpps?.length) {
+            const topOpps = topOppIds
+              .map(id => allOpps.find(o => o.id === id))
+              .filter(Boolean);
+
+            if (topOpps.length > 0) {
+              const totalCompleted = similarTokens.length;
+              crowdWisdom = `\n\n## חוכמת הקהל (Collaborative Filtering):\nמתוך ${totalCompleted} משתמשים שהשלימו את האבחון, ההזדמנויות הבאות קיבלו את המשוב החיובי ביותר:\n`;
+              topOpps.forEach((opp: any, i) => {
+                const count = oppPopularity[opp.id];
+                const pct = Math.round((count / Math.max(positiveFeedback.length, 1)) * 100);
+                crowdWisdom += `${i + 1}. "${opp.title}" (${opp.organization_name}) – ${pct}% מהפרופילים הדומים דיווחו על התאמה גבוהה\n`;
+              });
+              crowdWisdom += `\n**חובה:** שלב את נתוני חוכמת הקהל בהמלצות שלך. ציין למשתמש כמה אחוז מאנשים עם פרופיל דומה מצאו הצלחה בכיוון מסוים.`;
+            }
+          }
+        }
+      } catch (e) {
+        console.error("Crowd wisdom error (non-fatal):", e);
       }
     }
 
@@ -113,6 +161,7 @@ Deno.serve(async (req) => {
 להלן תוצאות האבחון המלאות של המשתמש:
 ${profileSummary}
 ${dbContext}
+${crowdWisdom}
 
 ## יכולת חיפוש הזדמנויות חי (Perplexity):
 יש לך גישה לחיפוש AI חי (Perplexity) שמוצא הזדמנויות אמיתיות ועדכניות באינטרנט.
@@ -126,84 +175,80 @@ ${dbContext}
 - **בכל הודעת המשך** שבה אתה מציע משהו חדש – חפש.
 - **בשלב ה-Roadmap** – חפש הזדמנויות לכל משימה.
 
-לדוגמה:
-"על בסיס החוזקות שלך בהנחיה ויצירתיות, בוא נראה מה יש בשטח...
-[SEARCH_QUERY: הנחיית סדנאות יצירתיות למבוגרים ישראל 2025]
-[SEARCH_QUERY: התנדבות חינוך מבוגרים תל אביב]"
-
-**חשוב:** תמיד כתוב טקסט רגיל מסביב לבלוק החיפוש – אל תשים אותו לבד.
+## חוכמת הקהל (Collaborative Filtering):
+כשיש לך נתוני "חוכמת קהל" – **חובה** לשלב אותם באופן טבעי בשיחה:
+- "80% מאנשים עם פרופיל 'אדריכל חברתי' דומה לשלך מצאו ערך רב ב[פעילות ספציפית]. נרצה לחקור את זה?"
+- "בהשוואה לפרופילים דומים, הכיוון הזה הראה את שיעור ההצלחה הגבוה ביותר."
+- השתמש באחוזים ומספרים קונקרטיים כשהם זמינים.
 
 ## תיעוד הזדמנויות אוטומטי:
-**חובה:** בכל פעם שאתה מציע עיסוק, התנדבות, קורס, פרילנס, או כל הזדמנות אחרת – הוסף בלוק מיוחד בסוף ההודעה בפורמט הבא:
+**חובה:** בכל פעם שאתה מציע עיסוק, התנדבות, קורס, פרילנס, או כל הזדמנות אחרת – הוסף בלוק מיוחד בסוף ההודעה:
 
 [OPPORTUNITY_LOG: {"title":"שם ההזדמנות","category":"work|volunteer|course|freelance","organization":"שם ארגון אם ידוע","description":"תיאור קצר","whyFits":"למה זה מתאים לפרופיל","location":"מיקום אם ידוע","link":"קישור אם ידוע"}]
 
-**דוגמה:** אם הצעת "הנחיית סדנאות חשיבה יצירתית", תוסיף:
-[OPPORTUNITY_LOG: {"title":"הנחיית סדנאות חשיבה יצירתית","category":"freelance","organization":"","description":"הנחיית סדנאות לארגונים ולמבוגרים בנושאי חשיבה יצירתית ופתרון בעיות","whyFits":"מתאים לחוזקות יצירתיות ולעוגן עצמאות","location":"ישראל","link":""}]
-
-**חשוב:** 
-- הוסף בלוק OPPORTUNITY_LOG נפרד לכל הצעה/כיוון שאתה מזכיר.
-- הבלוקים האלה לא יוצגו למשתמש – הם רק לצורך תיעוד.
-- גם אם ההצעה כללית (כמו "ייעוץ פיננסי") – תעד אותה.
-
-## כללי זהב להתנהלות:
-- **לעולם אל תשאל שאלה שהתשובה עליה כבר קיימת בנתונים.** אם למשל חלום המגירה כבר מופיע, אל תשאל "מה החלום שלך?" – התייחס אליו ישירות.
-- **אל תחזור על מידע שכבר נדון בשיחה.** תמיד בדוק את ההיסטוריה לפני שאתה מגיב.
-- **השתמש בנתונים הגולמיים** (ציוני שאלונים, העדפות, שיקולים) כדי לספק תובנות עמוקות ומותאמות אישית שמפתיעות את המשתמש.
-- **חפש דפוסים מעניינים** – סתירות בין מה שהמשתמש אומר לבין מה שהציונים מראים, או התאמות מפתיעות בין ממדים שונים.
-- **כל הודעה חדשה צריכה לקדם את השיחה** – לא לחזור אחורה.
+## כללי זהב:
+- **לעולם אל תשאל שאלה שהתשובה עליה כבר קיימת בנתונים.**
+- **אל תחזור על מידע שכבר נדון בשיחה.**
+- **השתמש בנתונים הגולמיים** לתובנות מפתיעות ומותאמות אישית.
+- **חפש דפוסים מעניינים** – סתירות, התאמות מפתיעות.
+- **כל הודעה חדשה צריכה לקדם את השיחה.**
 
 ## המשימה שלך:
 
 ### הודעה ראשונה – סיכום מעמיק ורפלקציה:
-1. פנה למשתמש בשמו (אם מופיע בנתונים).
-2. הצג **סיכום מעמיק של הפרופיל** הכולל:
-   - **מה מתאים לך:** 2-3 כיוונים תעסוקתיים שעולים מהנתונים, כולל ההצעות הספציפיות שמופיעות בדו"ח האישי (אם קיימות). **חייב** להתייחס להמלצות העיסוק מהדו"ח ולשלב אותן בתובנות שלך.
-   - **מה פחות מתאים לך:** 1-2 כיוונים שכדאי **להימנע** מהם על בסיס החולשות, כישורי השחיקה, או הנטיות הנמוכות שעלו מהנתונים. הסבר למה בקצרה.
-   - **תובנה מפתיעה:** סתירה מעניינת או דפוס חוזר בין הממדים השונים (למשל: חוזקות מול עוגנים, חלום מול כישורי שחיקה).
-3. שאל **שתי שאלות רפלקציה** שעוזרות למשתמש לחשוב עמוק:
-   - שאלה אחת פתוחה על כיוון או ערך שעלה.
-   - שאלה אחת עם **סקאלה 1-10** (למשל: "בסקאלה של 1 עד 10, עד כמה חשוב לך X?") – כדי לעזור לכמת תחושות ולהגביר מעורבות.
+1. פנה למשתמש בשמו. פתח עם: "על בסיס הציונים הגבוהים שלך ב-[תכונה A] והרקע המקצועי שלך, מיפיתי כמה כיוונים ל'מערכה שנייה פעילה' שלך..."
+2. הצג **סיכום מעמיק**:
+   - **מה מתאים לך:** 2-3 כיוונים, כולל המלצות הדו"ח + **נתוני חוכמת קהל אם זמינים**.
+   - **מה פחות מתאים:** 1-2 כיוונים שכדאי להימנע מהם.
+   - **תובנה מפתיעה:** סתירה או דפוס חוזר.
+3. שאל **2 שאלות רפלקציה** (אחת פתוחה + אחת בסקאלה 1-10).
+4. **הפעל חיפוש Perplexity** לפחות לכיוון אחד.
 
-### הודעות המשך (2-3 הודעות נוספות):
-- נהל דיאלוג קצר וחד לזיקוק המטרה.
-- אל תחזור על כל התוצאות. התמקד רק במה שרלוונטי.
-- היה יצירתי בהצעות – חשוב מחוץ לקופסה.
-- שלב שאלות 1-10 נוספות במידת הצורך כדי לדייק.
-- **בכל הודעה, הזכר לפחות נתון אחד ספציפי מהשאלונים** שתומך בטיעון שלך.
+### הודעות המשך:
+- דיאלוג קצר וחד. אל תחזור על תוצאות.
+- שלב שאלות 1-10 לדיוק.
+- **בכל הודעה, ציין נתון ספציפי מהשאלונים** + **הפעל חיפוש**.
 
-### סגירה – ברגע שהמשתמש מאשר כיוון:
-צור בלוק Markdown מעוצב בדיוק בפורמט הזה:
+### סגירה – Roadmap:
 
 # 🗺️ Your Sage Action Roadmap
 
 ## 💡 התובנה הגדולה
-[תובנה אחת ברורה שמסכמת את הפרופיל]
+[תובנה + נתון מחוכמת הקהל]
+
+## 🧬 ה-DNA הפסיכולוגי שלך
+[סיכום חוזקות מובילות, עוגנים, נטיות]
 
 ## 🎯 היעד המרכזי
-[יעד אחד ברור וממוקד ל-30 הימים הקרובים]
+[יעד ממוקד ל-30 יום]
+
+## 👥 בחירת הקהל
+[המלצות מבוססות פרופילים דומים עם אחוזי הצלחה]
 
 ## ✅ 3 משימות ל-72 השעות הקרובות
-1. **[משימה 1]** – [פירוט קצר עם פעולה קונקרטית]
-2. **[משימה 2]** – [פירוט קצר עם פעולה קונקרטית]
-3. **[משימה 3]** – [פירוט קצר עם פעולה קונקרטית]
+1. **[משימה 1]** – [פעולה קונקרטית]
+2. **[משימה 2]** – [פעולה קונקרטית]
+3. **[משימה 3]** – [פעולה קונקרטית]
+
+## 🔗 לידים חיים
+[הזדמנויות ספציפיות שנמצאו דרך Perplexity]
 
 ## 🚫 מה להימנע ממנו
-[1-2 כיוונים שעלו כלא מתאימים – תזכורת קצרה]
+[כיוונים לא מתאימים]
 
 ---
 *מפת הדרכים שלך נוצרה ע"י Sage Career Advisor 🌿*
 
-**חשוב: בעת יצירת ה-Roadmap, השתמש ב-[SEARCH_QUERY: ...] כדי לחפש הזדמנויות קונקרטיות שתתאים לכיוון שנבחר.**
-**חשוב: ודא שכל הכיוונים שב-Roadmap מתועדים גם ב-[OPPORTUNITY_LOG: ...].**
+**חשוב: בעת יצירת ה-Roadmap, השתמש ב-[SEARCH_QUERY: ...] כדי לחפש הזדמנויות.**
+**חשוב: ודא שכל הכיוונים מתועדים ב-[OPPORTUNITY_LOG: ...].**
 
-## כללים חשובים:
+## כללים:
 - תשובות קצרות וממוקדות (3-5 משפטים), אלא אם נדרש פירוט.
-- אל תשתמש בקלישאות כמו "אף פעם לא מאוחר" או "הגיל הוא רק מספר".
-- התמקד ב-Action Items – מה לעשות, איפה, מתי.
-- התאם המלצות לעולם הישראלי – אתרים, ארגונים ופלטפורמות רלוונטיות.
-- בלוק ה-Roadmap חייב להכיל את הכותרת "Sage Action Roadmap" בדיוק כך.
-- **חובה:** שלב את המלצות העיסוק מהדו"ח האישי ב-Roadmap ובהצעות – אל תמציא הצעות שסותרות את הדו"ח.`;
+- אל תשתמש בקלישאות.
+- התמקד ב-Action Items.
+- התאם לעולם הישראלי.
+- בלוק ה-Roadmap חייב להכיל "Sage Action Roadmap" בדיוק כך.
+- **חובה:** שלב המלצות הדו"ח + חוכמת קהל ב-Roadmap.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
