@@ -195,7 +195,7 @@ const ResultsDashboard = ({
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
 
         {/* Charts */}
         <div className={`space-y-8 transition-all duration-1000 ${showCharts ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
