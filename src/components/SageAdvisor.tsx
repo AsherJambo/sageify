@@ -390,7 +390,10 @@ const SageAdvisor = ({
 
         {/* Conversation Thread */}
         <div className="space-y-6" dir="rtl">
-          {visibleMessages.map((msg, i) => (
+          {visibleMessages.map((msg, i) => {
+            // Find the original index in full messages array for search results mapping
+            const originalIdx = messages.indexOf(msg);
+            return (
             <div
               key={i}
               className={`flex gap-3 items-start transition-all duration-700 ${
