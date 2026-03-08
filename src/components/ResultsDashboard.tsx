@@ -144,8 +144,20 @@ const ResultsDashboard = ({
           </div>
         </motion.div>
 
-        {/* Recommendations */}
+        {/* Smart Match Cards - Top 3 Paths */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={3}>
+          <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
+            <MatchCards
+              viaScores={viaScores}
+              scheinScores={scheinScores}
+              hollandScores={hollandScores}
+              tokenId={tokenId}
+            />
+          </div>
+        </motion.div>
+
+        {/* AI Advisor Recommendations (fallback / additional) */}
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={4}>
           <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
             <div className="flex items-center gap-4 mb-6">
               <img src={owlLogo} alt="" className="w-12 h-12 rounded-full" />
