@@ -35,6 +35,13 @@ interface Analytics {
     target_traits: { via_top?: string; schein_top?: string };
   }>;
   traitCoverage: Record<string, string[]>;
+  activityChoices?: {
+    total: number;
+    byType: [string, number][];
+    topActivities: [string, number][];
+    topReasons: [string, number][];
+    byPsychProfile: Array<{ profile: string; activities: string[]; count: number }>;
+  };
 }
 
 const COLORS = ['hsl(158, 64%, 40%)', 'hsl(260, 60%, 60%)', 'hsl(210, 45%, 35%)', 'hsl(35, 80%, 55%)', 'hsl(340, 65%, 50%)', 'hsl(180, 50%, 40%)'];
