@@ -383,7 +383,7 @@ const Admin = () => {
               value={bulkNames}
               onChange={e => setBulkNames(e.target.value)}
             />
-            <Button onClick={createBulk} disabled={loading}>צור קישורים</Button>
+            <Button onClick={createBulk} disabled={loading} className="w-full sm:w-auto">צור קישורים</Button>
           </div>
 
           {/* Filters & Actions */}
