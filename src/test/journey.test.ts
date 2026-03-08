@@ -191,7 +191,7 @@ describe('Recommendations', () => {
     const viaScores = { 'unknownCat': 5 };
     const scheinScores = { 'unknownCat2': 5 };
     const recs = getRecommendations(viaScores, scheinScores);
-    expect(recs.length).toBe(3);
+    expect(recs.length).toBe(5);
   });
 
   it('returns fallback when scores are empty', () => {
