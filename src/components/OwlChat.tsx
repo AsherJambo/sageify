@@ -177,9 +177,13 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
 
       {/* Messages */}
       <div className="h-[400px] overflow-y-auto p-4 space-y-4" dir="rtl">
+        <AnimatePresence initial={false}>
         {messages.map((msg, i) => (
-          <div
+          <motion.div
             key={i}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
           >
             {msg.role === 'assistant' && (
@@ -200,8 +204,9 @@ const OwlChat = ({ profileSummary, initialMessages, onMessagesChange }: OwlChatP
                 msg.content
               )}
             </div>
-          </div>
+          </motion.div>
         ))}
+        </AnimatePresence>
         {isLoading && messages[messages.length - 1]?.role === 'user' && (
           <div className="flex gap-3">
             <img src={owlLogo} alt="" className="w-8 h-8 rounded-full flex-shrink-0 mt-1" />
