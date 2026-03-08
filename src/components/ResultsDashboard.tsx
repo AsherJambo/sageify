@@ -242,7 +242,7 @@ const ResultsDashboard = ({
                 ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Extra results */}
         <div className={`space-y-8 transition-all duration-1000 ${showExtra ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
