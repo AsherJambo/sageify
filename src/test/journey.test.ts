@@ -58,9 +58,9 @@ describe('Data Integrity', () => {
     expect(new Set(ids).size).toBe(20);
   });
 
-  it('Considerations: 36 items, all unique', () => {
-    expect(considerations.length).toBe(36);
-    expect(new Set(considerations).size).toBe(36);
+  it('Considerations: 34 items, all unique', () => {
+    expect(considerations.length).toBe(34);
+    expect(new Set(considerations).size).toBe(34);
   });
 
   it('Preferences: 4 questions + dream options', () => {
