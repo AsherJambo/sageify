@@ -9,6 +9,8 @@ import { getRecommendations } from '@/lib/recommendations';
 import type { SkillColumn } from '@/data/skillsData';
 import { skills } from '@/data/skillsData';
 import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
+import { useLiveSearch, type SearchResult } from '@/hooks/useLiveSearch';
+import SearchResultsCards from '@/components/SearchResultsCards';
 
 interface SageAdvisorProps {
   username?: string;
@@ -41,6 +43,7 @@ const SageAdvisor = ({
   const [input, setInput] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [roadmapDetected, setRoadmapDetected] = useState(false);
+  const [searchResultsByMessage, setSearchResultsByMessage] = useState<Record<number, SearchResult[]>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -110,6 +113,8 @@ const SageAdvisor = ({
     return parts.join('\n');
   }, []);
 
+  const { searchState, executeSearch, extractSearchQueries, cleanSearchTags } = useLiveSearch(profileSummary);
+
   const streamChat = async (allMessages: ChatMessage[]) => {
     const resp = await fetch(CHAT_URL, {
       method: 'POST',
@@ -170,6 +175,23 @@ const SageAdvisor = ({
     }
   };
 
+  // Process search queries from AI response
+  const processSearchQueries = async (assistantContent: string, msgIndex: number) => {
+    const queries = extractSearchQueries(assistantContent);
+    if (queries.length === 0) return;
+
+    // Clean search tags from the displayed message
+    setMessages(prev => prev.map((m, i) => 
+      i === msgIndex ? { ...m, content: cleanSearchTags(m.content) } : m
+    ));
+
+    // Execute first search query
+    const results = await executeSearch(queries[0]);
+    if (results.length > 0) {
+      setSearchResultsByMessage(prev => ({ ...prev, [msgIndex]: results }));
+    }
+  };
+
   useEffect(() => {
     if (phase !== 'loading') return;
     const timer = setTimeout(async () => {
@@ -182,6 +204,14 @@ const SageAdvisor = ({
         };
         setMessages([initialMsg]);
         await streamChat([initialMsg]);
+        // After streaming, check for search queries in the latest assistant message
+        setMessages(prev => {
+          const lastAssistant = prev.findIndex((m, i) => m.role === 'assistant' && i === prev.length - 1);
+          if (lastAssistant >= 0) {
+            processSearchQueries(prev[lastAssistant].content, lastAssistant);
+          }
+          return prev;
+        });
       } catch (e) {
         console.error(e);
       } finally {
@@ -201,6 +231,14 @@ const SageAdvisor = ({
     setIsStreaming(true);
     try {
       await streamChat(newMessages);
+      // Check for search queries after streaming
+      setMessages(prev => {
+        const lastIdx = prev.length - 1;
+        if (prev[lastIdx]?.role === 'assistant') {
+          processSearchQueries(prev[lastIdx].content, lastIdx);
+        }
+        return prev;
+      });
     } catch (e) {
       console.error(e);
     } finally {
@@ -217,7 +255,7 @@ const SageAdvisor = ({
 
   // Journey action cards
   const journeyActions = [
-    { icon: '◇', label: 'מה פחות מתאים לי?', msg: 'ספר לי עוד על מה שפחות מתאים לי ולמה כדאי להימנע מזה' },
+    { icon: '🔍', label: 'חפש לי הזדמנויות', msg: 'חפש לי הזדמנויות ספציפיות שמתאימות לפרופיל שלי - עבודה, התנדבות או קורסים' },
     { icon: '◆', label: 'בניית תכנית פעולה', msg: 'אני מוכן! בוא נבנה תכנית פעולה קונקרטית' },
     { icon: '✦', label: 'דירוג כיוונים', msg: 'תן לי דירוג של 1-10 לכל כיוון תעסוקתי שעלה, עם הסבר קצר' },
     { icon: '●', label: 'כיוונים יצירתיים', msg: 'תציע לי כיוונים יצירתיים ולא שגרתיים שאולי לא חשבתי עליהם' },
@@ -352,7 +390,10 @@ const SageAdvisor = ({
 
         {/* Conversation Thread */}
         <div className="space-y-6" dir="rtl">
-          {visibleMessages.map((msg, i) => (
+          {visibleMessages.map((msg, i) => {
+            // Find the original index in full messages array for search results mapping
+            const originalIdx = messages.indexOf(msg);
+            return (
             <div
               key={i}
               className={`flex gap-3 items-start transition-all duration-700 ${
@@ -380,9 +421,17 @@ const SageAdvisor = ({
                     </div>
                     <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 p-4 sm:p-6 shadow-[var(--shadow-card)]">
                       <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h1]:text-lg [&_h2]:text-secondary [&_h2]:font-display [&_h2]:text-base [&_h3]:text-secondary [&_h3]:font-display [&_h3]:text-sm [&_strong]:text-secondary [&_li]:mb-1.5 [&_ul]:mr-4 [&_ol]:mr-4 text-foreground leading-relaxed text-sm">
-                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        <ReactMarkdown>{cleanSearchTags(msg.content)}</ReactMarkdown>
                       </div>
                     </div>
+                    {/* Search results inline after assistant message */}
+                    {searchResultsByMessage[originalIdx] && (
+                      <SearchResultsCards
+                        results={searchResultsByMessage[originalIdx]}
+                        isSearching={false}
+                        query=""
+                      />
+                    )}
                   </div>
                 </>
               ) : (
@@ -407,7 +456,17 @@ const SageAdvisor = ({
                 </>
               )}
             </div>
-          ))}
+            );
+          })}
+
+          {/* Live search indicator */}
+          {searchState.isSearching && (
+            <SearchResultsCards
+              results={[]}
+              isSearching={true}
+              query={searchState.query}
+            />
+          )}
 
           {/* Streaming indicator inline */}
           {isStreaming && visibleMessages[visibleMessages.length - 1]?.role !== 'assistant' && (
