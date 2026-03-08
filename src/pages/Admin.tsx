@@ -461,8 +461,8 @@ const Admin = () => {
                         {t.completed_at ? '✅ הושלם' : t.used ? '⏳ בתהליך' : '🔗 טרם נפתח'}
                       </span>
                     </td>
-                    <td className="p-3 text-muted-foreground">{new Date(t.created_at).toLocaleDateString('he-IL')}</td>
-                    <td className="p-3">
+                    <td className="p-3 text-muted-foreground whitespace-nowrap">{new Date(t.created_at).toLocaleDateString('he-IL')}</td>
+                    <td className="p-3 whitespace-nowrap">
                       <div className="flex gap-2">
                         {t.questionnaire_responses && (!Array.isArray(t.questionnaire_responses) || t.questionnaire_responses.length > 0) ? (
                           <>
