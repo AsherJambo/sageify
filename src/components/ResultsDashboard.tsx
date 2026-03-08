@@ -98,7 +98,7 @@ const ResultsDashboard = ({
           <h1 className="text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">
             הפרופיל שלכם ב-<span className="text-secondary">Sageify</span>
           </h1>
-        </div>
+        </motion.div>
 
         {/* AI Narrative */}
         <div className={`transition-all duration-1000 ${showNarrative ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
