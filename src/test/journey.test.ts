@@ -178,7 +178,7 @@ describe('Recommendations', () => {
     const viaScores = { 'אנושיות': 5, 'חכמה וידע': 3, 'אומץ לב': 2, 'חוש צדק': 1, 'מתינות וריסון': 1, 'מיקוד בטוב/נשגבות': 1 };
     const scheinScores = { 'שליחות': 7, 'מומחיות': 3, 'ניהול': 2, 'אוטונומיה': 1, 'בטחון ויציבות': 1, 'יצירתיות יזמית': 1, 'אתגר': 1, 'סגנון חיים': 1 };
     const recs = getRecommendations(viaScores, scheinScores);
-    expect(recs.length).toBe(3);
+    expect(recs.length).toBe(5);
     recs.forEach(rec => {
       expect(rec.title).toBeTruthy();
       expect(rec.description).toBeTruthy();
