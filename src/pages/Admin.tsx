@@ -484,6 +484,10 @@ const Admin = () => {
           />
         </TabsContent>
 
+        <TabsContent value="enrichment">
+          <AdminOpportunityEnricher adminPassword={storedPassword} />
+        </TabsContent>
+
         <TabsContent value="intelligence">
           <AdminIntelligence adminPassword={storedPassword} />
         </TabsContent>
