@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import owlLogo from '@/assets/owl-logo.png';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { skills } from '@/data/skillsData';
 import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
 import { useLiveSearch, type SearchResult } from '@/hooks/useLiveSearch';
 import SearchResultsCards from '@/components/SearchResultsCards';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SageAdvisorProps {
   username?: string;
