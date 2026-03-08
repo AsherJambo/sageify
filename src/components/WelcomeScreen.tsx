@@ -117,7 +117,7 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
                   key={i}
                   className="bg-card rounded-2xl p-6 border border-border/60 shadow-[var(--shadow-card)] text-center space-y-3 hover:border-secondary/30 transition-all duration-300"
                 >
-                  <div className="w-12 h-12 mx-auto rounded-full bg-secondary/8 flex items-center justify-center text-2xl">
+                  <div className="w-12 h-12 mx-auto rounded-full bg-secondary/8 border border-secondary/15 flex items-center justify-center text-lg text-secondary font-display">
                     {pillar.icon}
                   </div>
                   <p className="font-bold font-display text-foreground tracking-wide text-sm">
