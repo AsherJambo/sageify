@@ -140,7 +140,7 @@ const ResultsDashboard = ({
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Recommendations */}
         <div className={`transition-all duration-1000 ${showRecommendations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
