@@ -43,7 +43,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
         {/* Header */}
         <div className="text-center space-y-3">
           <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
-            ✦ חלק א׳
+            ✦ חלק ה׳
           </div>
           <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">שאלון חוזקות VIA</h2>
           <p className="text-muted-foreground text-lg">דרגו כל אמירה מ-1 (לא מתאים) עד 5 (מתאים מאוד)</p>

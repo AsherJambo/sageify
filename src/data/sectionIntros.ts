@@ -26,7 +26,7 @@ export const generalIntro = {
 };
 
 export const viaIntro = {
-  badge: '✦ חלק ראשון',
+  badge: '✦ חלק חמישי',
   title: 'חוזקות VIA',
   paragraphs: [
     'בשאלון הבא, ננסה לזהות את החוזקות הייחודיות שלך - שיכולות לבוא לידי ביטוי בעיסוק שלך בהמשך החיים.',
@@ -35,7 +35,7 @@ export const viaIntro = {
 };
 
 export const viaBonusIntro = {
-  badge: '✦ חלק ראשון ב׳',
+  badge: '✦ חלק חמישי ב׳',
   title: 'כוח ה-3 – חוזקות VIA',
   paragraphs: [
     'מתוך השאלות שנתת להן את הציון הגבוה ביותר, בחר 3 שהכי מהדהדות או מדויקות לגביך',
@@ -82,7 +82,7 @@ export const hollandIntro = {
 };
 
 export const skillsIntro = {
-  badge: '✦ חלק חמישי',
+  badge: '✦ חלק ראשון',
   title: 'כישורים ותנאי סף',
   paragraphs: [
     'בחלק הבא, משימה מסוג חדש:',
