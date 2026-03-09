@@ -274,15 +274,15 @@ const SageAdvisor = ({
           const content = parsed.choices?.[0]?.delta?.content as string | undefined;
           if (content) {
             assistantSoFar += content;
-            const current = assistantSoFar;
+            const cleanedContent = cleanAllStructuredTags(assistantSoFar);
             setMessages(prev => {
               const last = prev[prev.length - 1];
               if (last?.role === 'assistant') {
-                return prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: current } : m));
+                return prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: cleanedContent } : m));
               }
-              return [...prev, { role: 'assistant', content: current }];
+              return [...prev, { role: 'assistant', content: cleanedContent }];
             });
-            if (current.includes('Sage Action Roadmap') && !roadmapDetected) {
+            if (cleanedContent.includes('Sage Action Roadmap') && !roadmapDetected) {
               setRoadmapDetected(true);
               onRoadmapReady?.();
             }
