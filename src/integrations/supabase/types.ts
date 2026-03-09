@@ -74,6 +74,7 @@ export type Database = {
           motivation_logic: string
           motivation_tag: string | null
           preferences: Json
+          profession_category: string | null
           scarcity_score: number | null
           schein_top: Json
           skills_winner: Json
@@ -93,6 +94,7 @@ export type Database = {
           motivation_logic?: string
           motivation_tag?: string | null
           preferences?: Json
+          profession_category?: string | null
           scarcity_score?: number | null
           schein_top?: Json
           skills_winner?: Json
@@ -112,6 +114,7 @@ export type Database = {
           motivation_logic?: string
           motivation_tag?: string | null
           preferences?: Json
+          profession_category?: string | null
           scarcity_score?: number | null
           schein_top?: Json
           skills_winner?: Json
