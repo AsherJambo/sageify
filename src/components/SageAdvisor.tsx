@@ -288,6 +288,15 @@ const SageAdvisor = ({
             if (cleanedContent.includes('Sage Action Roadmap') && !roadmapDetected) {
               setRoadmapDetected(true);
               onRoadmapReady?.();
+              // Silent background save of retiree insights
+              if (tokenId) {
+                silentSaveInsights({
+                  tokenId,
+                  viaScores, scheinScores, hollandScores,
+                  considerationsData, skillsAssignments, preferencesData,
+                  chatMessages: messages,
+                });
+              }
             }
           }
         } catch {
