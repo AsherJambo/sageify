@@ -26,7 +26,7 @@ export const generalIntro = {
 };
 
 export const viaIntro = {
-  badge: '✦ חלק ראשון',
+  badge: '✦ חלק חמישי',
   title: 'חוזקות VIA',
   paragraphs: [
     'בשאלון הבא, ננסה לזהות את החוזקות הייחודיות שלך - שיכולות לבוא לידי ביטוי בעיסוק שלך בהמשך החיים.',
