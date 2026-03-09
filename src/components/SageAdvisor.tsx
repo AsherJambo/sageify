@@ -185,6 +185,7 @@ const SageAdvisor = ({
 
   // Auto-extract and save activity choices from AI responses
   const savedActivityNames = useRef<Set<string>>(new Set());
+  const rawAssistantContent = useRef<string>(''); // Store raw content for data extraction
 
   const extractAndSaveActivityChoices = useCallback(async (text: string) => {
     const regex = /\[ACTIVITY_CHOICE:\s*(\{[\s\S]*?\})\]/g;
