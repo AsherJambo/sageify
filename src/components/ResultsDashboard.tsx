@@ -28,6 +28,7 @@ const ResultsDashboard = ({
   considerationsData, skillsAssignments, preferencesData,
   chatMessages, onChatMessagesChange, tokenId,
 }: ResultsDashboardProps) => {
+  const [showFullResults, setShowFullResults] = useState(false);
   const topVIA = getTopCategories(viaScores, 2);
   const topSchein = getTopCategories(scheinScores, 2);
 
