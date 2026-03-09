@@ -56,7 +56,7 @@ interface ResponseData {
 }
 
 const defaultData: ResponseData = {
-  step: 'welcome',
+  step: 'landing',
   viaAnswers: {},
   scheinAnswers: {},
   viaBonusApplied: false,
