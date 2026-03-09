@@ -355,6 +355,7 @@ const SageAdvisor = ({
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
     if (!text) setInput('');
+    rawAssistantContent.current = ''; // Clear raw content for new response
     setIsStreaming(true);
     try {
       await streamChat(newMessages);
