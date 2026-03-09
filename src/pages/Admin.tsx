@@ -10,7 +10,7 @@ import AIAnalysisModal from '@/components/AIAnalysisModal';
 import AdminIntelligence from '@/components/AdminIntelligence';
 import AdminOpportunityEnricher from '@/components/AdminOpportunityEnricher';
 import GlobalTrends from '@/components/GlobalTrends';
-import { Sparkles, BarChart3, Search } from 'lucide-react';
+import { Sparkles, BarChart3, Search, TrendingUp } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
