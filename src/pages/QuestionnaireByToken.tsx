@@ -236,6 +236,8 @@ const QuestionnaireByToken = () => {
   ) : null;
 
   switch (state.step) {
+    case 'landing':
+      return <WelcomeScreen onStart={() => updateState({ step: 'welcome' })} />;
     case 'welcome':
       return (
         <div className="min-h-screen flex flex-col items-center justify-center px-6">
