@@ -275,6 +275,7 @@ const SageAdvisor = ({
           const content = parsed.choices?.[0]?.delta?.content as string | undefined;
           if (content) {
             assistantSoFar += content;
+            rawAssistantContent.current = assistantSoFar; // Store raw content for data extraction
             const cleanedContent = cleanAllStructuredTags(assistantSoFar);
             setMessages(prev => {
               const last = prev[prev.length - 1];
