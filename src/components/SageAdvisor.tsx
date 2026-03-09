@@ -331,7 +331,7 @@ const SageAdvisor = ({
           const lastAssistant = prev.findIndex((m, i) => m.role === 'assistant' && i === prev.length - 1);
           if (lastAssistant >= 0) {
             // Use the raw content (with technical tags) for data extraction
-            const rawContent = assistantSoFar; // This contains the raw technical data
+            const rawContent = rawAssistantContent.current;
             processSearchQueries(rawContent, lastAssistant);
             extractAndSaveOpportunities(rawContent);
             extractAndSaveActivityChoices(rawContent);
