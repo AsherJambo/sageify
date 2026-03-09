@@ -61,6 +61,62 @@ export type Database = {
           },
         ]
       }
+      global_retiree_insights: {
+        Row: {
+          activity_suggested: string
+          constraints: string
+          created_at: string
+          dream: string
+          holland_top: Json
+          id: string
+          motivation_logic: string
+          preferences: Json
+          schein_top: Json
+          skills_winner: Json
+          token_id: string
+          user_persona: string
+          via_top: Json
+        }
+        Insert: {
+          activity_suggested?: string
+          constraints?: string
+          created_at?: string
+          dream?: string
+          holland_top?: Json
+          id?: string
+          motivation_logic?: string
+          preferences?: Json
+          schein_top?: Json
+          skills_winner?: Json
+          token_id: string
+          user_persona?: string
+          via_top?: Json
+        }
+        Update: {
+          activity_suggested?: string
+          constraints?: string
+          created_at?: string
+          dream?: string
+          holland_top?: Json
+          id?: string
+          motivation_logic?: string
+          preferences?: Json
+          schein_top?: Json
+          skills_winner?: Json
+          token_id?: string
+          user_persona?: string
+          via_top?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "global_retiree_insights_token_id_fkey"
+            columns: ["token_id"]
+            isOneToOne: true
+            referencedRelation: "questionnaire_tokens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunities: {
         Row: {
           category: string
