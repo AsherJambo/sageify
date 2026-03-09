@@ -220,6 +220,14 @@ const SageAdvisor = ({
     return text.replace(/\[ACTIVITY_CHOICE:\s*\{[\s\S]*?\}\]/g, '').trim();
   }, []);
 
+  // Combined cleaning function for all structured tags
+  const cleanAllStructuredTags = useCallback((text: string): string => {
+    let cleaned = cleanSearchTags(text);
+    cleaned = cleanOpportunityTags(cleaned);
+    cleaned = cleanActivityChoiceTags(cleaned);
+    return cleaned;
+  }, [cleanSearchTags, cleanOpportunityTags, cleanActivityChoiceTags]);
+
   const streamChat = async (allMessages: ChatMessage[]) => {
     console.group('%c🦉 Advisor Chat Request', 'color: #d4a017; font-weight: bold');
     console.log('%c💬 Messages count:', 'color: #2196F3', allMessages.length);
