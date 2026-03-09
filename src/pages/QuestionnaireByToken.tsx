@@ -64,7 +64,7 @@ const defaultData: ResponseData = {
 };
 
 const STEP_PROGRESS: Record<Step, number> = {
-  loading: 0, invalid: 0, used: 0, welcome: 0,
+  loading: 0, invalid: 0, used: 0, landing: 0, welcome: 0,
   'general-intro': 3,
   'skills-intro': 6, 'skills': 15,
   'schein-intro': 20, 'schein': 32, 'schein-bonus': 37,
