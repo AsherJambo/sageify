@@ -361,9 +361,11 @@ const SageAdvisor = ({
       setMessages(prev => {
         const lastIdx = prev.length - 1;
         if (prev[lastIdx]?.role === 'assistant') {
-          processSearchQueries(prev[lastIdx].content, lastIdx);
-          extractAndSaveOpportunities(prev[lastIdx].content);
-          extractAndSaveActivityChoices(prev[lastIdx].content);
+          // Use the raw content for data extraction
+          const rawContent = rawAssistantContent.current;
+          processSearchQueries(rawContent, lastIdx);
+          extractAndSaveOpportunities(rawContent);
+          extractAndSaveActivityChoices(rawContent);
         }
         return prev;
       });
