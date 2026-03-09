@@ -10,7 +10,8 @@ import AIAnalysisModal from '@/components/AIAnalysisModal';
 import AdminIntelligence from '@/components/AdminIntelligence';
 import AdminOpportunityEnricher from '@/components/AdminOpportunityEnricher';
 import GlobalTrends from '@/components/GlobalTrends';
-import { Sparkles, BarChart3, Search, TrendingUp } from 'lucide-react';
+import StrategicInsights from '@/components/StrategicInsights';
+import { Sparkles, BarChart3, Search, TrendingUp, Radar } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
@@ -349,7 +350,7 @@ const Admin = () => {
       </div>
 
       <Tabs defaultValue="tokens" className="space-y-6">
-        <TabsList className="flex flex-col md:grid md:grid-cols-4 w-full h-auto gap-2 p-1">
+        <TabsList className="flex flex-col md:grid md:grid-cols-5 w-full h-auto gap-2 p-1">
           <TabsTrigger value="tokens" className="gap-2 w-full">
             📋 ניהול קישורים
           </TabsTrigger>
@@ -360,6 +361,10 @@ const Admin = () => {
           <TabsTrigger value="trends" className="gap-2 w-full">
             <TrendingUp className="w-4 h-4" />
             📊 מגמות גלובליות
+          </TabsTrigger>
+          <TabsTrigger value="strategic" className="gap-2 w-full">
+            <Radar className="w-4 h-4" />
+            🎯 תובנות אסטרטגיות
           </TabsTrigger>
           <TabsTrigger value="enrichment" className="gap-2 w-full">
             <Search className="w-4 h-4" />
@@ -529,6 +534,10 @@ const Admin = () => {
 
         <TabsContent value="trends">
           <GlobalTrends tokens={filteredTokens} />
+        </TabsContent>
+
+        <TabsContent value="strategic">
+          <StrategicInsights />
         </TabsContent>
       </Tabs>
     </div>
