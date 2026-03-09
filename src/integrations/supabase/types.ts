@@ -67,10 +67,14 @@ export type Database = {
           constraints: string
           created_at: string
           dream: string
+          gap_detected: boolean | null
           holland_top: Json
           id: string
+          market_unmet_need: string | null
           motivation_logic: string
+          motivation_tag: string | null
           preferences: Json
+          scarcity_score: number | null
           schein_top: Json
           skills_winner: Json
           token_id: string
@@ -82,10 +86,14 @@ export type Database = {
           constraints?: string
           created_at?: string
           dream?: string
+          gap_detected?: boolean | null
           holland_top?: Json
           id?: string
+          market_unmet_need?: string | null
           motivation_logic?: string
+          motivation_tag?: string | null
           preferences?: Json
+          scarcity_score?: number | null
           schein_top?: Json
           skills_winner?: Json
           token_id: string
@@ -97,10 +105,14 @@ export type Database = {
           constraints?: string
           created_at?: string
           dream?: string
+          gap_detected?: boolean | null
           holland_top?: Json
           id?: string
+          market_unmet_need?: string | null
           motivation_logic?: string
+          motivation_tag?: string | null
           preferences?: Json
+          scarcity_score?: number | null
           schein_top?: Json
           skills_winner?: Json
           token_id?: string
