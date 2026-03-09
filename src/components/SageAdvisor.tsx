@@ -12,6 +12,7 @@ import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDes
 import { useLiveSearch, type SearchResult } from '@/hooks/useLiveSearch';
 import SearchResultsCards from '@/components/SearchResultsCards';
 import { supabase } from '@/integrations/supabase/client';
+import { silentSaveInsights } from '@/lib/insightsSaver';
 
 interface SageAdvisorProps {
   username?: string;
