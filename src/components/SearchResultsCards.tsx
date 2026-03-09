@@ -97,8 +97,8 @@ const SearchResultsCards = ({ results, isSearching, query }: SearchResultsCardsP
                 {result.whyFits && (
                   <p className="text-xs text-secondary font-medium">✦ {result.whyFits}</p>
                 )}
-                <div className="flex items-center gap-3 mt-2">
-                  {result.link && result.link !== '' && (
+                {result.link && result.link !== '' && (
+                  <div className="flex items-center gap-3 mt-2">
                     <a
                       href={result.link}
                       target="_blank"
@@ -107,17 +107,8 @@ const SearchResultsCards = ({ results, isSearching, query }: SearchResultsCardsP
                     >
                       למידע נוסף ←
                     </a>
-                  )}
-                  <Button
-                    size="sm"
-                    variant={isSaved ? 'secondary' : 'outline'}
-                    disabled={isSaved || isSaving}
-                    onClick={() => saveToDb(result, i)}
-                    className="h-7 px-3 text-[11px] rounded-lg"
-                  >
-                    {isSaved ? '✓ נשמר' : isSaving ? '...' : '💾 שמור למאגר'}
-                  </Button>
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
