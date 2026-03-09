@@ -185,6 +185,7 @@ const SageAdvisor = ({
 
   // Auto-extract and save activity choices from AI responses
   const savedActivityNames = useRef<Set<string>>(new Set());
+  const rawAssistantContent = useRef<string>(''); // Store raw content for data extraction
 
   const extractAndSaveActivityChoices = useCallback(async (text: string) => {
     const regex = /\[ACTIVITY_CHOICE:\s*(\{[\s\S]*?\})\]/g;
@@ -219,6 +220,14 @@ const SageAdvisor = ({
   const cleanActivityChoiceTags = useCallback((text: string): string => {
     return text.replace(/\[ACTIVITY_CHOICE:\s*\{[\s\S]*?\}\]/g, '').trim();
   }, []);
+
+  // Combined cleaning function for all structured tags
+  const cleanAllStructuredTags = useCallback((text: string): string => {
+    let cleaned = cleanSearchTags(text);
+    cleaned = cleanOpportunityTags(cleaned);
+    cleaned = cleanActivityChoiceTags(cleaned);
+    return cleaned;
+  }, [cleanSearchTags, cleanOpportunityTags, cleanActivityChoiceTags]);
 
   const streamChat = async (allMessages: ChatMessage[]) => {
     console.group('%c🦉 Advisor Chat Request', 'color: #d4a017; font-weight: bold');
@@ -266,15 +275,16 @@ const SageAdvisor = ({
           const content = parsed.choices?.[0]?.delta?.content as string | undefined;
           if (content) {
             assistantSoFar += content;
-            const current = assistantSoFar;
+            rawAssistantContent.current = assistantSoFar; // Store raw content for data extraction
+            const cleanedContent = cleanAllStructuredTags(assistantSoFar);
             setMessages(prev => {
               const last = prev[prev.length - 1];
               if (last?.role === 'assistant') {
-                return prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: current } : m));
+                return prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: cleanedContent } : m));
               }
-              return [...prev, { role: 'assistant', content: current }];
+              return [...prev, { role: 'assistant', content: cleanedContent }];
             });
-            if (current.includes('Sage Action Roadmap') && !roadmapDetected) {
+            if (cleanedContent.includes('Sage Action Roadmap') && !roadmapDetected) {
               setRoadmapDetected(true);
               onRoadmapReady?.();
             }
@@ -308,6 +318,7 @@ const SageAdvisor = ({
     if (phase !== 'loading') return;
     const timer = setTimeout(async () => {
       setPhase('chat');
+      rawAssistantContent.current = ''; // Clear raw content for new conversation
       setIsStreaming(true);
       try {
         const initialMsg: ChatMessage = {
@@ -320,9 +331,11 @@ const SageAdvisor = ({
         setMessages(prev => {
           const lastAssistant = prev.findIndex((m, i) => m.role === 'assistant' && i === prev.length - 1);
           if (lastAssistant >= 0) {
-            processSearchQueries(prev[lastAssistant].content, lastAssistant);
-            extractAndSaveOpportunities(prev[lastAssistant].content);
-            extractAndSaveActivityChoices(prev[lastAssistant].content);
+            // Use the raw content (with technical tags) for data extraction
+            const rawContent = rawAssistantContent.current;
+            processSearchQueries(rawContent, lastAssistant);
+            extractAndSaveOpportunities(rawContent);
+            extractAndSaveActivityChoices(rawContent);
           }
           return prev;
         });
@@ -342,6 +355,7 @@ const SageAdvisor = ({
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
     if (!text) setInput('');
+    rawAssistantContent.current = ''; // Clear raw content for new response
     setIsStreaming(true);
     try {
       await streamChat(newMessages);
@@ -349,9 +363,11 @@ const SageAdvisor = ({
       setMessages(prev => {
         const lastIdx = prev.length - 1;
         if (prev[lastIdx]?.role === 'assistant') {
-          processSearchQueries(prev[lastIdx].content, lastIdx);
-          extractAndSaveOpportunities(prev[lastIdx].content);
-          extractAndSaveActivityChoices(prev[lastIdx].content);
+          // Use the raw content for data extraction
+          const rawContent = rawAssistantContent.current;
+          processSearchQueries(rawContent, lastIdx);
+          extractAndSaveOpportunities(rawContent);
+          extractAndSaveActivityChoices(rawContent);
         }
         return prev;
       });
@@ -537,7 +553,7 @@ const SageAdvisor = ({
                     </div>
                     <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 p-4 sm:p-6 shadow-[var(--shadow-card)]">
                       <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h1]:text-lg [&_h2]:text-secondary [&_h2]:font-display [&_h2]:text-base [&_h3]:text-secondary [&_h3]:font-display [&_h3]:text-sm [&_strong]:text-secondary [&_li]:mb-1.5 [&_ul]:mr-4 [&_ol]:mr-4 text-foreground leading-relaxed text-sm">
-                        <ReactMarkdown>{cleanActivityChoiceTags(cleanOpportunityTags(cleanSearchTags(msg.content)))}</ReactMarkdown>
+                        <ReactMarkdown>{msg.content}</ReactMarkdown>
                       </div>
                     </div>
                     {/* Search results inline after assistant message */}
