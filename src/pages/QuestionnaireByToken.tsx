@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { cloudClient } from '@/lib/cloudClient';
+import { silentSaveInsights } from '@/lib/insightsSaver';
 import SectionIntro from '@/components/SectionIntro';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
 import ScheinQuestionnaire from '@/components/ScheinQuestionnaire';
@@ -332,6 +333,16 @@ const QuestionnaireByToken = () => {
             onRoadmapReady={() => setAdvisorProgress(100)}
             onFinish={() => {
               markComplete();
+              if (tokenRow) {
+                silentSaveInsights({
+                  tokenId: tokenRow.id,
+                  viaScores, scheinScores, hollandScores,
+                  considerationsData: state.considerationsData,
+                  skillsAssignments: state.skillsAssignments,
+                  preferencesData: state.preferencesData,
+                  chatMessages: state.chatMessages,
+                });
+              }
               updateState({ step: 'results' });
             }}
           />

@@ -9,7 +9,8 @@ import { generatePrintHTML } from '@/lib/pdfTemplate';
 import AIAnalysisModal from '@/components/AIAnalysisModal';
 import AdminIntelligence from '@/components/AdminIntelligence';
 import AdminOpportunityEnricher from '@/components/AdminOpportunityEnricher';
-import { Sparkles, BarChart3, Search } from 'lucide-react';
+import GlobalTrends from '@/components/GlobalTrends';
+import { Sparkles, BarChart3, Search, TrendingUp } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
@@ -348,13 +349,17 @@ const Admin = () => {
       </div>
 
       <Tabs defaultValue="tokens" className="space-y-6">
-        <TabsList className="flex flex-col md:grid md:grid-cols-3 w-full h-auto gap-2 p-1">
+        <TabsList className="flex flex-col md:grid md:grid-cols-4 w-full h-auto gap-2 p-1">
           <TabsTrigger value="tokens" className="gap-2 w-full">
             📋 ניהול קישורים
           </TabsTrigger>
           <TabsTrigger value="intelligence" className="gap-2 w-full">
             <BarChart3 className="w-4 h-4" />
             🧠 מודיעין פסיכולוגי
+          </TabsTrigger>
+          <TabsTrigger value="trends" className="gap-2 w-full">
+            <TrendingUp className="w-4 h-4" />
+            📊 מגמות גלובליות
           </TabsTrigger>
           <TabsTrigger value="enrichment" className="gap-2 w-full">
             <Search className="w-4 h-4" />
@@ -520,6 +525,10 @@ const Admin = () => {
 
         <TabsContent value="intelligence">
           <AdminIntelligence adminPassword={storedPassword} tokens={filteredTokens} />
+        </TabsContent>
+
+        <TabsContent value="trends">
+          <GlobalTrends tokens={filteredTokens} />
         </TabsContent>
       </Tabs>
     </div>
