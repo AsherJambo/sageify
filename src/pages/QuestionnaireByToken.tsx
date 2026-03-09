@@ -333,6 +333,16 @@ const QuestionnaireByToken = () => {
             onRoadmapReady={() => setAdvisorProgress(100)}
             onFinish={() => {
               markComplete();
+              if (tokenRow) {
+                silentSaveInsights({
+                  tokenId: tokenRow.id,
+                  viaScores, scheinScores, hollandScores,
+                  considerationsData: state.considerationsData,
+                  skillsAssignments: state.skillsAssignments,
+                  preferencesData: state.preferencesData,
+                  chatMessages: state.chatMessages,
+                });
+              }
               updateState({ step: 'results' });
             }}
           />
