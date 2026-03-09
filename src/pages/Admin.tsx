@@ -526,6 +526,10 @@ const Admin = () => {
         <TabsContent value="intelligence">
           <AdminIntelligence adminPassword={storedPassword} tokens={filteredTokens} />
         </TabsContent>
+
+        <TabsContent value="trends">
+          <GlobalTrends tokens={filteredTokens} />
+        </TabsContent>
       </Tabs>
     </div>
   );
