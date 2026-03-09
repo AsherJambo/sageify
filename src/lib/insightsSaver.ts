@@ -96,6 +96,9 @@ export async function silentSaveInsights(input: InsightsInput): Promise<void> {
     const motivationLogic = `המשתמש מונע ע"י: ${motivationParts.join(', ')}. חלום: ${input.preferencesData?.dream || 'לא צוין'}.`;
     const constraints = extractConstraints(input.considerationsData, input.preferencesData);
 
+    // Derive motivation_tag from top VIA/Schein
+    const motivationTag = deriveMotivationTag(topVIA[0]?.category || '', topSchein[0]?.category || '');
+
     await cloudClient.from('global_retiree_insights').upsert({
       token_id: input.tokenId,
       activity_suggested: activity || 'ממתין לנתוני יועץ',
@@ -108,8 +111,36 @@ export async function silentSaveInsights(input: InsightsInput): Promise<void> {
       preferences: input.preferencesData?.preferences || {},
       skills_winner: winnerSkills,
       dream: input.preferencesData?.dream || '',
+      motivation_tag: motivationTag,
+      scarcity_score: 0,
+      gap_detected: false,
+      market_unmet_need: '',
     }, { onConflict: 'token_id' });
   } catch (e) {
     console.warn('[Insights] Silent save failed:', e);
   }
+}
+
+function deriveMotivationTag(topVIA: string, topSchein: string): string {
+  const map: Record<string, string> = {
+    'אנושיות': 'Social_Connection',
+    'צדק': 'Legacy',
+    'חוכמה': 'Cognitive_Sharpness',
+    'אומץ': 'Vitality',
+    'מתינות': 'Financial_Yield',
+    'רוחניות': 'Legacy',
+  };
+  const scheinMap: Record<string, string> = {
+    'יזמות': 'Financial_Yield',
+    'ניהולי': 'Status',
+    'שליחות': 'Legacy',
+    'שירות': 'Social_Connection',
+    'טכני': 'Cognitive_Sharpness',
+    'אתגר': 'Vitality',
+    'עצמאות': 'Financial_Yield',
+    'ביטחון': 'Financial_Yield',
+    'איזון': 'Social_Connection',
+    'אורח חיים': 'Vitality',
+  };
+  return scheinMap[topSchein] || map[topVIA] || 'Social_Connection';
 }
