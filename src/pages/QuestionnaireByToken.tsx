@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { cloudClient } from '@/lib/cloudClient';
 import { silentSaveInsights } from '@/lib/insightsSaver';
+import WelcomeScreen from '@/components/WelcomeScreen';
 import SectionIntro from '@/components/SectionIntro';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
 import ScheinQuestionnaire from '@/components/ScheinQuestionnaire';
@@ -28,7 +29,7 @@ import owlLogo from '@/assets/owl-logo.png';
 
 type Step =
   | 'loading' | 'invalid' | 'used'
-  | 'welcome'
+  | 'landing' | 'welcome'
   | 'general-intro'
   | 'via-intro' | 'via' | 'via-bonus-intro' | 'via-bonus'
   | 'schein-intro' | 'schein' | 'schein-bonus'
@@ -55,7 +56,7 @@ interface ResponseData {
 }
 
 const defaultData: ResponseData = {
-  step: 'welcome',
+  step: 'landing',
   viaAnswers: {},
   scheinAnswers: {},
   viaBonusApplied: false,
@@ -63,7 +64,7 @@ const defaultData: ResponseData = {
 };
 
 const STEP_PROGRESS: Record<Step, number> = {
-  loading: 0, invalid: 0, used: 0, welcome: 0,
+  loading: 0, invalid: 0, used: 0, landing: 0, welcome: 0,
   'general-intro': 3,
   'skills-intro': 6, 'skills': 15,
   'schein-intro': 20, 'schein': 32, 'schein-bonus': 37,
@@ -235,6 +236,8 @@ const QuestionnaireByToken = () => {
   ) : null;
 
   switch (state.step) {
+    case 'landing':
+      return <WelcomeScreen onStart={() => updateState({ step: 'welcome' })} />;
     case 'welcome':
       return (
         <div className="min-h-screen flex flex-col items-center justify-center px-6">
