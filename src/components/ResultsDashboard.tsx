@@ -212,128 +212,163 @@ const ResultsDashboard = ({
           </div>
         </motion.div>
 
-        {/* Charts */}
-        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={5} className="space-y-8">
-          <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
-            <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">חוזקות VIA – כל הקטגוריות</h3>
-            <div className="space-y-4">
-              {Object.entries(viaScores)
-                .sort(([, a], [, b]) => b - a)
-                .map(([cat, score]) => (
-                  <div key={cat} className="space-y-1.5">
-                    <div className="flex justify-between text-sm">
-                      <span className="font-medium text-foreground">{cat}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground">{viaCategoryDescriptions[cat] || ''}</p>
-                    <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-secondary rounded-full progress-bar-fill"
-                        style={{ width: `${(score / 5) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
-            <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">עוגנים תעסוקתיים – כל הקטגוריות</h3>
-            <div className="space-y-4">
-              {Object.entries(scheinScores)
-                .sort(([, a], [, b]) => b - a)
-                .map(([cat, score]) => (
-                  <div key={cat} className="space-y-1.5">
-                    <div className="flex justify-between text-sm">
-                      <span className="font-medium text-foreground">{cat}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground">{scheinCategoryDescriptions[cat] || ''}</p>
-                    <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-primary rounded-full progress-bar-fill"
-                        style={{ width: `${(score / 7) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Extra results */}
-        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={6} className="space-y-8">
-          {topHolland.length > 0 && (
-            <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
-              <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">נטיות תעסוקתיות (הולנד)</h3>
-              <div className="space-y-4">
-                {Object.entries(hollandScores || {})
-                  .sort(([, a], [, b]) => b - a)
-                  .map(([cat, score]) => (
-                    <div key={cat} className="space-y-1.5">
-                      <div className="flex justify-between text-sm">
-                        <span className="font-medium text-foreground">{cat}</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">{hollandCategoryDescriptions[cat] || ''}</p>
-                      <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-primary rounded-full progress-bar-fill"
-                          style={{ width: `${(score / 11) * 100}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
-
-          {topConsiderations.length > 0 && (
-            <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
-              <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">שיקולים מובילים</h3>
-              <div className="space-y-3">
-                {topConsiderations.map(([item, pts]) => (
-                  <div key={item} className="flex justify-between items-center bg-background rounded-2xl px-5 py-3.5 border border-border/60">
-                    <span className="font-medium text-foreground">{item}</span>
-                    <span className="text-secondary font-bold font-display text-lg">{pts} נק׳</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {winnerSkills.length > 0 && (
-            <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
-              <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">כישורים מובילים</h3>
-              <div className="space-y-3">
-                {winnerSkills.map((skill, i) => (
-                  <div key={i} className="flex items-center gap-3 bg-background rounded-2xl px-5 py-3.5 border border-border/60">
-                    <span className="w-8 h-8 rounded-full bg-secondary/8 text-secondary flex items-center justify-center font-display font-bold text-sm">{i + 1}</span>
-                    <span className="text-foreground">{skill}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {preferencesData && (
-            <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
-              <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">העדפות אישיות</h3>
-              <div className="space-y-3">
-                {Object.entries(preferencesData.preferences).map(([key, values]) => (
-                  <div key={key} className="bg-background rounded-2xl px-5 py-3.5 border border-border/60">
-                    {values.map((v, i) => (
-                      <p key={i} className="text-foreground text-sm">✓ {v}</p>
-                    ))}
-                  </div>
-                ))}
-              </div>
-              {preferencesData.dream && (
-                <div className="mt-5 bg-secondary/5 rounded-2xl px-5 py-4 border border-secondary/20">
-                  <p className="font-bold font-display text-foreground tracking-wide">✦ חלום המגירה:</p>
-                  <p className="text-secondary font-semibold text-lg">{preferencesData.dream}</p>
-                </div>
+        {/* Simple Summary */}
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={5}>
+          <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)] text-center space-y-6">
+            <div className="space-y-4 text-right" dir="rtl">
+              <p className="text-foreground text-lg leading-relaxed">
+                <span className="font-bold font-display">התוצאות מראות שהחוזקות שלכם הן </span>
+                <span className="text-secondary font-bold">{topVIA.map(t => `"${t.category}"`).join(' ו')}</span>
+                <span className="font-bold font-display">, והעוגנים התעסוקתיים המרכזיים שלכם הם </span>
+                <span className="text-primary font-bold">{topSchein.map(t => `"${t.category}"`).join(' ו')}</span>.
+              </p>
+              {topHolland.length > 0 && (
+                <p className="text-foreground text-base leading-relaxed">
+                  <span className="font-medium">הנטיות התעסוקתיות הבולטות: </span>
+                  {topHolland.map(([cat]) => cat).join(', ')}.
+                </p>
+              )}
+              {winnerSkills.length > 0 && (
+                <p className="text-foreground text-base leading-relaxed">
+                  <span className="font-medium">הכישורים החזקים ביותר שלכם: </span>
+                  {winnerSkills.join(', ')}.
+                </p>
+              )}
+              {preferencesData?.dream && (
+                <p className="text-foreground text-base leading-relaxed">
+                  <span className="font-medium">חלום המגירה: </span>
+                  <span className="text-secondary font-semibold">{preferencesData.dream}</span>
+                </p>
               )}
             </div>
-          )}
+
+            {!showFullResults && (
+              <button
+                onClick={() => setShowFullResults(true)}
+                className="px-8 py-3.5 rounded-2xl bg-secondary text-secondary-foreground font-medium font-display tracking-wide hover:bg-secondary/85 transition-all duration-300 shadow-[var(--shadow-card)]"
+              >
+                מעוניינ/ת בתוצאות המלאות? לחצ/י כאן
+              </button>
+            )}
+          </div>
         </motion.div>
+
+        {/* Full Results (hidden by default) */}
+        {showFullResults && (
+          <>
+            <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={0} className="space-y-8">
+              <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+                <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">חוזקות VIA – כל הקטגוריות</h3>
+                <div className="space-y-4">
+                  {Object.entries(viaScores)
+                    .sort(([, a], [, b]) => b - a)
+                    .map(([cat, score]) => (
+                      <div key={cat} className="space-y-1.5">
+                        <div className="flex justify-between text-sm">
+                          <span className="font-medium text-foreground">{cat}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{viaCategoryDescriptions[cat] || ''}</p>
+                        <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden">
+                          <div className="h-full bg-secondary rounded-full progress-bar-fill" style={{ width: `${(score / 5) * 100}%` }} />
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+
+              <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+                <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">עוגנים תעסוקתיים – כל הקטגוריות</h3>
+                <div className="space-y-4">
+                  {Object.entries(scheinScores)
+                    .sort(([, a], [, b]) => b - a)
+                    .map(([cat, score]) => (
+                      <div key={cat} className="space-y-1.5">
+                        <div className="flex justify-between text-sm">
+                          <span className="font-medium text-foreground">{cat}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{scheinCategoryDescriptions[cat] || ''}</p>
+                        <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden">
+                          <div className="h-full bg-primary rounded-full progress-bar-fill" style={{ width: `${(score / 7) * 100}%` }} />
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={1} className="space-y-8">
+              {topHolland.length > 0 && (
+                <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+                  <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">נטיות תעסוקתיות (הולנד)</h3>
+                  <div className="space-y-4">
+                    {Object.entries(hollandScores || {})
+                      .sort(([, a], [, b]) => b - a)
+                      .map(([cat, score]) => (
+                        <div key={cat} className="space-y-1.5">
+                          <div className="flex justify-between text-sm">
+                            <span className="font-medium text-foreground">{cat}</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">{hollandCategoryDescriptions[cat] || ''}</p>
+                          <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden">
+                            <div className="h-full bg-primary rounded-full progress-bar-fill" style={{ width: `${(score / 11) * 100}%` }} />
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {topConsiderations.length > 0 && (
+                <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+                  <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">שיקולים מובילים</h3>
+                  <div className="space-y-3">
+                    {topConsiderations.map(([item, pts]) => (
+                      <div key={item} className="flex justify-between items-center bg-background rounded-2xl px-5 py-3.5 border border-border/60">
+                        <span className="font-medium text-foreground">{item}</span>
+                        <span className="text-secondary font-bold font-display text-lg">{pts} נק׳</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {winnerSkills.length > 0 && (
+                <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+                  <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">כישורים מובילים</h3>
+                  <div className="space-y-3">
+                    {winnerSkills.map((skill, i) => (
+                      <div key={i} className="flex items-center gap-3 bg-background rounded-2xl px-5 py-3.5 border border-border/60">
+                        <span className="w-8 h-8 rounded-full bg-secondary/8 text-secondary flex items-center justify-center font-display font-bold text-sm">{i + 1}</span>
+                        <span className="text-foreground">{skill}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {preferencesData && (
+                <div className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]">
+                  <h3 className="text-lg font-bold font-display text-foreground mb-5 tracking-wide">העדפות אישיות</h3>
+                  <div className="space-y-3">
+                    {Object.entries(preferencesData.preferences).map(([key, values]) => (
+                      <div key={key} className="bg-background rounded-2xl px-5 py-3.5 border border-border/60">
+                        {values.map((v, i) => (
+                          <p key={i} className="text-foreground text-sm">✓ {v}</p>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                  {preferencesData.dream && (
+                    <div className="mt-5 bg-secondary/5 rounded-2xl px-5 py-4 border border-secondary/20">
+                      <p className="font-bold font-display text-foreground tracking-wide">✦ חלום המגירה:</p>
+                      <p className="text-secondary font-semibold text-lg">{preferencesData.dream}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          </>
+        )}
 
         {/* Owl AI Chat */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={7} className="print:hidden">
