@@ -29,7 +29,7 @@ import owlLogo from '@/assets/owl-logo.png';
 
 type Step =
   | 'loading' | 'invalid' | 'used'
-  | 'welcome'
+  | 'landing' | 'welcome'
   | 'general-intro'
   | 'via-intro' | 'via' | 'via-bonus-intro' | 'via-bonus'
   | 'schein-intro' | 'schein' | 'schein-bonus'
