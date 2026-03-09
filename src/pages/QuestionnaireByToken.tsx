@@ -194,7 +194,7 @@ const QuestionnaireByToken = () => {
 
   const handleViaBonusComplete = (selectedIds: number[]) => {
     const finalAnswers = applyBonus(state.viaAnswers, selectedIds);
-    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'schein-intro' });
+    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'preferences-intro' });
   };
   const handleScheinBonusComplete = (selectedIds: number[]) => {
     const finalAnswers = applyBonus(state.scheinAnswers, selectedIds);
