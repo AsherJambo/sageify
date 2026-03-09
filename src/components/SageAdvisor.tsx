@@ -318,6 +318,7 @@ const SageAdvisor = ({
     if (phase !== 'loading') return;
     const timer = setTimeout(async () => {
       setPhase('chat');
+      rawAssistantContent.current = ''; // Clear raw content for new conversation
       setIsStreaming(true);
       try {
         const initialMsg: ChatMessage = {
