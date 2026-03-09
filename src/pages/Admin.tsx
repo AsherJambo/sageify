@@ -535,6 +535,10 @@ const Admin = () => {
         <TabsContent value="trends">
           <GlobalTrends tokens={filteredTokens} />
         </TabsContent>
+
+        <TabsContent value="strategic">
+          <StrategicInsights />
+        </TabsContent>
       </Tabs>
     </div>
   );
