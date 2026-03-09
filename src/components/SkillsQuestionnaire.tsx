@@ -8,9 +8,9 @@ interface SkillsQuestionnaireProps {
 }
 
 const columnLabels: Record<SkillColumn, { title: string; desc: string; symbol: string }> = {
-  winner: { title: 'ארגז הכלים המנצח', desc: 'טוב/ה בזה, נהנה/ית, רוצה להמשיך', symbol: '◆' },
+  winner: { title: 'ארגז כלים מנצח', desc: 'טוב/ה בזה, נהנה/ית, רוצה להמשיך', symbol: '◆' },
   burnout: { title: 'טוב/ה אבל מיציתי', desc: 'הצטיינתי בזה, אבל לא בא לי יותר', symbol: '●' },
-  aspire: { title: 'אשמח ללמוד', desc: 'לא טוב/ה בזה, אבל אשמח ללמוד ולעסוק', symbol: '✦' },
+  aspire: { title: 'לא טוב מספיק אבל אשמח ללמוד', desc: 'רוצה ללמוד ולעסוק בזה', symbol: '✦' },
   irrelevant: { title: 'פחות מדבר אליי', desc: 'לא החוזקה שלי או לא מעניין כרגע', symbol: '○' },
 };
 
