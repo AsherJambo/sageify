@@ -159,7 +159,10 @@ const Admin = () => {
   };
 
   const getLink = (tokenValue: string) => {
-    return `${window.location.origin}/#/q/${tokenValue}`;
+    const origin = window.location.hostname.includes('lovableproject.com') || window.location.hostname.includes('lovable.app') && window.location.hostname.includes('preview')
+      ? 'https://sageify.lovable.app'
+      : window.location.origin;
+    return `${origin}/#/q/${tokenValue}`;
   };
 
   const copyLink = (tokenValue: string) => {
