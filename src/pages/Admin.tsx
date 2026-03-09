@@ -350,7 +350,7 @@ const Admin = () => {
       </div>
 
       <Tabs defaultValue="tokens" className="space-y-6">
-        <TabsList className="flex flex-col md:grid md:grid-cols-4 w-full h-auto gap-2 p-1">
+        <TabsList className="flex flex-col md:grid md:grid-cols-5 w-full h-auto gap-2 p-1">
           <TabsTrigger value="tokens" className="gap-2 w-full">
             📋 ניהול קישורים
           </TabsTrigger>
@@ -361,6 +361,10 @@ const Admin = () => {
           <TabsTrigger value="trends" className="gap-2 w-full">
             <TrendingUp className="w-4 h-4" />
             📊 מגמות גלובליות
+          </TabsTrigger>
+          <TabsTrigger value="strategic" className="gap-2 w-full">
+            <Radar className="w-4 h-4" />
+            🎯 תובנות אסטרטגיות
           </TabsTrigger>
           <TabsTrigger value="enrichment" className="gap-2 w-full">
             <Search className="w-4 h-4" />
