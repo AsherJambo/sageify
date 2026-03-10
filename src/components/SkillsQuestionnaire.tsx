@@ -100,11 +100,17 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
           ))}
         </div>
 
+        {error && (
+          <div className="text-center p-4 rounded-2xl bg-destructive/10 border border-destructive/30 text-destructive font-medium text-sm">
+            {error}
+          </div>
+        )}
+
         <QuestionnaireNav
           showPrev={false}
           showComplete
-          onComplete={() => onComplete(assignments)}
-          completeDisabled={!allAssigned || winnerCount < 5}
+          onComplete={handleComplete}
+          completeDisabled={false}
           completeLabel="סיום חלק ה׳"
         />
       </div>
