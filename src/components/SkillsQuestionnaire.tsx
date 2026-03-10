@@ -16,11 +16,25 @@ const columnLabels: Record<SkillColumn, { title: string; desc: string; symbol: s
 
 const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
   const [assignments, setAssignments] = useState<Record<number, SkillColumn>>({});
+  const [error, setError] = useState<string | null>(null);
 
   const totalAssigned = Object.keys(assignments).length;
   const winnerCount = Object.values(assignments).filter(v => v === 'winner').length;
   const allAssigned = totalAssigned >= skills.length;
   const progress = (totalAssigned / skills.length) * 100;
+
+  const handleComplete = () => {
+    if (!allAssigned) {
+      setError(`יש למיין את כל ${skills.length} הכישורים. מיינתם ${totalAssigned} מתוך ${skills.length}.`);
+      return;
+    }
+    if (winnerCount < 5) {
+      setError(`יש לבחור לפחות 5 כישורים לארגז המנצח. בחרתם ${winnerCount} מתוך 5.`);
+      return;
+    }
+    setError(null);
+    onComplete(assignments);
+  };
 
   const assign = (id: number, column: SkillColumn) => {
     if (column === 'winner' && winnerCount >= 7 && assignments[id] !== 'winner') {
