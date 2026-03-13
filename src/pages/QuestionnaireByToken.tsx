@@ -316,13 +316,25 @@ const QuestionnaireByToken = () => {
       return <>{ProgressBar}<SectionIntro badge={viaBonusIntro.badge} title={viaBonusIntro.title} paragraphs={viaBonusIntro.paragraphs} onContinue={() => updateState({ step: 'via-bonus' })} /></>;
     case 'via-bonus':
       return <>{ProgressBar}<BonusSelection title="כוח ה-3 – חוזקות VIA" subtitle="מתוך השאלות שנתת להן את הציון הגבוה ביותר, בחר 3 שהכי מהדהדות או מדויקות לגביך" questions={viaMaxQuestions} onComplete={handleViaBonusComplete} /></>;
+    case 'personality-sliders':
+      return <>{ProgressBar}<PersonalitySliders onComplete={(sliders) => updateState({ personalitySliders: sliders, step: 'preferences-intro' })} /></>;
     case 'preferences-intro':
       return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} onContinue={() => updateState({ step: 'preferences' })} /></>;
     case 'preferences':
       return (
         <>{ProgressBar}<PreferencesQuestionnaire
           onComplete={(preferences, dream) => {
-            updateState({ preferencesData: { preferences, dream }, step: 'advisor' });
+            // Save user profile in background
+            if (tokenRow) {
+              saveUserProfile({
+                tokenId: tokenRow.id,
+                psychometricScores: { ...viaScores, ...scheinScores, ...hollandScores },
+                primaryInterests: Object.values(preferences).flat(),
+                personalitySliders: state.personalitySliders as Record<string, number> | undefined,
+                valueAlignment: (state.personalitySliders?.values as string)?.split(',') || [],
+              });
+            }
+            updateState({ preferencesData: { preferences, dream }, step: 'processing' });
           }}
         /></>
       );
