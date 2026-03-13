@@ -33,7 +33,9 @@ type Step =
   | 'considerations-intro' | 'considerations'
   | 'holland-intro' | 'holland'
   | 'skills-intro' | 'skills'
+  | 'personality-sliders'
   | 'preferences-intro' | 'preferences'
+  | 'processing'
   | 'advisor'
   | 'results';
 
