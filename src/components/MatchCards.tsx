@@ -189,7 +189,7 @@ const MatchCards = ({ viaScores, scheinScores, hollandScores, tokenId }: MatchCa
                       🤔
                     </button>
                     <button
-                      onClick={() => handleFeedback(match.id, 'not_relevant')}
+                      onClick={() => handleFeedback(match.id, match.title, 'not_relevant')}
                       className="text-xs px-3 py-1.5 rounded-xl bg-muted hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
                       title="לא רלוונטי"
                     >
