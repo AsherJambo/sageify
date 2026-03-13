@@ -175,7 +175,7 @@ const MatchCards = ({ viaScores, scheinScores, hollandScores, tokenId }: MatchCa
                 {tokenId && !feedbackSent[match.id] && (
                   <div className="flex gap-1.5">
                     <button
-                      onClick={() => handleFeedback(match.id, 'accurate')}
+                      onClick={() => handleFeedback(match.id, match.title, 'accurate')}
                       className="text-xs px-3 py-1.5 rounded-xl bg-muted hover:bg-secondary/10 text-muted-foreground hover:text-secondary transition-colors"
                       title="מדויק"
                     >
