@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { preferenceQuestions, dreamOptions } from '@/data/preferencesData';
+import { Textarea } from '@/components/ui/textarea';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
 
@@ -10,6 +11,7 @@ interface PreferencesQuestionnaireProps {
 const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps) => {
   const [preferences, setPreferences] = useState<Record<string, string[]>>({});
   const [dream, setDream] = useState<string>('');
+  const [openReflection, setOpenReflection] = useState('');
 
   const handleSelect = (questionId: string, option: string, multiSelect: boolean) => {
     setPreferences(prev => {
