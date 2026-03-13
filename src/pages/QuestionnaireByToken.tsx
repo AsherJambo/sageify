@@ -338,6 +338,8 @@ const QuestionnaireByToken = () => {
           }}
         /></>
       );
+    case 'processing':
+      return <DataProcessingAnimation onComplete={() => updateState({ step: 'advisor' })} />;
     case 'advisor':
       return (
         <>
