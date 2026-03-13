@@ -95,7 +95,6 @@ Deno.serve(async (req) => {
           .limit(500);
 
         if (allChoices && allChoices.length > 0) {
-          // Aggregate: what do people choose and why?
           const typeCounts: Record<string, number> = {};
           const reasonCounts: Record<string, number> = {};
           const topActivities: Record<string, number> = {};
@@ -127,6 +126,98 @@ ${topReasons.map(([r,c]) => `- "${r}" (${c} ציונים)`).join('\n')}
         }
       } catch (e) {
         console.error("Activity wisdom error (non-fatal):", e);
+      }
+
+      // === RETIREE ARCHETYPES from global_retiree_insights ===
+      let archetypeWisdom = "";
+      try {
+        const { data: allInsights, count: insightCount } = await supabase
+          .from("global_retiree_insights")
+          .select("user_persona, motivation_tag, profession_category, dream, activity_suggested, skills_winner, via_top, schein_top", { count: "exact" });
+
+        if (allInsights && allInsights.length > 0) {
+          const totalProfiles = insightCount || allInsights.length;
+          const personaCounts: Record<string, number> = {};
+          const personaActivities: Record<string, string[]> = {};
+          const personaDreams: Record<string, string[]> = {};
+          const professionPivots: Record<string, Record<string, number>> = {};
+
+          for (const insight of allInsights) {
+            const persona = insight.user_persona;
+            personaCounts[persona] = (personaCounts[persona] || 0) + 1;
+            if (!personaActivities[persona]) personaActivities[persona] = [];
+            if (insight.activity_suggested) personaActivities[persona].push(insight.activity_suggested);
+            if (!personaDreams[persona]) personaDreams[persona] = [];
+            if (insight.dream) personaDreams[persona].push(insight.dream);
+
+            const prof = insight.profession_category || 'כללי';
+            const motiv = insight.motivation_tag || 'Other';
+            if (!professionPivots[prof]) professionPivots[prof] = {};
+            professionPivots[prof][motiv] = (professionPivots[prof][motiv] || 0) + 1;
+          }
+
+          const sortedPersonas = Object.entries(personaCounts).sort(([,a],[,b]) => b - a);
+
+          archetypeWisdom = `\n\n## 🧬 ארכיטיפים של פורשים (מבוסס ${totalProfiles}+ פרופילים):
+**סה"כ פרופילים מנותחים:** ${totalProfiles}
+
+**פרסונות מזוהות:**
+${sortedPersonas.map(([p, c]) => {
+  const pct = Math.round((c / totalProfiles) * 100);
+  const activities = personaActivities[p]?.filter(a => a !== 'ממתין לנתוני יועץ').slice(0, 2) || [];
+  return `- "${p}" (${pct}% מהפורשים)${activities.length > 0 ? ` → פעילויות מובילות: ${activities.join(', ')}` : ''}`;
+}).join('\n')}
+
+**מגמות מקצועיות:**
+${Object.entries(professionPivots).slice(0, 5).map(([prof, motivs]) => {
+  const topMotiv = Object.entries(motivs).sort(([,a],[,b]) => b - a)[0];
+  return `- ${prof}: מניע מרכזי = ${topMotiv?.[0] || 'N/A'} (${topMotiv?.[1] || 0} פרופילים)`;
+}).join('\n')}
+
+**חובה:** כשאתה מזהה שהמשתמש שייך לארכיטיפ מסוים, ציין: "מתוך ${totalProfiles}+ פורשים עם רקע דומה, הנתיב המוצלח ביותר עבורך הוא..."
+השתמש במספרים ואחוזים קונקרטיים. ציין את שם הפרסונה.`;
+        }
+      } catch (e) {
+        console.error("Archetype wisdom error (non-fatal):", e);
+      }
+
+      // === INTERACTION DATA (behavioral signals) ===
+      let interactionWisdom = "";
+      try {
+        const { data: interactions } = await supabase
+          .from("user_interactions")
+          .select("interaction_type, target_type, target_title")
+          .order("created_at", { ascending: false })
+          .limit(500);
+
+        if (interactions && interactions.length > 0) {
+          const starredItems: Record<string, number> = {};
+          const dismissedItems: Record<string, number> = {};
+          for (const i of interactions) {
+            if (i.interaction_type === 'star') {
+              starredItems[i.target_title] = (starredItems[i.target_title] || 0) + 1;
+            }
+            if (i.interaction_type === 'dismiss' || i.interaction_type === 'reject') {
+              dismissedItems[i.target_title] = (dismissedItems[i.target_title] || 0) + 1;
+            }
+          }
+
+          const topStarred = Object.entries(starredItems).sort(([,a],[,b]) => b - a).slice(0, 5);
+          const topDismissed = Object.entries(dismissedItems).sort(([,a],[,b]) => b - a).slice(0, 5);
+
+          if (topStarred.length > 0 || topDismissed.length > 0) {
+            interactionWisdom = `\n\n## 📈 סיגנלים התנהגותיים (${interactions.length} אינטראקציות):`;
+            if (topStarred.length > 0) {
+              interactionWisdom += `\n**הכי נשמר/אהוב ע"י כל המשתמשים:**\n${topStarred.map(([t,c]) => `- "${t}" (${c} שמירות)`).join('\n')}`;
+            }
+            if (topDismissed.length > 0) {
+              interactionWisdom += `\n**הכי הרבה דחיות:**\n${topDismissed.map(([t,c]) => `- "${t}" (${c} דחיות)`).join('\n')}`;
+            }
+            interactionWisdom += `\n**חובה:** הימנע מלהמליץ על פריטים שנדחו הרבה. העדף פריטים עם שמירות גבוהות.`;
+          }
+        }
+      } catch (e) {
+        console.error("Interaction wisdom error (non-fatal):", e);
       }
 
       // === LEARNING LOOP: Collaborative Filtering ===
