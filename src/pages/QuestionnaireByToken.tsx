@@ -77,8 +77,10 @@ const STEP_PROGRESS: Record<Step, number> = {
   'considerations-intro': 40, 'considerations': 48,
   'holland-intro': 52, 'holland': 62,
   'via-intro': 66, 'via': 75, 'via-bonus-intro': 78, 'via-bonus': 80,
+  'personality-sliders': 82,
   'preferences-intro': 83, 'preferences': 85,
-  'advisor': 85,
+  'processing': 88,
+  'advisor': 90,
   'results': 100,
 };
 
