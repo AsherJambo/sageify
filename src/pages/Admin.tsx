@@ -529,6 +529,10 @@ const Admin = () => {
           />
         </TabsContent>
 
+        <TabsContent value="data-asset">
+          <AdminDataAsset />
+        </TabsContent>
+
         <TabsContent value="enrichment">
           <AdminOpportunityEnricher adminPassword={storedPassword} />
         </TabsContent>
