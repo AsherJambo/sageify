@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { cloudClient } from '@/lib/cloudClient';
 import { silentSaveInsights } from '@/lib/insightsSaver';
+import { saveUserProfile } from '@/lib/profileManager';
 import WelcomeScreen from '@/components/WelcomeScreen';
 import SectionIntro from '@/components/SectionIntro';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
