@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getSmartMatches, submitFeedback, type MatchedOpportunity } from '@/lib/smartMatch';
+import { trackInteraction } from '@/lib/interactionTracker';
 import owlLogo from '@/assets/owl-logo.png';
 
 interface MatchCardsProps {
