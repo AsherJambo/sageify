@@ -3,6 +3,8 @@ import WelcomeScreen from '@/components/WelcomeScreen';
 import SectionIntro from '@/components/SectionIntro';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
 import ScheinQuestionnaire from '@/components/ScheinQuestionnaire';
+import PersonalitySliders from '@/components/PersonalitySliders';
+import DataProcessingAnimation from '@/components/DataProcessingAnimation';
 import BonusSelection from '@/components/BonusSelection';
 import ConsiderationsQuestionnaire from '@/components/ConsiderationsQuestionnaire';
 import HollandQuestionnaire from '@/components/HollandQuestionnaire';
