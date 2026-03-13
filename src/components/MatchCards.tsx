@@ -182,7 +182,7 @@ const MatchCards = ({ viaScores, scheinScores, hollandScores, tokenId }: MatchCa
                       👍
                     </button>
                     <button
-                      onClick={() => handleFeedback(match.id, 'interesting')}
+                      onClick={() => handleFeedback(match.id, match.title, 'interesting')}
                       className="text-xs px-3 py-1.5 rounded-xl bg-muted hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors"
                       title="מעניין"
                     >
