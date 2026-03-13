@@ -51,9 +51,18 @@ const MatchCards = ({ viaScores, scheinScores, hollandScores, tokenId }: MatchCa
     return () => { cancelled = true; };
   }, [viaScores, scheinScores, hollandScores, tokenId]);
 
-  const handleFeedback = async (oppId: string, feedback: 'accurate' | 'interesting' | 'not_relevant') => {
+  const handleFeedback = async (oppId: string, oppTitle: string, feedback: 'accurate' | 'interesting' | 'not_relevant') => {
     if (!tokenId) return;
     setFeedbackSent(prev => ({ ...prev, [oppId]: feedback }));
+    // Track interaction
+    trackInteraction({
+      tokenId,
+      interactionType: feedback === 'not_relevant' ? 'dismiss' : feedback === 'accurate' ? 'star' : 'explore',
+      targetType: 'opportunity',
+      targetTitle: oppTitle,
+      targetId: oppId,
+      metadata: { feedback },
+    });
     try {
       await submitFeedback(tokenId, oppId, feedback);
     } catch {
