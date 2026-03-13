@@ -15,6 +15,8 @@ import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
 import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
 import SageAdvisor from '@/components/SageAdvisor';
 import ResultsDashboard from '@/components/ResultsDashboard';
+import PersonalitySliders from '@/components/PersonalitySliders';
+import DataProcessingAnimation from '@/components/DataProcessingAnimation';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
