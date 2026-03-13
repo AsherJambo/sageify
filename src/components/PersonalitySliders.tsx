@@ -4,7 +4,7 @@ import { Slider } from '@/components/ui/slider';
 import QuestionnaireNav from './QuestionnaireNav';
 
 interface PersonalitySlidersProps {
-  onComplete: (sliders: Record<string, number>) => void;
+  onComplete: (sliders: Record<string, number | string>) => void;
 }
 
 const TRAIT_PAIRS = [
