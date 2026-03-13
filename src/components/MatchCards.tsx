@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getSmartMatches, submitFeedback, type MatchedOpportunity } from '@/lib/smartMatch';
+import { trackInteraction } from '@/lib/interactionTracker';
 import owlLogo from '@/assets/owl-logo.png';
 
 interface MatchCardsProps {
@@ -50,9 +51,18 @@ const MatchCards = ({ viaScores, scheinScores, hollandScores, tokenId }: MatchCa
     return () => { cancelled = true; };
   }, [viaScores, scheinScores, hollandScores, tokenId]);
 
-  const handleFeedback = async (oppId: string, feedback: 'accurate' | 'interesting' | 'not_relevant') => {
+  const handleFeedback = async (oppId: string, oppTitle: string, feedback: 'accurate' | 'interesting' | 'not_relevant') => {
     if (!tokenId) return;
     setFeedbackSent(prev => ({ ...prev, [oppId]: feedback }));
+    // Track interaction
+    trackInteraction({
+      tokenId,
+      interactionType: feedback === 'not_relevant' ? 'dismiss' : feedback === 'accurate' ? 'star' : 'explore',
+      targetType: 'opportunity',
+      targetTitle: oppTitle,
+      targetId: oppId,
+      metadata: { feedback },
+    });
     try {
       await submitFeedback(tokenId, oppId, feedback);
     } catch {
@@ -165,21 +175,21 @@ const MatchCards = ({ viaScores, scheinScores, hollandScores, tokenId }: MatchCa
                 {tokenId && !feedbackSent[match.id] && (
                   <div className="flex gap-1.5">
                     <button
-                      onClick={() => handleFeedback(match.id, 'accurate')}
+                      onClick={() => handleFeedback(match.id, match.title, 'accurate')}
                       className="text-xs px-3 py-1.5 rounded-xl bg-muted hover:bg-secondary/10 text-muted-foreground hover:text-secondary transition-colors"
                       title="מדויק"
                     >
                       👍
                     </button>
                     <button
-                      onClick={() => handleFeedback(match.id, 'interesting')}
+                      onClick={() => handleFeedback(match.id, match.title, 'interesting')}
                       className="text-xs px-3 py-1.5 rounded-xl bg-muted hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors"
                       title="מעניין"
                     >
                       🤔
                     </button>
                     <button
-                      onClick={() => handleFeedback(match.id, 'not_relevant')}
+                      onClick={() => handleFeedback(match.id, match.title, 'not_relevant')}
                       className="text-xs px-3 py-1.5 rounded-xl bg-muted hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
                       title="לא רלוונטי"
                     >

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { preferenceQuestions, dreamOptions } from '@/data/preferencesData';
+import { Textarea } from '@/components/ui/textarea';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
 
@@ -10,6 +11,7 @@ interface PreferencesQuestionnaireProps {
 const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps) => {
   const [preferences, setPreferences] = useState<Record<string, string[]>>({});
   const [dream, setDream] = useState<string>('');
+  const [openReflection, setOpenReflection] = useState('');
 
   const handleSelect = (questionId: string, option: string, multiSelect: boolean) => {
     setPreferences(prev => {
@@ -89,10 +91,32 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
           </div>
         </div>
 
+        {/* Open-text reflection */}
+        <div className="bg-card rounded-3xl p-6 md:p-8 border border-border/60 shadow-[var(--shadow-card)] slide-up">
+          <h3 className="font-bold font-display text-foreground text-lg mb-1 tracking-wide">✦ רפלקציה אישית</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            אם היית מתאר/ת את עצמך במשפט אחד — מה מניע אותך? מה עושה לך טוב? (רשות)
+          </p>
+          <Textarea
+            value={openReflection}
+            onChange={(e) => setOpenReflection(e.target.value)}
+            placeholder="לדוגמה: אני רוצה ליצור השפעה על אנשים צעירים, ובמקביל ללמוד דברים חדשים..."
+            className="rounded-2xl border-border/60 bg-background min-h-[100px] resize-none text-base"
+            maxLength={500}
+          />
+          <p className="text-xs text-muted-foreground mt-2 text-left">{openReflection.length}/500</p>
+        </div>
+
         <QuestionnaireNav
           showPrev={false}
           showComplete
-          onComplete={() => onComplete(preferences, dream)}
+          onComplete={() => {
+            const finalPrefs = { ...preferences };
+            if (openReflection.trim()) {
+              finalPrefs['open_reflection'] = [openReflection.trim()];
+            }
+            onComplete(finalPrefs, dream);
+          }}
           completeDisabled={!canComplete}
           completeLabel="סיום וצפייה בתוצאות"
         />

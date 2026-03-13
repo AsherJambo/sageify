@@ -278,6 +278,39 @@ export type Database = {
           },
         ]
       }
+      user_interactions: {
+        Row: {
+          created_at: string
+          id: string
+          interaction_type: string
+          metadata: Json | null
+          target_id: string | null
+          target_title: string
+          target_type: string
+          token_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          interaction_type: string
+          metadata?: Json | null
+          target_id?: string | null
+          target_title: string
+          target_type: string
+          token_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          interaction_type?: string
+          metadata?: Json | null
+          target_id?: string | null
+          target_title?: string
+          target_type?: string
+          token_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

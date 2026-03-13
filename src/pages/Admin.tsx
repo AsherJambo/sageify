@@ -11,7 +11,8 @@ import AdminIntelligence from '@/components/AdminIntelligence';
 import AdminOpportunityEnricher from '@/components/AdminOpportunityEnricher';
 import GlobalTrends from '@/components/GlobalTrends';
 import StrategicInsights from '@/components/StrategicInsights';
-import { Sparkles, BarChart3, Search, TrendingUp, Radar } from 'lucide-react';
+import { Sparkles, BarChart3, Search, TrendingUp, Radar, Database } from 'lucide-react';
+import AdminDataAsset from '@/components/AdminDataAsset';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
@@ -350,7 +351,7 @@ const Admin = () => {
       </div>
 
       <Tabs defaultValue="tokens" className="space-y-6">
-        <TabsList className="flex flex-col md:grid md:grid-cols-5 w-full h-auto gap-2 p-1">
+        <TabsList className="flex flex-col md:grid md:grid-cols-6 w-full h-auto gap-2 p-1">
           <TabsTrigger value="tokens" className="gap-2 w-full">
             📋 ניהול קישורים
           </TabsTrigger>
@@ -365,6 +366,10 @@ const Admin = () => {
           <TabsTrigger value="strategic" className="gap-2 w-full">
             <Radar className="w-4 h-4" />
             🎯 תובנות אסטרטגיות
+          </TabsTrigger>
+          <TabsTrigger value="data-asset" className="gap-2 w-full">
+            <Database className="w-4 h-4" />
+            💎 נכס דאטה
           </TabsTrigger>
           <TabsTrigger value="enrichment" className="gap-2 w-full">
             <Search className="w-4 h-4" />
@@ -522,6 +527,10 @@ const Admin = () => {
             onClose={() => setShowAnalysis(false)}
             adminPassword={storedPassword}
           />
+        </TabsContent>
+
+        <TabsContent value="data-asset">
+          <AdminDataAsset />
         </TabsContent>
 
         <TabsContent value="enrichment">

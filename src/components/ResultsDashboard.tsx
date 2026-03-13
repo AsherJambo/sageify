@@ -11,6 +11,7 @@ import { skills } from '@/data/skillsData';
 import OwlChat, { type ChatMessage } from '@/components/OwlChat';
 import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
 import MatchCards from '@/components/MatchCards';
+import InteractiveRoadmap from '@/components/InteractiveRoadmap';
 
 interface ResultsDashboardProps {
   viaScores: Record<string, number>;
@@ -155,8 +156,18 @@ const ResultsDashboard = ({
           </div>
         </motion.div>
 
-        {/* Smart Match Cards */}
+        {/* Interactive 3-Phase Roadmap */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={2}>
+          <InteractiveRoadmap
+            chatMessages={chatMessages}
+            tokenId={tokenId}
+            viaTop={topVIA.map(t => t.category)}
+            scheinTop={topSchein.map(t => t.category)}
+          />
+        </motion.div>
+
+        {/* Smart Match Cards */}
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={3}>
           <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
             <MatchCards
               viaScores={viaScores}
