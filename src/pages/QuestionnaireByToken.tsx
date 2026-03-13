@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { cloudClient } from '@/lib/cloudClient';
 import { silentSaveInsights } from '@/lib/insightsSaver';
+import { saveUserProfile } from '@/lib/profileManager';
 import WelcomeScreen from '@/components/WelcomeScreen';
 import SectionIntro from '@/components/SectionIntro';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
@@ -14,6 +15,8 @@ import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
 import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
 import SageAdvisor from '@/components/SageAdvisor';
 import ResultsDashboard from '@/components/ResultsDashboard';
+import PersonalitySliders from '@/components/PersonalitySliders';
+import DataProcessingAnimation from '@/components/DataProcessingAnimation';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
@@ -36,7 +39,9 @@ type Step =
   | 'considerations-intro' | 'considerations'
   | 'holland-intro' | 'holland'
   | 'skills-intro' | 'skills'
+  | 'personality-sliders'
   | 'preferences-intro' | 'preferences'
+  | 'processing'
   | 'advisor'
   | 'results';
 
@@ -51,6 +56,7 @@ interface ResponseData {
   considerationsData?: { selected: string[]; points: Record<string, number> };
   hollandAnswers?: Record<number, boolean>;
   skillsAssignments?: Record<number, SkillColumn>;
+  personalitySliders?: Record<string, number | string>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
   chatMessages?: { role: 'user' | 'assistant'; content: string }[];
 }
@@ -71,8 +77,10 @@ const STEP_PROGRESS: Record<Step, number> = {
   'considerations-intro': 40, 'considerations': 48,
   'holland-intro': 52, 'holland': 62,
   'via-intro': 66, 'via': 75, 'via-bonus-intro': 78, 'via-bonus': 80,
+  'personality-sliders': 82,
   'preferences-intro': 83, 'preferences': 85,
-  'advisor': 85,
+  'processing': 88,
+  'advisor': 90,
   'results': 100,
 };
 
@@ -196,7 +204,7 @@ const QuestionnaireByToken = () => {
 
   const handleViaBonusComplete = (selectedIds: number[]) => {
     const finalAnswers = applyBonus(state.viaAnswers, selectedIds);
-    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'preferences-intro' });
+    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'personality-sliders' });
   };
   const handleScheinBonusComplete = (selectedIds: number[]) => {
     const finalAnswers = applyBonus(state.scheinAnswers, selectedIds);
@@ -308,16 +316,30 @@ const QuestionnaireByToken = () => {
       return <>{ProgressBar}<SectionIntro badge={viaBonusIntro.badge} title={viaBonusIntro.title} paragraphs={viaBonusIntro.paragraphs} onContinue={() => updateState({ step: 'via-bonus' })} /></>;
     case 'via-bonus':
       return <>{ProgressBar}<BonusSelection title="כוח ה-3 – חוזקות VIA" subtitle="מתוך השאלות שנתת להן את הציון הגבוה ביותר, בחר 3 שהכי מהדהדות או מדויקות לגביך" questions={viaMaxQuestions} onComplete={handleViaBonusComplete} /></>;
+    case 'personality-sliders':
+      return <>{ProgressBar}<PersonalitySliders onComplete={(sliders) => updateState({ personalitySliders: sliders, step: 'preferences-intro' })} /></>;
     case 'preferences-intro':
       return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} onContinue={() => updateState({ step: 'preferences' })} /></>;
     case 'preferences':
       return (
         <>{ProgressBar}<PreferencesQuestionnaire
           onComplete={(preferences, dream) => {
-            updateState({ preferencesData: { preferences, dream }, step: 'advisor' });
+            // Save user profile in background
+            if (tokenRow) {
+              saveUserProfile({
+                tokenId: tokenRow.id,
+                psychometricScores: { ...viaScores, ...scheinScores, ...hollandScores },
+                primaryInterests: Object.values(preferences).flat(),
+                personalitySliders: state.personalitySliders as Record<string, number> | undefined,
+                valueAlignment: (state.personalitySliders?.values as string)?.split(',') || [],
+              });
+            }
+            updateState({ preferencesData: { preferences, dream }, step: 'processing' });
           }}
         /></>
       );
+    case 'processing':
+      return <DataProcessingAnimation onComplete={() => updateState({ step: 'advisor' })} />;
     case 'advisor':
       return (
         <>

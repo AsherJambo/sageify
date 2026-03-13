@@ -311,6 +311,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_profiles: {
+        Row: {
+          archetype: string | null
+          career_history: string | null
+          created_at: string
+          id: string
+          personality_sliders: Json | null
+          primary_interests: Json | null
+          psychometric_scores: Json | null
+          token_id: string
+          updated_at: string
+          value_alignment: Json | null
+        }
+        Insert: {
+          archetype?: string | null
+          career_history?: string | null
+          created_at?: string
+          id?: string
+          personality_sliders?: Json | null
+          primary_interests?: Json | null
+          psychometric_scores?: Json | null
+          token_id: string
+          updated_at?: string
+          value_alignment?: Json | null
+        }
+        Update: {
+          archetype?: string | null
+          career_history?: string | null
+          created_at?: string
+          id?: string
+          personality_sliders?: Json | null
+          primary_interests?: Json | null
+          psychometric_scores?: Json | null
+          token_id?: string
+          updated_at?: string
+          value_alignment?: Json | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
