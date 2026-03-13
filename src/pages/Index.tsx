@@ -113,7 +113,7 @@ const Index = () => {
 
   const handleViaBonusComplete = (selectedIds: number[]) => {
     const finalAnswers = applyBonus(state.viaAnswers, selectedIds);
-    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'preferences-intro' });
+    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'personality-sliders' });
   };
   const handleScheinBonusComplete = (selectedIds: number[]) => {
     const finalAnswers = applyBonus(state.scheinAnswers, selectedIds);
