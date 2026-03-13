@@ -52,6 +52,7 @@ interface SavedState {
   considerationsData?: { selected: string[]; points: Record<string, number> };
   hollandAnswers?: Record<number, boolean>;
   skillsAssignments?: Record<number, SkillColumn>;
+  personalitySliders?: Record<string, number | string>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
   chatMessages?: ChatMessage[];
 }
