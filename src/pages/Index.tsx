@@ -168,7 +168,7 @@ const Index = () => {
     case 'holland':
       return <>{ProgressBar}<HollandQuestionnaire onComplete={(answers) => updateState({ hollandAnswers: answers, step: 'via-intro' })} /></>;
     case 'via-intro':
-      return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} onContinue={() => updateState({ step: 'via' })} /></>;
+      return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} contextFeedback={contextualFeedback.holland} onContinue={() => updateState({ step: 'via' })} /></>;
     case 'via':
       return <>{ProgressBar}<VIAQuestionnaire answers={state.viaAnswers} onAnswer={handleViaAnswer} onComplete={() => updateState({ step: 'via-bonus-intro' })} /></>;
     case 'via-bonus-intro':
