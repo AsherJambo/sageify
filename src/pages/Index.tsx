@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { contextualFeedback } from '@/lib/owlMessages';
 import WelcomeScreen from '@/components/WelcomeScreen';
 import SectionIntro from '@/components/SectionIntro';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
