@@ -164,7 +164,7 @@ const Index = () => {
     case 'considerations':
       return <>{ProgressBar}<ConsiderationsQuestionnaire onComplete={(selected, points) => updateState({ considerationsData: { selected, points }, step: 'holland-intro' })} /></>;
     case 'holland-intro':
-      return <>{ProgressBar}<SectionIntro badge={hollandIntro.badge} title={hollandIntro.title} paragraphs={hollandIntro.paragraphs} onContinue={() => updateState({ step: 'holland' })} /></>;
+      return <>{ProgressBar}<SectionIntro badge={hollandIntro.badge} title={hollandIntro.title} paragraphs={hollandIntro.paragraphs} contextFeedback={contextualFeedback.considerations} onContinue={() => updateState({ step: 'holland' })} /></>;
     case 'holland':
       return <>{ProgressBar}<HollandQuestionnaire onComplete={(answers) => updateState({ hollandAnswers: answers, step: 'via-intro' })} /></>;
     case 'via-intro':
