@@ -178,7 +178,7 @@ const Index = () => {
     case 'personality-sliders':
       return <>{ProgressBar}<PersonalitySliders onComplete={(sliders) => updateState({ personalitySliders: sliders, step: 'preferences-intro' })} /></>;
     case 'preferences-intro':
-      return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} onContinue={() => updateState({ step: 'preferences' })} /></>;
+      return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} contextFeedback={contextualFeedback.personality} onContinue={() => updateState({ step: 'preferences' })} /></>;
     case 'preferences':
       return (
         <>{ProgressBar}<PreferencesQuestionnaire
