@@ -31,12 +31,12 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
     {
       icon: '✦',
       title: 'סריקת שוק בזמן אמת',
-      desc: 'חיפוש AI חי שמוצא לידים ספציפיים: משרות, התנדבויות ותפקידים בישראל – לא רק קטגוריות כלליות',
+      desc: 'חיפוש AI חי שמוצא לידים ספציפיים: משרות, התנדבויות ותפקידים בישראל',
     },
     {
       icon: '●',
-      title: 'סינון שיתופי',
-      desc: 'ה-AI מזהה דפוסים בהשוואה לפרופילים דומים – ומראה מה הוביל אחרים לשביעות רצון גבוהה',
+      title: 'חוכמת קהילה',
+      desc: 'סגי מזהה דפוסים בהשוואה לפרופילים דומים – ומראה מה הוביל אחרים לשביעות רצון',
     },
   ];
 
@@ -45,9 +45,9 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
     { num: '02', title: 'עוגנים תעסוקתיים', desc: '40 שאלות – מה באמת מניע אתכם' },
     { num: '03', title: 'שיקולים בבחירת עיסוק', desc: 'בחרו 6 שיקולים וחלקו 100 נקודות' },
     { num: '04', title: 'נטיות תעסוקתיות', desc: '66 שאלות – גלו את הנטיות שלכם' },
-    { num: '05', title: 'חוזקות VIA', desc: '48 שאלות – גלו את הכוחות הפנימיים שלכם' },
+    { num: '05', title: 'חוזקות VIA', desc: '48 שאלות – גלו את הכוחות הפנימיים' },
     { num: '06', title: 'העדפות וחלום המגירה', desc: 'העדפות אישיות + תחום החלום שלכם' },
-    { num: '07', title: 'יועץ AI והתאמת עיסוק', desc: 'שיחה אישית עם יועץ חכם + התאמה ממאגר עיסוקים ייחודי לגיל השלישי' },
+    { num: '07', title: 'שיחה אישית עם סגי', desc: 'ייעוץ AI מותאם אישית + התאמת עיסוק' },
   ];
 
   return (
@@ -59,7 +59,7 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(210,45%,14%)/0.5] via-[hsl(210,45%,14%)/0.65] to-[hsl(var(--background))]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,35%,18%)/0.5] via-[hsl(160,35%,18%)/0.6] to-[hsl(var(--background))]" />
         
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-6 text-center">
           <div
@@ -75,8 +75,8 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-display text-white tracking-wide">
               Sageify
             </h1>
-            <p className="text-lg md:text-xl text-white/70 mt-4 max-w-md mx-auto font-light tracking-wide">
-              הערכה מקצועית לגילוי חוזקות ומיפוי כיוונים תעסוקתיים
+            <p className="text-lg md:text-xl text-white/75 mt-4 max-w-md mx-auto font-light tracking-wide">
+              שיחה מקצועית לגילוי חוזקות ומיפוי כיוונים תעסוקתיים
             </p>
           </div>
         </div>
@@ -112,15 +112,15 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
               {pillars.map((pillar, i) => (
                 <div
                   key={i}
-                  className="bg-card rounded-2xl p-6 border border-border/60 shadow-[var(--shadow-card)] text-center space-y-3 hover:border-secondary/30 transition-all duration-300"
+                  className="bg-card rounded-2xl p-7 border border-border/60 shadow-[var(--shadow-card)] text-center space-y-3 hover:border-secondary/30 transition-all duration-300"
                 >
-                  <div className="w-12 h-12 mx-auto rounded-full bg-secondary/8 border border-secondary/15 flex items-center justify-center text-lg text-secondary font-display">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-secondary/8 border border-secondary/15 flex items-center justify-center text-lg text-secondary font-display">
                     {pillar.icon}
                   </div>
-                  <p className="font-bold font-display text-foreground tracking-wide text-sm">
+                  <p className="font-bold font-display text-foreground tracking-wide text-base">
                     {pillar.title}
                   </p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {pillar.desc}
                   </p>
                 </div>
@@ -140,29 +140,29 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
                 return (
                 <div
                   key={i}
-                  className={`flex items-center gap-5 bg-card rounded-2xl p-5 border shadow-[var(--shadow-card)] text-right group transition-all duration-300 ${
+                  className={`flex items-center gap-5 bg-card rounded-2xl p-6 border shadow-[var(--shadow-card)] text-right group transition-all duration-300 ${
                     isHighlight
                       ? 'border-secondary/30 bg-secondary/[0.03]'
                       : 'border-border/60 hover:border-secondary/30'
                   }`}
                 >
-                  <span className={`text-xs font-display tracking-widest w-8 text-center flex-shrink-0 ${
+                  <span className={`text-sm font-display tracking-widest w-8 text-center flex-shrink-0 ${
                     isHighlight ? 'text-secondary font-bold' : 'text-muted-foreground/50'
                   }`}>
                     {step.num}
                   </span>
                   <div className={`h-8 w-px ${isHighlight ? 'bg-secondary/30' : 'bg-border/60'}`} />
                   <div className="flex-1">
-                    <p className={`font-semibold font-display tracking-wide ${
+                    <p className={`font-semibold font-display tracking-wide text-lg ${
                       isHighlight ? 'text-secondary' : 'text-foreground'
                     }`}>{step.title}</p>
-                    <p className="text-sm text-muted-foreground mt-0.5">{step.desc}</p>
+                    <p className="text-base text-muted-foreground mt-0.5">{step.desc}</p>
                   </div>
                 </div>
                 );
               })}
             </div>
-            <p className="text-muted-foreground/60 text-sm mt-6 text-center tracking-wide">
+            <p className="text-muted-foreground/60 text-base mt-6 text-center tracking-wide">
               ⏱ זמן משוער: 40–50 דקות · ההתקדמות נשמרת אוטומטית
             </p>
           </div>
@@ -175,7 +175,7 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           >
             <button
               onClick={onStart}
-              className="px-14 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] group"
+              className="px-14 py-6 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] group"
             >
               <span className="flex items-center gap-3 justify-center">
                 {owlWelcome.cta}

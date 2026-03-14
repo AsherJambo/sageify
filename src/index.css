@@ -6,78 +6,84 @@
 
 @layer base {
   :root {
-    --background: 220 20% 97%;
-    --foreground: 210 45% 14%;
+    --background: 40 25% 96%;
+    --foreground: 160 30% 12%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 210 45% 14%;
+    --card: 40 20% 99%;
+    --card-foreground: 160 30% 12%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 45% 14%;
+    --popover: 40 20% 99%;
+    --popover-foreground: 160 30% 12%;
 
-    --primary: 210 45% 14%;
-    --primary-foreground: 220 20% 97%;
+    --primary: 160 35% 18%;
+    --primary-foreground: 40 25% 96%;
 
-    --secondary: 152 18% 38%;
+    --secondary: 160 28% 35%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 14% 93%;
-    --muted-foreground: 210 10% 50%;
+    --muted: 40 15% 92%;
+    --muted-foreground: 160 10% 45%;
 
-    --accent: 152 18% 38%;
+    --accent: 210 30% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 10% 90%;
-    --input: 220 10% 90%;
-    --ring: 152 18% 38%;
+    --border: 40 12% 88%;
+    --input: 40 12% 88%;
+    --ring: 160 28% 35%;
 
     --radius: 1.5rem;
 
-    --sage: 152 18% 38%;
-    --sage-light: 152 14% 94%;
+    --sage: 160 28% 35%;
+    --sage-light: 160 18% 94%;
+    --sand: 36 30% 88%;
+    --sand-warm: 36 25% 82%;
+    --slate-blue: 210 30% 45%;
+    --slate-blue-light: 210 25% 88%;
+    --forest: 160 35% 18%;
+    --forest-light: 160 25% 26%;
     --gold: 40 45% 50%;
     --gold-light: 40 35% 93%;
-    --navy: 210 45% 14%;
-    --navy-light: 210 35% 22%;
-    --warm-bg: 220 20% 97%;
+    --navy: 160 35% 18%;
+    --navy-light: 160 25% 26%;
+    --warm-bg: 40 25% 96%;
 
-    --shadow-diffuse: 0 20px 60px -15px hsl(210 45% 14% / 0.08);
-    --shadow-card: 0 8px 40px -12px hsl(210 45% 14% / 0.06), 0 4px 16px -8px hsl(210 45% 14% / 0.04);
-    --shadow-elevated: 0 24px 80px -20px hsl(210 45% 14% / 0.1), 0 8px 24px -8px hsl(210 45% 14% / 0.05);
+    --shadow-diffuse: 0 20px 60px -15px hsl(160 30% 12% / 0.07);
+    --shadow-card: 0 8px 40px -12px hsl(160 30% 12% / 0.05), 0 4px 16px -8px hsl(160 30% 12% / 0.03);
+    --shadow-elevated: 0 24px 80px -20px hsl(160 30% 12% / 0.09), 0 8px 24px -8px hsl(160 30% 12% / 0.04);
 
-    --sidebar-background: 210 45% 14%;
-    --sidebar-foreground: 220 20% 97%;
-    --sidebar-primary: 152 18% 38%;
+    --sidebar-background: 160 35% 18%;
+    --sidebar-foreground: 40 25% 96%;
+    --sidebar-primary: 160 28% 35%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 35% 20%;
-    --sidebar-accent-foreground: 220 20% 97%;
-    --sidebar-border: 210 35% 20%;
-    --sidebar-ring: 152 18% 38%;
+    --sidebar-accent: 160 30% 22%;
+    --sidebar-accent-foreground: 40 25% 96%;
+    --sidebar-border: 160 30% 22%;
+    --sidebar-ring: 160 28% 35%;
   }
 
   .dark {
-    --background: 210 45% 7%;
-    --foreground: 220 20% 95%;
-    --card: 210 40% 11%;
-    --card-foreground: 220 20% 95%;
-    --popover: 210 40% 11%;
-    --popover-foreground: 220 20% 95%;
-    --primary: 152 18% 48%;
-    --primary-foreground: 210 45% 7%;
-    --secondary: 152 18% 32%;
+    --background: 160 30% 6%;
+    --foreground: 40 20% 93%;
+    --card: 160 28% 10%;
+    --card-foreground: 40 20% 93%;
+    --popover: 160 28% 10%;
+    --popover-foreground: 40 20% 93%;
+    --primary: 160 25% 50%;
+    --primary-foreground: 160 30% 6%;
+    --secondary: 160 22% 30%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 210 30% 16%;
-    --muted-foreground: 220 12% 58%;
-    --accent: 152 18% 38%;
+    --muted: 160 20% 15%;
+    --muted-foreground: 40 12% 55%;
+    --accent: 210 28% 40%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
-    --border: 210 30% 18%;
-    --input: 210 30% 18%;
-    --ring: 152 18% 38%;
+    --border: 160 20% 16%;
+    --input: 160 20% 16%;
+    --ring: 160 22% 38%;
   }
 }
 
@@ -95,8 +101,8 @@
   body {
     @apply bg-background text-foreground;
     direction: rtl;
-    font-size: 17px;
-    line-height: 1.8;
+    font-size: 19px;
+    line-height: 1.85;
   }
 
   /* Fixed grain overlay — static canvas that never moves */
@@ -106,7 +112,7 @@
     inset: 0;
     z-index: 9999;
     pointer-events: none;
-    opacity: 0.028;
+    opacity: 0.022;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     background-size: 256px 256px;
   }
