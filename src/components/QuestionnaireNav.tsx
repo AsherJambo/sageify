@@ -42,7 +42,7 @@ const QuestionnaireNav = ({
         <button
           onClick={onNext}
           disabled={nextDisabled}
-          className="group inline-flex items-center gap-2.5 px-8 py-3.5 rounded-2xl bg-primary text-primary-foreground font-medium font-display tracking-wide disabled:opacity-20 hover:bg-primary/85 transition-all duration-300 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)]"
+          className="group inline-flex items-center gap-3 px-10 py-4.5 rounded-2xl bg-primary text-primary-foreground font-medium font-display text-lg tracking-wide disabled:opacity-20 hover:bg-primary/85 transition-all duration-300 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)]"
         >
           <span>הבא</span>
           <span className="transition-transform duration-300 group-hover:translate-x-[-3px]">←</span>
