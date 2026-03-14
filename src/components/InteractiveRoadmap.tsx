@@ -8,6 +8,7 @@ interface RoadmapTask {
   description: string;
   link?: string;
   successMetric?: string;
+  whySagei?: string;
 }
 
 interface RoadmapPhase {
@@ -54,12 +55,32 @@ const impactColors: Record<string, string> = {
   High: 'text-secondary',
 };
 
+const impactLabels: Record<string, string> = {
+  Low: 'נמוך',
+  Medium: 'בינוני',
+  High: 'גבוה',
+};
+
+function getWhySageiDefault(viaTop?: string[], scheinTop?: string[]): (phase: number) => string {
+  const via = viaTop?.slice(0, 2).join(' ו') || 'החוזקות שלכם';
+  const schein = scheinTop?.[0] || 'העוגן התעסוקתי';
+  return (phase: number) => {
+    switch (phase) {
+      case 1: return `בהתבסס על ${via}, סגי ממליץ להתחיל בחקירה פרקטית כדי לבחון את הכיוון בשטח`;
+      case 2: return `העוגן "${schein}" מצביע על כך שתוכלו להצליח בתפקידים שדורשים העמקה ופיתוח`;
+      case 3: return `השילוב של ${via} עם ניסיון העבר שלכם מציב אתכם במקום מצוין ליצירת השפעה אמיתית`;
+      default: return 'סגי מזהה פוטנציאל משמעותי בכיוון הזה';
+    }
+  };
+}
+
 const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: InteractiveRoadmapProps) => {
   const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set());
   const [starredTasks, setStarredTasks] = useState<Set<string>>(new Set());
   const [expandedPhase, setExpandedPhase] = useState<string | null>('phase-1');
 
   const extractedTasks = extractRoadmapFromChat(chatMessages);
+  const getWhySagei = getWhySageiDefault(viaTop, scheinTop);
 
   const phases: RoadmapPhase[] = [
     {
@@ -78,11 +99,12 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
         ? extractedTasks.slice(0, Math.ceil(extractedTasks.length / 3)).map(t => ({
             ...t,
             successMetric: 'השלמת חקירה ראשונית',
+            whySagei: getWhySagei(1),
           }))
         : [
-            { title: 'מנטורינג או צל מקצועי', description: 'בלו יומיים עם מי שכבר עושה את מה שמעניין אותך', successMetric: 'לפחות 2 מפגשים' },
-            { title: 'התנדבות ניסיונית', description: 'בחר פרויקט התנדבות קצר (2-4 שבועות) בתחום שעניין אותך', successMetric: 'התחלת פרויקט אחד' },
-            { title: 'מיפוי רשת קשרים', description: 'זהה 5 אנשים בתחום החדש ושוחח איתם', successMetric: '5 שיחות' },
+            { title: 'מנטורינג או צל מקצועי', description: 'בלו יומיים עם מי שכבר עושה את מה שמעניין אתכם', successMetric: 'לפחות 2 מפגשים', whySagei: getWhySagei(1) },
+            { title: 'התנדבות ניסיונית', description: 'בחרו פרויקט התנדבות קצר (2-4 שבועות) בתחום שעניין אתכם', successMetric: 'התחלת פרויקט אחד', whySagei: getWhySagei(1) },
+            { title: 'מיפוי רשת קשרים', description: 'זהו 5 אנשים בתחום החדש ושוחחו איתם', successMetric: '5 שיחות', whySagei: getWhySagei(1) },
           ],
     },
     {
@@ -101,11 +123,12 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
         ? extractedTasks.slice(Math.ceil(extractedTasks.length / 3), Math.ceil(extractedTasks.length * 2 / 3)).map(t => ({
             ...t,
             successMetric: 'רכישת כלים חדשים',
+            whySagei: getWhySagei(2),
           }))
         : [
-            { title: 'קורס מקצועי ממוקד', description: 'הירשם לקורס או הכשרה בתחום הנבחר', successMetric: 'סיום קורס אחד' },
-            { title: 'חברות בדירקטוריון', description: 'בדוק אפשרויות לכהן כדירקטור חיצוני', successMetric: 'הגשת מועמדות' },
-            { title: 'בניית פורטפוליו', description: 'צור פרויקט ראשון שמדגים את היכולות החדשות', successMetric: 'פרויקט אחד מוגמר' },
+            { title: 'קורס מקצועי ממוקד', description: 'הירשמו לקורס או הכשרה בתחום הנבחר', successMetric: 'סיום קורס אחד', whySagei: getWhySagei(2) },
+            { title: 'חברות בדירקטוריון', description: 'בדקו אפשרויות לכהן כדירקטור חיצוני', successMetric: 'הגשת מועמדות', whySagei: getWhySagei(2) },
+            { title: 'בניית פורטפוליו', description: 'צרו פרויקט ראשון שמדגים את היכולות החדשות', successMetric: 'פרויקט אחד מוגמר', whySagei: getWhySagei(2) },
           ],
     },
     {
@@ -124,11 +147,12 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
         ? extractedTasks.slice(Math.ceil(extractedTasks.length * 2 / 3)).map(t => ({
             ...t,
             successMetric: 'יצירת ערך מתמשך',
+            whySagei: getWhySagei(3),
           }))
         : [
-            { title: 'יזמות חברתית', description: 'הקם מיזם חברתי שמשלב את הניסיון שלך עם הערכים', successMetric: 'השקה ראשונית' },
-            { title: 'הנחיית קהילה', description: 'בנה קבוצת פעולה סביב הנושא שבחרת', successMetric: '10+ משתתפים' },
-            { title: 'מנהיגות מגזרית', description: 'הפוך למוביל דעה בתחום החדש שלך', successMetric: 'הרצאה או מאמר ראשון' },
+            { title: 'יזמות חברתית', description: 'הקימו מיזם חברתי שמשלב את הניסיון שלכם עם הערכים', successMetric: 'השקה ראשונית', whySagei: getWhySagei(3) },
+            { title: 'הנחיית קהילה', description: 'בנו קבוצת פעולה סביב הנושא שבחרתם', successMetric: '10+ משתתפים', whySagei: getWhySagei(3) },
+            { title: 'מנהיגות מגזרית', description: 'הפכו למובילי דעה בתחום החדש', successMetric: 'הרצאה או מאמר ראשון', whySagei: getWhySagei(3) },
           ],
     },
   ];
@@ -180,14 +204,14 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
   return (
     <div className="space-y-6" dir="rtl">
       {/* Progress header */}
-      <div className="bg-card rounded-3xl border border-border/60 p-6 shadow-[var(--shadow-card)]">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-bold font-display text-foreground tracking-wide">
-            מפת הדרכים האינטראקטיבית
+      <div className="bg-card rounded-3xl border border-border/60 p-7 shadow-[var(--shadow-card)]">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold font-display text-foreground tracking-wide">
+            🌿 מפת הדרכים שלכם
           </h3>
-          <span className="text-sm font-display font-bold text-secondary">{progressPct}% הושלם</span>
+          <span className="text-base font-display font-bold text-secondary">{progressPct}% הושלם</span>
         </div>
-        <div className="w-full h-2.5 bg-muted/40 rounded-full overflow-hidden">
+        <div className="w-full h-3 bg-muted/40 rounded-full overflow-hidden">
           <motion.div
             className="h-full bg-secondary rounded-full"
             initial={{ width: 0 }}
@@ -195,137 +219,157 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           />
         </div>
-        <div className="flex justify-between mt-3">
+        {/* Vertical timeline indicator */}
+        <div className="flex justify-between mt-4">
           {phases.map(p => (
-            <div key={p.id} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <div key={p.id} className="flex items-center gap-2 text-sm text-muted-foreground">
               <span className={p.color}>{p.icon}</span>
-              <span>{p.subtitle}</span>
+              <span>{p.title}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Phase cards */}
-      {phases.map((phase, idx) => {
-        const isExpanded = expandedPhase === phase.id;
-        const phaseCompleted = phase.tasks.every(t => completedTasks.has(`${phase.id}:${t.title}`));
+      {/* Phase cards as timeline */}
+      <div className="relative">
+        {/* Vertical timeline line */}
+        <div className="absolute right-6 top-0 bottom-0 w-0.5 bg-border/40 hidden md:block" />
 
-        return (
-          <motion.div
-            key={phase.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.15, duration: 0.6 }}
-            className={`rounded-3xl border ${phase.borderColor} overflow-hidden shadow-[var(--shadow-card)] ${phaseCompleted ? 'opacity-75' : ''}`}
-          >
-            {/* Phase header */}
-            <button
-              onClick={() => setExpandedPhase(isExpanded ? null : phase.id)}
-              className={`w-full flex items-center justify-between px-6 py-5 ${phase.bgColor} hover:brightness-95 transition-all`}
+        {phases.map((phase, idx) => {
+          const isExpanded = expandedPhase === phase.id;
+          const phaseCompleted = phase.tasks.every(t => completedTasks.has(`${phase.id}:${t.title}`));
+
+          return (
+            <motion.div
+              key={phase.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.15, duration: 0.6 }}
+              className={`rounded-3xl border ${phase.borderColor} overflow-hidden shadow-[var(--shadow-card)] ${phaseCompleted ? 'opacity-75' : ''} mb-4 md:mr-10 relative`}
             >
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full ${phase.bgColor} border ${phase.borderColor} flex items-center justify-center ${phase.color}`}>
-                  {phaseCompleted ? <CheckCircle2 className="w-5 h-5" /> : phase.icon}
-                </div>
-                <div className="text-right">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold font-display text-foreground">Phase {phase.phase}: {phase.title}</span>
-                    <span className="text-xs text-muted-foreground">({phase.timeframe})</span>
-                  </div>
-                  <div className="flex gap-3 mt-1">
-                    <span className="text-xs text-muted-foreground">
-                      Social Impact: <span className={`font-bold ${impactColors[phase.impactLevel]}`}>{phase.impactLevel}</span>
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      Income: <span className={`font-bold ${impactColors[phase.incomePotential]}`}>{phase.incomePotential}</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
-            </button>
+              {/* Timeline dot */}
+              <div className={`hidden md:flex absolute -right-[52px] top-6 w-5 h-5 rounded-full border-2 ${phase.borderColor} ${phaseCompleted ? 'bg-secondary' : 'bg-card'}`} />
 
-            {/* Tasks */}
-            <AnimatePresence>
-              {isExpanded && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="overflow-hidden"
-                >
-                  <div className="px-6 pb-5 pt-2 space-y-3">
-                    {phase.tasks.map((task, ti) => {
-                      const taskKey = `${phase.id}:${task.title}`;
-                      const isCompleted = completedTasks.has(taskKey);
-                      const isStarred = starredTasks.has(task.title);
+              {/* Phase header */}
+              <button
+                onClick={() => setExpandedPhase(isExpanded ? null : phase.id)}
+                className={`w-full flex items-center justify-between px-7 py-6 ${phase.bgColor} hover:brightness-95 transition-all`}
+              >
+                <div className="flex items-center gap-4">
+                  <div className={`w-12 h-12 rounded-full ${phase.bgColor} border ${phase.borderColor} flex items-center justify-center ${phase.color}`}>
+                    {phaseCompleted ? <CheckCircle2 className="w-6 h-6" /> : phase.icon}
+                  </div>
+                  <div className="text-right">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold font-display text-foreground text-lg">שלב {phase.phase}: {phase.title}</span>
+                      <span className="text-sm text-muted-foreground">({phase.timeframe})</span>
+                    </div>
+                    <div className="flex gap-4 mt-1.5">
+                      <span className="text-sm text-muted-foreground">
+                        השפעה חברתית: <span className={`font-bold ${impactColors[phase.impactLevel]}`}>{impactLabels[phase.impactLevel]}</span>
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        הכנסה: <span className={`font-bold ${impactColors[phase.incomePotential]}`}>{impactLabels[phase.incomePotential]}</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <ChevronDown className={`w-6 h-6 text-muted-foreground transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+              </button>
 
-                      return (
-                        <div
-                          key={ti}
-                          className={`flex items-start gap-3 rounded-2xl border border-border/60 p-4 transition-all ${
-                            isCompleted ? 'bg-secondary/5 border-secondary/20' : 'bg-card hover:bg-muted/20'
-                          }`}
-                        >
-                          <button
-                            onClick={() => handleTaskToggle(phase.id, task.title)}
-                            className={`mt-0.5 w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${
-                              isCompleted
-                                ? 'bg-secondary border-secondary text-secondary-foreground'
-                                : 'border-muted-foreground/30 hover:border-secondary'
+              {/* Tasks */}
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-7 pb-6 pt-3 space-y-4">
+                      {phase.tasks.map((task, ti) => {
+                        const taskKey = `${phase.id}:${task.title}`;
+                        const isCompleted = completedTasks.has(taskKey);
+                        const isStarred = starredTasks.has(task.title);
+
+                        return (
+                          <div
+                            key={ti}
+                            className={`flex items-start gap-4 rounded-2xl border border-border/60 p-5 transition-all ${
+                              isCompleted ? 'bg-secondary/5 border-secondary/20' : 'bg-card hover:bg-muted/20'
                             }`}
                           >
-                            {isCompleted && <CheckCircle2 className="w-4 h-4" />}
-                          </button>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-start justify-between gap-2">
-                              <h4 className={`font-bold text-sm ${isCompleted ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
-                                {task.title}
-                              </h4>
-                              <button
-                                onClick={() => handleStar(task.title)}
-                                className={`flex-shrink-0 transition-colors ${isStarred ? 'text-gold' : 'text-muted-foreground/30 hover:text-gold/60'}`}
-                              >
-                                <Star className={`w-4 h-4 ${isStarred ? 'fill-current' : ''}`} />
-                              </button>
-                            </div>
-                            <p className="text-xs text-muted-foreground mt-1">{task.description}</p>
-                            {task.successMetric && (
-                              <div className="mt-2 flex items-center gap-1.5">
-                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">
-                                  🎯 {task.successMetric}
-                                </span>
+                            <button
+                              onClick={() => handleTaskToggle(phase.id, task.title)}
+                              className={`mt-0.5 w-7 h-7 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${
+                                isCompleted
+                                  ? 'bg-secondary border-secondary text-secondary-foreground'
+                                  : 'border-muted-foreground/30 hover:border-secondary'
+                              }`}
+                            >
+                              {isCompleted && <CheckCircle2 className="w-5 h-5" />}
+                            </button>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between gap-2">
+                                <h4 className={`font-bold text-base ${isCompleted ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                                  {task.title}
+                                </h4>
+                                <button
+                                  onClick={() => handleStar(task.title)}
+                                  className={`flex-shrink-0 transition-colors p-1 ${isStarred ? 'text-gold' : 'text-muted-foreground/30 hover:text-gold/60'}`}
+                                >
+                                  <Star className={`w-5 h-5 ${isStarred ? 'fill-current' : ''}`} />
+                                </button>
                               </div>
-                            )}
-                            {task.link && (
-                              <a
-                                href={task.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => tokenId && trackInteraction({
-                                  tokenId,
-                                  interactionType: 'click',
-                                  targetType: 'roadmap_task',
-                                  targetTitle: task.title,
-                                })}
-                                className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 mt-2"
-                              >
-                                <ExternalLink className="w-3 h-3" />
-                                למידע נוסף
-                              </a>
-                            )}
+                              <p className="text-sm text-muted-foreground mt-1">{task.description}</p>
+                              
+                              {/* "Why Sagei chose this" snippet */}
+                              {task.whySagei && (
+                                <div className="mt-3 bg-secondary/5 border border-secondary/15 rounded-xl px-4 py-3">
+                                  <p className="text-sm text-secondary font-medium">
+                                    🌿 למה סגי בחר בזה עבורכם:
+                                  </p>
+                                  <p className="text-sm text-muted-foreground mt-1">{task.whySagei}</p>
+                                </div>
+                              )}
+
+                              {task.successMetric && (
+                                <div className="mt-2 flex items-center gap-1.5">
+                                  <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-medium">
+                                    🎯 {task.successMetric}
+                                  </span>
+                                </div>
+                              )}
+                              {task.link && (
+                                <a
+                                  href={task.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={() => tokenId && trackInteraction({
+                                    tokenId,
+                                    interactionType: 'click',
+                                    targetType: 'roadmap_task',
+                                    targetTitle: task.title,
+                                  })}
+                                  className="inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80 mt-2"
+                                >
+                                  <ExternalLink className="w-4 h-4" />
+                                  למידע נוסף
+                                </a>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        );
-      })}
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
+      </div>
     </div>
   );
 };

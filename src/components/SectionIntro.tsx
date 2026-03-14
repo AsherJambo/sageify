@@ -9,6 +9,7 @@ interface SectionIntroProps {
   notes?: string[];
   onContinue: () => void;
   buttonText?: string;
+  contextFeedback?: string;
 }
 
 const SectionIntro = ({
@@ -20,19 +21,27 @@ const SectionIntro = ({
   notes,
   onContinue,
   buttonText = '← בואו נמשיך',
+  contextFeedback,
 }: SectionIntroProps) => {
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-16 fade-in">
       <div className="w-full max-w-2xl space-y-10">
+        {/* Contextual feedback toast */}
+        {contextFeedback && (
+          <div className="bg-secondary/8 border border-secondary/20 rounded-2xl px-6 py-4 text-center text-base text-foreground font-medium animate-fade-in">
+            {contextFeedback}
+          </div>
+        )}
+
         {/* Logo */}
         <div className="text-center">
           <img
             src={owlLogo}
             alt="Sageify"
-            className="w-20 h-20 mx-auto mb-6 rounded-full shadow-[var(--shadow-card)] animate-float"
+            className="w-24 h-24 mx-auto mb-6 rounded-full shadow-[var(--shadow-card)] animate-float"
           />
           {badge && (
-            <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm mb-3 tracking-wide border border-secondary/15">
+            <div className="inline-block px-5 py-2 rounded-full bg-secondary/8 text-secondary font-medium text-base mb-3 tracking-wide border border-secondary/15">
               {badge}
             </div>
           )}
@@ -44,16 +53,16 @@ const SectionIntro = ({
         {/* Main content card */}
         <div className="bg-card rounded-3xl p-8 md:p-10 border border-border/60 shadow-[var(--shadow-card)] space-y-5">
           {paragraphs.map((p, i) => (
-            <p key={i} className="text-foreground leading-relaxed text-base">
+            <p key={i} className="text-foreground leading-relaxed text-lg">
               {p}
             </p>
           ))}
 
           {bulletPoints && bulletPoints.length > 0 && (
-            <ul className="space-y-3 pr-2">
+            <ul className="space-y-4 pr-2">
               {bulletPoints.map((bp, i) => (
-                <li key={i} className="flex items-start gap-3 text-foreground text-base">
-                  <span className="text-secondary/60 mt-1 flex-shrink-0 text-xs">◆</span>
+                <li key={i} className="flex items-start gap-3 text-foreground text-lg">
+                  <span className="text-secondary/60 mt-1 flex-shrink-0 text-sm">◆</span>
                   <span>{bp}</span>
                 </li>
               ))}
@@ -61,7 +70,7 @@ const SectionIntro = ({
           )}
 
           {paragraphs2 && paragraphs2.map((p, i) => (
-            <p key={`p2-${i}`} className="text-foreground leading-relaxed text-base">
+            <p key={`p2-${i}`} className="text-foreground leading-relaxed text-lg">
               {p}
             </p>
           ))}
@@ -70,16 +79,16 @@ const SectionIntro = ({
         {/* Notes block */}
         {notes && notes.length > 0 && (
           <div className="bg-card rounded-3xl p-8 border border-secondary/15 shadow-[var(--shadow-card)] space-y-4">
-            <p className="font-semibold font-display text-foreground text-base tracking-wide">הערות אחרונות לפני שמתחילים:</p>
+            <p className="font-semibold font-display text-foreground text-lg tracking-wide">הערות אחרונות לפני שמתחילים:</p>
             <ul className="space-y-3 pr-2">
               {notes.map((note, i) => (
-                <li key={i} className="flex items-start gap-3 text-foreground text-sm">
-                  <span className="text-secondary/50 mt-0.5 flex-shrink-0 text-xs">✦</span>
+                <li key={i} className="flex items-start gap-3 text-foreground text-base">
+                  <span className="text-secondary/50 mt-0.5 flex-shrink-0 text-sm">✦</span>
                   <span>{note}</span>
                 </li>
               ))}
             </ul>
-            <p className="text-foreground text-base font-medium mt-2">בהצלחה, ונתראה בהמשך!</p>
+            <p className="text-foreground text-lg font-medium mt-2">בהצלחה, ונתראה בהמשך!</p>
           </div>
         )}
 
@@ -87,7 +96,7 @@ const SectionIntro = ({
         <div className="text-center pt-10">
           <button
             onClick={onContinue}
-            className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)]"
+            className="px-14 py-6 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)]"
           >
             {buttonText}
           </button>
