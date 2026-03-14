@@ -60,6 +60,18 @@ export default {
           DEFAULT: "hsl(var(--sage))",
           light: "hsl(var(--sage-light))",
         },
+        sand: {
+          DEFAULT: "hsl(var(--sand))",
+          warm: "hsl(var(--sand-warm))",
+        },
+        'slate-blue': {
+          DEFAULT: "hsl(var(--slate-blue))",
+          light: "hsl(var(--slate-blue-light))",
+        },
+        forest: {
+          DEFAULT: "hsl(var(--forest))",
+          light: "hsl(var(--forest-light))",
+        },
         gold: {
           DEFAULT: "hsl(var(--gold))",
           light: "hsl(var(--gold-light))",

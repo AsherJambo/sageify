@@ -44,7 +44,7 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
       if (next.has(id)) {
         next.delete(id);
       } else {
-        if (next.size >= 3) return prev; // max 3
+        if (next.size >= 3) return prev;
         next.add(id);
       }
       return next;
@@ -66,13 +66,13 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
-      <div className="w-full max-w-2xl space-y-8">
-        <div className="text-center space-y-3">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
+      <div className="w-full max-w-2xl space-y-10">
+        <div className="text-center space-y-4">
+          <div className="inline-block px-5 py-2 rounded-full bg-secondary/8 text-secondary font-medium text-base tracking-wide border border-secondary/15">
             ✦ פרופיל אישיות
           </div>
           <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">
-            מפת הנטיות שלך
+            מפת הנטיות שלכם
           </h2>
           <p className="text-muted-foreground text-lg">הזיזו את הסליידר למקום שהכי מדויק עבורכם</p>
         </div>
@@ -85,11 +85,11 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.08, duration: 0.5 }}
-              className="bg-card rounded-3xl p-6 border border-border/60 shadow-[var(--shadow-card)]"
+              className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]"
             >
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-lg">{trait.icon}</span>
-                <div className="flex-1 flex justify-between text-sm font-medium">
+              <div className="flex items-center gap-2 mb-5">
+                <span className="text-xl">{trait.icon}</span>
+                <div className="flex-1 flex justify-between text-base font-medium">
                   <span className="text-foreground">{trait.right}</span>
                   <span className="text-foreground">{trait.left}</span>
                 </div>
@@ -102,26 +102,26 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
                 step={1}
                 className="w-full"
               />
-              <div className="flex justify-between mt-2">
-                <span className="text-xs text-muted-foreground">100</span>
-                <span className="text-xs text-secondary font-bold">{sliders[trait.id]}</span>
-                <span className="text-xs text-muted-foreground">0</span>
+              <div className="flex justify-between mt-3">
+                <span className="text-sm text-muted-foreground">100</span>
+                <span className="text-sm text-secondary font-bold">{sliders[trait.id]}</span>
+                <span className="text-sm text-muted-foreground">0</span>
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* Value Alignment Cards */}
-        <div className="space-y-4">
-          <div className="text-center space-y-2">
+        <div className="space-y-5">
+          <div className="text-center space-y-3">
             <h3 className="text-xl font-bold font-display text-foreground tracking-wide">
               ✦ בחירת ערכים
             </h3>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-base">
               בחרו 2-3 ערכים שהכי חשובים לכם בשלב הזה של החיים
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             {VALUE_CARDS.map((card, idx) => {
               const isSelected = selectedValues.has(card.id);
               return (
@@ -131,17 +131,17 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.3 + idx * 0.05 }}
                   onClick={() => toggleValue(card.id)}
-                  className={`relative text-right p-4 rounded-2xl border-2 transition-all duration-300 ${
+                  className={`relative text-right p-5 rounded-2xl border-2 transition-all duration-300 ${
                     isSelected
                       ? 'bg-secondary/8 border-secondary/40 shadow-[var(--shadow-card)]'
                       : 'bg-card border-border/60 hover:border-secondary/20'
                   }`}
                 >
-                  <div className="text-2xl mb-2">{card.emoji}</div>
-                  <h4 className="font-bold font-display text-sm text-foreground">{card.label}</h4>
-                  <p className="text-xs text-muted-foreground mt-1">{card.desc}</p>
+                  <div className="text-3xl mb-3">{card.emoji}</div>
+                  <h4 className="font-bold font-display text-base text-foreground">{card.label}</h4>
+                  <p className="text-sm text-muted-foreground mt-1">{card.desc}</p>
                   {isSelected && (
-                    <div className="absolute top-2 left-2 w-5 h-5 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-xs font-bold">
+                    <div className="absolute top-3 left-3 w-6 h-6 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-sm font-bold">
                       ✓
                     </div>
                   )}
@@ -152,7 +152,7 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
         </div>
 
         {error && (
-          <div className="bg-destructive/10 border border-destructive/30 rounded-2xl px-5 py-3 text-destructive text-sm text-center">
+          <div className="bg-destructive/10 border border-destructive/30 rounded-2xl px-6 py-4 text-destructive text-base text-center">
             {error}
           </div>
         )}

@@ -31,7 +31,7 @@ const QuestionnaireNav = ({
         <button
           onClick={onPrev}
           disabled={prevDisabled}
-          className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-card text-foreground font-medium font-display tracking-wide border border-border/60 disabled:opacity-20 hover:border-secondary/30 hover:bg-card/80 hover:shadow-[var(--shadow-card)] transition-all duration-300"
+          className="group inline-flex items-center gap-3 px-8 py-4.5 rounded-2xl bg-card text-foreground font-medium font-display text-lg tracking-wide border border-border/60 disabled:opacity-20 hover:border-secondary/30 hover:bg-card/80 hover:shadow-[var(--shadow-card)] transition-all duration-300"
         >
           <span className="text-muted-foreground/70 transition-transform duration-300 group-hover:translate-x-[3px]">→</span>
           <span>הקודם</span>
@@ -42,7 +42,7 @@ const QuestionnaireNav = ({
         <button
           onClick={onNext}
           disabled={nextDisabled}
-          className="group inline-flex items-center gap-2.5 px-8 py-3.5 rounded-2xl bg-primary text-primary-foreground font-medium font-display tracking-wide disabled:opacity-20 hover:bg-primary/85 transition-all duration-300 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)]"
+          className="group inline-flex items-center gap-3 px-10 py-4.5 rounded-2xl bg-primary text-primary-foreground font-medium font-display text-lg tracking-wide disabled:opacity-20 hover:bg-primary/85 transition-all duration-300 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)]"
         >
           <span>הבא</span>
           <span className="transition-transform duration-300 group-hover:translate-x-[-3px]">←</span>
