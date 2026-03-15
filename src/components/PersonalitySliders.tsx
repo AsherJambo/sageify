@@ -65,9 +65,14 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+    <div className="min-h-screen flex flex-col items-center px-4 py-12">
       <div className="w-full max-w-2xl space-y-10">
-        <div className="text-center space-y-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center space-y-4"
+        >
           <div className="inline-block px-5 py-2 rounded-full bg-secondary/8 text-secondary font-medium text-base tracking-wide border border-secondary/15">
             ✦ פרופיל אישיות
           </div>
@@ -75,16 +80,16 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
             מפת הנטיות שלכם
           </h2>
           <p className="text-muted-foreground text-lg">הזיזו את הסליידר למקום שהכי מדויק עבורכם</p>
-        </div>
+        </motion.div>
 
         {/* Personality Sliders */}
         <div className="space-y-6">
           {TRAIT_PAIRS.map((trait, idx) => (
             <motion.div
               key={trait.id}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.08, duration: 0.5 }}
+              transition={{ delay: idx * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="bg-card rounded-3xl p-7 border border-border/60 shadow-[var(--shadow-card)]"
             >
               <div className="flex items-center gap-2 mb-5">
@@ -113,27 +118,33 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
 
         {/* Value Alignment Cards */}
         <div className="space-y-5">
-          <div className="text-center space-y-3">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="text-center space-y-3"
+          >
             <h3 className="text-xl font-bold font-display text-foreground tracking-wide">
               ✦ בחירת ערכים
             </h3>
             <p className="text-muted-foreground text-base">
               בחרו 2-3 ערכים שהכי חשובים לכם בשלב הזה של החיים
             </p>
-          </div>
+          </motion.div>
           <div className="grid grid-cols-2 gap-4">
             {VALUE_CARDS.map((card, idx) => {
               const isSelected = selectedValues.has(card.id);
               return (
                 <motion.button
                   key={card.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 + idx * 0.05 }}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 + idx * 0.06, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => toggleValue(card.id)}
-                  className={`relative text-right p-5 rounded-2xl border-2 transition-all duration-300 ${
+                  className={`relative text-right p-5 rounded-2xl border-2 transition-all duration-300 min-h-[52px] ${
                     isSelected
-                      ? 'bg-secondary/8 border-secondary/40 shadow-[var(--shadow-card)]'
+                      ? 'bg-secondary/8 border-secondary/40 shadow-[var(--shadow-card)] scale-[1.03]'
                       : 'bg-card border-border/60 hover:border-secondary/20'
                   }`}
                 >
@@ -141,9 +152,14 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
                   <h4 className="font-bold font-display text-base text-foreground">{card.label}</h4>
                   <p className="text-sm text-muted-foreground mt-1">{card.desc}</p>
                   {isSelected && (
-                    <div className="absolute top-3 left-3 w-6 h-6 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-sm font-bold">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                      className="absolute top-3 left-3 w-7 h-7 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-sm font-bold"
+                    >
                       ✓
-                    </div>
+                    </motion.div>
                   )}
                 </motion.button>
               );
@@ -152,9 +168,13 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
         </div>
 
         {error && (
-          <div className="bg-destructive/10 border border-destructive/30 rounded-2xl px-6 py-4 text-destructive text-base text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-destructive/10 border border-destructive/30 rounded-2xl px-6 py-4 text-destructive text-base text-center"
+          >
             {error}
-          </div>
+          </motion.div>
         )}
 
         <QuestionnaireNav
