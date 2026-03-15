@@ -53,7 +53,7 @@ const QuestionnaireNav = ({
         <button
           onClick={onComplete}
           disabled={completeDisabled}
-          className="group inline-flex items-center gap-3 px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-semibold font-display text-lg tracking-wide disabled:opacity-20 hover:bg-primary/85 transition-all duration-500 hover:scale-[1.02] shadow-[var(--shadow-elevated)] hover:shadow-[0_12px_40px_-8px_hsl(var(--primary)/0.4)]"
+          className="group inline-flex items-center gap-3 px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-semibold font-display text-lg tracking-wide disabled:opacity-20 hover:bg-primary/85 transition-all duration-500 hover:scale-[1.02] shadow-[var(--shadow-elevated)] hover:shadow-[0_12px_40px_-8px_hsl(var(--primary)/0.4)] min-h-[52px]"
         >
           <img
             src={owlLogo}
