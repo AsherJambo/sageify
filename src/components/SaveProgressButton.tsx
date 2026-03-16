@@ -21,7 +21,7 @@ const SaveProgressButton = () => {
       onClick={handleSave}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-card/95 backdrop-blur-xl border border-secondary/25 rounded-full px-5 py-3 shadow-[var(--shadow-elevated)] hover:border-secondary/40 transition-all duration-300 group min-h-[52px]"
+      className="fixed bottom-5 right-4 sm:right-6 z-40 flex items-center gap-2 bg-card/95 backdrop-blur-xl border border-secondary/25 rounded-full px-4 py-2.5 sm:px-5 sm:py-3 shadow-[var(--shadow-elevated)] hover:border-secondary/40 transition-all duration-300 group min-h-[48px] sm:min-h-[52px]"
       style={{
         boxShadow: pulse
           ? '0 0 20px 2px hsl(var(--secondary) / 0.15), var(--shadow-elevated)'
