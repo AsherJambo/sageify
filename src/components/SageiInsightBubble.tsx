@@ -40,21 +40,21 @@ const SageiInsightBubble = ({ progress, username }: SageiInsightBubbleProps) => 
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-          className="fixed bottom-24 left-4 right-4 sm:bottom-20 sm:left-6 sm:right-auto z-40 max-w-xs"
+          className="fixed top-4 left-4 z-50 max-w-[280px] sm:max-w-xs"
         >
-          <div className="flex items-start gap-3 bg-card/95 backdrop-blur-xl border border-secondary/25 rounded-2xl px-5 py-4 shadow-[var(--shadow-elevated)]">
+          <div className="flex items-center gap-2.5 bg-card/95 backdrop-blur-xl border border-secondary/25 rounded-2xl px-4 py-3 shadow-[var(--shadow-elevated)]">
             <img
               src={owlLogo}
               alt=""
-              className="w-9 h-9 rounded-full ring-2 ring-secondary/20 flex-shrink-0"
+              className="w-8 h-8 rounded-full ring-2 ring-secondary/20 flex-shrink-0"
             />
-            <div>
-              <p className="text-xs font-display font-bold text-secondary tracking-wide mb-0.5">סגי אומר:</p>
-              <p className="text-sm text-foreground leading-relaxed">{currentInsight}</p>
+            <div className="min-w-0">
+              <p className="text-[11px] font-display font-bold text-secondary tracking-wide mb-0.5">סגי אומר:</p>
+              <p className="text-xs text-foreground leading-snug">{currentInsight}</p>
             </div>
           </div>
         </motion.div>
