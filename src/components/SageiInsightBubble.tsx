@@ -44,7 +44,7 @@ const SageiInsightBubble = ({ progress, username }: SageiInsightBubbleProps) => 
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-          className="fixed top-4 left-4 z-50 max-w-[280px] sm:max-w-xs"
+          className="fixed top-6 left-4 z-50 max-w-[280px] sm:max-w-xs"
         >
           <div className="flex items-center gap-2.5 bg-card/95 backdrop-blur-xl border border-secondary/25 rounded-2xl px-4 py-3 shadow-[var(--shadow-elevated)]">
             <img
