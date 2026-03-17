@@ -296,12 +296,12 @@ describe('State Transitions', () => {
 
 describe('Full Simulated Journey', () => {
   it('simulates the complete user flow from VIA to results', () => {
-    // Step 1: VIA answers (all 48, rating 1-5)
+    // Step 1: VIA answers (all 40, rating 1-5)
     const viaAnswers: Answers = {};
     viaQuestions.forEach(q => {
       viaAnswers[q.id] = (q.id % 5) + 1;
     });
-    expect(Object.keys(viaAnswers).length).toBe(48);
+    expect(Object.keys(viaAnswers).length).toBe(40);
 
     // Step 2: VIA bonus
     const viaMaxQ = getMaxScoredQuestions(viaAnswers, viaQuestions);
