@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import owlLogo from '@/assets/owl-logo.png';
 
@@ -21,7 +21,10 @@ const SageiInsightBubble = ({ progress, username }: SageiInsightBubbleProps) => 
   const [currentInsight, setCurrentInsight] = useState('');
   const [visible, setVisible] = useState(false);
   const [lastShown, setLastShown] = useState(0);
+  const [scrolledAway, setScrolledAway] = useState(false);
+  const hideTimer = useRef<ReturnType<typeof setTimeout>>();
 
+  // Show insight on progress change
   useEffect(() => {
     const insight = [...INSIGHTS].reverse().find(i => progress >= i.threshold);
     if (insight && insight.threshold !== lastShown) {
@@ -31,22 +34,40 @@ const SageiInsightBubble = ({ progress, username }: SageiInsightBubbleProps) => 
       setCurrentInsight(text);
       setLastShown(insight.threshold);
       setVisible(true);
-      const timer = setTimeout(() => setVisible(false), 5000);
-      return () => clearTimeout(timer);
+      setScrolledAway(false);
+      clearTimeout(hideTimer.current);
+      hideTimer.current = setTimeout(() => setVisible(false), 5000);
+      return () => clearTimeout(hideTimer.current);
     }
   }, [progress, username, lastShown]);
+
+  // Hide on scroll, restore when scroll stops
+  useEffect(() => {
+    if (!visible) return;
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+    const onScroll = () => {
+      setScrolledAway(true);
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => setScrolledAway(false), 800);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [visible]);
 
   return (
     <AnimatePresence>
       {visible && (
         <motion.div
           initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
+          animate={{ opacity: scrolledAway ? 0 : 1, y: scrolledAway ? -10 : 0, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-          className="fixed top-6 left-4 z-50 max-w-[280px] sm:max-w-xs"
+          className="fixed top-6 left-4 z-50 max-w-[280px] sm:max-w-xs pointer-events-none"
         >
-          <div className="flex items-center gap-2.5 bg-card/95 backdrop-blur-xl border border-secondary/25 rounded-2xl px-4 py-3 shadow-[var(--shadow-elevated)]">
+          <div className="flex items-center gap-2.5 bg-card/80 backdrop-blur-xl border border-secondary/25 rounded-2xl px-4 py-3 shadow-[var(--shadow-elevated)]">
             <img
               src={owlLogo}
               alt=""
