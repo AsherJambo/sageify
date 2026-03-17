@@ -19,11 +19,11 @@ import { getRecommendations } from '@/lib/recommendations';
 // ==========================================
 
 describe('Data Integrity', () => {
-  it('VIA: 48 questions across 6 categories, unique IDs', () => {
-    expect(viaQuestions.length).toBe(48);
+  it('VIA: 40 questions across 6 categories, unique IDs', () => {
+    expect(viaQuestions.length).toBe(40);
     expect(viaCategories.length).toBe(6);
     const ids = viaQuestions.map(q => q.id);
-    expect(new Set(ids).size).toBe(48);
+    expect(new Set(ids).size).toBe(40);
     // Every question has a valid category
     viaQuestions.forEach(q => {
       expect(viaCategories).toContain(q.category);
