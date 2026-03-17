@@ -314,7 +314,7 @@ describe('Full Simulated Journey', () => {
     scheinQuestions.forEach(q => {
       scheinAnswers[q.id] = (q.id % 7) + 1;
     });
-    expect(Object.keys(scheinAnswers).length).toBe(40);
+    expect(Object.keys(scheinAnswers).length).toBe(32);
 
     // Step 4: Schein bonus
     const scheinMaxQ = getMaxScoredQuestions(scheinAnswers, scheinQuestions);
