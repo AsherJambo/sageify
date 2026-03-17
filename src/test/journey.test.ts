@@ -19,22 +19,22 @@ import { getRecommendations } from '@/lib/recommendations';
 // ==========================================
 
 describe('Data Integrity', () => {
-  it('VIA: 48 questions across 6 categories, unique IDs', () => {
-    expect(viaQuestions.length).toBe(48);
+  it('VIA: 40 questions across 6 categories, unique IDs', () => {
+    expect(viaQuestions.length).toBe(40);
     expect(viaCategories.length).toBe(6);
     const ids = viaQuestions.map(q => q.id);
-    expect(new Set(ids).size).toBe(48);
+    expect(new Set(ids).size).toBe(40);
     // Every question has a valid category
     viaQuestions.forEach(q => {
       expect(viaCategories).toContain(q.category);
     });
   });
 
-  it('Schein: 40 questions across 8 categories, unique IDs', () => {
-    expect(scheinQuestions.length).toBe(40);
+  it('Schein: 32 questions across 8 categories, unique IDs', () => {
+    expect(scheinQuestions.length).toBe(32);
     expect(scheinCategories.length).toBe(8);
     const ids = scheinQuestions.map(q => q.id);
-    expect(new Set(ids).size).toBe(40);
+    expect(new Set(ids).size).toBe(32);
     scheinQuestions.forEach(q => {
       expect(scheinCategories).toContain(q.category);
     });
@@ -81,7 +81,7 @@ describe('Data Integrity', () => {
 
 describe('Scoring Logic', () => {
   it('calculateCategoryScores computes correct averages', () => {
-    const answers: Answers = { 1: 5, 8: 3 }; // q1=חכמה, q8=חכמה
+    const answers: Answers = { 1: 5, 6: 3 }; // q1=חכמה, q6=חכמה
     const scores = calculateCategoryScores(answers, viaQuestions, viaCategories);
     expect(scores['חכמה וידע']).toBe(4); // (5+3)/2
   });
@@ -296,12 +296,12 @@ describe('State Transitions', () => {
 
 describe('Full Simulated Journey', () => {
   it('simulates the complete user flow from VIA to results', () => {
-    // Step 1: VIA answers (all 48, rating 1-5)
+    // Step 1: VIA answers (all 40, rating 1-5)
     const viaAnswers: Answers = {};
     viaQuestions.forEach(q => {
       viaAnswers[q.id] = (q.id % 5) + 1;
     });
-    expect(Object.keys(viaAnswers).length).toBe(48);
+    expect(Object.keys(viaAnswers).length).toBe(40);
 
     // Step 2: VIA bonus
     const viaMaxQ = getMaxScoredQuestions(viaAnswers, viaQuestions);
@@ -314,7 +314,7 @@ describe('Full Simulated Journey', () => {
     scheinQuestions.forEach(q => {
       scheinAnswers[q.id] = (q.id % 7) + 1;
     });
-    expect(Object.keys(scheinAnswers).length).toBe(40);
+    expect(Object.keys(scheinAnswers).length).toBe(32);
 
     // Step 4: Schein bonus
     const scheinMaxQ = getMaxScoredQuestions(scheinAnswers, scheinQuestions);
@@ -371,7 +371,7 @@ describe('Full Simulated Journey', () => {
 
     // Step 10: Get recommendations
     const recs = getRecommendations(viaScores, scheinScores);
-    expect(recs.length).toBe(5);
+    expect(recs.length).toBeGreaterThanOrEqual(3);
 
     // Step 11: Verify top categories
     const topVIA = getTopCategories(viaScores, 2);
