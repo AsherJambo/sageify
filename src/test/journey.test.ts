@@ -30,11 +30,11 @@ describe('Data Integrity', () => {
     });
   });
 
-  it('Schein: 40 questions across 8 categories, unique IDs', () => {
-    expect(scheinQuestions.length).toBe(40);
+  it('Schein: 32 questions across 8 categories, unique IDs', () => {
+    expect(scheinQuestions.length).toBe(32);
     expect(scheinCategories.length).toBe(8);
     const ids = scheinQuestions.map(q => q.id);
-    expect(new Set(ids).size).toBe(40);
+    expect(new Set(ids).size).toBe(32);
     scheinQuestions.forEach(q => {
       expect(scheinCategories).toContain(q.category);
     });
