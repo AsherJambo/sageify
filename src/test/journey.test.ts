@@ -81,7 +81,7 @@ describe('Data Integrity', () => {
 
 describe('Scoring Logic', () => {
   it('calculateCategoryScores computes correct averages', () => {
-    const answers: Answers = { 1: 5, 8: 3 }; // q1=חכמה, q8=חכמה
+    const answers: Answers = { 1: 5, 6: 3 }; // q1=חכמה, q6=חכמה
     const scores = calculateCategoryScores(answers, viaQuestions, viaCategories);
     expect(scores['חכמה וידע']).toBe(4); // (5+3)/2
   });
