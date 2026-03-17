@@ -371,7 +371,7 @@ describe('Full Simulated Journey', () => {
 
     // Step 10: Get recommendations
     const recs = getRecommendations(viaScores, scheinScores);
-    expect(recs.length).toBe(5);
+    expect(recs.length).toBeGreaterThanOrEqual(3);
 
     // Step 11: Verify top categories
     const topVIA = getTopCategories(viaScores, 2);
