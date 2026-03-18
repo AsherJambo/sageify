@@ -253,12 +253,25 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
     case 'welcome':
       return (
         <div className="min-h-screen flex flex-col items-center justify-center px-6">
-          <div className="max-w-lg text-center space-y-6">
-            <img src={owlLogo} alt="Sageify" className="w-28 h-28 mx-auto rounded-full shadow-[var(--shadow-elevated)] border-2 border-border/30" />
+        <div className="max-w-lg text-center space-y-6">
+            {partnerOrg?.logo_url && (
+              <div className="flex items-center justify-center gap-4 mb-2">
+                <img src={partnerOrg.logo_url} alt={partnerOrg.org_name} className="w-16 h-16 rounded-lg object-contain" />
+                <span className="text-muted-foreground text-lg">×</span>
+                <img src={owlLogo} alt="Sageify" className="w-16 h-16 rounded-full" />
+              </div>
+            )}
+            {!partnerOrg?.logo_url && (
+              <img src={owlLogo} alt="Sageify" className="w-28 h-28 mx-auto rounded-full shadow-[var(--shadow-elevated)] border-2 border-border/30" />
+            )}
             <h1 className="text-3xl font-bold text-foreground">
               שלום, <span className="text-accent">{tokenRow?.username}</span>!
             </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">ברוכים הבאים לשאלון Sageify. הזינו את מספר תעודת הזהות שלכם כדי להתחיל.</p>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              {partnerOrg?.custom_welcome_message 
+                ? partnerOrg.custom_welcome_message
+                : 'ברוכים הבאים לשאלון Sageify. הזינו את מספר תעודת הזהות שלכם כדי להתחיל.'}
+            </p>
             <div className="max-w-xs mx-auto">
               <input
                 type="text"
