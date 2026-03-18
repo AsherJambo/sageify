@@ -171,25 +171,25 @@ const EmployerAdmin = () => {
       // VIA top
       const viaAnswers = rd.finalViaAnswers || rd.viaAnswers;
       if (viaAnswers && typeof viaAnswers === 'object') {
-        const scores = calculateCategoryScores(viaAnswers as Answers, viaCategories);
+        const scores = calculateCategoryScores(viaAnswers as Answers, viaQuestions, viaCategories);
         const top = getTopCategories(scores, 1);
-        top.forEach(([cat]) => { viaCounts[cat] = (viaCounts[cat] || 0) + 1; });
+        top.forEach(t => { viaCounts[t.category] = (viaCounts[t.category] || 0) + 1; });
       }
 
       // Schein top
       const scheinAnswers = rd.finalScheinAnswers || rd.scheinAnswers;
       if (scheinAnswers && typeof scheinAnswers === 'object') {
-        const scores = calculateCategoryScores(scheinAnswers as Answers, scheinCategories);
+        const scores = calculateCategoryScores(scheinAnswers as Answers, scheinQuestions, scheinCategories);
         const top = getTopCategories(scores, 1);
-        top.forEach(([cat]) => { scheinCounts[cat] = (scheinCounts[cat] || 0) + 1; });
+        top.forEach(t => { scheinCounts[t.category] = (scheinCounts[t.category] || 0) + 1; });
       }
 
       // Holland top
       const hollandAnswers = rd.hollandAnswers;
       if (hollandAnswers && typeof hollandAnswers === 'object') {
-        const scores = calculateCategoryScores(hollandAnswers as Answers, hollandCategories);
+        const scores = calculateCategoryScores(hollandAnswers as Answers, hollandQuestions, hollandCategories);
         const top = getTopCategories(scores, 1);
-        top.forEach(([cat]) => { hollandCounts[cat] = (hollandCounts[cat] || 0) + 1; });
+        top.forEach(t => { hollandCounts[t.category] = (hollandCounts[t.category] || 0) + 1; });
       }
     });
 
