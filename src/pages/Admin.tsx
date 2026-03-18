@@ -11,8 +11,9 @@ import AdminIntelligence from '@/components/AdminIntelligence';
 import AdminOpportunityEnricher from '@/components/AdminOpportunityEnricher';
 import GlobalTrends from '@/components/GlobalTrends';
 import StrategicInsights from '@/components/StrategicInsights';
-import { Sparkles, BarChart3, Search, TrendingUp, Radar, Database } from 'lucide-react';
+import { Sparkles, BarChart3, Search, TrendingUp, Radar, Database, Building2 } from 'lucide-react';
 import AdminDataAsset from '@/components/AdminDataAsset';
+import AdminOrganizations from '@/components/AdminOrganizations';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
@@ -351,9 +352,13 @@ const Admin = () => {
       </div>
 
       <Tabs defaultValue="tokens" className="space-y-6">
-        <TabsList className="flex flex-col md:grid md:grid-cols-6 w-full h-auto gap-2 p-1">
+        <TabsList className="flex flex-col md:grid md:grid-cols-7 w-full h-auto gap-2 p-1">
           <TabsTrigger value="tokens" className="gap-2 w-full">
             📋 ניהול קישורים
+          </TabsTrigger>
+          <TabsTrigger value="organizations" className="gap-2 w-full">
+            <Building2 className="w-4 h-4" />
+            🏢 ארגונים
           </TabsTrigger>
           <TabsTrigger value="intelligence" className="gap-2 w-full">
             <BarChart3 className="w-4 h-4" />
@@ -527,6 +532,10 @@ const Admin = () => {
             onClose={() => setShowAnalysis(false)}
             adminPassword={storedPassword}
           />
+        </TabsContent>
+
+        <TabsContent value="organizations">
+          <AdminOrganizations />
         </TabsContent>
 
         <TabsContent value="data-asset">

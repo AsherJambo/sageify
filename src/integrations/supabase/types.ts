@@ -61,6 +61,38 @@ export type Database = {
           },
         ]
       }
+      employer_feedback: {
+        Row: {
+          created_at: string
+          feedback_text: string
+          feedback_type: string
+          id: string
+          organization_id: string
+        }
+        Insert: {
+          created_at?: string
+          feedback_text: string
+          feedback_type?: string
+          id?: string
+          organization_id: string
+        }
+        Update: {
+          created_at?: string
+          feedback_text?: string
+          feedback_type?: string
+          id?: string
+          organization_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employer_feedback_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       global_retiree_insights: {
         Row: {
           activity_suggested: string
@@ -177,6 +209,39 @@ export type Database = {
         }
         Relationships: []
       }
+      organizations: {
+        Row: {
+          admin_email: string
+          admin_password: string
+          created_at: string
+          custom_welcome_message: string | null
+          id: string
+          logo_url: string | null
+          org_name: string
+          updated_at: string
+        }
+        Insert: {
+          admin_email: string
+          admin_password?: string
+          created_at?: string
+          custom_welcome_message?: string | null
+          id?: string
+          logo_url?: string | null
+          org_name: string
+          updated_at?: string
+        }
+        Update: {
+          admin_email?: string
+          admin_password?: string
+          created_at?: string
+          custom_welcome_message?: string | null
+          id?: string
+          logo_url?: string | null
+          org_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       questionnaire_responses: {
         Row: {
           created_at: string
@@ -215,6 +280,7 @@ export type Database = {
           created_at: string
           id: string
           id_number: string | null
+          organization_id: string | null
           token: string
           used: boolean
           username: string
@@ -224,6 +290,7 @@ export type Database = {
           created_at?: string
           id?: string
           id_number?: string | null
+          organization_id?: string | null
           token?: string
           used?: boolean
           username: string
@@ -233,11 +300,20 @@ export type Database = {
           created_at?: string
           id?: string
           id_number?: string | null
+          organization_id?: string | null
           token?: string
           used?: boolean
           username?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "questionnaire_tokens_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_feedback: {
         Row: {
