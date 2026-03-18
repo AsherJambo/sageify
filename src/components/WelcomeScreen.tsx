@@ -5,6 +5,7 @@ import { owlWelcome } from '@/lib/owlMessages';
 
 interface WelcomeScreenProps {
   onStart: () => void;
+  partnerOrg?: { org_name: string; logo_url: string | null; custom_welcome_message: string };
 }
 
 const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
