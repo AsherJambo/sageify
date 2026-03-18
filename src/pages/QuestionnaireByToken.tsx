@@ -84,7 +84,11 @@ const STEP_PROGRESS: Record<Step, number> = {
   'results': 100,
 };
 
-const QuestionnaireByToken = () => {
+interface QuestionnaireByTokenProps {
+  partnerOrg?: { org_name: string; logo_url: string | null; custom_welcome_message: string };
+}
+
+const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) => {
   const { token } = useParams<{ token: string }>();
   const [tokenRow, setTokenRow] = useState<{ id: string; username: string } | null>(null);
   const [responseId, setResponseId] = useState<string | null>(null);
