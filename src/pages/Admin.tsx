@@ -534,6 +534,10 @@ const Admin = () => {
           />
         </TabsContent>
 
+        <TabsContent value="organizations">
+          <AdminOrganizations />
+        </TabsContent>
+
         <TabsContent value="data-asset">
           <AdminDataAsset />
         </TabsContent>
