@@ -352,9 +352,13 @@ const Admin = () => {
       </div>
 
       <Tabs defaultValue="tokens" className="space-y-6">
-        <TabsList className="flex flex-col md:grid md:grid-cols-6 w-full h-auto gap-2 p-1">
+        <TabsList className="flex flex-col md:grid md:grid-cols-7 w-full h-auto gap-2 p-1">
           <TabsTrigger value="tokens" className="gap-2 w-full">
             📋 ניהול קישורים
+          </TabsTrigger>
+          <TabsTrigger value="organizations" className="gap-2 w-full">
+            <Building2 className="w-4 h-4" />
+            🏢 ארגונים
           </TabsTrigger>
           <TabsTrigger value="intelligence" className="gap-2 w-full">
             <BarChart3 className="w-4 h-4" />
