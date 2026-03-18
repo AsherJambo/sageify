@@ -68,16 +68,27 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
               showGreeting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            <img
-              src={sageifyLogo}
-              alt="Sageify"
-              className="w-28 h-28 md:w-32 md:h-32 mx-auto rounded-full shadow-[var(--shadow-elevated)] border-2 border-white/15 mb-8"
-            />
+            <div className="flex items-center justify-center gap-4 mb-8">
+              {partnerOrg?.logo_url && (
+                <img
+                  src={partnerOrg.logo_url}
+                  alt={partnerOrg.org_name}
+                  className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-contain bg-white/10 p-2"
+                />
+              )}
+              <img
+                src={sageifyLogo}
+                alt="Sageify"
+                className="w-28 h-28 md:w-32 md:h-32 mx-auto rounded-full shadow-[var(--shadow-elevated)] border-2 border-white/15"
+              />
+            </div>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-display text-white tracking-wide">
               Sageify
             </h1>
             <p className="text-lg md:text-xl text-white/75 mt-4 max-w-md mx-auto font-light tracking-wide">
-              שיחה מקצועית לגילוי חוזקות ומיפוי כיוונים תעסוקתיים
+              {partnerOrg?.custom_welcome_message 
+                ? partnerOrg.custom_welcome_message
+                : 'שיחה מקצועית לגילוי חוזקות ומיפוי כיוונים תעסוקתיים'}
             </p>
           </div>
         </div>
