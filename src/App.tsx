@@ -9,6 +9,8 @@ import NotFound from "./pages/NotFound";
 
 const QuestionnaireByToken = lazy(() => import("./pages/QuestionnaireByToken"));
 const Admin = lazy(() => import("./pages/Admin"));
+const EmployerAdmin = lazy(() => import("./pages/EmployerAdmin"));
+const PartnerQuestionnaire = lazy(() => import("./pages/PartnerQuestionnaire"));
 
 const queryClient = new QueryClient();
 
