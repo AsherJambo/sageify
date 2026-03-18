@@ -9,9 +9,9 @@ import { Users, Link2, BarChart3, MessageSquarePlus, Copy, Eye } from 'lucide-re
 import ResponseViewer from '@/components/ResponseViewer';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { calculateCategoryScores, getTopCategories, type Answers } from '@/lib/scoring';
-import { viaCategories } from '@/data/viaQuestions';
-import { scheinCategories } from '@/data/scheinQuestions';
-import { hollandCategories } from '@/data/hollandQuestions';
+import { viaQuestions, viaCategories } from '@/data/viaQuestions';
+import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
+import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 
 interface OrgData {
   id: string;
