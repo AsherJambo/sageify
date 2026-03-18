@@ -8,7 +8,7 @@ interface WelcomeScreenProps {
   partnerOrg?: { org_name: string; logo_url: string | null; custom_welcome_message: string };
 }
 
-const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
+const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
   const [showGreeting, setShowGreeting] = useState(false);
   const [showIntro, setShowIntro] = useState(false);
   const [showPillars, setShowPillars] = useState(false);
