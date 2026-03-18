@@ -249,7 +249,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
   switch (state.step) {
     case 'landing':
-      return <WelcomeScreen onStart={() => updateState({ step: 'welcome' })} />;
+      return <WelcomeScreen onStart={() => updateState({ step: 'welcome' })} partnerOrg={partnerOrg} />;
     case 'welcome':
       return (
         <div className="min-h-screen flex flex-col items-center justify-center px-6">
