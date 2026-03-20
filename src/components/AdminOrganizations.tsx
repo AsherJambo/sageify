@@ -4,7 +4,8 @@ import { Input } from '@/components/ui/input';
 import { cloudClient } from '@/lib/cloudClient';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Building2, Copy, Plus, Trash2, Upload, X, Image } from 'lucide-react';
+import { Building2, Copy, Plus, Trash2, Upload, X, Image, Link2 } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Org {
   id: string;
@@ -25,6 +26,7 @@ const AdminOrganizations = () => {
   const [uploading, setUploading] = useState(false);
   const [logoMode, setLogoMode] = useState<'file' | 'url'>('file');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isMobile = useIsMobile();
   const [newOrg, setNewOrg] = useState({
     org_name: '',
     admin_email: '',
@@ -95,7 +97,6 @@ const AdminOrganizations = () => {
       return;
     }
 
-    // First create org without logo to get the ID
     const { data: inserted, error } = await cloudClient.from('organizations').insert({
       org_name: newOrg.org_name.trim(),
       admin_email: newOrg.admin_email.trim(),
@@ -109,7 +110,6 @@ const AdminOrganizations = () => {
       return;
     }
 
-    // If file mode, upload and update
     if (logoMode === 'file' && logoFile) {
       const logoUrl = await uploadLogo((inserted as any).id);
       if (logoUrl) {
@@ -134,19 +134,19 @@ const AdminOrganizations = () => {
     }
   };
 
-  const copyEmployerLink = (orgId: string) => {
-    const origin = window.location.origin.includes('preview')
+  const getOrigin = () => {
+    return window.location.origin.includes('preview')
       ? 'https://sageify.lovable.app'
       : window.location.origin;
-    navigator.clipboard.writeText(`${origin}/#/employer-admin`);
+  };
+
+  const copyEmployerLink = (orgId: string) => {
+    navigator.clipboard.writeText(`${getOrigin()}/#/employer-admin`);
     toast.success('קישור פורטל מעסיק הועתק!');
   };
 
   const copyPartnerPrefix = (orgId: string) => {
-    const origin = window.location.origin.includes('preview')
-      ? 'https://sageify.lovable.app'
-      : window.location.origin;
-    navigator.clipboard.writeText(`${origin}/#/partner/${orgId}/q/`);
+    navigator.clipboard.writeText(`${getOrigin()}/#/partner/${orgId}/q/`);
     toast.success('קידומת קישור שותף הועתקה! הוסיפו Token בסוף.');
   };
 
@@ -156,72 +156,59 @@ const AdminOrganizations = () => {
 
   return (
     <div className="space-y-6" dir="rtl">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold font-display text-foreground flex items-center gap-2">
-            <Building2 className="w-5 h-5" />
-            ניהול ארגונים (B2B)
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <h2 className="text-lg md:text-xl font-bold font-display text-foreground flex items-center gap-2">
+            <Building2 className="w-5 h-5 shrink-0" />
+            <span className="truncate">ניהול ארגונים (B2B)</span>
           </h2>
-          <p className="text-sm text-muted-foreground mt-1">צרו ונהלו ארגונים שותפים עם פורטלים ייעודיים</p>
+          <p className="text-xs md:text-sm text-muted-foreground mt-1">צרו ונהלו ארגונים שותפים</p>
         </div>
-        <Button onClick={() => setShowCreate(!showCreate)} className="gap-2">
+        <Button onClick={() => setShowCreate(!showCreate)} size={isMobile ? 'sm' : 'default'} className="gap-1.5 shrink-0">
           <Plus className="w-4 h-4" />
-          ארגון חדש
+          <span className="hidden sm:inline">ארגון חדש</span>
+          <span className="sm:hidden">חדש</span>
         </Button>
       </div>
 
+      {/* Create form */}
       {showCreate && (
-        <div className="bg-card border border-border rounded-xl p-6 space-y-4">
-          <h3 className="font-semibold text-lg">יצירת ארגון חדש</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-card border border-border rounded-xl p-4 md:p-6 space-y-4">
+          <h3 className="font-semibold text-base md:text-lg">יצירת ארגון חדש</h3>
+          <div className="space-y-4">
             <div className="space-y-1">
               <label className="text-xs text-muted-foreground">שם הארגון *</label>
-              <Input placeholder="חברה בע&quot;מ" value={newOrg.org_name} onChange={e => setNewOrg(p => ({ ...p, org_name: e.target.value }))} />
+              <Input placeholder='חברה בע"מ' value={newOrg.org_name} onChange={e => setNewOrg(p => ({ ...p, org_name: e.target.value }))} />
             </div>
-            <div className="space-y-1">
-              <label className="text-xs text-muted-foreground">אימייל מנהל HR *</label>
-              <Input type="email" placeholder="hr@company.com" value={newOrg.admin_email} onChange={e => setNewOrg(p => ({ ...p, admin_email: e.target.value }))} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-xs text-muted-foreground">אימייל מנהל HR *</label>
+                <Input type="email" placeholder="hr@company.com" value={newOrg.admin_email} onChange={e => setNewOrg(p => ({ ...p, admin_email: e.target.value }))} />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs text-muted-foreground">סיסמת כניסה לפורטל *</label>
+                <Input placeholder="סיסמה לפורטל מעסיק" value={newOrg.admin_password} onChange={e => setNewOrg(p => ({ ...p, admin_password: e.target.value }))} />
+              </div>
             </div>
-            <div className="space-y-1">
-              <label className="text-xs text-muted-foreground">סיסמת כניסה לפורטל *</label>
-              <Input placeholder="סיסמה לפורטל מעסיק" value={newOrg.admin_password} onChange={e => setNewOrg(p => ({ ...p, admin_password: e.target.value }))} />
-            </div>
+            
+            {/* Logo section */}
             <div className="space-y-1">
               <label className="text-xs text-muted-foreground">לוגו</label>
               <div className="flex gap-2 mb-2">
-                <Button
-                  type="button"
-                  size="sm"
-                  variant={logoMode === 'file' ? 'default' : 'outline'}
-                  onClick={() => setLogoMode('file')}
-                  className="gap-1 text-xs"
-                >
+                <Button type="button" size="sm" variant={logoMode === 'file' ? 'default' : 'outline'} onClick={() => setLogoMode('file')} className="gap-1 text-xs">
                   <Upload className="w-3 h-3" />
                   העלאת קובץ
                 </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant={logoMode === 'url' ? 'default' : 'outline'}
-                  onClick={() => setLogoMode('url')}
-                  className="gap-1 text-xs"
-                >
+                <Button type="button" size="sm" variant={logoMode === 'url' ? 'default' : 'outline'} onClick={() => setLogoMode('url')} className="gap-1 text-xs">
                   <Image className="w-3 h-3" />
                   קישור URL
                 </Button>
               </div>
-
               {logoMode === 'url' ? (
                 <Input placeholder="https://..." value={newOrg.logo_url} onChange={e => setNewOrg(p => ({ ...p, logo_url: e.target.value }))} />
               ) : (
                 <div>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileSelect}
-                    className="hidden"
-                  />
+                  <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileSelect} className="hidden" />
                   {logoPreview ? (
                     <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg border border-border">
                       <img src={logoPreview} alt="תצוגה מקדימה" className="w-12 h-12 rounded object-contain bg-background" />
@@ -246,65 +233,104 @@ const AdminOrganizations = () => {
                 </div>
               )}
             </div>
-          </div>
-          <div className="space-y-1">
-            <label className="text-xs text-muted-foreground">הודעת ברוכים הבאים מותאמת</label>
-            <Input placeholder="ברוכים הבאים, עובדי [שם הארגון]. בואו נגלה יחד את הפרק הבא שלכם." value={newOrg.custom_welcome_message} onChange={e => setNewOrg(p => ({ ...p, custom_welcome_message: e.target.value }))} />
+
+            <div className="space-y-1">
+              <label className="text-xs text-muted-foreground">הודעת ברוכים הבאים מותאמת</label>
+              <Input placeholder="ברוכים הבאים, עובדי [שם הארגון]." value={newOrg.custom_welcome_message} onChange={e => setNewOrg(p => ({ ...p, custom_welcome_message: e.target.value }))} />
+            </div>
           </div>
           <div className="flex gap-3">
-            <Button onClick={createOrg} disabled={uploading}>
+            <Button onClick={createOrg} disabled={uploading} className="flex-1 sm:flex-none">
               {uploading ? 'מעלה לוגו...' : 'צור ארגון'}
             </Button>
-            <Button variant="outline" onClick={() => setShowCreate(false)}>ביטול</Button>
+            <Button variant="outline" onClick={() => setShowCreate(false)} className="flex-1 sm:flex-none">ביטול</Button>
           </div>
         </div>
       )}
 
-      {/* Organizations list */}
-      <div className="bg-card border border-border rounded-xl overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-muted/50">
-            <tr>
-              <th className="p-3 text-right font-semibold">ארגון</th>
-              <th className="p-3 text-right font-semibold">אימייל מנהל</th>
-              <th className="p-3 text-right font-semibold">סיסמה</th>
-              <th className="p-3 text-right font-semibold">נוצר</th>
-              <th className="p-3 text-right font-semibold">פעולות</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orgs.map(org => (
-              <tr key={org.id} className="border-t border-border hover:bg-muted/30">
-                <td className="p-3 font-medium">
-                  <div className="flex items-center gap-2">
-                    {org.logo_url && <img src={org.logo_url} alt="" className="w-6 h-6 rounded object-contain" />}
-                    {org.org_name}
-                  </div>
-                </td>
-                <td className="p-3 text-muted-foreground">{org.admin_email}</td>
-                <td className="p-3 text-muted-foreground font-mono text-xs">{org.admin_password}</td>
-                <td className="p-3 text-muted-foreground">{new Date(org.created_at).toLocaleDateString('he-IL')}</td>
-                <td className="p-3">
-                  <div className="flex gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => copyEmployerLink(org.id)} title="העתק קישור פורטל">
-                      <Copy className="w-3.5 h-3.5" />
-                    </Button>
-                    <Button size="sm" variant="ghost" onClick={() => copyPartnerPrefix(org.id)} title="העתק קידומת שותף">
-                      🔗
-                    </Button>
-                    <Button size="sm" variant="ghost" onClick={() => deleteOrg(org.id)} className="text-destructive" title="מחק">
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </Button>
-                  </div>
-                </td>
+      {/* Organizations list - Cards on mobile, Table on desktop */}
+      {isMobile ? (
+        <div className="space-y-3">
+          {orgs.map(org => (
+            <div key={org.id} className="bg-card border border-border rounded-xl p-4 space-y-3">
+              <div className="flex items-center gap-3">
+                {org.logo_url && <img src={org.logo_url} alt="" className="w-8 h-8 rounded object-contain shrink-0" />}
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-sm truncate">{org.org_name}</p>
+                  <p className="text-xs text-muted-foreground truncate">{org.admin_email}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>סיסמה: <span className="font-mono">{org.admin_password}</span></span>
+                <span>{new Date(org.created_at).toLocaleDateString('he-IL')}</span>
+              </div>
+              <div className="flex gap-2 pt-1 border-t border-border">
+                <Button size="sm" variant="outline" onClick={() => copyEmployerLink(org.id)} className="flex-1 gap-1.5 text-xs h-8">
+                  <Copy className="w-3 h-3" />
+                  קישור פורטל
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => copyPartnerPrefix(org.id)} className="flex-1 gap-1.5 text-xs h-8">
+                  <Link2 className="w-3 h-3" />
+                  קישור שותף
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => deleteOrg(org.id)} className="text-destructive h-8 px-2">
+                  <Trash2 className="w-3.5 h-3.5" />
+                </Button>
+              </div>
+            </div>
+          ))}
+          {orgs.length === 0 && (
+            <div className="bg-card border border-border rounded-xl p-8 text-center text-muted-foreground text-sm">
+              אין ארגונים עדיין. צרו את הראשון!
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="bg-card border border-border rounded-xl overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="bg-muted/50">
+              <tr>
+                <th className="p-3 text-right font-semibold">ארגון</th>
+                <th className="p-3 text-right font-semibold">אימייל מנהל</th>
+                <th className="p-3 text-right font-semibold">סיסמה</th>
+                <th className="p-3 text-right font-semibold">נוצר</th>
+                <th className="p-3 text-right font-semibold">פעולות</th>
               </tr>
-            ))}
-            {orgs.length === 0 && (
-              <tr><td colSpan={5} className="p-8 text-center text-muted-foreground">אין ארגונים עדיין. צרו את הראשון!</td></tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {orgs.map(org => (
+                <tr key={org.id} className="border-t border-border hover:bg-muted/30">
+                  <td className="p-3 font-medium">
+                    <div className="flex items-center gap-2">
+                      {org.logo_url && <img src={org.logo_url} alt="" className="w-6 h-6 rounded object-contain" />}
+                      {org.org_name}
+                    </div>
+                  </td>
+                  <td className="p-3 text-muted-foreground">{org.admin_email}</td>
+                  <td className="p-3 text-muted-foreground font-mono text-xs">{org.admin_password}</td>
+                  <td className="p-3 text-muted-foreground">{new Date(org.created_at).toLocaleDateString('he-IL')}</td>
+                  <td className="p-3">
+                    <div className="flex gap-1">
+                      <Button size="sm" variant="ghost" onClick={() => copyEmployerLink(org.id)} title="העתק קישור פורטל">
+                        <Copy className="w-3.5 h-3.5" />
+                      </Button>
+                      <Button size="sm" variant="ghost" onClick={() => copyPartnerPrefix(org.id)} title="העתק קידומת שותף">
+                        🔗
+                      </Button>
+                      <Button size="sm" variant="ghost" onClick={() => deleteOrg(org.id)} className="text-destructive" title="מחק">
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {orgs.length === 0 && (
+                <tr><td colSpan={5} className="p-8 text-center text-muted-foreground">אין ארגונים עדיין. צרו את הראשון!</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
