@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cloudClient } from '@/lib/cloudClient';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Building2, Copy, Plus, Trash2 } from 'lucide-react';
+import { Building2, Copy, Plus, Trash2, Upload, X, Image } from 'lucide-react';
 
 interface Org {
   id: string;
@@ -19,6 +20,11 @@ const AdminOrganizations = () => {
   const [orgs, setOrgs] = useState<Org[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [logoMode, setLogoMode] = useState<'file' | 'url'>('file');
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [newOrg, setNewOrg] = useState({
     org_name: '',
     admin_email: '',
@@ -26,42 +32,101 @@ const AdminOrganizations = () => {
     logo_url: '',
     custom_welcome_message: '',
   });
-  const supabase = cloudClient;
 
   const loadOrgs = async () => {
     setLoading(true);
-    const { data } = await supabase.from('organizations').select('*').order('created_at', { ascending: false });
+    const { data } = await cloudClient.from('organizations').select('*').order('created_at', { ascending: false });
     if (data) setOrgs(data as unknown as Org[]);
     setLoading(false);
   };
 
   useEffect(() => { loadOrgs(); }, []);
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast.error('יש לבחור קובץ תמונה בלבד');
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('גודל הקובץ חייב להיות עד 2MB');
+      return;
+    }
+    setLogoFile(file);
+    setLogoPreview(URL.createObjectURL(file));
+  };
+
+  const clearFile = () => {
+    setLogoFile(null);
+    setLogoPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const uploadLogo = async (orgId: string): Promise<string | null> => {
+    if (!logoFile) return newOrg.logo_url.trim() || null;
+    
+    setUploading(true);
+    const ext = logoFile.name.split('.').pop() || 'png';
+    const filePath = `${orgId}.${ext}`;
+
+    const { error } = await supabase.storage
+      .from('org-logos')
+      .upload(filePath, logoFile, { upsert: true });
+
+    setUploading(false);
+
+    if (error) {
+      console.error('Upload error:', error);
+      toast.error('שגיאה בהעלאת הלוגו');
+      return null;
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('org-logos')
+      .getPublicUrl(filePath);
+
+    return urlData.publicUrl;
+  };
+
   const createOrg = async () => {
     if (!newOrg.org_name.trim() || !newOrg.admin_email.trim() || !newOrg.admin_password.trim()) {
       toast.error('שם, אימייל וסיסמה הם שדות חובה');
       return;
     }
-    const { error } = await supabase.from('organizations').insert({
+
+    // First create org without logo to get the ID
+    const { data: inserted, error } = await cloudClient.from('organizations').insert({
       org_name: newOrg.org_name.trim(),
       admin_email: newOrg.admin_email.trim(),
       admin_password: newOrg.admin_password.trim(),
-      logo_url: newOrg.logo_url.trim() || null,
+      logo_url: logoMode === 'url' ? (newOrg.logo_url.trim() || null) : null,
       custom_welcome_message: newOrg.custom_welcome_message.trim(),
-    });
-    if (error) {
+    }).select('id').single();
+
+    if (error || !inserted) {
       toast.error('שגיאה ביצירת ארגון');
-    } else {
-      toast.success('ארגון נוצר בהצלחה!');
-      setNewOrg({ org_name: '', admin_email: '', admin_password: '', logo_url: '', custom_welcome_message: '' });
-      setShowCreate(false);
-      loadOrgs();
+      return;
     }
+
+    // If file mode, upload and update
+    if (logoMode === 'file' && logoFile) {
+      const logoUrl = await uploadLogo((inserted as any).id);
+      if (logoUrl) {
+        await cloudClient.from('organizations').update({ logo_url: logoUrl }).eq('id', (inserted as any).id);
+      }
+    }
+
+    toast.success('ארגון נוצר בהצלחה!');
+    setNewOrg({ org_name: '', admin_email: '', admin_password: '', logo_url: '', custom_welcome_message: '' });
+    clearFile();
+    setShowCreate(false);
+    loadOrgs();
   };
 
   const deleteOrg = async (id: string) => {
     if (!confirm('למחוק את הארגון? פעולה זו לא ניתנת לביטול.')) return;
-    const { error } = await supabase.from('organizations').delete().eq('id', id);
+    const { error } = await cloudClient.from('organizations').delete().eq('id', id);
     if (error) toast.error('שגיאה במחיקה');
     else {
       toast.success('הארגון נמחק');
@@ -122,8 +187,64 @@ const AdminOrganizations = () => {
               <Input placeholder="סיסמה לפורטל מעסיק" value={newOrg.admin_password} onChange={e => setNewOrg(p => ({ ...p, admin_password: e.target.value }))} />
             </div>
             <div className="space-y-1">
-              <label className="text-xs text-muted-foreground">לוגו (URL)</label>
-              <Input placeholder="https://..." value={newOrg.logo_url} onChange={e => setNewOrg(p => ({ ...p, logo_url: e.target.value }))} />
+              <label className="text-xs text-muted-foreground">לוגו</label>
+              <div className="flex gap-2 mb-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={logoMode === 'file' ? 'default' : 'outline'}
+                  onClick={() => setLogoMode('file')}
+                  className="gap-1 text-xs"
+                >
+                  <Upload className="w-3 h-3" />
+                  העלאת קובץ
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={logoMode === 'url' ? 'default' : 'outline'}
+                  onClick={() => setLogoMode('url')}
+                  className="gap-1 text-xs"
+                >
+                  <Image className="w-3 h-3" />
+                  קישור URL
+                </Button>
+              </div>
+
+              {logoMode === 'url' ? (
+                <Input placeholder="https://..." value={newOrg.logo_url} onChange={e => setNewOrg(p => ({ ...p, logo_url: e.target.value }))} />
+              ) : (
+                <div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
+                  {logoPreview ? (
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg border border-border">
+                      <img src={logoPreview} alt="תצוגה מקדימה" className="w-12 h-12 rounded object-contain bg-background" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-muted-foreground truncate">{logoFile?.name}</p>
+                        <p className="text-xs text-muted-foreground">{logoFile ? (logoFile.size / 1024).toFixed(0) + ' KB' : ''}</p>
+                      </div>
+                      <Button type="button" size="sm" variant="ghost" onClick={clearFile}>
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full flex flex-col items-center justify-center gap-2 p-4 border-2 border-dashed border-border rounded-lg hover:border-primary/50 hover:bg-muted/30 transition-colors cursor-pointer"
+                    >
+                      <Upload className="w-6 h-6 text-muted-foreground" />
+                      <span className="text-xs text-muted-foreground">לחצו לבחירת לוגו (עד 2MB)</span>
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
           <div className="space-y-1">
@@ -131,7 +252,9 @@ const AdminOrganizations = () => {
             <Input placeholder="ברוכים הבאים, עובדי [שם הארגון]. בואו נגלה יחד את הפרק הבא שלכם." value={newOrg.custom_welcome_message} onChange={e => setNewOrg(p => ({ ...p, custom_welcome_message: e.target.value }))} />
           </div>
           <div className="flex gap-3">
-            <Button onClick={createOrg}>צור ארגון</Button>
+            <Button onClick={createOrg} disabled={uploading}>
+              {uploading ? 'מעלה לוגו...' : 'צור ארגון'}
+            </Button>
             <Button variant="outline" onClick={() => setShowCreate(false)}>ביטול</Button>
           </div>
         </div>
