@@ -140,42 +140,44 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
             </div>
           </div>
 
-          {/* Journey steps — editorial numbered list */}
+          {/* Exploration areas */}
           <div
             className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
               showDetails ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <div className="space-y-3">
-              {journeySteps.map((step, i) => {
-                const isHighlight = step.num === '07';
+            <p className="text-center text-muted-foreground text-base mb-4 font-display tracking-wide">
+              תחומי הגילוי שלכם
+            </p>
+            <div className="grid grid-cols-1 gap-3">
+              {explorationAreas.map((area, i) => {
+                const isLast = i === explorationAreas.length - 1;
                 return (
                 <div
                   key={i}
-                  className={`flex items-center gap-5 bg-card rounded-2xl p-6 border shadow-[var(--shadow-card)] text-right group transition-all duration-300 ${
-                    isHighlight
+                  className={`flex items-center gap-5 bg-card rounded-2xl p-5 border shadow-[var(--shadow-card)] text-right group transition-all duration-300 ${
+                    isLast
                       ? 'border-secondary/30 bg-secondary/[0.03]'
-                      : 'border-border/60 hover:border-secondary/30'
+                      : 'border-border/60'
                   }`}
                 >
-                  <span className={`text-sm font-display tracking-widest w-8 text-center flex-shrink-0 ${
-                    isHighlight ? 'text-secondary font-bold' : 'text-muted-foreground/50'
+                  <span className={`text-lg w-10 text-center flex-shrink-0 ${
+                    isLast ? 'text-secondary' : 'text-muted-foreground/70'
                   }`}>
-                    {step.num}
+                    {area.icon}
                   </span>
-                  <div className={`h-8 w-px ${isHighlight ? 'bg-secondary/30' : 'bg-border/60'}`} />
                   <div className="flex-1">
-                    <p className={`font-semibold font-display tracking-wide text-lg ${
-                      isHighlight ? 'text-secondary' : 'text-foreground'
-                    }`}>{step.title}</p>
-                    <p className="text-base text-muted-foreground mt-0.5">{step.desc}</p>
+                    <p className={`font-semibold font-display tracking-wide text-base ${
+                      isLast ? 'text-secondary' : 'text-foreground'
+                    }`}>{area.title}</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">{area.desc}</p>
                   </div>
                 </div>
                 );
               })}
             </div>
-            <p className="text-muted-foreground/60 text-base mt-6 text-center tracking-wide">
-              ⏱ זמן משוער: 40–50 דקות · ההתקדמות נשמרת אוטומטית
+            <p className="text-muted-foreground/60 text-sm mt-5 text-center tracking-wide">
+              בחרו אילו שאלונים למלא · מומלץ להשלים לפחות 3 · ההתקדמות נשמרת אוטומטית
             </p>
           </div>
 
