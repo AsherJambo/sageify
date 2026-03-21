@@ -276,11 +276,12 @@ describe('Skills Constraints', () => {
 // ==========================================
 
 describe('State Transitions', () => {
-  const steps = ['welcome', 'via', 'via-bonus', 'schein', 'schein-bonus', 'considerations', 'holland', 'skills', 'preferences', 'results'];
+  const steps = ['welcome', 'hub', 'via', 'via-bonus', 'schein', 'schein-bonus', 'considerations', 'holland', 'skills', 'preferences', 'results'];
 
   it('all steps are defined and in correct order', () => {
-    expect(steps.length).toBe(10);
+    expect(steps.length).toBe(11);
     expect(steps[0]).toBe('welcome');
+    expect(steps[1]).toBe('hub');
     expect(steps[steps.length - 1]).toBe('results');
   });
 

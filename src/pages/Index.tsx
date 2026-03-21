@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { contextualFeedback } from '@/lib/owlMessages';
 import WelcomeScreen from '@/components/WelcomeScreen';
+import QuestionnaireHub from '@/components/QuestionnaireHub';
 import SectionIntro from '@/components/SectionIntro';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
 import ScheinQuestionnaire from '@/components/ScheinQuestionnaire';
@@ -20,7 +21,7 @@ import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import type { SkillColumn } from '@/data/skillsData';
 import {
-  generalIntro, viaIntro, viaBonusIntro, scheinIntro,
+  viaIntro, viaBonusIntro, scheinIntro,
   considerationsIntro, hollandIntro, skillsIntro, preferencesIntro,
 } from '@/data/sectionIntros';
 import {
@@ -30,12 +31,12 @@ import type { ChatMessage } from '@/components/OwlChat';
 
 type Step =
   | 'welcome'
-  | 'general-intro'
-  | 'via-intro' | 'via' | 'via-bonus-intro' | 'via-bonus'
+  | 'hub'
+  | 'skills-intro' | 'skills'
   | 'schein-intro' | 'schein' | 'schein-bonus'
   | 'considerations-intro' | 'considerations'
   | 'holland-intro' | 'holland'
-  | 'skills-intro' | 'skills'
+  | 'via-intro' | 'via' | 'via-bonus-intro' | 'via-bonus'
   | 'personality-sliders'
   | 'preferences-intro' | 'preferences'
   | 'processing'
@@ -78,23 +79,19 @@ function saveState(state: SavedState) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-const STEP_PROGRESS: Record<Step, number> = {
-  welcome: 0,
-  'general-intro': 3,
-  'skills-intro': 6, 'skills': 15,
-  'schein-intro': 20, 'schein': 32, 'schein-bonus': 37,
-  'considerations-intro': 40, 'considerations': 48,
-  'holland-intro': 52, 'holland': 62,
-  'via-intro': 66, 'via': 75, 'via-bonus-intro': 78, 'via-bonus': 80,
-  'personality-sliders': 82,
-  'preferences-intro': 83, 'preferences': 85,
-  'processing': 88,
-  'advisor': 90,
-  'results': 100,
+type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences';
+
+const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
+  skills: 'skills-intro',
+  schein: 'schein-intro',
+  considerations: 'considerations-intro',
+  holland: 'holland-intro',
+  via: 'via-intro',
+  preferences: 'preferences-intro',
 };
 
-const DIAGNOSTIC_STEPS: Step[] = [
-  'general-intro', 'skills-intro', 'skills', 'schein-intro', 'schein', 'schein-bonus',
+const QUESTIONNAIRE_STEPS: Step[] = [
+  'skills-intro', 'skills', 'schein-intro', 'schein', 'schein-bonus',
   'considerations-intro', 'considerations', 'holland-intro', 'holland',
   'via-intro', 'via', 'via-bonus-intro', 'via-bonus',
   'personality-sliders', 'preferences-intro', 'preferences',
@@ -123,11 +120,11 @@ const Index = () => {
 
   const handleViaBonusComplete = (selectedIds: number[]) => {
     const finalAnswers = applyBonus(state.viaAnswers, selectedIds);
-    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'personality-sliders' });
+    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'hub' });
   };
   const handleScheinBonusComplete = (selectedIds: number[]) => {
     const finalAnswers = applyBonus(state.scheinAnswers, selectedIds);
-    updateState({ finalScheinAnswers: finalAnswers, scheinBonusApplied: true, step: 'considerations-intro' });
+    updateState({ finalScheinAnswers: finalAnswers, scheinBonusApplied: true, step: 'hub' });
   };
 
   const viaScores = calculateCategoryScores(state.finalViaAnswers || state.viaAnswers, viaQuestions, viaCategories);
@@ -144,59 +141,93 @@ const Index = () => {
     });
   }
 
-  const globalProgress = state.step === 'advisor' ? advisorProgress : (STEP_PROGRESS[state.step] || 0);
-  const showProgressBar = globalProgress > 0 && state.step !== 'results';
-  const isDiagnosticStep = DIAGNOSTIC_STEPS.includes(state.step);
+  const completedSections = {
+    skills: !!state.skillsAssignments,
+    schein: state.scheinBonusApplied,
+    considerations: !!state.considerationsData,
+    holland: !!state.hollandAnswers,
+    via: state.viaBonusApplied,
+    preferences: !!state.preferencesData && !!state.personalitySliders,
+  };
+
+  const isQuestionnaireStep = QUESTIONNAIRE_STEPS.includes(state.step);
+  const showProgressBar = isQuestionnaireStep || state.step === 'advisor';
 
   const ProgressBar = showProgressBar ? (
     <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-muted/30 backdrop-blur-sm">
-      <div className="h-full bg-secondary rounded-l-full progress-bar-fill" style={{ width: `${globalProgress}%` }} />
+      <div className="h-full bg-secondary rounded-l-full progress-bar-fill" style={{ width: `${state.step === 'advisor' ? advisorProgress : 50}%` }} />
     </div>
+  ) : null;
+
+  const QuestionnaireSuffix = isQuestionnaireStep ? (
+    <>
+      <SageiInsightBubble progress={50} />
+      <SaveProgressButton />
+    </>
   ) : null;
 
   switch (state.step) {
     case 'welcome':
-      return <WelcomeScreen onStart={() => updateState({ step: 'general-intro' })} />;
-    case 'general-intro':
-      return <>{ProgressBar}<SectionIntro title={generalIntro.title} paragraphs={generalIntro.paragraphs} bulletPoints={generalIntro.bulletPoints} paragraphs2={generalIntro.paragraphs2} notes={generalIntro.notes} onContinue={() => updateState({ step: 'skills-intro' })} buttonText="← יוצאים לדרך!" />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <WelcomeScreen onStart={() => updateState({ step: 'hub' })} />;
+    case 'hub':
+      return (
+        <QuestionnaireHub
+          completedSections={completedSections}
+          onSelect={(id) => updateState({ step: SECTION_FIRST_STEP[id] })}
+          onViewResults={() => updateState({ step: 'processing' })}
+        />
+      );
+
+    // Skills flow
     case 'skills-intro':
-      return <>{ProgressBar}<SectionIntro badge={skillsIntro.badge} title={skillsIntro.title} paragraphs={skillsIntro.paragraphs} bulletPoints={skillsIntro.bulletPoints} onContinue={() => updateState({ step: 'skills' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<SectionIntro badge={skillsIntro.badge} title={skillsIntro.title} paragraphs={skillsIntro.paragraphs} bulletPoints={skillsIntro.bulletPoints} onContinue={() => updateState({ step: 'skills' })} />{QuestionnaireSuffix}</>;
     case 'skills':
-      return <>{ProgressBar}<SkillsQuestionnaire onComplete={(assignments) => updateState({ skillsAssignments: assignments, step: 'schein-intro' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<SkillsQuestionnaire onComplete={(assignments) => updateState({ skillsAssignments: assignments, step: 'hub' })} />{QuestionnaireSuffix}</>;
+
+    // Schein flow
     case 'schein-intro':
-      return <>{ProgressBar}<SectionIntro badge={scheinIntro.badge} title={scheinIntro.title} paragraphs={scheinIntro.paragraphs} contextFeedback={contextualFeedback.skills} onContinue={() => updateState({ step: 'schein' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<SectionIntro badge={scheinIntro.badge} title={scheinIntro.title} paragraphs={scheinIntro.paragraphs} onContinue={() => updateState({ step: 'schein' })} />{QuestionnaireSuffix}</>;
     case 'schein':
-      return <>{ProgressBar}<ScheinQuestionnaire answers={state.scheinAnswers} onAnswer={handleScheinAnswer} onComplete={() => updateState({ step: 'schein-bonus' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<ScheinQuestionnaire answers={state.scheinAnswers} onAnswer={handleScheinAnswer} onComplete={() => updateState({ step: 'schein-bonus' })} />{QuestionnaireSuffix}</>;
     case 'schein-bonus':
-      return <>{ProgressBar}<BonusSelection title="כוח ה-3 – עוגנים תעסוקתיים" subtitle="מתוך השאלות שנתתם להן את הציון הגבוה ביותר, בחרו 3 שהכי מהדהדות אצלכם" questions={scheinMaxQuestions} onComplete={handleScheinBonusComplete} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<BonusSelection title="כוח ה-3 – עוגנים תעסוקתיים" subtitle="מתוך השאלות שנתתם להן את הציון הגבוה ביותר, בחרו 3 שהכי מהדהדות אצלכם" questions={scheinMaxQuestions} onComplete={handleScheinBonusComplete} />{QuestionnaireSuffix}</>;
+
+    // Considerations flow
     case 'considerations-intro':
-      return <>{ProgressBar}<SectionIntro badge={considerationsIntro.badge} title={considerationsIntro.title} paragraphs={considerationsIntro.paragraphs} contextFeedback={contextualFeedback.schein} onContinue={() => updateState({ step: 'considerations' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<SectionIntro badge={considerationsIntro.badge} title={considerationsIntro.title} paragraphs={considerationsIntro.paragraphs} onContinue={() => updateState({ step: 'considerations' })} />{QuestionnaireSuffix}</>;
     case 'considerations':
-      return <>{ProgressBar}<ConsiderationsQuestionnaire onComplete={(selected, points) => updateState({ considerationsData: { selected, points }, step: 'holland-intro' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<ConsiderationsQuestionnaire onComplete={(selected, points) => updateState({ considerationsData: { selected, points }, step: 'hub' })} />{QuestionnaireSuffix}</>;
+
+    // Holland flow
     case 'holland-intro':
-      return <>{ProgressBar}<SectionIntro badge={hollandIntro.badge} title={hollandIntro.title} paragraphs={hollandIntro.paragraphs} contextFeedback={contextualFeedback.considerations} onContinue={() => updateState({ step: 'holland' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<SectionIntro badge={hollandIntro.badge} title={hollandIntro.title} paragraphs={hollandIntro.paragraphs} onContinue={() => updateState({ step: 'holland' })} />{QuestionnaireSuffix}</>;
     case 'holland':
-      return <>{ProgressBar}<HollandQuestionnaire onComplete={(answers) => updateState({ hollandAnswers: answers, step: 'via-intro' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<HollandQuestionnaire onComplete={(answers) => updateState({ hollandAnswers: answers, step: 'hub' })} />{QuestionnaireSuffix}</>;
+
+    // VIA flow
     case 'via-intro':
-      return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} contextFeedback={contextualFeedback.holland} onContinue={() => updateState({ step: 'via' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} onContinue={() => updateState({ step: 'via' })} />{QuestionnaireSuffix}</>;
     case 'via':
-      return <>{ProgressBar}<VIAQuestionnaire answers={state.viaAnswers} onAnswer={handleViaAnswer} onComplete={() => updateState({ step: 'via-bonus-intro' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<VIAQuestionnaire answers={state.viaAnswers} onAnswer={handleViaAnswer} onComplete={() => updateState({ step: 'via-bonus-intro' })} />{QuestionnaireSuffix}</>;
     case 'via-bonus-intro':
-      return <>{ProgressBar}<SectionIntro badge={viaBonusIntro.badge} title={viaBonusIntro.title} paragraphs={viaBonusIntro.paragraphs} onContinue={() => updateState({ step: 'via-bonus' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<SectionIntro badge={viaBonusIntro.badge} title={viaBonusIntro.title} paragraphs={viaBonusIntro.paragraphs} onContinue={() => updateState({ step: 'via-bonus' })} />{QuestionnaireSuffix}</>;
     case 'via-bonus':
-      return <>{ProgressBar}<BonusSelection title="כוח ה-3 – חוזקות VIA" subtitle="מתוך השאלות שנתת להן את הציון הגבוה ביותר, בחר 3 שהכי מהדהדות או מדויקות לגביך" questions={viaMaxQuestions} onComplete={handleViaBonusComplete} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
-    case 'personality-sliders':
-      return <>{ProgressBar}<PersonalitySliders onComplete={(sliders) => updateState({ personalitySliders: sliders, step: 'preferences-intro' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<BonusSelection title="כוח ה-3 – חוזקות VIA" subtitle="מתוך השאלות שנתת להן את הציון הגבוה ביותר, בחר 3 שהכי מהדהדות או מדויקות לגביך" questions={viaMaxQuestions} onComplete={handleViaBonusComplete} />{QuestionnaireSuffix}</>;
+
+    // Preferences flow (includes personality sliders)
     case 'preferences-intro':
-      return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} contextFeedback={contextualFeedback.personality} onContinue={() => updateState({ step: 'preferences' })} />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>;
+      return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} onContinue={() => updateState({ step: 'personality-sliders' })} />{QuestionnaireSuffix}</>;
+    case 'personality-sliders':
+      return <>{ProgressBar}<PersonalitySliders onComplete={(sliders) => updateState({ personalitySliders: sliders, step: 'preferences' })} />{QuestionnaireSuffix}</>;
     case 'preferences':
       return (
         <>{ProgressBar}<PreferencesQuestionnaire
           onComplete={(preferences, dream) => {
-            updateState({ preferencesData: { preferences, dream }, step: 'processing' });
+            updateState({ preferencesData: { preferences, dream }, step: 'hub' });
           }}
-        />{isDiagnosticStep && <SageiInsightBubble progress={globalProgress} />}{isDiagnosticStep && <SaveProgressButton />}</>
+        />{QuestionnaireSuffix}</>
       );
+
     case 'processing':
       return <DataProcessingAnimation onComplete={() => updateState({ step: 'advisor' })} />;
     case 'advisor':
@@ -231,7 +262,7 @@ const Index = () => {
         />
       );
     default:
-      return <WelcomeScreen onStart={() => updateState({ step: 'general-intro' })} />;
+      return <WelcomeScreen onStart={() => updateState({ step: 'hub' })} />;
   }
 };
 
