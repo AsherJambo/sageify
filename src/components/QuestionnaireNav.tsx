@@ -1,4 +1,15 @@
+import { useState } from 'react';
 import owlLogo from '@/assets/owl-logo.png';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface QuestionnaireNavProps {
   onPrev?: () => void;
@@ -27,6 +38,8 @@ const QuestionnaireNav = ({
   showNext = false,
   showComplete = false,
 }: QuestionnaireNavProps) => {
+  const [showConfirm, setShowConfirm] = useState(false);
+
   return (
     <div className="space-y-3 pt-6">
       <div className={`flex ${showPrev && (showNext || showComplete) ? 'justify-between' : 'justify-center'} items-center`}>
@@ -72,7 +85,7 @@ const QuestionnaireNav = ({
       {onBackToHub && (
         <div className="flex justify-center">
           <button
-            onClick={onBackToHub}
+            onClick={() => setShowConfirm(true)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-display font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300"
           >
             <span>→</span>
@@ -80,6 +93,23 @@ const QuestionnaireNav = ({
           </button>
         </div>
       )}
+
+      <AlertDialog open={showConfirm} onOpenChange={setShowConfirm}>
+        <AlertDialogContent className="max-w-sm rounded-2xl" dir="rtl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-right font-display">לצאת מהשאלון?</AlertDialogTitle>
+            <AlertDialogDescription className="text-right">
+              ההתקדמות שלך נשמרת – תוכל/י לחזור ולהמשיך בכל שלב.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-row-reverse gap-2 sm:flex-row-reverse">
+            <AlertDialogAction onClick={() => { setShowConfirm(false); onBackToHub?.(); }}>
+              כן, חזרה לתפריט
+            </AlertDialogAction>
+            <AlertDialogCancel>להישאר</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
