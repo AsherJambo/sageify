@@ -10,6 +10,7 @@ interface VIAQuestionnaireProps {
   answers: Answers;
   onAnswer: (id: number, score: number) => void;
   onComplete: () => void;
+  onBackToHub?: () => void;
 }
 
 const QUESTIONS_PER_PAGE = 8;
