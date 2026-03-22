@@ -5,6 +5,7 @@ import { cloudClient } from '@/lib/cloudClient';
 import { silentSaveInsights } from '@/lib/insightsSaver';
 import { saveUserProfile } from '@/lib/profileManager';
 import WelcomeScreen from '@/components/WelcomeScreen';
+import QuestionnaireHub from '@/components/QuestionnaireHub';
 import SectionIntro from '@/components/SectionIntro';
 import VIAQuestionnaire from '@/components/VIAQuestionnaire';
 import ScheinQuestionnaire from '@/components/ScheinQuestionnaire';
@@ -17,12 +18,14 @@ import SageAdvisor from '@/components/SageAdvisor';
 import ResultsDashboard from '@/components/ResultsDashboard';
 import PersonalitySliders from '@/components/PersonalitySliders';
 import DataProcessingAnimation from '@/components/DataProcessingAnimation';
+import SageiInsightBubble from '@/components/SageiInsightBubble';
+import SaveProgressButton from '@/components/SaveProgressButton';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import type { SkillColumn } from '@/data/skillsData';
 import {
-  generalIntro, viaIntro, viaBonusIntro, scheinIntro,
+  viaIntro, viaBonusIntro, scheinIntro,
   considerationsIntro, hollandIntro, skillsIntro, preferencesIntro,
 } from '@/data/sectionIntros';
 import {
@@ -33,7 +36,7 @@ import owlLogo from '@/assets/owl-logo.png';
 type Step =
   | 'loading' | 'invalid' | 'used'
   | 'landing' | 'welcome'
-  | 'general-intro'
+  | 'hub'
   | 'via-intro' | 'via' | 'via-bonus-intro' | 'via-bonus'
   | 'schein-intro' | 'schein' | 'schein-bonus'
   | 'considerations-intro' | 'considerations'
@@ -44,6 +47,17 @@ type Step =
   | 'processing'
   | 'advisor'
   | 'results';
+
+type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences';
+
+const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
+  skills: 'skills-intro',
+  schein: 'schein-intro',
+  considerations: 'considerations-intro',
+  holland: 'holland-intro',
+  via: 'via-intro',
+  preferences: 'preferences-intro',
+};
 
 interface ResponseData {
   step: Step;
@@ -69,20 +83,12 @@ const defaultData: ResponseData = {
   scheinBonusApplied: false,
 };
 
-const STEP_PROGRESS: Record<Step, number> = {
-  loading: 0, invalid: 0, used: 0, landing: 0, welcome: 0,
-  'general-intro': 3,
-  'skills-intro': 6, 'skills': 15,
-  'schein-intro': 20, 'schein': 32, 'schein-bonus': 37,
-  'considerations-intro': 40, 'considerations': 48,
-  'holland-intro': 52, 'holland': 62,
-  'via-intro': 66, 'via': 75, 'via-bonus-intro': 78, 'via-bonus': 80,
-  'personality-sliders': 82,
-  'preferences-intro': 83, 'preferences': 85,
-  'processing': 88,
-  'advisor': 90,
-  'results': 100,
-};
+const QUESTIONNAIRE_STEPS: Step[] = [
+  'skills-intro', 'skills', 'schein-intro', 'schein', 'schein-bonus',
+  'considerations-intro', 'considerations', 'holland-intro', 'holland',
+  'via-intro', 'via', 'via-bonus-intro', 'via-bonus',
+  'personality-sliders', 'preferences-intro', 'preferences',
+];
 
 interface QuestionnaireByTokenProps {
   partnerOrg?: { org_name: string; logo_url: string | null; custom_welcome_message: string };
@@ -114,12 +120,10 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
       setTokenRow({ id: data.id, username: data.username });
 
-      // Mark as used if first time
       if (!data.used) {
         await supabase.from('questionnaire_tokens').update({ used: true }).eq('id', data.id);
       }
 
-      // Load existing response or create new
       const { data: existing } = await supabase
         .from('questionnaire_responses')
         .select('*')
@@ -160,6 +164,8 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
     setState(prev => ({ ...prev, ...partial }));
   };
 
+  const goToHub = () => updateState({ step: 'hub' });
+
   if (pageState === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -195,7 +201,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
     );
   }
 
-  // --- Questionnaire logic (same as Index.tsx) ---
+  // --- Questionnaire logic ---
   const handleViaAnswer = (id: number, score: number) => {
     updateState({ viaAnswers: { ...state.viaAnswers, [id]: score } });
   };
@@ -208,11 +214,11 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
   const handleViaBonusComplete = (selectedIds: number[]) => {
     const finalAnswers = applyBonus(state.viaAnswers, selectedIds);
-    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'personality-sliders' });
+    updateState({ finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'hub' });
   };
   const handleScheinBonusComplete = (selectedIds: number[]) => {
     const finalAnswers = applyBonus(state.scheinAnswers, selectedIds);
-    updateState({ finalScheinAnswers: finalAnswers, scheinBonusApplied: true, step: 'considerations-intro' });
+    updateState({ finalScheinAnswers: finalAnswers, scheinBonusApplied: true, step: 'hub' });
   };
 
   const viaScores = calculateCategoryScores(state.finalViaAnswers || state.viaAnswers, viaQuestions, viaCategories);
@@ -229,22 +235,38 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
     });
   }
 
+  const completedSections = {
+    skills: !!state.skillsAssignments,
+    schein: state.scheinBonusApplied,
+    considerations: !!state.considerationsData,
+    holland: !!state.hollandAnswers,
+    via: state.viaBonusApplied,
+    preferences: !!state.preferencesData && !!state.personalitySliders,
+  };
+
   const markComplete = async () => {
     if (tokenRow) {
       await supabase.from('questionnaire_tokens').update({ completed_at: new Date().toISOString() }).eq('id', tokenRow.id);
     }
   };
 
-  const globalProgress = state.step === 'advisor' ? advisorProgress : (STEP_PROGRESS[state.step] || 0);
-  const showProgressBar = globalProgress > 0 && state.step !== 'results';
+  const isQuestionnaireStep = QUESTIONNAIRE_STEPS.includes(state.step);
+  const showProgressBar = isQuestionnaireStep || state.step === 'advisor';
 
   const ProgressBar = showProgressBar ? (
-      <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-muted/30 backdrop-blur-sm">
-        <div
-          className="h-full bg-secondary rounded-l-full progress-bar-fill"
-          style={{ width: `${globalProgress}%` }}
-        />
-      </div>
+    <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-muted/30 backdrop-blur-sm">
+      <div
+        className="h-full bg-secondary rounded-l-full progress-bar-fill"
+        style={{ width: `${state.step === 'advisor' ? advisorProgress : 50}%` }}
+      />
+    </div>
+  ) : null;
+
+  const QuestionnaireSuffix = isQuestionnaireStep ? (
+    <>
+      <SageiInsightBubble progress={50} />
+      <SaveProgressButton />
+    </>
   ) : null;
 
   switch (state.step) {
@@ -290,11 +312,10 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
                   toast.error('יש להזין מספר ת.ז תקין');
                   return;
                 }
-                // Save id_number to token row
                 if (tokenRow) {
                   await supabase.from('questionnaire_tokens').update({ id_number: idNumber } as any).eq('id', tokenRow.id);
                 }
-                updateState({ step: 'general-intro' });
+                updateState({ step: 'hub' });
               }}
               disabled={idNumber.length < 5}
               className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
@@ -305,56 +326,78 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
         </div>
       );
 
-    case 'general-intro':
-      return <>{ProgressBar}<SectionIntro title={generalIntro.title} paragraphs={generalIntro.paragraphs} bulletPoints={generalIntro.bulletPoints} paragraphs2={generalIntro.paragraphs2} notes={generalIntro.notes} onContinue={() => updateState({ step: 'skills-intro' })} buttonText="← יוצאים לדרך!" /></>;
-    case 'skills-intro':
-      return <>{ProgressBar}<SectionIntro badge={skillsIntro.badge} title={skillsIntro.title} paragraphs={skillsIntro.paragraphs} bulletPoints={skillsIntro.bulletPoints} onContinue={() => updateState({ step: 'skills' })} /></>;
-    case 'skills':
-      return <>{ProgressBar}<SkillsQuestionnaire onComplete={(assignments) => updateState({ skillsAssignments: assignments, step: 'schein-intro' })} /></>;
-    case 'schein-intro':
-      return <>{ProgressBar}<SectionIntro badge={scheinIntro.badge} title={scheinIntro.title} paragraphs={scheinIntro.paragraphs} onContinue={() => updateState({ step: 'schein' })} /></>;
-    case 'schein':
-      return <>{ProgressBar}<ScheinQuestionnaire answers={state.scheinAnswers} onAnswer={handleScheinAnswer} onComplete={() => updateState({ step: 'schein-bonus' })} /></>;
-    case 'schein-bonus':
-      return <>{ProgressBar}<BonusSelection title="כוח ה-3 – עוגנים תעסוקתיים" subtitle="מתוך השאלות שנתתם להן את הציון הגבוה ביותר, בחרו 3 שהכי מהדהדות אצלכם" questions={scheinMaxQuestions} onComplete={handleScheinBonusComplete} /></>;
-    case 'considerations-intro':
-      return <>{ProgressBar}<SectionIntro badge={considerationsIntro.badge} title={considerationsIntro.title} paragraphs={considerationsIntro.paragraphs} onContinue={() => updateState({ step: 'considerations' })} /></>;
-    case 'considerations':
-      return <>{ProgressBar}<ConsiderationsQuestionnaire onComplete={(selected, points) => updateState({ considerationsData: { selected, points }, step: 'holland-intro' })} /></>;
-    case 'holland-intro':
-      return <>{ProgressBar}<SectionIntro badge={hollandIntro.badge} title={hollandIntro.title} paragraphs={hollandIntro.paragraphs} onContinue={() => updateState({ step: 'holland' })} /></>;
-    case 'holland':
-      return <>{ProgressBar}<HollandQuestionnaire onComplete={(answers) => updateState({ hollandAnswers: answers, step: 'via-intro' })} /></>;
-    case 'via-intro':
-      return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} onContinue={() => updateState({ step: 'via' })} /></>;
-    case 'via':
-      return <>{ProgressBar}<VIAQuestionnaire answers={state.viaAnswers} onAnswer={handleViaAnswer} onComplete={() => updateState({ step: 'via-bonus-intro' })} /></>;
-    case 'via-bonus-intro':
-      return <>{ProgressBar}<SectionIntro badge={viaBonusIntro.badge} title={viaBonusIntro.title} paragraphs={viaBonusIntro.paragraphs} onContinue={() => updateState({ step: 'via-bonus' })} /></>;
-    case 'via-bonus':
-      return <>{ProgressBar}<BonusSelection title="כוח ה-3 – חוזקות VIA" subtitle="מתוך השאלות שנתת להן את הציון הגבוה ביותר, בחר 3 שהכי מהדהדות או מדויקות לגביך" questions={viaMaxQuestions} onComplete={handleViaBonusComplete} /></>;
-    case 'personality-sliders':
-      return <>{ProgressBar}<PersonalitySliders onComplete={(sliders) => updateState({ personalitySliders: sliders, step: 'preferences-intro' })} /></>;
-    case 'preferences-intro':
-      return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} onContinue={() => updateState({ step: 'preferences' })} /></>;
-    case 'preferences':
+    case 'hub':
       return (
-        <>{ProgressBar}<PreferencesQuestionnaire
-          onComplete={(preferences, dream) => {
-            // Save user profile in background
-            if (tokenRow) {
+        <QuestionnaireHub
+          completedSections={completedSections}
+          onSelect={(id) => updateState({ step: SECTION_FIRST_STEP[id] })}
+          onViewResults={() => {
+            // Save user profile before processing
+            if (tokenRow && state.preferencesData) {
               saveUserProfile({
                 tokenId: tokenRow.id,
                 psychometricScores: { ...viaScores, ...scheinScores, ...hollandScores },
-                primaryInterests: Object.values(preferences).flat(),
+                primaryInterests: Object.values(state.preferencesData.preferences).flat(),
                 personalitySliders: state.personalitySliders as Record<string, number> | undefined,
                 valueAlignment: (state.personalitySliders?.values as string)?.split(',') || [],
               });
             }
-            updateState({ preferencesData: { preferences, dream }, step: 'processing' });
+            updateState({ step: 'processing' });
           }}
-        /></>
+        />
       );
+
+    // Skills flow
+    case 'skills-intro':
+      return <>{ProgressBar}<SectionIntro badge={skillsIntro.badge} title={skillsIntro.title} paragraphs={skillsIntro.paragraphs} bulletPoints={skillsIntro.bulletPoints} onContinue={() => updateState({ step: 'skills' })} />{QuestionnaireSuffix}</>;
+    case 'skills':
+      return <>{ProgressBar}<SkillsQuestionnaire onComplete={(assignments) => updateState({ skillsAssignments: assignments, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+
+    // Schein flow
+    case 'schein-intro':
+      return <>{ProgressBar}<SectionIntro badge={scheinIntro.badge} title={scheinIntro.title} paragraphs={scheinIntro.paragraphs} onContinue={() => updateState({ step: 'schein' })} />{QuestionnaireSuffix}</>;
+    case 'schein':
+      return <>{ProgressBar}<ScheinQuestionnaire answers={state.scheinAnswers} onAnswer={handleScheinAnswer} onComplete={() => updateState({ step: 'schein-bonus' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+    case 'schein-bonus':
+      return <>{ProgressBar}<BonusSelection title="כוח ה-3 – עוגנים תעסוקתיים" subtitle="מתוך השאלות שנתתם להן את הציון הגבוה ביותר, בחרו 3 שהכי מהדהדות אצלכם" questions={scheinMaxQuestions} onComplete={handleScheinBonusComplete} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+
+    // Considerations flow
+    case 'considerations-intro':
+      return <>{ProgressBar}<SectionIntro badge={considerationsIntro.badge} title={considerationsIntro.title} paragraphs={considerationsIntro.paragraphs} onContinue={() => updateState({ step: 'considerations' })} />{QuestionnaireSuffix}</>;
+    case 'considerations':
+      return <>{ProgressBar}<ConsiderationsQuestionnaire onComplete={(selected, points) => updateState({ considerationsData: { selected, points }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+
+    // Holland flow
+    case 'holland-intro':
+      return <>{ProgressBar}<SectionIntro badge={hollandIntro.badge} title={hollandIntro.title} paragraphs={hollandIntro.paragraphs} onContinue={() => updateState({ step: 'holland' })} />{QuestionnaireSuffix}</>;
+    case 'holland':
+      return <>{ProgressBar}<HollandQuestionnaire onComplete={(answers) => updateState({ hollandAnswers: answers, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+
+    // VIA flow
+    case 'via-intro':
+      return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} onContinue={() => updateState({ step: 'via' })} />{QuestionnaireSuffix}</>;
+    case 'via':
+      return <>{ProgressBar}<VIAQuestionnaire answers={state.viaAnswers} onAnswer={handleViaAnswer} onComplete={() => updateState({ step: 'via-bonus-intro' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+    case 'via-bonus-intro':
+      return <>{ProgressBar}<SectionIntro badge={viaBonusIntro.badge} title={viaBonusIntro.title} paragraphs={viaBonusIntro.paragraphs} onContinue={() => updateState({ step: 'via-bonus' })} />{QuestionnaireSuffix}</>;
+    case 'via-bonus':
+      return <>{ProgressBar}<BonusSelection title="כוח ה-3 – חוזקות VIA" subtitle="מתוך השאלות שנתת להן את הציון הגבוה ביותר, בחר 3 שהכי מהדהדות או מדויקות לגביך" questions={viaMaxQuestions} onComplete={handleViaBonusComplete} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+
+    // Preferences flow
+    case 'preferences-intro':
+      return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} onContinue={() => updateState({ step: 'personality-sliders' })} />{QuestionnaireSuffix}</>;
+    case 'personality-sliders':
+      return <>{ProgressBar}<PersonalitySliders onComplete={(sliders) => updateState({ personalitySliders: sliders, step: 'preferences' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+    case 'preferences':
+      return (
+        <>{ProgressBar}<PreferencesQuestionnaire
+          onComplete={(preferences, dream) => {
+            updateState({ preferencesData: { preferences, dream }, step: 'hub' });
+          }}
+          onBackToHub={goToHub}
+        />{QuestionnaireSuffix}</>
+      );
+
     case 'processing':
       return <DataProcessingAnimation onComplete={() => updateState({ step: 'advisor' })} />;
     case 'advisor':
