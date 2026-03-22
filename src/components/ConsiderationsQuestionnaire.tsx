@@ -96,6 +96,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
               onComplete={handleSelectComplete}
               completeDisabled={selected.length !== 6}
               completeLabel="המשך לחלוקת נקודות"
+              onBackToHub={onBackToHub}
             />
           </>
         )}
