@@ -174,22 +174,19 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
               💡 התוצאות מבוססות על מידע חלקי. להמלצות מדויקות יותר, שווה להשלים שאלונים נוספים.
             </p>
           )}
-          <div>
-            <button
-              onClick={onViewResults}
-              disabled={!canViewResults}
-              className={`px-12 py-5 rounded-2xl text-lg font-semibold font-display tracking-wide transition-all duration-500 shadow-[var(--shadow-elevated)] group ${
-                canViewResults
-                  ? 'bg-primary text-primary-foreground hover:bg-primary/85 hover:scale-[1.02]'
-                  : 'bg-muted text-muted-foreground cursor-not-allowed shadow-none'
-              }`}
-            >
-              <span className="flex items-center gap-3 justify-center">
-                {canViewResults ? 'לתוצאות ולשיחה עם סגי' : 'השלימו לפחות שאלון אחד'}
-                {canViewResults && <span className="inline-block transition-transform duration-300 group-hover:translate-x-[6px]">←</span>}
-              </span>
-            </button>
-          </div>
+          {canViewResults && (
+            <div>
+              <button
+                onClick={onViewResults}
+                className="px-12 py-5 rounded-2xl text-lg font-semibold font-display tracking-wide transition-all duration-500 shadow-[var(--shadow-elevated)] group bg-primary text-primary-foreground hover:bg-primary/85 hover:scale-[1.02]"
+              >
+                <span className="flex items-center gap-3 justify-center">
+                  לתוצאות ולשיחה עם סגי
+                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-[6px]">←</span>
+                </span>
+              </button>
+            </div>
+          )}
         </motion.div>
       </div>
     </div>
