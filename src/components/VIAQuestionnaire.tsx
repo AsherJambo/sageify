@@ -10,11 +10,12 @@ interface VIAQuestionnaireProps {
   answers: Answers;
   onAnswer: (id: number, score: number) => void;
   onComplete: () => void;
+  onBackToHub?: () => void;
 }
 
 const QUESTIONS_PER_PAGE = 8;
 
-const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnaireProps) => {
+const VIAQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: VIAQuestionnaireProps) => {
   const [page, setPageRaw] = useState(0);
   const setPage = (updater: (p: number) => number) => {
     setPageRaw(prev => {
@@ -93,6 +94,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
           onComplete={onComplete}
           completeDisabled={!allAnswered}
           completeLabel="סיום חלק א׳"
+          onBackToHub={onBackToHub}
         />
       </div>
     </div>

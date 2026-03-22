@@ -5,6 +5,7 @@ import QuestionnaireNav from './QuestionnaireNav';
 
 interface HollandQuestionnaireProps {
   onComplete: (answers: Record<number, boolean>) => void;
+  onBackToHub?: () => void;
 }
 
 const QUESTIONS_PER_PAGE = 11;
@@ -20,7 +21,7 @@ function seededShuffle<T>(arr: T[], seed: number): T[] {
   return result;
 }
 
-const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
+const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireProps) => {
   const [answers, setAnswers] = useState<Record<number, boolean>>({});
   const [page, setPageRaw] = useState(0);
   const setPage = (updater: (p: number) => number) => {
@@ -108,6 +109,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
           onComplete={() => onComplete(answers)}
           completeDisabled={!allAnswered}
           completeLabel="סיום חלק ד׳"
+          onBackToHub={onBackToHub}
         />
       </div>
     </div>

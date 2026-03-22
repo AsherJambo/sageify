@@ -7,9 +7,10 @@ import QuestionnaireNav from './QuestionnaireNav';
 
 interface ConsiderationsQuestionnaireProps {
   onComplete: (selected: string[], points: Record<string, number>) => void;
+  onBackToHub?: () => void;
 }
 
-const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaireProps) => {
+const ConsiderationsQuestionnaire = ({ onComplete, onBackToHub }: ConsiderationsQuestionnaireProps) => {
   const [selected, setSelected] = useState<string[]>([]);
   const [points, setPoints] = useState<Record<string, number>>({});
   const [phase, setPhase] = useState<'select' | 'distribute-intro' | 'distribute'>('select');
@@ -95,6 +96,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
               onComplete={handleSelectComplete}
               completeDisabled={selected.length !== 6}
               completeLabel="המשך לחלוקת נקודות"
+              onBackToHub={onBackToHub}
             />
           </>
         )}
@@ -135,6 +137,7 @@ const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaire
               onComplete={() => onComplete(selected, points)}
               completeDisabled={remaining !== 0}
               completeLabel="סיום חלק ג׳"
+              onBackToHub={onBackToHub}
             />
           </>
         )}

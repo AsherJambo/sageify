@@ -8,9 +8,10 @@ interface BonusSelectionProps {
   subtitle: string;
   questions: { id: number; text: string; category: string }[];
   onComplete: (selectedIds: number[]) => void;
+  onBackToHub?: () => void;
 }
 
-const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelectionProps) => {
+const BonusSelection = ({ title, subtitle, questions, onComplete, onBackToHub }: BonusSelectionProps) => {
   const [selected, setSelected] = useState<number[]>([]);
 
   const toggle = (id: number) => {
@@ -85,6 +86,7 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
           onComplete={() => onComplete(selected)}
           completeDisabled={selected.length !== 3}
           completeLabel="אישור הבחירה"
+          onBackToHub={onBackToHub}
         />
       </div>
     </div>

@@ -6,9 +6,10 @@ import QuestionnaireNav from './QuestionnaireNav';
 
 interface PreferencesQuestionnaireProps {
   onComplete: (preferences: Record<string, string[]>, dream: string) => void;
+  onBackToHub?: () => void;
 }
 
-const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps) => {
+const PreferencesQuestionnaire = ({ onComplete, onBackToHub }: PreferencesQuestionnaireProps) => {
   const [preferences, setPreferences] = useState<Record<string, string[]>>({});
   const [dream, setDream] = useState<string>('');
   const [openReflection, setOpenReflection] = useState('');
@@ -118,6 +119,7 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
             onComplete(finalPrefs, dream);
           }}
           completeDisabled={!canComplete}
+          onBackToHub={onBackToHub}
           completeLabel="סיום וצפייה בתוצאות"
         />
       </div>

@@ -9,11 +9,12 @@ interface ScheinQuestionnaireProps {
   answers: Answers;
   onAnswer: (id: number, score: number) => void;
   onComplete: () => void;
+  onBackToHub?: () => void;
 }
 
 const SCALE = [1, 2, 3, 4, 5, 6, 7];
 
-const ScheinQuestionnaire = ({ answers, onAnswer, onComplete }: ScheinQuestionnaireProps) => {
+const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: ScheinQuestionnaireProps) => {
   const totalAnswered = Object.keys(answers).length;
   const allAnswered = totalAnswered >= scheinQuestions.length;
   const progress = (totalAnswered / scheinQuestions.length) * 100;
@@ -83,6 +84,7 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete }: ScheinQuestionna
           onComplete={onComplete}
           completeDisabled={!allAnswered}
           completeLabel="סיום חלק ב׳"
+          onBackToHub={onBackToHub}
         />
       </div>
     </div>
