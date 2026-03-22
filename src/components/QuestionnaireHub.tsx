@@ -175,9 +175,18 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
             </p>
           )}
           <div>
-            <button
+            <motion.button
               onClick={hasMinimum ? onViewResults : undefined}
               disabled={!hasMinimum}
+              animate={hasMinimum ? {
+                scale: [1, 1.06, 1],
+                boxShadow: [
+                  '0 0 0 0 hsl(160 28% 35% / 0)',
+                  '0 0 0 12px hsl(160 28% 35% / 0.15)',
+                  '0 0 0 0 hsl(160 28% 35% / 0)',
+                ],
+              } : {}}
+              transition={hasMinimum ? { duration: 1.2, ease: 'easeInOut', times: [0, 0.5, 1] } : {}}
               className={`px-12 py-5 rounded-2xl text-lg font-semibold font-display tracking-wide transition-all duration-500 shadow-[var(--shadow-elevated)] group ${
                 hasMinimum
                   ? 'bg-primary text-primary-foreground hover:bg-primary/85 hover:scale-[1.02] cursor-pointer'
@@ -188,7 +197,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
                 לתוצאות ולשיחה עם סגי
                 <span className="inline-block transition-transform duration-300 group-hover:translate-x-[6px]">←</span>
               </span>
-            </button>
+            </motion.button>
           </div>
         </motion.div>
       </div>
