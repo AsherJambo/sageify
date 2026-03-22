@@ -5,6 +5,7 @@ import QuestionnaireNav from './QuestionnaireNav';
 
 interface HollandQuestionnaireProps {
   onComplete: (answers: Record<number, boolean>) => void;
+  onBackToHub?: () => void;
 }
 
 const QUESTIONS_PER_PAGE = 11;
