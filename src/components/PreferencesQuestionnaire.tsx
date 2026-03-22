@@ -6,6 +6,7 @@ import QuestionnaireNav from './QuestionnaireNav';
 
 interface PreferencesQuestionnaireProps {
   onComplete: (preferences: Record<string, string[]>, dream: string) => void;
+  onBackToHub?: () => void;
 }
 
 const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps) => {
