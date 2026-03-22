@@ -169,24 +169,27 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
           transition={{ delay: 0.6, duration: 0.6 }}
           className="text-center space-y-4 pb-12"
         >
-          {canViewResults && !hasMinimum && (
+          {!hasMinimum && (
             <p className="text-sm text-muted-foreground bg-card border border-border/60 rounded-2xl px-5 py-3 inline-block shadow-[var(--shadow-card)]">
-              💡 התוצאות מבוססות על מידע חלקי. להמלצות מדויקות יותר, שווה להשלים שאלונים נוספים.
+              📋 יש להשלים לפחות 3 שאלונים כדי לקבל תוצאות ({completedCount}/3)
             </p>
           )}
-          {canViewResults && (
-            <div>
-              <button
-                onClick={onViewResults}
-                className="px-12 py-5 rounded-2xl text-lg font-semibold font-display tracking-wide transition-all duration-500 shadow-[var(--shadow-elevated)] group bg-primary text-primary-foreground hover:bg-primary/85 hover:scale-[1.02]"
-              >
-                <span className="flex items-center gap-3 justify-center">
-                  לתוצאות ולשיחה עם סגי
-                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-[6px]">←</span>
-                </span>
-              </button>
-            </div>
-          )}
+          <div>
+            <button
+              onClick={hasMinimum ? onViewResults : undefined}
+              disabled={!hasMinimum}
+              className={`px-12 py-5 rounded-2xl text-lg font-semibold font-display tracking-wide transition-all duration-500 shadow-[var(--shadow-elevated)] group ${
+                hasMinimum
+                  ? 'bg-primary text-primary-foreground hover:bg-primary/85 hover:scale-[1.02] cursor-pointer'
+                  : 'bg-muted text-muted-foreground cursor-not-allowed opacity-60'
+              }`}
+            >
+              <span className="flex items-center gap-3 justify-center">
+                לתוצאות ולשיחה עם סגי
+                <span className="inline-block transition-transform duration-300 group-hover:translate-x-[6px]">←</span>
+              </span>
+            </button>
+          </div>
         </motion.div>
       </div>
     </div>
