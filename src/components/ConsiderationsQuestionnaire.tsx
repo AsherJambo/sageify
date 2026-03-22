@@ -7,6 +7,7 @@ import QuestionnaireNav from './QuestionnaireNav';
 
 interface ConsiderationsQuestionnaireProps {
   onComplete: (selected: string[], points: Record<string, number>) => void;
+  onBackToHub?: () => void;
 }
 
 const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaireProps) => {
