@@ -86,6 +86,7 @@ const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelecti
           onComplete={() => onComplete(selected)}
           completeDisabled={selected.length !== 3}
           completeLabel="אישור הבחירה"
+          onBackToHub={onBackToHub}
         />
       </div>
     </div>

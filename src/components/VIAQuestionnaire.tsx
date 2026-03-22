@@ -94,6 +94,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete }: VIAQuestionnairePro
           onComplete={onComplete}
           completeDisabled={!allAnswered}
           completeLabel="סיום חלק א׳"
+          onBackToHub={onBackToHub}
         />
       </div>
     </div>

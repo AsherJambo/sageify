@@ -113,6 +113,7 @@ const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
           onComplete={handleComplete}
           completeDisabled={false}
           completeLabel="סיום חלק ה׳"
+          onBackToHub={onBackToHub}
         />
       </div>
     </div>

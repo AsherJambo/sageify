@@ -184,6 +184,7 @@ const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
           onComplete={handleComplete}
           completeDisabled={false}
           completeLabel="המשך"
+          onBackToHub={onBackToHub}
         />
       </div>
     </div>

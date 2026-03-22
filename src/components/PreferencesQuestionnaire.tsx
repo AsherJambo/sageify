@@ -119,6 +119,7 @@ const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps)
             onComplete(finalPrefs, dream);
           }}
           completeDisabled={!canComplete}
+          onBackToHub={onBackToHub}
           completeLabel="סיום וצפייה בתוצאות"
         />
       </div>

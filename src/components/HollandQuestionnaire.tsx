@@ -109,6 +109,7 @@ const HollandQuestionnaire = ({ onComplete }: HollandQuestionnaireProps) => {
           onComplete={() => onComplete(answers)}
           completeDisabled={!allAnswered}
           completeLabel="סיום חלק ד׳"
+          onBackToHub={onBackToHub}
         />
       </div>
     </div>
