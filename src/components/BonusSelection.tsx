@@ -8,6 +8,7 @@ interface BonusSelectionProps {
   subtitle: string;
   questions: { id: number; text: string; category: string }[];
   onComplete: (selectedIds: number[]) => void;
+  onBackToHub?: () => void;
 }
 
 const BonusSelection = ({ title, subtitle, questions, onComplete }: BonusSelectionProps) => {
