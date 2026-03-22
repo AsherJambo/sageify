@@ -48,7 +48,8 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
     { icon: '🧭', title: 'נטיות תעסוקתיות', desc: 'גלו את הנטיות המקצועיות' },
     { icon: '✦', title: 'חוזקות VIA', desc: 'גלו את הכוחות הפנימיים' },
     { icon: '●', title: 'העדפות ופרופיל אישי', desc: 'העדפות וחלום המגירה' },
-    { icon: '🧠', title: 'שיחה אישית עם סגי', desc: 'ייעוץ AI מותאם אישית' },
+    { icon: '🧠', title: 'הערכת חשיבה וגמישות', desc: 'חשיפת חוזקות חשיבה ייחודיות', comingSoon: true },
+    { icon: '🧭', title: 'שיחה אישית עם סגי', desc: 'ייעוץ AI מותאם אישית' },
   ];
 
   return (
@@ -150,15 +151,18 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
               תחומי הגילוי שלכם
             </p>
             <div className="grid grid-cols-1 gap-3">
-              {explorationAreas.map((area, i) => {
+              {explorationAreas.map((area: any, i) => {
                 const isLast = i === explorationAreas.length - 1;
+                const isComingSoon = area.comingSoon;
                 return (
                 <div
                   key={i}
                   className={`flex items-center gap-5 bg-card rounded-2xl p-5 border shadow-[var(--shadow-card)] text-right group transition-all duration-300 ${
                     isLast
                       ? 'border-secondary/30 bg-secondary/[0.03]'
-                      : 'border-border/60'
+                      : isComingSoon
+                        ? 'border-dashed border-border bg-card/50'
+                        : 'border-border/60'
                   }`}
                 >
                   <span className={`text-lg w-10 text-center flex-shrink-0 ${
@@ -167,9 +171,16 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
                     {area.icon}
                   </span>
                   <div className="flex-1">
-                    <p className={`font-semibold font-display tracking-wide text-base ${
-                      isLast ? 'text-secondary' : 'text-foreground'
-                    }`}>{area.title}</p>
+                    <div className="flex items-center gap-2">
+                      <p className={`font-semibold font-display tracking-wide text-base ${
+                        isLast ? 'text-secondary' : 'text-foreground'
+                      }`}>{area.title}</p>
+                      {isComingSoon && (
+                        <span className="text-xs bg-gold-light text-foreground px-2 py-0.5 rounded-full font-display font-semibold">
+                          בקרוב
+                        </span>
+                      )}
+                    </div>
                     <p className="text-sm text-muted-foreground mt-0.5">{area.desc}</p>
                   </div>
                 </div>
