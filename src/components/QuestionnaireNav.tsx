@@ -95,7 +95,10 @@ const QuestionnaireNav = ({
       )}
 
       <AlertDialog open={showConfirm} onOpenChange={setShowConfirm}>
-        <AlertDialogContent className="max-w-sm rounded-2xl" dir="rtl">
+        <AlertDialogContent 
+          className="max-w-sm rounded-2xl data-[state=open]:animate-[fade-in_0.3s_ease-out,scale-in_0.25s_cubic-bezier(0.16,1,0.3,1)] data-[state=closed]:animate-[fade-out_0.2s_ease-in,scale-out_0.2s_ease-in]" 
+          dir="rtl"
+        >
           <AlertDialogHeader>
             <AlertDialogTitle className="text-right font-display">לצאת מהשאלון?</AlertDialogTitle>
             <AlertDialogDescription className="text-right">
@@ -103,10 +106,15 @@ const QuestionnaireNav = ({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex-row-reverse gap-2 sm:flex-row-reverse">
-            <AlertDialogAction onClick={() => { setShowConfirm(false); onBackToHub?.(); }}>
+            <AlertDialogAction 
+              onClick={() => { setShowConfirm(false); onBackToHub?.(); }}
+              className="transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
+            >
               כן, חזרה לתפריט
             </AlertDialogAction>
-            <AlertDialogCancel>להישאר</AlertDialogCancel>
+            <AlertDialogCancel className="transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]">
+              להישאר
+            </AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
