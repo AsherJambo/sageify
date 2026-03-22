@@ -15,7 +15,7 @@ const columnLabels: Record<SkillColumn, { title: string; desc: string; symbol: s
   irrelevant: { title: 'פחות מדבר אליי', desc: 'לא החוזקה שלי או לא מעניין כרגע', symbol: '○' },
 };
 
-const SkillsQuestionnaire = ({ onComplete }: SkillsQuestionnaireProps) => {
+const SkillsQuestionnaire = ({ onComplete, onBackToHub }: SkillsQuestionnaireProps) => {
   const [assignments, setAssignments] = useState<Record<number, SkillColumn>>({});
   const [error, setError] = useState<string | null>(null);
 

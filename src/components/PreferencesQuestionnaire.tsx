@@ -9,7 +9,7 @@ interface PreferencesQuestionnaireProps {
   onBackToHub?: () => void;
 }
 
-const PreferencesQuestionnaire = ({ onComplete }: PreferencesQuestionnaireProps) => {
+const PreferencesQuestionnaire = ({ onComplete, onBackToHub }: PreferencesQuestionnaireProps) => {
   const [preferences, setPreferences] = useState<Record<string, string[]>>({});
   const [dream, setDream] = useState<string>('');
   const [openReflection, setOpenReflection] = useState('');

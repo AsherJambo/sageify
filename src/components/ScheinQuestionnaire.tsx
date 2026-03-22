@@ -14,7 +14,7 @@ interface ScheinQuestionnaireProps {
 
 const SCALE = [1, 2, 3, 4, 5, 6, 7];
 
-const ScheinQuestionnaire = ({ answers, onAnswer, onComplete }: ScheinQuestionnaireProps) => {
+const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: ScheinQuestionnaireProps) => {
   const totalAnswered = Object.keys(answers).length;
   const allAnswered = totalAnswered >= scheinQuestions.length;
   const progress = (totalAnswered / scheinQuestions.length) * 100;

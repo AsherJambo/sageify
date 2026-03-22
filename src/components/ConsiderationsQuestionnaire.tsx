@@ -10,7 +10,7 @@ interface ConsiderationsQuestionnaireProps {
   onBackToHub?: () => void;
 }
 
-const ConsiderationsQuestionnaire = ({ onComplete }: ConsiderationsQuestionnaireProps) => {
+const ConsiderationsQuestionnaire = ({ onComplete, onBackToHub }: ConsiderationsQuestionnaireProps) => {
   const [selected, setSelected] = useState<string[]>([]);
   const [points, setPoints] = useState<Record<string, number>>({});
   const [phase, setPhase] = useState<'select' | 'distribute-intro' | 'distribute'>('select');
