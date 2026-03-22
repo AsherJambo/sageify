@@ -5,6 +5,7 @@ import QuestionnaireNav from './QuestionnaireNav';
 
 interface PersonalitySlidersProps {
   onComplete: (sliders: Record<string, number | string>) => void;
+  onBackToHub?: () => void;
 }
 
 const TRAIT_PAIRS = [
