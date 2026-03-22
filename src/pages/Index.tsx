@@ -108,6 +108,8 @@ const Index = () => {
     setState(prev => ({ ...prev, ...partial }));
   };
 
+  const goToHub = () => updateState({ step: 'hub' });
+
   const handleViaAnswer = (id: number, score: number) => {
     updateState({ viaAnswers: { ...state.viaAnswers, [id]: score } });
   };
