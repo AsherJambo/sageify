@@ -4,6 +4,7 @@ interface QuestionnaireNavProps {
   onPrev?: () => void;
   onNext?: () => void;
   onComplete?: () => void;
+  onBackToHub?: () => void;
   prevDisabled?: boolean;
   nextDisabled?: boolean;
   completeDisabled?: boolean;
