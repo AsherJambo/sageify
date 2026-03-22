@@ -5,6 +5,7 @@ import QuestionnaireNav from './QuestionnaireNav';
 
 interface SkillsQuestionnaireProps {
   onComplete: (assignments: Record<number, SkillColumn>) => void;
+  onBackToHub?: () => void;
 }
 
 const columnLabels: Record<SkillColumn, { title: string; desc: string; symbol: string }> = {
