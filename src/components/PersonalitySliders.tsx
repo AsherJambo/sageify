@@ -28,7 +28,7 @@ const VALUE_CARDS = [
   { id: 'knowledge', label: 'ידע ומומחיות', emoji: '📚', desc: 'להעמיק ולהפוך למומחה' },
 ];
 
-const PersonalitySliders = ({ onComplete }: PersonalitySlidersProps) => {
+const PersonalitySliders = ({ onComplete, onBackToHub }: PersonalitySlidersProps) => {
   const [sliders, setSliders] = useState<Record<string, number>>(
     Object.fromEntries(TRAIT_PAIRS.map(t => [t.id, 50]))
   );
