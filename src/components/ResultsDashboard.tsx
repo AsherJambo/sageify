@@ -103,6 +103,19 @@ const ResultsDashboard = ({
     ? Object.entries(considerationsData.points).sort(([, a], [, b]) => b - a).slice(0, 6)
     : [];
 
+  const completedCount = useMemo(() => {
+    let count = 0;
+    if (Object.keys(viaScores).length > 0) count++;
+    if (Object.keys(scheinScores).length > 0) count++;
+    if (hollandScores && Object.keys(hollandScores).length > 0) count++;
+    if (considerationsData && considerationsData.selected.length > 0) count++;
+    if (skillsAssignments && Object.keys(skillsAssignments).length > 0) count++;
+    if (preferencesData && preferencesData.dream) count++;
+    return count;
+  }, [viaScores, scheinScores, hollandScores, considerationsData, skillsAssignments, preferencesData]);
+
+  const isPartial = completedCount < 6;
+
   const profileSummary = useMemo(() => {
     const parts: string[] = [];
     parts.push(`חוזקות VIA מובילות: ${topVIA.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
@@ -128,6 +141,29 @@ const ResultsDashboard = ({
             הפרופיל שלכם ב-<span className="text-secondary">Sageify</span>
           </h1>
         </motion.div>
+
+        {/* Partial data notice */}
+        {isPartial && (
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            custom={0.5}
+            className="bg-accent/5 border border-accent/20 rounded-2xl p-5 flex items-start gap-4"
+            dir="rtl"
+          >
+            <img src={owlLogo} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
+            <div className="space-y-1.5">
+              <p className="text-foreground font-semibold font-display text-sm tracking-wide">
+                📊 התוצאות מבוססות על {completedCount} מתוך 6 שאלונים
+              </p>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                השלמת שאלונים נוספים תחדד את הפרופיל ותאפשר המלצות מדויקות יותר. 
+                תוכלו תמיד לחזור ולהשלים שאלונים שטרם מילאתם.
+              </p>
+            </div>
+          </motion.div>
+        )}
 
         {/* Text Summary */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={1}>
