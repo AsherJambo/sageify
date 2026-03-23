@@ -98,7 +98,7 @@ export const skillsIntro = {
 };
 
 export const preferencesIntro = {
-  badge: '✦ שלב שישי',
+  badge: '● העדפות',
   title: 'העדפות אישיות',
   paragraphs: [
     'עוד שלב קטן אחרון וסיימנו:',
