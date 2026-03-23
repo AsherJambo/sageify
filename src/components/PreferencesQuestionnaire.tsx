@@ -120,7 +120,7 @@ const PreferencesQuestionnaire = ({ onComplete, onBackToHub }: PreferencesQuesti
           }}
           completeDisabled={!canComplete}
           onBackToHub={onBackToHub}
-          completeLabel="סיום וצפייה בתוצאות"
+          completeLabel="סיום שאלון העדפות"
         />
       </div>
     </div>
