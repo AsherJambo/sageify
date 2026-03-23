@@ -103,6 +103,19 @@ const ResultsDashboard = ({
     ? Object.entries(considerationsData.points).sort(([, a], [, b]) => b - a).slice(0, 6)
     : [];
 
+  const completedCount = useMemo(() => {
+    let count = 0;
+    if (Object.keys(viaScores).length > 0) count++;
+    if (Object.keys(scheinScores).length > 0) count++;
+    if (hollandScores && Object.keys(hollandScores).length > 0) count++;
+    if (considerationsData && considerationsData.selected.length > 0) count++;
+    if (skillsAssignments && Object.keys(skillsAssignments).length > 0) count++;
+    if (preferencesData && preferencesData.dream) count++;
+    return count;
+  }, [viaScores, scheinScores, hollandScores, considerationsData, skillsAssignments, preferencesData]);
+
+  const isPartial = completedCount < 6;
+
   const profileSummary = useMemo(() => {
     const parts: string[] = [];
     parts.push(`חוזקות VIA מובילות: ${topVIA.map(t => `${t.category} (${t.score.toFixed(1)})`).join(', ')}`);
