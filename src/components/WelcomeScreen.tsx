@@ -188,7 +188,7 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
               })}
             </div>
             <p className="text-muted-foreground/60 text-sm mt-5 text-center tracking-wide">
-              בחרו אילו שאלונים למלא · מומלץ להשלים לפחות 3 · ההתקדמות נשמרת אוטומטית
+              בעמוד הבא תבצעו זיהוי קצר, ובהמשך תוכלו לבחור אילו שאלונים למלא · מומלץ להשלים לפחות 3 · ההתקדמות נשמרת אוטומטית
             </p>
           </div>
 
