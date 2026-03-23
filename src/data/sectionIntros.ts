@@ -43,7 +43,7 @@ export const viaBonusIntro = {
 };
 
 export const scheinIntro = {
-  badge: '✦ שלב שני',
+  badge: '⚓ עוגנים תעסוקתיים',
   title: 'מה באמת מניע אתכם?',
   paragraphs: [
     'בחלק הבא, חשבו על העיסוק הבא שלכם בחיים.',
