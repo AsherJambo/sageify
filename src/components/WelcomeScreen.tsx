@@ -194,13 +194,13 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
 
           {/* CTA */}
           <div
-            className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] text-center pb-20 ${
+             className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] text-center pb-12 md:pb-20 ${
               showCTA ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
             }`}
           >
             <button
               onClick={onStart}
-              className="px-14 py-6 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] group"
+              className="px-10 py-5 md:px-14 md:py-6 bg-primary text-primary-foreground rounded-2xl text-lg md:text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] group"
             >
               <span className="flex items-center gap-3 justify-center">
                 {owlWelcome.cta}
