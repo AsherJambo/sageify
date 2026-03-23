@@ -9,7 +9,7 @@ export function getVIAEncouragement(answered: number, total: number): string | n
   if (pct === 25) return '🪶 רבע מהדרך מאחוריכם – סגי מזהה חוזקות מרתקות';
   if (pct === 50) return '🌿 חצי מהשיחה עברה! מתחילים להתגלות דברים מרתקים';
   if (pct === 75) return '✨ כמעט שם – עוד קצת והתמונה המלאה תיחשף';
-  if (answered === total) return '🌟 מדהים! סיימתם את השלב הזה. סגי מתרשם מאד!';
+  if (answered === total) return '🌟 מדהים! סיימתם את השאלון. סגי מתרשם מאד!';
   return null;
 }
 
