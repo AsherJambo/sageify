@@ -55,7 +55,7 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <div className="relative w-full h-[460px] md:h-[520px] overflow-hidden">
+      <div className="relative w-full h-[340px] md:h-[520px] overflow-hidden">
         <img
           src={heroBanner}
           alt=""
@@ -63,30 +63,30 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160,35%,18%)/0.5] via-[hsl(160,35%,18%)/0.6] to-[hsl(var(--background))]" />
         
-        <div className="relative z-10 h-full flex flex-col items-center justify-center px-6 text-center">
+        <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 md:px-6 text-center">
           <div
             className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
               showGreeting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="flex items-center justify-center gap-3 md:gap-4 mb-4 md:mb-8">
               {partnerOrg?.logo_url && (
                 <img
                   src={partnerOrg.logo_url}
                   alt={partnerOrg.org_name}
-                  className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-contain bg-white/10 p-2"
+                  className="w-16 h-16 md:w-24 md:h-24 rounded-xl object-contain bg-white/10 p-2"
                 />
               )}
               <img
                 src={sageifyLogo}
                 alt="Sageify"
-                className="w-28 h-28 md:w-32 md:h-32 mx-auto rounded-full shadow-[var(--shadow-elevated)] border-2 border-white/15"
+                className="w-20 h-20 md:w-32 md:h-32 mx-auto rounded-full shadow-[var(--shadow-elevated)] border-2 border-white/15"
               />
             </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-display text-white tracking-wide">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-display text-white tracking-wide">
               Sageify
             </h1>
-            <p className="text-lg md:text-xl text-white/75 mt-4 max-w-md mx-auto font-light tracking-wide">
+            <p className="text-base md:text-xl text-white/75 mt-2 md:mt-4 max-w-md mx-auto font-light tracking-wide">
               {partnerOrg?.custom_welcome_message 
                 ? partnerOrg.custom_welcome_message
                 : 'שיחה מקצועית לגילוי חוזקות ומיפוי כיוונים תעסוקתיים'}
@@ -96,8 +96,8 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
       </div>
 
       {/* Content below hero */}
-      <div className="flex-1 flex flex-col items-center px-6 -mt-10 relative z-20">
-        <div className="max-w-2xl w-full space-y-16">
+      <div className="flex-1 flex flex-col items-center px-4 md:px-6 -mt-10 relative z-20">
+        <div className="max-w-2xl w-full space-y-10 md:space-y-16">
 
           {/* Greeting card */}
           <div
@@ -105,7 +105,7 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
               showIntro ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <div className="bg-card rounded-3xl p-10 shadow-[var(--shadow-card)] border border-border/60">
+            <div className="bg-card rounded-3xl p-6 md:p-10 shadow-[var(--shadow-card)] border border-border/60">
               <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground mb-4 tracking-wide">
                 {owlWelcome.greeting}
               </h2>
@@ -125,9 +125,9 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
               {pillars.map((pillar, i) => (
                 <div
                   key={i}
-                  className="bg-card rounded-2xl p-7 border border-border/60 shadow-[var(--shadow-card)] text-center space-y-3 hover:border-secondary/30 transition-all duration-300"
+                 className="bg-card rounded-2xl p-5 md:p-7 border border-border/60 shadow-[var(--shadow-card)] text-center space-y-2 md:space-y-3 hover:border-secondary/30 transition-all duration-300"
                 >
-                  <div className="w-14 h-14 mx-auto rounded-full bg-secondary/8 border border-secondary/15 flex items-center justify-center text-lg text-secondary font-display">
+                  <div className="w-11 h-11 md:w-14 md:h-14 mx-auto rounded-full bg-secondary/8 border border-secondary/15 flex items-center justify-center text-base md:text-lg text-secondary font-display">
                     {pillar.icon}
                   </div>
                   <p className="font-bold font-display text-foreground tracking-wide text-base">
@@ -194,13 +194,13 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
 
           {/* CTA */}
           <div
-            className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] text-center pb-20 ${
+             className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] text-center pb-12 md:pb-20 ${
               showCTA ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
             }`}
           >
             <button
               onClick={onStart}
-              className="px-14 py-6 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] group"
+              className="px-10 py-5 md:px-14 md:py-6 bg-primary text-primary-foreground rounded-2xl text-lg md:text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] group"
             >
               <span className="flex items-center gap-3 justify-center">
                 {owlWelcome.cta}
