@@ -35,7 +35,7 @@ export const viaIntro = {
 };
 
 export const viaBonusIntro = {
-  badge: '✦ שלב חמישי ב׳',
+  badge: '✦ חוזקות VIA – בחירה',
   title: 'כוח ה-3 – חוזקות VIA',
   paragraphs: [
     'מתוך ההיגדים שנתתם להם את הציון הגבוה ביותר, בחרו 3 שהכי מהדהדים לכם',
