@@ -108,7 +108,7 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
           showComplete={page === totalPages - 1}
           onComplete={() => onComplete(answers)}
           completeDisabled={!allAnswered}
-          completeLabel="סיום חלק ד׳"
+          completeLabel="סיום שאלון נטיות"
           onBackToHub={onBackToHub}
         />
       </div>

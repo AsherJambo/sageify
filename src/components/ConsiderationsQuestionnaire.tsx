@@ -136,7 +136,7 @@ const ConsiderationsQuestionnaire = ({ onComplete, onBackToHub }: Considerations
               showComplete
               onComplete={() => onComplete(selected, points)}
               completeDisabled={remaining !== 0}
-              completeLabel="סיום חלק ג׳"
+              completeLabel="סיום שאלון שיקולים"
               onBackToHub={onBackToHub}
             />
           </>

@@ -83,7 +83,7 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: Sch
           showComplete
           onComplete={onComplete}
           completeDisabled={!allAnswered}
-          completeLabel="סיום חלק ב׳"
+          completeLabel="סיום שאלון עוגנים"
           onBackToHub={onBackToHub}
         />
       </div>

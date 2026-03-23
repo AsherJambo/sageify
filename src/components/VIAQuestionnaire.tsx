@@ -93,7 +93,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: VIAQue
           showComplete={page === totalPages - 1}
           onComplete={onComplete}
           completeDisabled={!allAnswered}
-          completeLabel="סיום חלק א׳"
+          completeLabel="סיום שאלון חוזקות"
           onBackToHub={onBackToHub}
         />
       </div>

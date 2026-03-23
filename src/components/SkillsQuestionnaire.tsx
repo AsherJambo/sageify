@@ -112,7 +112,7 @@ const SkillsQuestionnaire = ({ onComplete, onBackToHub }: SkillsQuestionnairePro
           showComplete
           onComplete={handleComplete}
           completeDisabled={false}
-          completeLabel="סיום חלק ה׳"
+          completeLabel="סיום שאלון כישורים"
           onBackToHub={onBackToHub}
         />
       </div>
