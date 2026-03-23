@@ -73,7 +73,7 @@ export const considerationsDistributeIntro = {
 };
 
 export const hollandIntro = {
-  badge: '✦ שלב רביעי',
+  badge: '🧭 נטיות תעסוקתיות',
   title: 'גילוי נטיות תעסוקתיות',
   paragraphs: [
     'בחלק הבא, יופיעו כישורים ויכולות שונים.',
