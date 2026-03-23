@@ -52,7 +52,7 @@ export const scheinIntro = {
 };
 
 export const considerationsIntro = {
-  badge: '✦ שלב שלישי',
+  badge: '⚖ שיקולים',
   title: 'מה חשוב לכם בבחירת עיסוק?',
   paragraphs: [
     'נמשיך לחשוב יחד על העתיד הקרוב שלכם.',
