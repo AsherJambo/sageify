@@ -82,7 +82,7 @@ export const hollandIntro = {
 };
 
 export const skillsIntro = {
-  badge: '✦ שלב ראשון',
+  badge: '✦ כישורים',
   title: 'כישורים ותנאי סף',
   paragraphs: [
     'נתחיל בשלב הראשון של השיחה:',
