@@ -49,7 +49,7 @@ const SkillsQuestionnaire = ({ onComplete, onBackToHub }: SkillsQuestionnairePro
       <div className="w-full max-w-3xl space-y-8">
         <div className="text-center space-y-3">
           <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
-            ✦ חלק א׳
+            ✦ כישורים
           </div>
           <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">כישורים ותנאי סף</h2>
           <p className="text-muted-foreground text-lg">מיינו כל כישור לאחת מ-4 העמודות (מינימום 5 ומקסימום 7 בעמודת "הארגז המנצח")</p>
@@ -112,7 +112,7 @@ const SkillsQuestionnaire = ({ onComplete, onBackToHub }: SkillsQuestionnairePro
           showComplete
           onComplete={handleComplete}
           completeDisabled={false}
-          completeLabel="סיום חלק ה׳"
+          completeLabel="סיום שאלון כישורים"
           onBackToHub={onBackToHub}
         />
       </div>

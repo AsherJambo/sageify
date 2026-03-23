@@ -28,7 +28,7 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: Sch
         {/* Header */}
         <div className="text-center space-y-3">
           <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
-            ✦ חלק ב׳
+            ⚓ עוגנים
           </div>
           <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">עוגנים תעסוקתיים של שיין</h2>
           <p className="text-muted-foreground text-lg">דרגו כל אמירה מ-1 (לא מסכים כלל) עד 7 (מסכים לחלוטין)</p>
@@ -83,7 +83,7 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: Sch
           showComplete
           onComplete={onComplete}
           completeDisabled={!allAnswered}
-          completeLabel="סיום חלק ב׳"
+          completeLabel="סיום שאלון עוגנים"
           onBackToHub={onBackToHub}
         />
       </div>
