@@ -142,6 +142,29 @@ const ResultsDashboard = ({
           </h1>
         </motion.div>
 
+        {/* Partial data notice */}
+        {isPartial && (
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            custom={0.5}
+            className="bg-accent/5 border border-accent/20 rounded-2xl p-5 flex items-start gap-4"
+            dir="rtl"
+          >
+            <img src={owlLogo} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
+            <div className="space-y-1.5">
+              <p className="text-foreground font-semibold font-display text-sm tracking-wide">
+                📊 התוצאות מבוססות על {completedCount} מתוך 6 שאלונים
+              </p>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                השלמת שאלונים נוספים תחדד את הפרופיל ותאפשר המלצות מדויקות יותר. 
+                תוכלו תמיד לחזור ולהשלים שאלונים שטרם מילאתם.
+              </p>
+            </div>
+          </motion.div>
+        )}
+
         {/* Text Summary */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={1}>
           <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]" dir="rtl">
