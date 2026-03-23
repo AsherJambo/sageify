@@ -61,7 +61,7 @@ export const considerationsIntro = {
 };
 
 export const considerationsDistributeIntro = {
-  badge: '✦ שלב שלישי ב׳',
+  badge: '⚖ שיקולים – חלוקת נקודות',
   title: 'חלוקת נקודות השפעה',
   paragraphs: [
     'הנה 6 השיקולים שבחרתם.',
