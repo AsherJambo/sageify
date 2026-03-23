@@ -125,9 +125,9 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
               {pillars.map((pillar, i) => (
                 <div
                   key={i}
-                  className="bg-card rounded-2xl p-7 border border-border/60 shadow-[var(--shadow-card)] text-center space-y-3 hover:border-secondary/30 transition-all duration-300"
+                 className="bg-card rounded-2xl p-5 md:p-7 border border-border/60 shadow-[var(--shadow-card)] text-center space-y-2 md:space-y-3 hover:border-secondary/30 transition-all duration-300"
                 >
-                  <div className="w-14 h-14 mx-auto rounded-full bg-secondary/8 border border-secondary/15 flex items-center justify-center text-lg text-secondary font-display">
+                  <div className="w-11 h-11 md:w-14 md:h-14 mx-auto rounded-full bg-secondary/8 border border-secondary/15 flex items-center justify-center text-base md:text-lg text-secondary font-display">
                     {pillar.icon}
                   </div>
                   <p className="font-bold font-display text-foreground tracking-wide text-base">
