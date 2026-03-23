@@ -119,6 +119,20 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
           </div>
         </motion.div>
 
+        {/* Sagi encouragement */}
+        {encouragement && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <OwlMessage
+              message={encouragement}
+              variant={completedCount >= 6 ? 'celebration' : completedCount >= 3 ? 'encouragement' : 'tip'}
+            />
+          </motion.div>
+        )}
+
         {/* Questionnaire cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {questionnaires.map((q, i) => {
