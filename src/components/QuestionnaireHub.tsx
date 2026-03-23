@@ -26,10 +26,45 @@ const fadeUp = {
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: 0.1 + i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } }),
 };
 
+const getHubEncouragement = (completed: number, completedNames: string[]): string | null => {
+  if (completed === 0) return null;
+  
+  const lastCompleted = completedNames[completedNames.length - 1];
+  
+  if (completed === 1) {
+    return `יופי! סיימתם את שאלון ה${lastCompleted} 🌿 כל שאלון נוסף מחדד את התמונה ועוזר לי להכיר אתכם טוב יותר.`;
+  }
+  if (completed === 2) {
+    return `שני שאלונים מאחוריכם – כבר מתחילה להצטייר תמונה מעניינת! 🔍 עוד אחד וניתן להתחיל לדבר על כיוונים.`;
+  }
+  if (completed === 3) {
+    return `שלושה שאלונים ✦ עכשיו כבר יש לי מספיק כדי לתת המלצות ראשוניות. רוצים להמשיך או לראות תוצאות?`;
+  }
+  if (completed === 4) {
+    return `ארבעה שאלונים – יש לי כבר הרבה מה לספר לכם! 🪶 כל שאלון נוסף מדייק עוד יותר.`;
+  }
+  if (completed === 5) {
+    return `כמעט השלמתם הכל! נשאר עוד שאלון אחד לתמונה המלאה ✨`;
+  }
+  return `כל הכבוד! השלמתם את כל השאלונים 🎉 התמונה המלאה מוכנה – בואו נצא לדרך!`;
+};
+
 const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: QuestionnaireHubProps) => {
   const completedCount = Object.values(completedSections).filter(Boolean).length;
   const hasMinimum = completedCount >= 3;
   const canViewResults = completedCount >= 1;
+
+  const completedNames = useMemo(() => {
+    const nameMap: Record<QuestionnaireSectionId, string> = {
+      skills: 'כישורים', schein: 'עוגנים', considerations: 'שיקולים',
+      holland: 'נטיות', via: 'חוזקות VIA', preferences: 'העדפות',
+    };
+    return questionnaires
+      .filter(q => completedSections[q.id])
+      .map(q => nameMap[q.id]);
+  }, [completedSections]);
+
+  const encouragement = getHubEncouragement(completedCount, completedNames);
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-10 md:py-16" dir="rtl">
