@@ -105,7 +105,7 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
               showIntro ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <div className="bg-card rounded-3xl p-10 shadow-[var(--shadow-card)] border border-border/60">
+            <div className="bg-card rounded-3xl p-6 md:p-10 shadow-[var(--shadow-card)] border border-border/60">
               <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground mb-4 tracking-wide">
                 {owlWelcome.greeting}
               </h2>
