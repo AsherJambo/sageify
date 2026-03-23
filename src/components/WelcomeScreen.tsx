@@ -96,8 +96,8 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
       </div>
 
       {/* Content below hero */}
-      <div className="flex-1 flex flex-col items-center px-6 -mt-10 relative z-20">
-        <div className="max-w-2xl w-full space-y-16">
+      <div className="flex-1 flex flex-col items-center px-4 md:px-6 -mt-10 relative z-20">
+        <div className="max-w-2xl w-full space-y-10 md:space-y-16">
 
           {/* Greeting card */}
           <div
