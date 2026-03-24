@@ -134,12 +134,23 @@ const ResultsDashboard = ({
     if (winnerSkills.length > 0) parts.push(`כישורים מובילים: ${winnerSkills.join(', ')}`);
     if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
     if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
+    if (motivationData) {
+      const clusterSummary = motivationClusters
+        .map(c => `${c.title}: ${motivationData.motivationScores[c.id] || 0}/5`)
+        .join(', ');
+      parts.push(`\nמניעים להמשך תעסוקה: ${clusterSummary}`);
+    }
+    if (intentionDimensions) {
+      parts.push(`כוונות תעסוקתיות – מוכנות נפשית: ${intentionDimensions.readiness.toFixed(1)}/5, יוזמה: ${intentionDimensions.proactivity.toFixed(1)}/5, גמישות: ${intentionDimensions.flexibility.toFixed(1)}/5`);
+      const levelLabel = intentionDimensions.intentionLevel === 'high' ? 'גבוהה' : intentionDimensions.intentionLevel === 'low' ? 'נמוכה' : 'בינונית';
+      parts.push(`רמת כוונות כללית: ${levelLabel} (${intentionDimensions.general.toFixed(1)}/5)`);
+    }
     parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
     staticRecommendations.forEach((rec, i) => {
       parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.reason}`);
     });
     return parts.join('\n');
-  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, staticRecommendations]);
+  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, motivationData, intentionDimensions, staticRecommendations]);
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12">
