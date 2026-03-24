@@ -273,6 +273,7 @@ const Index = () => {
           considerationsData={state.considerationsData}
           skillsAssignments={state.skillsAssignments}
           preferencesData={state.preferencesData}
+          motivationData={state.motivationData}
           chatMessages={state.chatMessages}
           onChatMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
           onBackToHub={() => updateState({ step: 'hub' })}
