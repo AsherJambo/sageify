@@ -262,6 +262,7 @@ const Index = () => {
           preferencesData={state.preferencesData}
           chatMessages={state.chatMessages}
           onChatMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
+          onBackToHub={() => updateState({ step: 'hub' })}
         />
       );
     default:
