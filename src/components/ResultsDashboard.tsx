@@ -342,7 +342,74 @@ const ResultsDashboard = ({
             </ExpandableSection>
           )}
 
-          {preferencesData && (
+          {motivationData && (
+            <ExpandableSection title="מניעים וכוונות תעסוקתיות" icon="🔥">
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-bold font-display text-foreground text-sm mb-3 tracking-wide">אשכולות מניעים</h4>
+                  <div className="space-y-3">
+                    {motivationClusters.map(cluster => {
+                      const score = motivationData.motivationScores[cluster.id] || 0;
+                      return (
+                        <div key={cluster.id} className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-base">{cluster.icon}</span>
+                            <span className="text-sm font-medium text-foreground">{cluster.title}</span>
+                            <span className="text-xs text-muted-foreground mr-auto">{score}/5</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">{motivationClusterDescriptions[cluster.title] || ''}</p>
+                          <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden">
+                            <div className="h-full bg-primary rounded-full progress-bar-fill" style={{ width: `${(score / 5) * 100}%` }} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                {intentionDimensions && (
+                  <div>
+                    <h4 className="font-bold font-display text-foreground text-sm mb-3 tracking-wide">ממדי כוונות תעסוקתיות</h4>
+                    <div className="space-y-3">
+                      {([
+                        { key: 'readiness', label: 'מוכנות נפשית', value: intentionDimensions.readiness },
+                        { key: 'proactivity', label: 'יוזמה ופרואקטיביות', value: intentionDimensions.proactivity },
+                        { key: 'flexibility', label: 'גמישות תעסוקתית', value: intentionDimensions.flexibility },
+                      ] as const).map(dim => (
+                        <div key={dim.key} className="space-y-1">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm font-medium text-foreground">{dim.label}</span>
+                            <span className="text-xs text-muted-foreground">{dim.value.toFixed(1)}/5</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">{intentionDimensionDescriptions[dim.label] || ''}</p>
+                          <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden">
+                            <div className="h-full bg-secondary rounded-full progress-bar-fill" style={{ width: `${(dim.value / 5) * 100}%` }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className={`mt-4 rounded-2xl px-5 py-4 border ${
+                      intentionDimensions.intentionLevel === 'high' ? 'bg-secondary/5 border-secondary/20' :
+                      intentionDimensions.intentionLevel === 'low' ? 'bg-destructive/5 border-destructive/20' :
+                      'bg-muted/30 border-border/60'
+                    }`}>
+                      <p className="font-bold font-display text-foreground text-sm tracking-wide">
+                        {intentionDimensions.intentionLevel === 'high' ? '✦ רמת כוונות גבוהה' :
+                         intentionDimensions.intentionLevel === 'low' ? '◆ רמת כוונות נמוכה' :
+                         '● רמת כוונות בינונית'}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        ציון כללי: {intentionDimensions.general.toFixed(1)} מתוך 5
+                        {intentionDimensions.intentionLevel === 'high' && ' — יש לכם נכונות גבוהה לפעול ולמצוא עיסוק חדש.'}
+                        {intentionDimensions.intentionLevel === 'low' && ' — ייתכן שעדיין לא הבשיל הזמן, וזה בסדר גמור.'}
+                        {intentionDimensions.intentionLevel === 'medium' && ' — אתם בשלב חקירה – השיחה עם סגי יכולה לעזור לגבש כיוון.'}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ExpandableSection>
+          )}
+
             <ExpandableSection title="העדפות אישיות" icon="✦">
               <div className="space-y-2">
                 {Object.entries(preferencesData.preferences).map(([key, values]) => (
