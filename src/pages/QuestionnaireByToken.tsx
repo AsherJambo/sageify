@@ -242,6 +242,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
     holland: !!state.hollandAnswers,
     via: state.viaBonusApplied,
     preferences: !!state.preferencesData && !!state.personalitySliders,
+    motivation: !!state.motivationData,
   };
 
   const markComplete = async () => {
