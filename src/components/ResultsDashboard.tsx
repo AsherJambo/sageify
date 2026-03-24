@@ -21,6 +21,7 @@ interface ResultsDashboardProps {
   considerationsData?: { selected: string[]; points: Record<string, number> };
   skillsAssignments?: Record<number, SkillColumn>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
+  motivationData?: { motivationScores: MotivationScores; intentionAnswers: IntentionAnswers };
   chatMessages?: ChatMessage[];
   onChatMessagesChange?: (messages: ChatMessage[]) => void;
   onBackToHub?: () => void;
