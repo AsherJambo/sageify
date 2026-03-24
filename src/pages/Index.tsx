@@ -12,6 +12,7 @@ import ConsiderationsQuestionnaire from '@/components/ConsiderationsQuestionnair
 import HollandQuestionnaire from '@/components/HollandQuestionnaire';
 import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
 import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
+import MotivationQuestionnaire from '@/components/MotivationQuestionnaire';
 import ResultsDashboard from '@/components/ResultsDashboard';
 import SageAdvisor from '@/components/SageAdvisor';
 import SageiInsightBubble from '@/components/SageiInsightBubble';
@@ -20,9 +21,10 @@ import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import type { SkillColumn } from '@/data/skillsData';
+import type { MotivationScores, IntentionAnswers } from '@/data/motivationQuestions';
 import {
   viaIntro, viaBonusIntro, scheinIntro,
-  considerationsIntro, hollandIntro, skillsIntro, preferencesIntro,
+  considerationsIntro, hollandIntro, skillsIntro, preferencesIntro, motivationIntro,
 } from '@/data/sectionIntros';
 import {
   type Answers, calculateCategoryScores, getMaxScoredQuestions, applyBonus,
@@ -39,6 +41,7 @@ type Step =
   | 'via-intro' | 'via' | 'via-bonus-intro' | 'via-bonus'
   | 'personality-sliders'
   | 'preferences-intro' | 'preferences'
+  | 'motivation-intro' | 'motivation'
   | 'processing'
   | 'advisor'
   | 'results';
@@ -58,6 +61,7 @@ interface SavedState {
   skillsAssignments?: Record<number, SkillColumn>;
   personalitySliders?: Record<string, number | string>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
+  motivationData?: { motivationScores: MotivationScores; intentionAnswers: IntentionAnswers };
   chatMessages?: ChatMessage[];
 }
 
@@ -79,7 +83,7 @@ function saveState(state: SavedState) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences';
+type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation';
 
 const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
   skills: 'skills-intro',
@@ -88,6 +92,7 @@ const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
   holland: 'holland-intro',
   via: 'via-intro',
   preferences: 'preferences-intro',
+  motivation: 'motivation-intro',
 };
 
 const QUESTIONNAIRE_STEPS: Step[] = [
@@ -95,6 +100,7 @@ const QUESTIONNAIRE_STEPS: Step[] = [
   'considerations-intro', 'considerations', 'holland-intro', 'holland',
   'via-intro', 'via', 'via-bonus-intro', 'via-bonus',
   'personality-sliders', 'preferences-intro', 'preferences',
+  'motivation-intro', 'motivation',
 ];
 
 const Index = () => {
@@ -150,6 +156,7 @@ const Index = () => {
     holland: !!state.hollandAnswers,
     via: state.viaBonusApplied,
     preferences: !!state.preferencesData && !!state.personalitySliders,
+    motivation: !!state.motivationData,
   };
 
   const isQuestionnaireStep = QUESTIONNAIRE_STEPS.includes(state.step);
@@ -231,6 +238,12 @@ const Index = () => {
         />{QuestionnaireSuffix}</>
       );
 
+    // Motivation flow
+    case 'motivation-intro':
+      return <>{ProgressBar}<SectionIntro badge={motivationIntro.badge} title={motivationIntro.title} paragraphs={motivationIntro.paragraphs} bulletPoints={motivationIntro.bulletPoints} onContinue={() => updateState({ step: 'motivation' })} />{QuestionnaireSuffix}</>;
+    case 'motivation':
+      return <>{ProgressBar}<MotivationQuestionnaire onComplete={(motivationScores, intentionAnswers) => updateState({ motivationData: { motivationScores, intentionAnswers }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+
     case 'processing':
       return <DataProcessingAnimation onComplete={() => updateState({ step: 'advisor' })} />;
     case 'advisor':
@@ -260,6 +273,7 @@ const Index = () => {
           considerationsData={state.considerationsData}
           skillsAssignments={state.skillsAssignments}
           preferencesData={state.preferencesData}
+          motivationData={state.motivationData}
           chatMessages={state.chatMessages}
           onChatMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
           onBackToHub={() => updateState({ step: 'hub' })}

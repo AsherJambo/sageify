@@ -4,7 +4,7 @@ import sageifyLogo from '@/assets/owl-logo.png';
 import ThinkingSkillsPlaceholder from '@/components/ThinkingSkillsPlaceholder';
 import OwlMessage from '@/components/OwlMessage';
 
-type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences';
+type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation';
 
 interface QuestionnaireHubProps {
   completedSections: Record<QuestionnaireSectionId, boolean>;
@@ -19,6 +19,7 @@ const questionnaires: { id: QuestionnaireSectionId; title: string; desc: string;
   { id: 'holland', title: 'נטיות תעסוקתיות', desc: 'גלו את הנטיות המקצועיות שלכם', icon: '🧭', duration: '10–12 דק׳' },
   { id: 'via', title: 'חוזקות VIA', desc: 'גלו את הכוחות הפנימיים שלכם', icon: '✦', duration: '8–10 דק׳' },
   { id: 'preferences', title: 'העדפות ופרופיל אישי', desc: 'העדפות, סגנון אישי וחלום המגירה', icon: '●', duration: '5–7 דק׳' },
+  { id: 'motivation', title: 'מניעים וכוונות', desc: 'מה מניע אתכם ומהי מידת המוכנות שלכם', icon: '🔥', duration: '5–7 דק׳' },
 ];
 
 const fadeUp = {
@@ -44,7 +45,10 @@ const getHubEncouragement = (completed: number, completedNames: string[]): strin
     return `ארבעה שאלונים – יש לי כבר הרבה מה לספר לכם! 🪶 כל שאלון נוסף מדייק עוד יותר.`;
   }
   if (completed === 5) {
-    return `כמעט השלמתם הכל! נשאר עוד שאלון אחד לתמונה המלאה ✨`;
+    return `חמישה שאלונים – התמונה כבר ברורה מאוד! עוד קצת ותוכלו לראות את המלוא ✨`;
+  }
+  if (completed === 6) {
+    return `כמעט השלמתם הכל! נשאר עוד שאלון אחד לתמונה המלאה 🎯`;
   }
   return `כל הכבוד! השלמתם את כל השאלונים 🎉 התמונה המלאה מוכנה – בואו נצא לדרך!`;
 };
@@ -58,6 +62,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
     const nameMap: Record<QuestionnaireSectionId, string> = {
       skills: 'כישורים', schein: 'עוגנים', considerations: 'שיקולים',
       holland: 'נטיות', via: 'חוזקות VIA', preferences: 'העדפות',
+      motivation: 'מניעים',
     };
     return questionnaires
       .filter(q => completedSections[q.id])
@@ -106,14 +111,14 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
               התקדמות
             </span>
             <span className="text-sm text-muted-foreground">
-              {completedCount} מתוך 6 {hasMinimum ? '✦' : `(מומלץ: 3+)`}
+              {completedCount} מתוך {questionnaires.length} {hasMinimum ? '✦' : `(מומלץ: 3+)`}
             </span>
           </div>
           <div className="h-2 bg-muted/40 rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-secondary rounded-full"
               initial={{ width: 0 }}
-              animate={{ width: `${(completedCount / 6) * 100}%` }}
+              animate={{ width: `${(completedCount / questionnaires.length) * 100}%` }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             />
           </div>
