@@ -78,6 +78,17 @@ Deno.serve(async (req) => {
         if (rd.bonusSelections) {
           sections.push(`בונוסים שנבחרו: ${JSON.stringify(rd.bonusSelections)}`);
         }
+        if (rd.motivationData) {
+          const md = rd.motivationData as { motivationScores: Record<string, number>; intentionAnswers: Record<string, number> };
+          if (md.motivationScores) {
+            const clusterScores = Object.entries(md.motivationScores).map(([k, v]) => `${k}=${v}`).join(', ');
+            sections.push(`מניעים תעסוקתיים: ${clusterScores}`);
+          }
+          if (md.intentionAnswers) {
+            const answers = Object.entries(md.intentionAnswers).map(([k, v]) => `Q${k}=${v}`).join(', ');
+            sections.push(`כוונות תעסוקתיות (תשובות גולמיות): ${answers}`);
+          }
+        }
         if (rd.chatMessages && Array.isArray(rd.chatMessages) && rd.chatMessages.length > 0) {
           sections.push(`\nהיסטוריית שיחה קודמת (${rd.chatMessages.length} הודעות) - אל תחזור על מה שכבר נדון.`);
         }
