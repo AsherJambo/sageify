@@ -41,6 +41,7 @@ type Step =
   | 'via-intro' | 'via' | 'via-bonus-intro' | 'via-bonus'
   | 'personality-sliders'
   | 'preferences-intro' | 'preferences'
+  | 'motivation-intro' | 'motivation'
   | 'processing'
   | 'advisor'
   | 'results';
