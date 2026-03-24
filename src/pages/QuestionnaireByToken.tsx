@@ -405,6 +405,12 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
         />{QuestionnaireSuffix}</>
       );
 
+    // Motivation flow
+    case 'motivation-intro':
+      return <>{ProgressBar}<SectionIntro badge={motivationIntro.badge} title={motivationIntro.title} paragraphs={motivationIntro.paragraphs} bulletPoints={motivationIntro.bulletPoints} onContinue={() => updateState({ step: 'motivation' })} />{QuestionnaireSuffix}</>;
+    case 'motivation':
+      return <>{ProgressBar}<MotivationQuestionnaire onComplete={(motivationScores, intentionAnswers) => updateState({ motivationData: { motivationScores, intentionAnswers }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+
     case 'processing':
       return <DataProcessingAnimation onComplete={() => updateState({ step: 'advisor' })} />;
     case 'advisor':
