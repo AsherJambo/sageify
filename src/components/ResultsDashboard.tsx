@@ -155,13 +155,20 @@ const ResultsDashboard = ({
           >
             <img src={owlLogo} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
             <div className="space-y-1.5">
-              <p className="text-foreground font-semibold font-display text-sm tracking-wide">
+               <p className="text-foreground font-semibold font-display text-sm tracking-wide">
                 📊 התוצאות מבוססות על {completedCount} מתוך 6 שאלונים
-              </p>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                השלמת שאלונים נוספים תחדד את הפרופיל ותאפשר המלצות מדויקות יותר. 
-                תוכלו תמיד לחזור ולהשלים שאלונים שטרם מילאתם.
-              </p>
+               </p>
+               <p className="text-muted-foreground text-sm leading-relaxed">
+                השלמת שאלונים נוספים תחדד את הפרופיל ותאפשר המלצות מדויקות יותר.
+               </p>
+               {onBackToHub && (
+                 <button
+                   onClick={onBackToHub}
+                   className="mt-2 px-5 py-2 rounded-xl bg-secondary text-secondary-foreground text-sm font-medium font-display tracking-wide hover:bg-secondary/85 transition-all duration-200 shadow-sm"
+                 >
+                   חזרה להשלמת שאלונים ←
+                 </button>
+               )}
             </div>
           </motion.div>
         )}
