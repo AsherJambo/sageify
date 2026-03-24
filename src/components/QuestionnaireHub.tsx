@@ -145,6 +145,8 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
                 animate="visible"
                 variants={fadeUp}
                 onClick={() => onSelect(q.id)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 className={`text-right p-6 rounded-2xl border shadow-[var(--shadow-card)] transition-all duration-300 group ${
                   completed
                     ? 'bg-secondary/[0.04] border-secondary/25 hover:border-secondary/40'
@@ -157,7 +159,15 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
                       ? 'bg-secondary/15 text-secondary'
                       : 'bg-muted/40 text-muted-foreground group-hover:bg-secondary/10 group-hover:text-secondary'
                   }`}>
-                    {completed ? '✓' : q.icon}
+                    {completed ? (
+                      <motion.span
+                        initial={{ scale: 0, rotate: -90 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 15, delay: 0.15 + i * 0.07 }}
+                      >
+                        ✓
+                      </motion.span>
+                    ) : q.icon}
                   </div>
                   <div className="flex-1 space-y-1.5">
                     <div className="flex items-center justify-between gap-2">
@@ -165,9 +175,14 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
                         {q.title}
                       </h3>
                       {completed && (
-                        <span className="text-xs bg-secondary/10 text-secondary px-2.5 py-0.5 rounded-full font-display font-semibold flex-shrink-0">
+                        <motion.span
+                          initial={{ opacity: 0, scale: 0.7 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 20, delay: 0.2 + i * 0.07 }}
+                          className="text-xs bg-secondary/10 text-secondary px-2.5 py-0.5 rounded-full font-display font-semibold flex-shrink-0"
+                        >
                           הושלם
-                        </span>
+                        </motion.span>
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">{q.desc}</p>
