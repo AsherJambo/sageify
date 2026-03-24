@@ -115,7 +115,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
             <motion.div
               className="h-full bg-secondary rounded-full"
               initial={{ width: 0 }}
-              animate={{ width: `${(completedCount / 6) * 100}%` }}
+              animate={{ width: `${(completedCount / questionnaires.length) * 100}%` }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             />
           </div>
