@@ -108,7 +108,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
               התקדמות
             </span>
             <span className="text-sm text-muted-foreground">
-              {completedCount} מתוך 6 {hasMinimum ? '✦' : `(מומלץ: 3+)`}
+              {completedCount} מתוך {questionnaires.length} {hasMinimum ? '✦' : `(מומלץ: 3+)`}
             </span>
           </div>
           <div className="h-2 bg-muted/40 rounded-full overflow-hidden">
