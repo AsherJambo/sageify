@@ -67,20 +67,6 @@ interface SavedState {
 
 function loadState(): SavedState {
   try {
-    if (new URLSearchParams(window.location.search).get('test_motivation')) {
-      return {
-        step: 'results',
-        viaAnswers: { 1: 5, 2: 4, 3: 3, 4: 5, 5: 4, 6: 3, 7: 5, 8: 4, 9: 3, 10: 5, 11: 4, 12: 3, 13: 5, 14: 4, 15: 3, 16: 5, 17: 4, 18: 3, 19: 5, 20: 4, 21: 3, 22: 5, 23: 4, 24: 3 },
-        scheinAnswers: { 1: 5, 2: 4, 3: 3, 4: 5, 5: 4, 6: 3, 7: 5, 8: 4, 9: 3, 10: 5, 11: 4, 12: 3, 13: 5, 14: 4, 15: 3, 16: 5, 17: 4, 18: 3, 19: 5, 20: 4 },
-        viaBonusApplied: true,
-        scheinBonusApplied: true,
-        hollandAnswers: { 1: true, 2: false, 3: true, 4: true, 5: false, 6: true, 7: false, 8: true, 9: true, 10: false },
-        motivationData: {
-          motivationScores: { financial: 4, social: 3, psychological: 5, vitality: 4 },
-          intentionAnswers: { 1: 4, 2: 3, 3: 4, 4: 5, 5: 3, 6: 4, 7: 3, 8: 4, 9: 3, 10: 5 },
-        },
-      };
-    }
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
   } catch {}
