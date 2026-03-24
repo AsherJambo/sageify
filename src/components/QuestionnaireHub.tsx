@@ -59,6 +59,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
     const nameMap: Record<QuestionnaireSectionId, string> = {
       skills: 'כישורים', schein: 'עוגנים', considerations: 'שיקולים',
       holland: 'נטיות', via: 'חוזקות VIA', preferences: 'העדפות',
+      motivation: 'מניעים',
     };
     return questionnaires
       .filter(q => completedSections[q.id])
