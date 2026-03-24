@@ -12,6 +12,7 @@ import ConsiderationsQuestionnaire from '@/components/ConsiderationsQuestionnair
 import HollandQuestionnaire from '@/components/HollandQuestionnaire';
 import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
 import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
+import MotivationQuestionnaire from '@/components/MotivationQuestionnaire';
 import ResultsDashboard from '@/components/ResultsDashboard';
 import SageAdvisor from '@/components/SageAdvisor';
 import SageiInsightBubble from '@/components/SageiInsightBubble';
@@ -20,9 +21,10 @@ import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import type { SkillColumn } from '@/data/skillsData';
+import type { MotivationScores, IntentionAnswers } from '@/data/motivationQuestions';
 import {
   viaIntro, viaBonusIntro, scheinIntro,
-  considerationsIntro, hollandIntro, skillsIntro, preferencesIntro,
+  considerationsIntro, hollandIntro, skillsIntro, preferencesIntro, motivationIntro,
 } from '@/data/sectionIntros';
 import {
   type Answers, calculateCategoryScores, getMaxScoredQuestions, applyBonus,
