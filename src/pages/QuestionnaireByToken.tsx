@@ -46,11 +46,12 @@ type Step =
   | 'skills-intro' | 'skills'
   | 'personality-sliders'
   | 'preferences-intro' | 'preferences'
+  | 'motivation-intro' | 'motivation'
   | 'processing'
   | 'advisor'
   | 'results';
 
-type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences';
+type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation';
 
 const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
   skills: 'skills-intro',
@@ -59,6 +60,7 @@ const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
   holland: 'holland-intro',
   via: 'via-intro',
   preferences: 'preferences-intro',
+  motivation: 'motivation-intro',
 };
 
 interface ResponseData {
@@ -74,6 +76,7 @@ interface ResponseData {
   skillsAssignments?: Record<number, SkillColumn>;
   personalitySliders?: Record<string, number | string>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
+  motivationData?: { motivationScores: MotivationScores; intentionAnswers: IntentionAnswers };
   chatMessages?: { role: 'user' | 'assistant'; content: string }[];
 }
 
@@ -90,6 +93,7 @@ const QUESTIONNAIRE_STEPS: Step[] = [
   'considerations-intro', 'considerations', 'holland-intro', 'holland',
   'via-intro', 'via', 'via-bonus-intro', 'via-bonus',
   'personality-sliders', 'preferences-intro', 'preferences',
+  'motivation-intro', 'motivation',
 ];
 
 interface QuestionnaireByTokenProps {
