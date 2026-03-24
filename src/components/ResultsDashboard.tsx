@@ -165,7 +165,7 @@ const ResultsDashboard = ({
             <img src={owlLogo} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
             <div className="space-y-1.5">
                <p className="text-foreground font-semibold font-display text-sm tracking-wide">
-                📊 התוצאות מבוססות על {completedCount} מתוך 6 שאלונים
+                📊 התוצאות מבוססות על {completedCount} מתוך {totalQuestionnaires} שאלונים
                </p>
                <p className="text-muted-foreground text-sm leading-relaxed">
                 השלמת שאלונים נוספים תחדד את הפרופיל ותאפשר המלצות מדויקות יותר.
