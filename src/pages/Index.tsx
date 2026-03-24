@@ -61,6 +61,7 @@ interface SavedState {
   skillsAssignments?: Record<number, SkillColumn>;
   personalitySliders?: Record<string, number | string>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
+  motivationData?: { motivationScores: MotivationScores; intentionAnswers: IntentionAnswers };
   chatMessages?: ChatMessage[];
 }
 
