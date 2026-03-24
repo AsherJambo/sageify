@@ -22,6 +22,7 @@ interface ResultsDashboardProps {
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
   chatMessages?: ChatMessage[];
   onChatMessagesChange?: (messages: ChatMessage[]) => void;
+  onBackToHub?: () => void;
   tokenId?: string;
 }
 
