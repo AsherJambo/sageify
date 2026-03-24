@@ -4,7 +4,7 @@ import sageifyLogo from '@/assets/owl-logo.png';
 import ThinkingSkillsPlaceholder from '@/components/ThinkingSkillsPlaceholder';
 import OwlMessage from '@/components/OwlMessage';
 
-type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences';
+type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation';
 
 interface QuestionnaireHubProps {
   completedSections: Record<QuestionnaireSectionId, boolean>;
