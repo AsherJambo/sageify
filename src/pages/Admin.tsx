@@ -90,13 +90,25 @@ const Admin = () => {
   const [filterDateTo, setFilterDateTo] = useState('');
   const supabase = cloudClient;
 
+  const isTokenCompleted = useCallback((t: TokenRow): boolean => {
+    if (t.completed_at) return true;
+    const raw = getResponseData(t);
+    return hasReachedAdvisor(raw) && getCompletedSectionsCount(raw) >= 3;
+  }, []);
+
+  const isTokenInProgress = useCallback((t: TokenRow): boolean => {
+    if (isTokenCompleted(t)) return false;
+    const raw = getResponseData(t);
+    return t.used || getCompletedSectionsCount(raw) > 0;
+  }, [isTokenCompleted]);
+
   const filteredTokens = useMemo(() => {
     return tokens.filter(t => {
       // Status filter
       if (filterStatus !== 'all') {
-        if (filterStatus === 'completed' && !t.completed_at) return false;
-        if (filterStatus === 'in_progress' && (!t.used || t.completed_at)) return false;
-        if (filterStatus === 'not_started' && t.used) return false;
+        if (filterStatus === 'completed' && !isTokenCompleted(t)) return false;
+        if (filterStatus === 'in_progress' && !isTokenInProgress(t)) return false;
+        if (filterStatus === 'not_started' && (t.used || getCompletedSectionsCount(getResponseData(t)) > 0)) return false;
       }
       // Date filter
       const created = new Date(t.created_at);
@@ -108,7 +120,7 @@ const Admin = () => {
       }
       return true;
     });
-  }, [tokens, filterStatus, filterDateFrom, filterDateTo]);
+  }, [tokens, filterStatus, filterDateFrom, filterDateTo, isTokenCompleted, isTokenInProgress]);
 
   const apiCall = useCallback(async (action: string, body: Record<string, unknown> = {}): Promise<any> => {
     const { data, error } = await supabase.functions.invoke('admin', {
