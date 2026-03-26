@@ -80,7 +80,7 @@ ${profileContext ? `פרופיל המשתמש:\n${profileContext}` : ""}
       const errText = await response.text();
       console.error("Perplexity error:", response.status, errText);
       return new Response(
-        JSON.stringify({ success: false, error: \`Perplexity API error: \${response.status}\` }),
+        JSON.stringify({ success: false, error: `Perplexity API error: ${response.status}` }),
         { status: response.status, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
