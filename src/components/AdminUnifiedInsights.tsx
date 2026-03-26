@@ -356,6 +356,7 @@ export default function AdminUnifiedInsights({ tokens, adminPassword }: Props) {
       {/* Sub-tabs for organized sections */}
       <Tabs defaultValue="psychology" className="space-y-4">
         <TabsList className="flex flex-wrap w-full h-auto gap-1 p-1">
+          <TabsTrigger value="choices" className="gap-1.5 text-xs">💼 בחירות תעסוקה</TabsTrigger>
           <TabsTrigger value="psychology" className="gap-1.5 text-xs">🧠 DNA פסיכולוגי</TabsTrigger>
           <TabsTrigger value="trends" className="gap-1.5 text-xs">📊 פרסונות ומגמות</TabsTrigger>
           <TabsTrigger value="gaps" className="gap-1.5 text-xs">🎯 פערים ואסטרטגיה</TabsTrigger>
