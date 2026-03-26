@@ -9,8 +9,10 @@ import { skills } from '@/data/skillsData';
 import { calculateCategoryScores, getTopCategories } from '@/lib/scoring';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
 import { Button } from '@/components/ui/button';
-import { Download, Brain, TrendingUp, Target, Database, Users, Star, ThumbsDown, Activity, AlertTriangle } from 'lucide-react';
+import { Download, Brain, TrendingUp, Target, Database, Users, Star, ThumbsDown, Activity, AlertTriangle, Briefcase } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { BarChart as BarChartIcon } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const COLORS = ['hsl(158, 64%, 40%)', 'hsl(260, 60%, 60%)', 'hsl(210, 45%, 35%)', 'hsl(35, 80%, 55%)', 'hsl(340, 65%, 50%)', 'hsl(180, 50%, 40%)', 'hsl(15, 70%, 50%)', 'hsl(280, 50%, 55%)'];
