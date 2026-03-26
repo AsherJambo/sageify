@@ -34,6 +34,47 @@ interface TokenRow {
   questionnaire_responses?: { response_data: Record<string, unknown> } | { response_data: Record<string, unknown> }[] | null;
 }
 
+const getCompletedSectionsCount = (raw: Record<string, unknown> | undefined): number => {
+  if (!raw) return 0;
+  let count = 0;
+  if (raw.skillsAssignments) count++;
+  if (raw.scheinBonusApplied) count++;
+  if (raw.considerationsData) count++;
+  if (raw.hollandAnswers) count++;
+  if (raw.viaBonusApplied) count++;
+  if (raw.preferencesData && raw.personalitySliders) count++;
+  if (raw.motivationData) count++;
+  return count;
+};
+
+const getResponseData = (t: TokenRow): Record<string, unknown> | undefined => {
+  if (!t.questionnaire_responses) return undefined;
+  if (Array.isArray(t.questionnaire_responses)) {
+    return t.questionnaire_responses[0]?.response_data as Record<string, unknown> | undefined;
+  }
+  return t.questionnaire_responses.response_data as Record<string, unknown> | undefined;
+};
+
+const hasReachedAdvisor = (raw: Record<string, unknown> | undefined): boolean => {
+  if (!raw) return false;
+  const step = raw.step as string;
+  return step === 'advisor' || step === 'results';
+};
+
+const getDetailedStatus = (t: TokenRow): { label: string; className: string } => {
+  const raw = getResponseData(t);
+  const sections = getCompletedSectionsCount(raw);
+  const reachedAdvisor = hasReachedAdvisor(raw);
+
+  if (t.completed_at || (reachedAdvisor && sections >= 3)) {
+    return { label: `✅ הושלם (${sections}/7 שאלונים)`, className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' };
+  }
+  if (t.used || sections > 0) {
+    return { label: `⏳ בתהליך (${sections}/7 שאלונים)`, className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' };
+  }
+  return { label: '🔗 טרם נפתח', className: 'bg-muted text-muted-foreground' };
+};
+
 const Admin = () => {
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
