@@ -34,6 +34,47 @@ interface TokenRow {
   questionnaire_responses?: { response_data: Record<string, unknown> } | { response_data: Record<string, unknown> }[] | null;
 }
 
+const getCompletedSectionsCount = (raw: Record<string, unknown> | undefined): number => {
+  if (!raw) return 0;
+  let count = 0;
+  if (raw.skillsAssignments) count++;
+  if (raw.scheinBonusApplied) count++;
+  if (raw.considerationsData) count++;
+  if (raw.hollandAnswers) count++;
+  if (raw.viaBonusApplied) count++;
+  if (raw.preferencesData && raw.personalitySliders) count++;
+  if (raw.motivationData) count++;
+  return count;
+};
+
+const getResponseData = (t: TokenRow): Record<string, unknown> | undefined => {
+  if (!t.questionnaire_responses) return undefined;
+  if (Array.isArray(t.questionnaire_responses)) {
+    return t.questionnaire_responses[0]?.response_data as Record<string, unknown> | undefined;
+  }
+  return t.questionnaire_responses.response_data as Record<string, unknown> | undefined;
+};
+
+const hasReachedAdvisor = (raw: Record<string, unknown> | undefined): boolean => {
+  if (!raw) return false;
+  const step = raw.step as string;
+  return step === 'advisor' || step === 'results';
+};
+
+const getDetailedStatus = (t: TokenRow): { label: string; className: string } => {
+  const raw = getResponseData(t);
+  const sections = getCompletedSectionsCount(raw);
+  const reachedAdvisor = hasReachedAdvisor(raw);
+
+  if (t.completed_at || (reachedAdvisor && sections >= 3)) {
+    return { label: `✅ הושלם (${sections}/7 שאלונים)`, className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' };
+  }
+  if (t.used || sections > 0) {
+    return { label: `⏳ בתהליך (${sections}/7 שאלונים)`, className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' };
+  }
+  return { label: '🔗 טרם נפתח', className: 'bg-muted text-muted-foreground' };
+};
+
 const Admin = () => {
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
@@ -49,13 +90,25 @@ const Admin = () => {
   const [filterDateTo, setFilterDateTo] = useState('');
   const supabase = cloudClient;
 
+  const isTokenCompleted = useCallback((t: TokenRow): boolean => {
+    if (t.completed_at) return true;
+    const raw = getResponseData(t);
+    return hasReachedAdvisor(raw) && getCompletedSectionsCount(raw) >= 3;
+  }, []);
+
+  const isTokenInProgress = useCallback((t: TokenRow): boolean => {
+    if (isTokenCompleted(t)) return false;
+    const raw = getResponseData(t);
+    return t.used || getCompletedSectionsCount(raw) > 0;
+  }, [isTokenCompleted]);
+
   const filteredTokens = useMemo(() => {
     return tokens.filter(t => {
       // Status filter
       if (filterStatus !== 'all') {
-        if (filterStatus === 'completed' && !t.completed_at) return false;
-        if (filterStatus === 'in_progress' && (!t.used || t.completed_at)) return false;
-        if (filterStatus === 'not_started' && t.used) return false;
+        if (filterStatus === 'completed' && !isTokenCompleted(t)) return false;
+        if (filterStatus === 'in_progress' && !isTokenInProgress(t)) return false;
+        if (filterStatus === 'not_started' && (t.used || getCompletedSectionsCount(getResponseData(t)) > 0)) return false;
       }
       // Date filter
       const created = new Date(t.created_at);
@@ -67,7 +120,7 @@ const Admin = () => {
       }
       return true;
     });
-  }, [tokens, filterStatus, filterDateFrom, filterDateTo]);
+  }, [tokens, filterStatus, filterDateFrom, filterDateTo, isTokenCompleted, isTokenInProgress]);
 
   const apiCall = useCallback(async (action: string, body: Record<string, unknown> = {}): Promise<any> => {
     const { data, error } = await supabase.functions.invoke('admin', {
@@ -253,7 +306,7 @@ const Admin = () => {
       return [
         t.username,
         t.id_number || '',
-        t.completed_at ? 'הושלם' : t.used ? 'בתהליך' : 'טרם נפתח',
+        isTokenCompleted(t) ? 'הושלם' : isTokenInProgress(t) ? 'בתהליך' : 'טרם נפתח',
         raw.step || '',
         new Date(t.created_at).toLocaleString('he-IL'),
         t.completed_at ? new Date(t.completed_at).toLocaleString('he-IL') : '',
@@ -335,16 +388,17 @@ const Admin = () => {
             <p className="text-xs text-muted-foreground">פרופילים פסיכולוגיים</p>
           </div>
           <div className="bg-card border border-border rounded-xl px-4 py-3 text-center">
-            <p className="text-2xl font-bold font-display text-secondary">{tokens.filter(t => t.completed_at).length}</p>
+            <p className="text-2xl font-bold font-display text-secondary">{tokens.filter(t => isTokenCompleted(t)).length}</p>
             <p className="text-xs text-muted-foreground">אבחונים מלאים</p>
+            <p className="text-[10px] text-muted-foreground/60">3+ שאלונים + שיחה עם סגי</p>
           </div>
           <div className="bg-card border border-border rounded-xl px-4 py-3 text-center">
-            <p className="text-2xl font-bold font-display text-primary">{tokens.filter(t => t.used && !t.completed_at).length}</p>
+            <p className="text-2xl font-bold font-display text-primary">{tokens.filter(t => isTokenInProgress(t)).length}</p>
             <p className="text-xs text-muted-foreground">בתהליך אבחון</p>
           </div>
           <div className="bg-card border border-border rounded-xl px-4 py-3 text-center">
             <p className="text-2xl font-bold font-display text-foreground">
-              {tokens.length > 0 ? Math.round((tokens.filter(t => t.completed_at).length / tokens.filter(t => t.used).length) * 100) || 0 : 0}%
+              {tokens.length > 0 ? Math.round((tokens.filter(t => isTokenCompleted(t)).length / Math.max(tokens.filter(t => t.used || isTokenInProgress(t) || isTokenCompleted(t)).length, 1)) * 100) : 0}%
             </p>
             <p className="text-xs text-muted-foreground">שיעור השלמה</p>
           </div>
@@ -474,15 +528,14 @@ const Admin = () => {
                     <td className="p-3 font-medium whitespace-nowrap">{t.username}</td>
                     <td className="p-3 text-muted-foreground whitespace-nowrap">{t.id_number || '—'}</td>
                     <td className="p-3">
-                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-                        t.completed_at
-                          ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                          : t.used
-                          ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
-                          : 'bg-muted text-muted-foreground'
-                      }`}>
-                        {t.completed_at ? '✅ הושלם' : t.used ? '⏳ בתהליך' : '🔗 טרם נפתח'}
-                      </span>
+                      {(() => {
+                        const status = getDetailedStatus(t);
+                        return (
+                          <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${status.className}`}>
+                            {status.label}
+                          </span>
+                        );
+                      })()}
                     </td>
                     <td className="p-3 text-muted-foreground whitespace-nowrap">{new Date(t.created_at).toLocaleDateString('he-IL')}</td>
                     <td className="p-3 whitespace-nowrap">

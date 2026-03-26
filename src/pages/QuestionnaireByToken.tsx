@@ -412,7 +412,10 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
       return <>{ProgressBar}<MotivationQuestionnaire onComplete={(motivationScores, intentionAnswers) => updateState({ motivationData: { motivationScores, intentionAnswers }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     case 'processing':
-      return <DataProcessingAnimation onComplete={() => updateState({ step: 'advisor' })} />;
+      return <DataProcessingAnimation onComplete={() => {
+        markComplete();
+        updateState({ step: 'advisor' });
+      }} />;
     case 'advisor':
       return (
         <>
