@@ -101,7 +101,7 @@ Deno.serve(async (req) => {
       try {
         const { data: allChoices } = await supabase
           .from("activity_choices")
-          .select("activity_type, activity_name, organization, category, reasons, psychological_drivers")
+          .select("activity_type, activity_name, organization, category, reasons, psychological_drivers, source")
           .order("created_at", { ascending: false })
           .limit(500);
 
@@ -109,31 +109,45 @@ Deno.serve(async (req) => {
           const typeCounts: Record<string, number> = {};
           const reasonCounts: Record<string, number> = {};
           const topActivities: Record<string, number> = {};
+          const reasonsByActivity: Record<string, Record<string, number>> = {};
 
           for (const c of allChoices) {
             typeCounts[c.activity_type] = (typeCounts[c.activity_type] || 0) + 1;
             topActivities[c.activity_name] = (topActivities[c.activity_name] || 0) + 1;
             const reasons = (c.reasons || []) as string[];
+            if (!reasonsByActivity[c.activity_name]) reasonsByActivity[c.activity_name] = {};
             for (const r of reasons) {
               reasonCounts[r] = (reasonCounts[r] || 0) + 1;
+              reasonsByActivity[c.activity_name][r] = (reasonsByActivity[c.activity_name][r] || 0) + 1;
             }
           }
 
           const topTypes = Object.entries(typeCounts).sort(([,a],[,b]) => b - a);
           const topReasons = Object.entries(reasonCounts).sort(([,a],[,b]) => b - a).slice(0, 10);
-          const topActs = Object.entries(topActivities).sort(([,a],[,b]) => b - a).slice(0, 5);
+          const topActs = Object.entries(topActivities).sort(([,a],[,b]) => b - a).slice(0, 8);
 
-          activityWisdom = `\n\n## 📊 מאגר בחירות פעילות נצבר (${allChoices.length} בחירות מתועדות):
-**מה פורשים בוחרים לעשות:**
+          // Build enriched activity wisdom with reasons PER activity
+          const actsWithReasons = topActs.map(([name, count]) => {
+            const reasons = reasonsByActivity[name] || {};
+            const topR = Object.entries(reasons).sort(([,a],[,b]) => b - a).slice(0, 3);
+            const reasonStr = topR.length > 0 ? ` (סיבות: ${topR.map(([r,c]) => `"${r}" ×${c}`).join(', ')})` : '';
+            return `- "${name}" (${count} בחירות)${reasonStr}`;
+          });
+
+          activityWisdom = `\n\n## 📊 מאגר בחירות תעסוקה נצבר (${allChoices.length} בחירות מתועדות):
+**סוגי פעילות:**
 ${topTypes.map(([t,c]) => `- ${t === 'volunteer' ? 'התנדבות' : t === 'work' ? 'עבודה' : t === 'course' ? 'קורסים' : t === 'freelance' ? 'פרילנס' : t}: ${c} בחירות`).join('\n')}
 
-**פעילויות פופולריות:**
-${topActs.map(([name,c]) => `- "${name}" (${c} בחירות)`).join('\n')}
+**פעילויות פופולריות + למה נבחרו:**
+${actsWithReasons.join('\n')}
 
-**הסיבות המובילות לבחירת פעילות:**
+**הסיבות המובילות לבחירת תעסוקה (כל הפעילויות):**
 ${topReasons.map(([r,c]) => `- "${r}" (${c} ציונים)`).join('\n')}
 
-**חובה:** השתמש בנתונים אלו כדי לדייק את ההמלצות שלך. אם פורשים עם פרופיל דומה בוחרים כיוון מסוים – ציין את זה!`;
+**חובה קריטית:**
+1. השתמש בסיבות הבחירה כדי לדייק המלצות: אם המשתמש מחפש "משמעות", הצע פעילויות שנבחרו בגלל "נותן תחושת משמעות" או "מחבר לאנשים".
+2. ציין למשתמש: "מתוך ${allChoices.length} בחירות תעסוקה, ${topActs[0]?.[1] || 0} אנשים בחרו ב-'${topActs[0]?.[0] || ''}' – הסיבה המרכזית: '${topReasons[0]?.[0] || ''}'."
+3. אם יש חפיפה בין הפרופיל הפסיכולוגי של המשתמש לסיבות הבחירה של אחרים – הדגש את זה!`;
         }
       } catch (e) {
         console.error("Activity wisdom error (non-fatal):", e);
