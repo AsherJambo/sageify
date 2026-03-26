@@ -91,22 +91,61 @@ interface Props {
 export default function AdminUnifiedInsights({ tokens, adminPassword }: Props) {
   const [insights, setInsights] = useState<InsightRow[]>([]);
   const [opportunities, setOpportunities] = useState<any[]>([]);
+  const [activityChoices, setActivityChoices] = useState<any[]>([]);
   const [interactionStats, setInteractionStats] = useState<Awaited<ReturnType<typeof getInteractionStats>> | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const [insightsRes, oppsRes, interactions] = await Promise.all([
+      const [insightsRes, oppsRes, interactions, choicesRes] = await Promise.all([
         cloudClient.from('global_retiree_insights').select('*').order('created_at', { ascending: false }),
         cloudClient.from('opportunities').select('*').eq('is_active', true).order('created_at', { ascending: false }).limit(50),
         getInteractionStats(),
+        cloudClient.from('activity_choices').select('*').order('created_at', { ascending: false }).limit(1000),
       ]);
       if (insightsRes.data) setInsights(insightsRes.data as unknown as InsightRow[]);
       if (oppsRes.data) setOpportunities(oppsRes.data);
+      if (choicesRes.data) setActivityChoices(choicesRes.data);
       setInteractionStats(interactions);
       setLoading(false);
     })();
   }, []);
+
+  // ===== ACTIVITY CHOICES AGGREGATION =====
+  const activityAgg = useMemo(() => {
+    if (activityChoices.length === 0) return null;
+
+    // Top activities by count
+    const actNameCounts: Record<string, number> = {};
+    const actTypeCounts: Record<string, number> = {};
+    const reasonCounts: Record<string, number> = {};
+    const reasonsByActivity: Record<string, Record<string, number>> = {};
+
+    for (const c of activityChoices) {
+      actNameCounts[c.activity_name] = (actNameCounts[c.activity_name] || 0) + 1;
+      actTypeCounts[c.activity_type] = (actTypeCounts[c.activity_type] || 0) + 1;
+
+      const reasons = (c.reasons || []) as string[];
+      if (!reasonsByActivity[c.activity_name]) reasonsByActivity[c.activity_name] = {};
+      for (const r of reasons) {
+        reasonCounts[r] = (reasonCounts[r] || 0) + 1;
+        reasonsByActivity[c.activity_name][r] = (reasonsByActivity[c.activity_name][r] || 0) + 1;
+      }
+    }
+
+    const topActivities = Object.entries(actNameCounts).sort(([, a], [, b]) => b - a).slice(0, 15);
+    const topReasons = Object.entries(reasonCounts).sort(([, a], [, b]) => b - a).slice(0, 12);
+    const topTypes = Object.entries(actTypeCounts).sort(([, a], [, b]) => b - a);
+
+    // Enrich top activities with their top reasons
+    const activitiesWithReasons = topActivities.map(([name, count]) => {
+      const reasons = reasonsByActivity[name] || {};
+      const topR = Object.entries(reasons).sort(([, a], [, b]) => b - a).slice(0, 3);
+      return { name, count, topReasons: topR };
+    });
+
+    return { total: activityChoices.length, topActivities: activitiesWithReasons, topReasons, topTypes };
+  }, [activityChoices]);
 
   // ===== POPULATION PSYCHOLOGY FROM TOKENS =====
   const populationInsights = useMemo(() => {
