@@ -63,7 +63,7 @@ ${profileContext ? `פרופיל המשתמש:\n${profileContext}` : ""}
     const response = await fetch("https://api.perplexity.ai/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: \`Bearer \${PERPLEXITY_API_KEY}\`,
+        Authorization: `Bearer ${PERPLEXITY_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
