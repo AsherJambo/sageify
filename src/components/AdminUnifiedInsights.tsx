@@ -348,9 +348,9 @@ export default function AdminUnifiedInsights({ tokens, adminPassword }: Props) {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <KPICard icon={<Users className="w-5 h-5 text-secondary" />} value={populationInsights?.totalProfiles || 0} label="פרופילים מנותחים" />
         <KPICard icon={<Brain className="w-5 h-5 text-primary" />} value={insights.length} label="תובנות AI" />
+        <KPICard icon={<Briefcase className="w-5 h-5 text-foreground" />} value={activityAgg?.total || 0} label="בחירות תעסוקה" />
         <KPICard icon={<Target className="w-5 h-5 text-destructive" />} value={opportunities.length} label="הזדמנויות פעילות" />
-        <KPICard icon={<Activity className="w-5 h-5 text-foreground" />} value={interactionStats?.totalInteractions || 0} label="אינטראקציות" />
-        <KPICard icon={<Star className="w-5 h-5 text-yellow-500" />} value={`${((interactionStats?.starRate || 0) * 100).toFixed(0)}%`} label="שיעור שמירה" />
+        <KPICard icon={<Activity className="w-5 h-5 text-secondary" />} value={interactionStats?.totalInteractions || 0} label="אינטראקציות" />
       </div>
 
       {/* Sub-tabs for organized sections */}
