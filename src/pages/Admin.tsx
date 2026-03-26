@@ -388,16 +388,17 @@ const Admin = () => {
             <p className="text-xs text-muted-foreground">פרופילים פסיכולוגיים</p>
           </div>
           <div className="bg-card border border-border rounded-xl px-4 py-3 text-center">
-            <p className="text-2xl font-bold font-display text-secondary">{tokens.filter(t => t.completed_at).length}</p>
+            <p className="text-2xl font-bold font-display text-secondary">{tokens.filter(t => isTokenCompleted(t)).length}</p>
             <p className="text-xs text-muted-foreground">אבחונים מלאים</p>
+            <p className="text-[10px] text-muted-foreground/60">3+ שאלונים + שיחה עם סגי</p>
           </div>
           <div className="bg-card border border-border rounded-xl px-4 py-3 text-center">
-            <p className="text-2xl font-bold font-display text-primary">{tokens.filter(t => t.used && !t.completed_at).length}</p>
+            <p className="text-2xl font-bold font-display text-primary">{tokens.filter(t => isTokenInProgress(t)).length}</p>
             <p className="text-xs text-muted-foreground">בתהליך אבחון</p>
           </div>
           <div className="bg-card border border-border rounded-xl px-4 py-3 text-center">
             <p className="text-2xl font-bold font-display text-foreground">
-              {tokens.length > 0 ? Math.round((tokens.filter(t => t.completed_at).length / tokens.filter(t => t.used).length) * 100) || 0 : 0}%
+              {tokens.length > 0 ? Math.round((tokens.filter(t => isTokenCompleted(t)).length / Math.max(tokens.filter(t => t.used || isTokenInProgress(t) || isTokenCompleted(t)).length, 1)) * 100) : 0}%
             </p>
             <p className="text-xs text-muted-foreground">שיעור השלמה</p>
           </div>
