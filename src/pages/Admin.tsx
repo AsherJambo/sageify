@@ -306,7 +306,7 @@ const Admin = () => {
       return [
         t.username,
         t.id_number || '',
-        t.completed_at ? 'הושלם' : t.used ? 'בתהליך' : 'טרם נפתח',
+        isTokenCompleted(t) ? 'הושלם' : isTokenInProgress(t) ? 'בתהליך' : 'טרם נפתח',
         raw.step || '',
         new Date(t.created_at).toLocaleString('he-IL'),
         t.completed_at ? new Date(t.completed_at).toLocaleString('he-IL') : '',
