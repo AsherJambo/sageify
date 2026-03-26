@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button';
 import { Download, Brain, TrendingUp, Target, Database, Users, Star, ThumbsDown, Activity, AlertTriangle, Briefcase } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { BarChart as BarChartIcon } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const COLORS = ['hsl(158, 64%, 40%)', 'hsl(260, 60%, 60%)', 'hsl(210, 45%, 35%)', 'hsl(35, 80%, 55%)', 'hsl(340, 65%, 50%)', 'hsl(180, 50%, 40%)', 'hsl(15, 70%, 50%)', 'hsl(280, 50%, 55%)'];
