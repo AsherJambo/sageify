@@ -576,24 +576,12 @@ const Admin = () => {
           <AdminOrganizations />
         </TabsContent>
 
-        <TabsContent value="data-asset">
-          <AdminDataAsset />
+        <TabsContent value="insights">
+          <AdminUnifiedInsights tokens={filteredTokens} adminPassword={storedPassword} />
         </TabsContent>
 
         <TabsContent value="enrichment">
           <AdminOpportunityEnricher adminPassword={storedPassword} />
-        </TabsContent>
-
-        <TabsContent value="intelligence">
-          <AdminIntelligence adminPassword={storedPassword} tokens={filteredTokens} />
-        </TabsContent>
-
-        <TabsContent value="trends">
-          <GlobalTrends tokens={filteredTokens} />
-        </TabsContent>
-
-        <TabsContent value="strategic">
-          <StrategicInsights />
         </TabsContent>
       </Tabs>
     </div>
