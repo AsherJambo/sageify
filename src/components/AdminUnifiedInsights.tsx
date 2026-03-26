@@ -9,7 +9,7 @@ import { skills } from '@/data/skillsData';
 import { calculateCategoryScores, getTopCategories } from '@/lib/scoring';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
 import { Button } from '@/components/ui/button';
-import { Download, Brain, TrendingUp, Target, Database, Users, Star, ThumbsDown, Activity, AlertTriangle } from 'lucide-react';
+import { Download, Brain, TrendingUp, Target, Database, Users, Star, ThumbsDown, Activity, AlertTriangle, Briefcase } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
@@ -91,22 +91,61 @@ interface Props {
 export default function AdminUnifiedInsights({ tokens, adminPassword }: Props) {
   const [insights, setInsights] = useState<InsightRow[]>([]);
   const [opportunities, setOpportunities] = useState<any[]>([]);
+  const [activityChoices, setActivityChoices] = useState<any[]>([]);
   const [interactionStats, setInteractionStats] = useState<Awaited<ReturnType<typeof getInteractionStats>> | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const [insightsRes, oppsRes, interactions] = await Promise.all([
+      const [insightsRes, oppsRes, interactions, choicesRes] = await Promise.all([
         cloudClient.from('global_retiree_insights').select('*').order('created_at', { ascending: false }),
         cloudClient.from('opportunities').select('*').eq('is_active', true).order('created_at', { ascending: false }).limit(50),
         getInteractionStats(),
+        cloudClient.from('activity_choices').select('*').order('created_at', { ascending: false }).limit(1000),
       ]);
       if (insightsRes.data) setInsights(insightsRes.data as unknown as InsightRow[]);
       if (oppsRes.data) setOpportunities(oppsRes.data);
+      if (choicesRes.data) setActivityChoices(choicesRes.data);
       setInteractionStats(interactions);
       setLoading(false);
     })();
   }, []);
+
+  // ===== ACTIVITY CHOICES AGGREGATION =====
+  const activityAgg = useMemo(() => {
+    if (activityChoices.length === 0) return null;
+
+    // Top activities by count
+    const actNameCounts: Record<string, number> = {};
+    const actTypeCounts: Record<string, number> = {};
+    const reasonCounts: Record<string, number> = {};
+    const reasonsByActivity: Record<string, Record<string, number>> = {};
+
+    for (const c of activityChoices) {
+      actNameCounts[c.activity_name] = (actNameCounts[c.activity_name] || 0) + 1;
+      actTypeCounts[c.activity_type] = (actTypeCounts[c.activity_type] || 0) + 1;
+
+      const reasons = (c.reasons || []) as string[];
+      if (!reasonsByActivity[c.activity_name]) reasonsByActivity[c.activity_name] = {};
+      for (const r of reasons) {
+        reasonCounts[r] = (reasonCounts[r] || 0) + 1;
+        reasonsByActivity[c.activity_name][r] = (reasonsByActivity[c.activity_name][r] || 0) + 1;
+      }
+    }
+
+    const topActivities = Object.entries(actNameCounts).sort(([, a], [, b]) => b - a).slice(0, 15);
+    const topReasons = Object.entries(reasonCounts).sort(([, a], [, b]) => b - a).slice(0, 12);
+    const topTypes = Object.entries(actTypeCounts).sort(([, a], [, b]) => b - a);
+
+    // Enrich top activities with their top reasons
+    const activitiesWithReasons = topActivities.map(([name, count]) => {
+      const reasons = reasonsByActivity[name] || {};
+      const topR = Object.entries(reasons).sort(([, a], [, b]) => b - a).slice(0, 3);
+      return { name, count, topReasons: topR };
+    });
+
+    return { total: activityChoices.length, topActivities: activitiesWithReasons, topReasons, topTypes };
+  }, [activityChoices]);
 
   // ===== POPULATION PSYCHOLOGY FROM TOKENS =====
   const populationInsights = useMemo(() => {
@@ -309,19 +348,143 @@ export default function AdminUnifiedInsights({ tokens, adminPassword }: Props) {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <KPICard icon={<Users className="w-5 h-5 text-secondary" />} value={populationInsights?.totalProfiles || 0} label="פרופילים מנותחים" />
         <KPICard icon={<Brain className="w-5 h-5 text-primary" />} value={insights.length} label="תובנות AI" />
+        <KPICard icon={<Briefcase className="w-5 h-5 text-foreground" />} value={activityAgg?.total || 0} label="בחירות תעסוקה" />
         <KPICard icon={<Target className="w-5 h-5 text-destructive" />} value={opportunities.length} label="הזדמנויות פעילות" />
-        <KPICard icon={<Activity className="w-5 h-5 text-foreground" />} value={interactionStats?.totalInteractions || 0} label="אינטראקציות" />
-        <KPICard icon={<Star className="w-5 h-5 text-yellow-500" />} value={`${((interactionStats?.starRate || 0) * 100).toFixed(0)}%`} label="שיעור שמירה" />
+        <KPICard icon={<Activity className="w-5 h-5 text-secondary" />} value={interactionStats?.totalInteractions || 0} label="אינטראקציות" />
       </div>
 
       {/* Sub-tabs for organized sections */}
-      <Tabs defaultValue="psychology" className="space-y-4">
+      <Tabs defaultValue="choices" className="space-y-4">
         <TabsList className="flex flex-wrap w-full h-auto gap-1 p-1">
+          <TabsTrigger value="choices" className="gap-1.5 text-xs">💼 בחירות תעסוקה</TabsTrigger>
           <TabsTrigger value="psychology" className="gap-1.5 text-xs">🧠 DNA פסיכולוגי</TabsTrigger>
           <TabsTrigger value="trends" className="gap-1.5 text-xs">📊 פרסונות ומגמות</TabsTrigger>
           <TabsTrigger value="gaps" className="gap-1.5 text-xs">🎯 פערים ואסטרטגיה</TabsTrigger>
           <TabsTrigger value="interactions" className="gap-1.5 text-xs">💎 אינטראקציות</TabsTrigger>
         </TabsList>
+
+        {/* ===== TAB 0: ACTIVITY CHOICES (PRIMARY) ===== */}
+        <TabsContent value="choices" className="space-y-6">
+          {activityAgg && activityAgg.total > 0 ? (
+            <>
+              {/* Activity type distribution */}
+              <div className="bg-card rounded-2xl border border-border/60 p-5">
+                <h3 className="font-bold font-display text-foreground mb-4 flex items-center gap-2">
+                  <Briefcase className="w-4 h-4 text-secondary" /> התפלגות סוגי תעסוקה שנבחרו
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="text-right">סוג פעילות</TableHead>
+                        <TableHead className="text-center w-20">מספר</TableHead>
+                        <TableHead className="text-center w-24">אחוז</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {activityAgg.topTypes.map(([type, count]) => (
+                        <TableRow key={type}>
+                          <TableCell className="text-sm font-medium">{ACTIVITY_LABELS[type] || type}</TableCell>
+                          <TableCell className="text-center font-bold text-secondary">{count}</TableCell>
+                          <TableCell className="text-center text-muted-foreground">{((count / activityAgg.total) * 100).toFixed(0)}%</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                  <ResponsiveContainer width="100%" height={220}>
+                    <PieChart>
+                      <Pie data={activityAgg.topTypes.map(([name, value]) => ({ name: ACTIVITY_LABELS[name] || name, value }))} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={40} outerRadius={80}>
+                        {activityAgg.topTypes.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Top activities with their reasons */}
+              <div className="bg-card rounded-2xl border border-border/60 p-5">
+                <h3 className="font-bold font-display text-foreground mb-4">פעילויות נבחרות + הסיבות לבחירה</h3>
+                <p className="text-xs text-muted-foreground mb-4">כל שורה מציגה את הפעילות שנבחרה ואת הסיבות המרכזיות שציינו המשיבים</p>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-right">פעילות</TableHead>
+                      <TableHead className="text-center w-16">בחרו</TableHead>
+                      <TableHead className="text-right">הסיבות המרכזיות לבחירה</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {activityAgg.topActivities.map((act) => (
+                      <TableRow key={act.name}>
+                        <TableCell className="text-sm font-medium max-w-[200px]">{act.name}</TableCell>
+                        <TableCell className="text-center font-bold text-secondary">{act.count}</TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {act.topReasons.length > 0 ? (
+                            <div className="flex flex-wrap gap-1">
+                              {act.topReasons.map(([reason, cnt]) => (
+                                <span key={reason} className="inline-block bg-secondary/10 text-secondary rounded-full px-2 py-0.5 text-xs">
+                                  {reason} ({cnt})
+                                </span>
+                              ))}
+                            </div>
+                          ) : <span className="text-muted-foreground/50">—</span>}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Top reasons across all activities */}
+              <div className="bg-card rounded-2xl border border-border/60 p-5">
+                <h3 className="font-bold font-display text-foreground mb-4">הסיבות המובילות לבחירת תעסוקה (אגרגציה כללית)</h3>
+                <p className="text-xs text-muted-foreground mb-4">למה אנשים בוחרים מה שהם בוחרים? — נתונים אלו מזינים את היועץ AI לדיוק המלצות עתידיות</p>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-right">סיבה</TableHead>
+                      <TableHead className="text-center w-20">ציונים</TableHead>
+                      <TableHead className="text-right w-48">חוזק יחסי</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {activityAgg.topReasons.map(([reason, count]) => (
+                      <TableRow key={reason}>
+                        <TableCell className="text-sm">{reason}</TableCell>
+                        <TableCell className="text-center font-bold">{count}</TableCell>
+                        <TableCell>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-secondary h-2 rounded-full" style={{ width: `${(count / (activityAgg.topReasons[0]?.[1] || 1)) * 100}%` }} />
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Bar chart of top activities */}
+              <div className="bg-card rounded-2xl border border-border/60 p-5">
+                <h3 className="font-bold font-display text-foreground mb-4">הפעילויות הנבחרות ביותר</h3>
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart data={activityAgg.topActivities.slice(0, 10).map(a => ({ name: a.name.substring(0, 25), value: a.count }))} layout="vertical">
+                    <XAxis type="number" tick={{ fontSize: 11 }} />
+                    <YAxis dataKey="name" type="category" width={160} tick={{ fontSize: 10 }} />
+                    <Tooltip />
+                    <Bar dataKey="value" fill="hsl(158, 64%, 40%)" radius={[0, 6, 6, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </>
+          ) : (
+            <div className="text-center p-12 text-muted-foreground">
+              <Briefcase className="w-12 h-12 mx-auto mb-4 opacity-50" />
+              <p className="text-lg font-medium">אין עדיין בחירות תעסוקה</p>
+              <p className="text-sm mt-2">הנתונים נאספים אוטומטית כשמשתמשים משוחחים עם סגי ובוחרים כיוונים</p>
+            </div>
+          )}
+        </TabsContent>
 
         {/* ===== TAB 1: PSYCHOLOGY DNA ===== */}
         <TabsContent value="psychology" className="space-y-6">
