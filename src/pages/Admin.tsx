@@ -515,15 +515,14 @@ const Admin = () => {
                     <td className="p-3 font-medium whitespace-nowrap">{t.username}</td>
                     <td className="p-3 text-muted-foreground whitespace-nowrap">{t.id_number || '—'}</td>
                     <td className="p-3">
-                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-                        t.completed_at
-                          ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                          : t.used
-                          ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
-                          : 'bg-muted text-muted-foreground'
-                      }`}>
-                        {t.completed_at ? '✅ הושלם' : t.used ? '⏳ בתהליך' : '🔗 טרם נפתח'}
-                      </span>
+                      {(() => {
+                        const status = getDetailedStatus(t);
+                        return (
+                          <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${status.className}`}>
+                            {status.label}
+                          </span>
+                        );
+                      })()}
                     </td>
                     <td className="p-3 text-muted-foreground whitespace-nowrap">{new Date(t.created_at).toLocaleDateString('he-IL')}</td>
                     <td className="p-3 whitespace-nowrap">
