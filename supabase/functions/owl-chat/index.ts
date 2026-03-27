@@ -340,7 +340,7 @@ ${interactionWisdom}
 ## תיעוד הזדמנויות אוטומטי:
 **חובה:** בכל פעם שאתה מציע עיסוק, התנדבות, קורס, פרילנס, או כל הזדמנות אחרת – הוסף בלוק מיוחד בסוף ההודעה:
 
-[OPPORTUNITY_LOG: {"title":"שם ההזדמנות","category":"work|volunteer|course|freelance","organization":"שם ארגון אם ידוע","description":"תיאור קצר","whyFits":"למה זה מתאים לפרופיל","location":"מיקום אם ידוע","link":"קישור אם ידוע"}]
+[OPPORTUNITY_LOG: {"title":"שם ההזדמנות","category":"work|volunteer|course|freelance|consulting|board|mentoring|entrepreneurship","organization":"שם ארגון אם ידוע","description":"תיאור קצר","whyFits":"למה זה מתאים לפרופיל","location":"מיקום אם ידוע","link":"קישור אם ידוע"}]
 
 ## 📌 תיעוד בחירות פעילות (DATA COLLECTION):
 **חובה קריטית** — בכל פעם שהמשתמש מביע עניין, בוחר, או מאשר שהוא רוצה לפעול בכיוון מסוים, תעד את הבחירה עם הסיבות:

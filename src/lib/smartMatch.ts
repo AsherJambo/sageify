@@ -5,7 +5,7 @@ export interface MatchedOpportunity {
   title: string;
   organization_name: string;
   description: string;
-  category: "work" | "volunteer" | "course" | "freelance";
+  category: "work" | "volunteer" | "course" | "freelance" | "consulting" | "board" | "mentoring" | "entrepreneurship";
   link: string;
   logo_url: string | null;
   location: string | null;
