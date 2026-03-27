@@ -14,6 +14,10 @@ const categoryLabels: Record<string, { label: string; icon: string; color: strin
   volunteer: { label: 'התנדבות', icon: '🤝', color: 'bg-secondary/10 text-secondary border-secondary/20' },
   course: { label: 'קורס', icon: '📚', color: 'bg-accent/10 text-accent-foreground border-accent/20' },
   freelance: { label: 'פרילנס', icon: '⚡', color: 'bg-muted text-foreground border-border' },
+  consulting: { label: 'ייעוץ', icon: '🎯', color: 'bg-primary/15 text-primary border-primary/25' },
+  board: { label: 'דירקטוריון', icon: '🏛️', color: 'bg-secondary/15 text-secondary border-secondary/25' },
+  mentoring: { label: 'מנטורינג', icon: '🌱', color: 'bg-accent/15 text-accent-foreground border-accent/25' },
+  entrepreneurship: { label: 'יזמות', icon: '🚀', color: 'bg-primary/20 text-primary border-primary/30' },
 };
 
 const SearchResultsCards = ({ results, isSearching, query }: SearchResultsCardsProps) => {
