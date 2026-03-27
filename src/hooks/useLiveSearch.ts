@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 export interface SearchResult {
   title: string;
   organization: string;
-  category: 'work' | 'volunteer' | 'course' | 'freelance';
+  category: 'work' | 'volunteer' | 'course' | 'freelance' | 'consulting' | 'board' | 'mentoring' | 'entrepreneurship';
   description: string;
   link: string;
   location: string;
