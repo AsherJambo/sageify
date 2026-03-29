@@ -27,6 +27,7 @@ import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import type { SkillColumn } from '@/data/skillsData';
 import type { MotivationScores, IntentionAnswers } from '@/data/motivationQuestions';
+import type { ThinkingResult } from '@/data/thinkingQuestions';
 import {
   viaIntro, viaBonusIntro, scheinIntro,
   considerationsIntro, hollandIntro, skillsIntro, preferencesIntro, motivationIntro,
