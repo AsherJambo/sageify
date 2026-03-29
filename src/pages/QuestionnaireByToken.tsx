@@ -255,6 +255,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
     via: state.viaBonusApplied,
     preferences: !!state.preferencesData && !!state.personalitySliders,
     motivation: !!state.motivationData,
+    thinking: !!state.thinkingResult,
   };
 
   const markComplete = async () => {
