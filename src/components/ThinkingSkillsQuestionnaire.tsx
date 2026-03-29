@@ -179,7 +179,7 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
           </div>
         </div>
 
-        {/* Question image */}
+        {/* Question image with clickable answer overlays */}
         <AnimatePresence mode="wait">
           <motion.div
             key={question.id}
@@ -187,37 +187,42 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -30 }}
             transition={{ duration: 0.3 }}
-            className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-[var(--shadow-card)]"
+            className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] relative"
           >
             <img
               src={question.image}
               alt={`שאלה ${currentIndex + 1}`}
               className="w-full"
             />
+            {/* Clickable overlays on the 8 answer options (right side of image, 2 cols × 4 rows) */}
+            {[1, 2, 3, 4, 5, 6, 7, 8].map(num => {
+              const row = Math.floor((num - 1) / 2);
+              const col = (num - 1) % 2;
+              const isSelected = answers[question.id] === num;
+              // Options are on the right ~48% of the image, in 2 columns × 4 rows
+              const left = 52 + col * 24;
+              const top = 4 + row * 24;
+              return (
+                <button
+                  key={num}
+                  onClick={() => handleAnswer(num)}
+                  className={`absolute rounded-lg transition-all duration-200 ${
+                    isSelected
+                      ? 'ring-3 ring-secondary bg-secondary/20 shadow-lg'
+                      : 'hover:bg-secondary/10 hover:ring-2 hover:ring-secondary/40'
+                  }`}
+                  style={{
+                    left: `${left}%`,
+                    top: `${top}%`,
+                    width: '24%',
+                    height: '22%',
+                  }}
+                  title={`תשובה ${num}`}
+                />
+              );
+            })}
           </motion.div>
         </AnimatePresence>
-
-        {/* Answer buttons */}
-        <div className="grid grid-cols-4 gap-3">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map(num => {
-            const isSelected = answers[question.id] === num;
-            return (
-              <motion.button
-                key={num}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => handleAnswer(num)}
-                className={`py-4 rounded-xl text-lg font-bold font-display transition-all duration-200 border ${
-                  isSelected
-                    ? 'bg-secondary text-white border-secondary shadow-lg'
-                    : 'bg-card border-border/60 text-foreground hover:border-secondary/40 hover:bg-secondary/[0.04]'
-                }`}
-              >
-                {num}
-              </motion.button>
-            );
-          })}
-        </div>
 
         {/* Navigation */}
         <div className="flex items-center justify-between gap-4">
