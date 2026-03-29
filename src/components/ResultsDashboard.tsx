@@ -66,7 +66,7 @@ const ExpandableSection = ({ title, icon, children }: { title: string; icon: str
 
 const ResultsDashboard = ({
   viaScores, scheinScores, hollandScores,
-  considerationsData, skillsAssignments, preferencesData, motivationData,
+  considerationsData, skillsAssignments, preferencesData, motivationData, thinkingResult,
   chatMessages, onChatMessagesChange, onBackToHub, tokenId,
 }: ResultsDashboardProps) => {
   const topVIA = getTopCategories(viaScores, 2);
