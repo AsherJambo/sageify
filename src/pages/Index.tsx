@@ -163,6 +163,7 @@ const Index = () => {
     via: state.viaBonusApplied,
     preferences: !!state.preferencesData && !!state.personalitySliders,
     motivation: !!state.motivationData,
+    thinking: !!state.thinkingResult,
   };
 
   const isQuestionnaireStep = QUESTIONNAIRE_STEPS.includes(state.step);
