@@ -44,6 +44,7 @@ type Step =
   | 'personality-sliders'
   | 'preferences-intro' | 'preferences'
   | 'motivation-intro' | 'motivation'
+  | 'thinking-intro' | 'thinking'
   | 'processing'
   | 'advisor'
   | 'results';
