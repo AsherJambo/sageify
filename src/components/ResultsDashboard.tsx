@@ -486,7 +486,7 @@ const ResultsDashboard = ({
             </ExpandableSection>
           )}
 
-
+          {preferencesData && (
             <ExpandableSection title="העדפות אישיות" icon="✦">
               <div className="space-y-2">
                 {Object.entries(preferencesData.preferences).map(([key, values]) => (
