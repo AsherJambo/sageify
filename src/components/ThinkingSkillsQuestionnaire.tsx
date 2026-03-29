@@ -9,6 +9,20 @@ interface ThinkingSkillsQuestionnaireProps {
   onBackToHub?: () => void;
 }
 
+const ANSWER_OPTION_OVERLAYS = [
+  { left: 60, top: 3.1 },
+  { left: 77.1, top: 3.1 },
+  { left: 60, top: 26.7 },
+  { left: 77.1, top: 26.7 },
+  { left: 60, top: 50.2 },
+  { left: 77.1, top: 50.2 },
+  { left: 60, top: 73.9 },
+  { left: 77.1, top: 73.9 },
+] as const;
+
+const ANSWER_OVERLAY_WIDTH = 11.9;
+const ANSWER_OVERLAY_HEIGHT = 21.2;
+
 const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkillsQuestionnaireProps) => {
   const [phase, setPhase] = useState<'intro' | 'test' | 'done'>('intro');
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -195,13 +209,10 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
               className="w-full"
             />
             {/* Clickable overlays on the 8 answer options (right side of image, 2 cols × 4 rows) */}
-            {[1, 2, 3, 4, 5, 6, 7, 8].map(num => {
-              const row = Math.floor((num - 1) / 2);
-              const col = (num - 1) % 2;
+            {ANSWER_OPTION_OVERLAYS.map((overlay, index) => {
+              const num = index + 1;
               const isSelected = answers[question.id] === num;
-              // Options are on the right ~48% of the image, in 2 columns × 4 rows
-              const left = 52 + col * 24;
-              const top = 4 + row * 24;
+
               return (
                 <button
                   key={num}
@@ -212,10 +223,10 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
                       : 'hover:bg-secondary/10 hover:ring-2 hover:ring-secondary/40'
                   }`}
                   style={{
-                    left: `${left}%`,
-                    top: `${top}%`,
-                    width: '24%',
-                    height: '22%',
+                    left: `${overlay.left}%`,
+                    top: `${overlay.top}%`,
+                    width: `${ANSWER_OVERLAY_WIDTH}%`,
+                    height: `${ANSWER_OVERLAY_HEIGHT}%`,
                   }}
                   title={`תשובה ${num}`}
                 />
