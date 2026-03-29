@@ -118,7 +118,7 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
               <img
                 src={exampleImage}
                 alt="דוגמה – ריבוע לבן עם מעטפת ירוקה"
-                className="w-full rounded-xl border border-border/30 shadow-sm"
+                className="w-full rounded-lg border border-border/30 shadow-sm object-contain"
               />
             </div>
 
