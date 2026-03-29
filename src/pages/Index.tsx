@@ -251,6 +251,12 @@ const Index = () => {
     case 'motivation':
       return <>{ProgressBar}<MotivationQuestionnaire onComplete={(motivationScores, intentionAnswers) => updateState({ motivationData: { motivationScores, intentionAnswers }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
+    // Thinking flow
+    case 'thinking-intro':
+      return <>{ProgressBar}<SectionIntro badge={thinkingIntro.badge} title={thinkingIntro.title} paragraphs={thinkingIntro.paragraphs} onContinue={() => updateState({ step: 'thinking' })} />{QuestionnaireSuffix}</>;
+    case 'thinking':
+      return <>{ProgressBar}<ThinkingSkillsQuestionnaire onComplete={(result) => updateState({ thinkingResult: result, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+
     case 'processing':
       return <DataProcessingAnimation onComplete={() => updateState({ step: 'advisor' })} />;
     case 'advisor':
