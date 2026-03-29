@@ -221,12 +221,12 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
                       ? 'ring-3 ring-secondary bg-secondary/20 shadow-lg'
                       : 'hover:bg-secondary/10 hover:ring-2 hover:ring-secondary/40'
                   }`}
-                  style={{
-                    left: `${overlay.left}%`,
-                    top: `${overlay.top}%`,
-                    width: `${ANSWER_OVERLAY_WIDTH}%`,
-                    height: `${ANSWER_OVERLAY_HEIGHT}%`,
-                  }}
+                    style={{
+                      left: `${overlay.left}%`,
+                      top: `${overlay.top}%`,
+                      width: `${ANSWER_OVERLAY_WIDTH}%`,
+                      height: `${overlay.height}%`,
+                    }}
                   title={`תשובה ${num}`}
                 />
               );
