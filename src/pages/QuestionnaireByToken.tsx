@@ -54,7 +54,7 @@ type Step =
   | 'advisor'
   | 'results';
 
-type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation';
+type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation' | 'thinking';
 
 const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
   skills: 'skills-intro',
@@ -64,6 +64,7 @@ const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
   via: 'via-intro',
   preferences: 'preferences-intro',
   motivation: 'motivation-intro',
+  thinking: 'thinking-intro',
 };
 
 interface ResponseData {
