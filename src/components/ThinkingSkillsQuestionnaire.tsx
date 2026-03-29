@@ -115,15 +115,11 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
 
             {/* Example */}
             <div className="border-t border-border/40 pt-5">
-              <p className="text-sm font-display font-semibold text-foreground mb-3">דוגמה:</p>
               <img
                 src={exampleImage}
-                alt="דוגמה"
+                alt="דוגמה – ריבוע לבן עם מעטפת ירוקה"
                 className="w-full rounded-xl border border-border/30 shadow-sm"
               />
-              <p className="text-sm text-muted-foreground mt-2">
-                בדוגמה זו, התשובה הנכונה היא מספר 3 – ריבוע לבן עם מעטפת ירוקה.
-              </p>
             </div>
 
             <div className="bg-secondary/[0.04] border border-secondary/15 rounded-xl p-4 flex items-center gap-3">
