@@ -295,6 +295,13 @@ const Admin = () => {
       const prefCols = preferenceQuestions.map(q => (prefs?.preferences?.[q.id] || []).join(' | '));
       const dream = prefs?.dream || '';
 
+      // Thinking
+      const thinkingResult = raw.thinkingResult as { correct?: number; total?: number; percentile?: number; level?: string; timeUsed?: number } | undefined;
+      const thinkingCorrect = thinkingResult ? `${thinkingResult.correct || 0}/${thinkingResult.total || 15}` : '';
+      const thinkingPercentile = thinkingResult?.percentile != null ? String(thinkingResult.percentile) : '';
+      const thinkingLevel = thinkingResult?.level || '';
+      const thinkingTime = thinkingResult?.timeUsed != null ? String(thinkingResult.timeUsed) : '';
+
       // Chat
       const chatMessages = raw.chatMessages as { role: string; content: string }[] | undefined;
       const chatText = chatMessages
@@ -319,6 +326,10 @@ const Admin = () => {
         consText,
         ...prefCols,
         dream,
+        thinkingCorrect,
+        thinkingPercentile,
+        thinkingLevel,
+        thinkingTime,
         chatText,
         getLink(t.token),
       ].map(v => escCSV(String(v)));
