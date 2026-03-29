@@ -64,10 +64,10 @@ const getDetailedStatus = (t: TokenRow): { label: string; className: string } =>
   const reachedAdvisor = hasReachedAdvisor(raw);
 
   if (t.completed_at || (reachedAdvisor && sections >= 3)) {
-    return { label: `✅ הושלם (${sections}/7 שאלונים)`, className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' };
+    return { label: `✅ הושלם (${sections}/8 שאלונים)`, className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' };
   }
   if (t.used || sections > 0) {
-    return { label: `⏳ בתהליך (${sections}/7 שאלונים)`, className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' };
+    return { label: `⏳ בתהליך (${sections}/8 שאלונים)`, className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' };
   }
   return { label: '🔗 טרם נפתח', className: 'bg-muted text-muted-foreground' };
 };
