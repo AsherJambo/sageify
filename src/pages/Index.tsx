@@ -25,7 +25,7 @@ import type { SkillColumn } from '@/data/skillsData';
 import type { MotivationScores, IntentionAnswers } from '@/data/motivationQuestions';
 import {
   viaIntro, viaBonusIntro, scheinIntro,
-  considerationsIntro, hollandIntro, skillsIntro, preferencesIntro, motivationIntro,
+  considerationsIntro, hollandIntro, skillsIntro, preferencesIntro, motivationIntro, thinkingIntro,
 } from '@/data/sectionIntros';
 import {
   type Answers, calculateCategoryScores, getMaxScoredQuestions, applyBonus,
