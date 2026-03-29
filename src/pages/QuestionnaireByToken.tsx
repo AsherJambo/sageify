@@ -442,6 +442,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
             considerationsData={state.considerationsData}
             skillsAssignments={state.skillsAssignments}
             preferencesData={state.preferencesData}
+            thinkingResult={state.thinkingResult}
             initialMessages={state.chatMessages}
             onMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
             onRoadmapReady={() => setAdvisorProgress(100)}

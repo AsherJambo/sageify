@@ -13,6 +13,7 @@ import { useLiveSearch, type SearchResult } from '@/hooks/useLiveSearch';
 import SearchResultsCards from '@/components/SearchResultsCards';
 import { supabase } from '@/integrations/supabase/client';
 import { silentSaveInsights } from '@/lib/insightsSaver';
+import type { ThinkingResult } from '@/data/thinkingQuestions';
 
 interface SageAdvisorProps {
   username?: string;
@@ -23,6 +24,7 @@ interface SageAdvisorProps {
   considerationsData?: { selected: string[]; points: Record<string, number> };
   skillsAssignments?: Record<number, SkillColumn>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
+  thinkingResult?: ThinkingResult;
   initialMessages?: ChatMessage[];
   onMessagesChange?: (messages: ChatMessage[]) => void;
   onRoadmapReady?: () => void;
@@ -35,7 +37,7 @@ const CHAT_URL = `${SUPABASE_URL}/functions/v1/owl-chat`;
 const SageAdvisor = ({
   username, tokenId,
   viaScores, scheinScores, hollandScores,
-  considerationsData, skillsAssignments, preferencesData,
+  considerationsData, skillsAssignments, preferencesData, thinkingResult,
   initialMessages, onMessagesChange, onRoadmapReady, onFinish,
 }: SageAdvisorProps) => {
   const [phase, setPhase] = useState<'loading' | 'chat' | 'done'>(
@@ -108,6 +110,16 @@ const SageAdvisor = ({
     if (burnoutSkills.length > 0) parts.push(`כישורי שחיקה (להימנע): ${burnoutSkills.join(', ')}`);
     if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
     if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
+    if (thinkingResult) {
+      parts.push(`\nהערכת חשיבה וגמישות קוגניטיבית: ${thinkingResult.totalCorrect}/${thinkingResult.totalQuestions} תשובות נכונות (רמה: ${thinkingResult.levelLabel}, אחוזון: ${thinkingResult.percentile})`);
+      if (thinkingResult.level === 'high' || thinkingResult.level === 'above-average') {
+        parts.push(`→ חשיבה אנליטית חזקה – מתאים לתפקידים הדורשים פתרון בעיות מורכבות, ייעוץ אסטרטגי, ניתוח נתונים`);
+      } else if (thinkingResult.level === 'average') {
+        parts.push(`→ יכולת חשיבה ממוצעת – מתאים למגוון רחב של פעילויות`);
+      } else {
+        parts.push(`→ מומלץ להתמקד בפעילויות המבוססות על ניסיון וידע מעשי יותר מאשר חשיבה מופשטת`);
+      }
+    }
     parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
     recommendations.forEach((rec, i) => {
       parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.reason}`);

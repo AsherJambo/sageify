@@ -89,6 +89,15 @@ Deno.serve(async (req) => {
             sections.push(`כוונות תעסוקתיות (תשובות גולמיות): ${answers}`);
           }
         }
+        if (rd.thinkingResult) {
+          const tr = rd.thinkingResult as { totalCorrect: number; totalQuestions: number; levelLabel: string; percentile: number; level: string; timeUsedSeconds: number };
+          sections.push(`הערכת חשיבה וגמישות: ${tr.totalCorrect}/${tr.totalQuestions} נכונות, רמה: ${tr.levelLabel}, אחוזון: ${tr.percentile}, זמן: ${Math.floor(tr.timeUsedSeconds / 60)}:${String(tr.timeUsedSeconds % 60).padStart(2, '0')} דקות`);
+          if (tr.level === 'high' || tr.level === 'above-average') {
+            sections.push(`→ חשיבה אנליטית חזקה – מתאים לתפקידי ייעוץ, ניתוח, פתרון בעיות`);
+          } else if (tr.level === 'low' || tr.level === 'below-average') {
+            sections.push(`→ להתמקד בפעילויות מבוססות ניסיון מעשי ולא חשיבה מופשטת`);
+          }
+        }
         if (rd.chatMessages && Array.isArray(rd.chatMessages) && rd.chatMessages.length > 0) {
           sections.push(`\nהיסטוריית שיחה קודמת (${rd.chatMessages.length} הודעות) - אל תחזור על מה שכבר נדון.`);
         }
