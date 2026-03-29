@@ -13,6 +13,7 @@ import { useLiveSearch, type SearchResult } from '@/hooks/useLiveSearch';
 import SearchResultsCards from '@/components/SearchResultsCards';
 import { supabase } from '@/integrations/supabase/client';
 import { silentSaveInsights } from '@/lib/insightsSaver';
+import type { ThinkingResult } from '@/data/thinkingQuestions';
 
 interface SageAdvisorProps {
   username?: string;
@@ -23,6 +24,7 @@ interface SageAdvisorProps {
   considerationsData?: { selected: string[]; points: Record<string, number> };
   skillsAssignments?: Record<number, SkillColumn>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
+  thinkingResult?: ThinkingResult;
   initialMessages?: ChatMessage[];
   onMessagesChange?: (messages: ChatMessage[]) => void;
   onRoadmapReady?: () => void;
