@@ -37,7 +37,7 @@ const CHAT_URL = `${SUPABASE_URL}/functions/v1/owl-chat`;
 const SageAdvisor = ({
   username, tokenId,
   viaScores, scheinScores, hollandScores,
-  considerationsData, skillsAssignments, preferencesData,
+  considerationsData, skillsAssignments, preferencesData, thinkingResult,
   initialMessages, onMessagesChange, onRoadmapReady, onFinish,
 }: SageAdvisorProps) => {
   const [phase, setPhase] = useState<'loading' | 'chat' | 'done'>(
