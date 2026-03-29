@@ -11,6 +11,7 @@ import { skills } from '@/data/skillsData';
 import OwlChat, { type ChatMessage } from '@/components/OwlChat';
 import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
 import { motivationClusters, calculateIntentionDimensions, motivationClusterDescriptions, intentionDimensionDescriptions, type MotivationScores, type IntentionAnswers } from '@/data/motivationQuestions';
+import type { ThinkingResult } from '@/data/thinkingQuestions';
 import MatchCards from '@/components/MatchCards';
 import InteractiveRoadmap from '@/components/InteractiveRoadmap';
 
