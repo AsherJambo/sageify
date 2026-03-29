@@ -55,6 +55,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
     skillsAssignments?: Record<string, string>;
     considerationsData?: { selected: string[]; points: Record<string, number> };
     preferencesData?: { preferences: Record<string, string[]>; dream: string };
+    thinkingResult?: { totalCorrect: number; totalQuestions: number; percentile: number; level: string; levelLabel: string; timeUsedSeconds: number };
     chatMessages?: { role: 'user' | 'assistant'; content: string }[];
   };
 
@@ -225,6 +226,34 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
                 <Badge variant="warning">{preferences.dream}</Badge>
               </div>
             )}
+          </Section>
+        )}
+
+        {/* Thinking Result */}
+        {data.thinkingResult && (
+          <Section title="🧠 הערכת חשיבה וגמישות קוגניטיבית">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Badge variant={data.thinkingResult.level === 'high' || data.thinkingResult.level === 'above-average' ? 'success' : data.thinkingResult.level === 'average' ? 'default' : 'warning'}>
+                    {data.thinkingResult.levelLabel}
+                  </Badge>
+                  <span className="text-sm text-muted-foreground">אחוזון {data.thinkingResult.percentile}</span>
+                </div>
+                <span className="text-sm font-semibold">
+                  {data.thinkingResult.totalCorrect}/{data.thinkingResult.totalQuestions} תשובות נכונות
+                </span>
+              </div>
+              <div className="bg-muted rounded-full h-4 overflow-hidden">
+                <div
+                  className="bg-primary h-full rounded-full transition-all"
+                  style={{ width: `${(data.thinkingResult.totalCorrect / data.thinkingResult.totalQuestions) * 100}%` }}
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                זמן: {Math.floor(data.thinkingResult.timeUsedSeconds / 60)}:{String(data.thinkingResult.timeUsedSeconds % 60).padStart(2, '0')} דקות
+              </p>
+            </div>
           </Section>
         )}
 
