@@ -10,18 +10,17 @@ interface ThinkingSkillsQuestionnaireProps {
 }
 
 const ANSWER_OPTION_OVERLAYS = [
-  { left: 60, top: 3.1 },
-  { left: 77.1, top: 3.1 },
-  { left: 60, top: 26.7 },
-  { left: 77.1, top: 26.7 },
-  { left: 60, top: 50.2 },
-  { left: 77.1, top: 50.2 },
-  { left: 60, top: 73.9 },
-  { left: 77.1, top: 73.9 },
+  { left: 60, top: 2, height: 24.8 },
+  { left: 77.1, top: 2, height: 24.8 },
+  { left: 60, top: 26.8, height: 23.6 },
+  { left: 77.1, top: 26.8, height: 23.6 },
+  { left: 60, top: 50.4, height: 23.6 },
+  { left: 77.1, top: 50.4, height: 23.6 },
+  { left: 60, top: 74, height: 24.7 },
+  { left: 77.1, top: 74, height: 24.7 },
 ] as const;
 
-const ANSWER_OVERLAY_WIDTH = 11.9;
-const ANSWER_OVERLAY_HEIGHT = 21.2;
+const ANSWER_OVERLAY_WIDTH = 11.8;
 
 const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkillsQuestionnaireProps) => {
   const [phase, setPhase] = useState<'intro' | 'test' | 'done'>('intro');
