@@ -30,7 +30,7 @@ import type { MotivationScores, IntentionAnswers } from '@/data/motivationQuesti
 import type { ThinkingResult } from '@/data/thinkingQuestions';
 import {
   viaIntro, viaBonusIntro, scheinIntro,
-  considerationsIntro, hollandIntro, skillsIntro, preferencesIntro, motivationIntro,
+  considerationsIntro, hollandIntro, skillsIntro, preferencesIntro, motivationIntro, thinkingIntro,
 } from '@/data/sectionIntros';
 import {
   type Answers, calculateCategoryScores, getMaxScoredQuestions, applyBonus,
