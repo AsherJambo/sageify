@@ -87,7 +87,7 @@ function saveState(state: SavedState) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation';
+type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation' | 'thinking';
 
 const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
   skills: 'skills-intro',
@@ -97,6 +97,7 @@ const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
   via: 'via-intro',
   preferences: 'preferences-intro',
   motivation: 'motivation-intro',
+  thinking: 'thinking-intro',
 };
 
 const QUESTIONNAIRE_STEPS: Step[] = [
