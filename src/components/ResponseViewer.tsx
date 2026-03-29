@@ -55,6 +55,7 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
     skillsAssignments?: Record<string, string>;
     considerationsData?: { selected: string[]; points: Record<string, number> };
     preferencesData?: { preferences: Record<string, string[]>; dream: string };
+    thinkingResult?: { totalCorrect: number; totalQuestions: number; percentile: number; level: string; levelLabel: string; timeUsedSeconds: number };
     chatMessages?: { role: 'user' | 'assistant'; content: string }[];
   };
 
