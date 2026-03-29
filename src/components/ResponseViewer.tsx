@@ -229,6 +229,34 @@ const ResponseViewer = ({ username, idNumber, responseData, onClose }: ResponseV
           </Section>
         )}
 
+        {/* Thinking Result */}
+        {data.thinkingResult && (
+          <Section title="🧠 הערכת חשיבה וגמישות קוגניטיבית">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Badge variant={data.thinkingResult.level === 'high' || data.thinkingResult.level === 'above-average' ? 'success' : data.thinkingResult.level === 'average' ? 'default' : 'warning'}>
+                    {data.thinkingResult.levelLabel}
+                  </Badge>
+                  <span className="text-sm text-muted-foreground">אחוזון {data.thinkingResult.percentile}</span>
+                </div>
+                <span className="text-sm font-semibold">
+                  {data.thinkingResult.totalCorrect}/{data.thinkingResult.totalQuestions} תשובות נכונות
+                </span>
+              </div>
+              <div className="bg-muted rounded-full h-4 overflow-hidden">
+                <div
+                  className="bg-primary h-full rounded-full transition-all"
+                  style={{ width: `${(data.thinkingResult.totalCorrect / data.thinkingResult.totalQuestions) * 100}%` }}
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                זמן: {Math.floor(data.thinkingResult.timeUsedSeconds / 60)}:{String(data.thinkingResult.timeUsedSeconds % 60).padStart(2, '0')} דקות
+              </p>
+            </div>
+          </Section>
+        )}
+
         {/* Chat Messages */}
         {data.chatMessages && data.chatMessages.length > 0 && (
           <Section title="שיחה עם סגי היועץ">
