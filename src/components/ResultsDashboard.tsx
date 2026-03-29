@@ -434,7 +434,59 @@ const ResultsDashboard = ({
             </ExpandableSection>
           )}
 
-          {preferencesData && (
+          {thinkingResult && (
+            <ExpandableSection title="חשיבה וגמישות קוגניטיבית" icon="🧠">
+              <div className="space-y-4">
+                {/* Score summary */}
+                <div className={`rounded-2xl px-5 py-4 border ${
+                  thinkingResult.level === 'high' || thinkingResult.level === 'above-average'
+                    ? 'bg-secondary/5 border-secondary/20'
+                    : thinkingResult.level === 'low' || thinkingResult.level === 'below-average'
+                      ? 'bg-destructive/5 border-destructive/20'
+                      : 'bg-muted/30 border-border/60'
+                }`}>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-bold font-display text-foreground text-sm tracking-wide">
+                      רמה: {thinkingResult.levelLabel}
+                    </p>
+                    <span className="text-sm text-muted-foreground">
+                      אחוזון {thinkingResult.percentile}
+                    </span>
+                  </div>
+                  <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden mb-2">
+                    <div
+                      className="h-full bg-secondary rounded-full progress-bar-fill"
+                      style={{ width: `${(thinkingResult.totalCorrect / thinkingResult.totalQuestions) * 100}%` }}
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {thinkingResult.totalCorrect} תשובות נכונות מתוך {thinkingResult.totalQuestions}
+                  </p>
+                </div>
+
+                {/* Time used */}
+                <div className="bg-background rounded-2xl px-5 py-3 border border-border/60 flex items-center justify-between">
+                  <span className="text-sm font-medium text-foreground">⏱ זמן שהושקע</span>
+                  <span className="text-sm text-muted-foreground">
+                    {Math.floor(thinkingResult.timeUsedSeconds / 60)}:{String(thinkingResult.timeUsedSeconds % 60).padStart(2, '0')} דקות
+                  </span>
+                </div>
+
+                {/* Interpretation */}
+                <div className="bg-background rounded-2xl px-5 py-4 border border-border/60">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {thinkingResult.level === 'high' && 'יכולת חשיבה אנליטית גבוהה מאוד – גמישות קוגניטיבית מרשימה וכושר זיהוי דפוסים מתקדם. זהו נכס משמעותי בתפקידים הדורשים פתרון בעיות מורכבות.'}
+                    {thinkingResult.level === 'above-average' && 'יכולת חשיבה מעל הממוצע – זיהוי דפוסים טוב ויכולת הסקה לוגית חזקה. חוזקה זו יכולה לתרום בתפקידים אנליטיים ויצירתיים.'}
+                    {thinkingResult.level === 'average' && 'יכולת חשיבה ברמה ממוצעת – בסיס טוב לפיתוח נוסף. תרגול וחשיפה לאתגרים חדשים יכולים לחזק את הגמישות הקוגניטיבית.'}
+                    {thinkingResult.level === 'below-average' && 'יש מקום לחיזוק יכולות החשיבה האנליטית – אך זה לא משקף את כלל היכולות שלכם. חוזקות אחרות שעלו בשאלונים יכולות לפצות.'}
+                    {thinkingResult.level === 'low' && 'הערכת החשיבה מציגה תמונה חלקית בלבד – חוזקות רבות אינן נמדדות במבחן מסוג זה. השאלונים האחרים מספקים תמונה עשירה יותר.'}
+                  </p>
+                </div>
+              </div>
+            </ExpandableSection>
+          )}
+
+
             <ExpandableSection title="העדפות אישיות" icon="✦">
               <div className="space-y-2">
                 {Object.entries(preferencesData.preferences).map(([key, values]) => (
