@@ -110,6 +110,16 @@ const SageAdvisor = ({
     if (burnoutSkills.length > 0) parts.push(`כישורי שחיקה (להימנע): ${burnoutSkills.join(', ')}`);
     if (topConsiderations.length > 0) parts.push(`שיקולים מובילים: ${topConsiderations.map(([c, p]) => `${c} (${p} נק׳)`).join(', ')}`);
     if (preferencesData?.dream) parts.push(`חלום המגירה: ${preferencesData.dream}`);
+    if (thinkingResult) {
+      parts.push(`\nהערכת חשיבה וגמישות קוגניטיבית: ${thinkingResult.totalCorrect}/${thinkingResult.totalQuestions} תשובות נכונות (רמה: ${thinkingResult.levelLabel}, אחוזון: ${thinkingResult.percentile})`);
+      if (thinkingResult.level === 'high' || thinkingResult.level === 'above-average') {
+        parts.push(`→ חשיבה אנליטית חזקה – מתאים לתפקידים הדורשים פתרון בעיות מורכבות, ייעוץ אסטרטגי, ניתוח נתונים`);
+      } else if (thinkingResult.level === 'average') {
+        parts.push(`→ יכולת חשיבה ממוצעת – מתאים למגוון רחב של פעילויות`);
+      } else {
+        parts.push(`→ מומלץ להתמקד בפעילויות המבוססות על ניסיון וידע מעשי יותר מאשר חשיבה מופשטת`);
+      }
+    }
     parts.push(`\nהמלצות עיסוק שעלו בדו"ח האישי:`);
     recommendations.forEach((rec, i) => {
       parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.reason}`);
