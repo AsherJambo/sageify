@@ -244,23 +244,9 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
             → הקודמת
           </button>
 
-          <div className="flex gap-1.5 flex-wrap justify-center">
-            {thinkingQuestions.map((q, i) => (
-              <button
-                key={q.id}
-                onClick={() => setCurrentIndex(i)}
-                className={`w-7 h-7 rounded-full text-xs font-bold transition-all duration-200 ${
-                  i === currentIndex
-                    ? 'bg-secondary text-white scale-110'
-                    : answers[q.id]
-                      ? 'bg-secondary/20 text-secondary'
-                      : 'bg-muted/40 text-muted-foreground hover:bg-muted/60'
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
-          </div>
+          <span className="text-sm font-display text-muted-foreground">
+            {currentIndex + 1} / {thinkingQuestions.length}
+          </span>
 
           {currentIndex < thinkingQuestions.length - 1 ? (
             <button
