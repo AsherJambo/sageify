@@ -122,10 +122,11 @@ const ResultsDashboard = ({
     if (skillsAssignments && Object.keys(skillsAssignments).length > 0) count++;
     if (preferencesData && preferencesData.dream) count++;
     if (motivationData) count++;
+    if (thinkingResult) count++;
     return count;
-  }, [viaScores, scheinScores, hollandScores, considerationsData, skillsAssignments, preferencesData, motivationData]);
+  }, [viaScores, scheinScores, hollandScores, considerationsData, skillsAssignments, preferencesData, motivationData, thinkingResult]);
 
-  const totalQuestionnaires = 7;
+  const totalQuestionnaires = 8;
   const isPartial = completedCount < totalQuestionnaires;
 
   const profileSummary = useMemo(() => {
