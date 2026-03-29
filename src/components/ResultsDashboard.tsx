@@ -11,6 +11,7 @@ import { skills } from '@/data/skillsData';
 import OwlChat, { type ChatMessage } from '@/components/OwlChat';
 import { viaCategoryDescriptions, scheinCategoryDescriptions, hollandCategoryDescriptions } from '@/data/categoryDescriptions';
 import { motivationClusters, calculateIntentionDimensions, motivationClusterDescriptions, intentionDimensionDescriptions, type MotivationScores, type IntentionAnswers } from '@/data/motivationQuestions';
+import type { ThinkingResult } from '@/data/thinkingQuestions';
 import MatchCards from '@/components/MatchCards';
 import InteractiveRoadmap from '@/components/InteractiveRoadmap';
 
@@ -22,6 +23,7 @@ interface ResultsDashboardProps {
   skillsAssignments?: Record<number, SkillColumn>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
   motivationData?: { motivationScores: MotivationScores; intentionAnswers: IntentionAnswers };
+  thinkingResult?: ThinkingResult;
   chatMessages?: ChatMessage[];
   onChatMessagesChange?: (messages: ChatMessage[]) => void;
   onBackToHub?: () => void;
@@ -64,7 +66,7 @@ const ExpandableSection = ({ title, icon, children }: { title: string; icon: str
 
 const ResultsDashboard = ({
   viaScores, scheinScores, hollandScores,
-  considerationsData, skillsAssignments, preferencesData, motivationData,
+  considerationsData, skillsAssignments, preferencesData, motivationData, thinkingResult,
   chatMessages, onChatMessagesChange, onBackToHub, tokenId,
 }: ResultsDashboardProps) => {
   const topVIA = getTopCategories(viaScores, 2);
@@ -120,10 +122,11 @@ const ResultsDashboard = ({
     if (skillsAssignments && Object.keys(skillsAssignments).length > 0) count++;
     if (preferencesData && preferencesData.dream) count++;
     if (motivationData) count++;
+    if (thinkingResult) count++;
     return count;
-  }, [viaScores, scheinScores, hollandScores, considerationsData, skillsAssignments, preferencesData, motivationData]);
+  }, [viaScores, scheinScores, hollandScores, considerationsData, skillsAssignments, preferencesData, motivationData, thinkingResult]);
 
-  const totalQuestionnaires = 7;
+  const totalQuestionnaires = 8;
   const isPartial = completedCount < totalQuestionnaires;
 
   const profileSummary = useMemo(() => {
@@ -149,8 +152,11 @@ const ResultsDashboard = ({
     staticRecommendations.forEach((rec, i) => {
       parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.reason}`);
     });
+    if (thinkingResult) {
+      parts.push(`\nהערכת חשיבה וגמישות: ${thinkingResult.totalCorrect}/${thinkingResult.totalQuestions} (רמה: ${thinkingResult.levelLabel}, אחוזון: ${thinkingResult.percentile})`);
+    }
     return parts.join('\n');
-  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, motivationData, intentionDimensions, staticRecommendations]);
+  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, motivationData, intentionDimensions, staticRecommendations, thinkingResult]);
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12">
@@ -215,6 +221,13 @@ const ResultsDashboard = ({
               )}
               {preferencesData?.dream && (
                 <p>חלום המגירה: <span className="text-secondary font-semibold">{preferencesData.dream}</span></p>
+              )}
+              {thinkingResult && (
+                <p>
+                  הערכת חשיבה וגמישות:{' '}
+                  <span className="font-semibold">{thinkingResult.levelLabel}</span>
+                  {' '}({thinkingResult.totalCorrect} מתוך {thinkingResult.totalQuestions} תשובות נכונות)
+                </p>
               )}
             </div>
           </div>
@@ -417,6 +430,58 @@ const ResultsDashboard = ({
                     </div>
                   </div>
                 )}
+              </div>
+            </ExpandableSection>
+          )}
+
+          {thinkingResult && (
+            <ExpandableSection title="חשיבה וגמישות קוגניטיבית" icon="🧠">
+              <div className="space-y-4">
+                {/* Score summary */}
+                <div className={`rounded-2xl px-5 py-4 border ${
+                  thinkingResult.level === 'high' || thinkingResult.level === 'above-average'
+                    ? 'bg-secondary/5 border-secondary/20'
+                    : thinkingResult.level === 'low' || thinkingResult.level === 'below-average'
+                      ? 'bg-destructive/5 border-destructive/20'
+                      : 'bg-muted/30 border-border/60'
+                }`}>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-bold font-display text-foreground text-sm tracking-wide">
+                      רמה: {thinkingResult.levelLabel}
+                    </p>
+                    <span className="text-sm text-muted-foreground">
+                      אחוזון {thinkingResult.percentile}
+                    </span>
+                  </div>
+                  <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden mb-2">
+                    <div
+                      className="h-full bg-secondary rounded-full progress-bar-fill"
+                      style={{ width: `${(thinkingResult.totalCorrect / thinkingResult.totalQuestions) * 100}%` }}
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {thinkingResult.totalCorrect} תשובות נכונות מתוך {thinkingResult.totalQuestions}
+                  </p>
+                </div>
+
+                {/* Time used */}
+                <div className="bg-background rounded-2xl px-5 py-3 border border-border/60 flex items-center justify-between">
+                  <span className="text-sm font-medium text-foreground">⏱ זמן שהושקע</span>
+                  <span className="text-sm text-muted-foreground">
+                    {Math.floor(thinkingResult.timeUsedSeconds / 60)}:{String(thinkingResult.timeUsedSeconds % 60).padStart(2, '0')} דקות
+                  </span>
+                </div>
+
+                {/* Interpretation */}
+                <div className="bg-background rounded-2xl px-5 py-4 border border-border/60">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {thinkingResult.level === 'high' && 'יכולת חשיבה אנליטית גבוהה מאוד – גמישות קוגניטיבית מרשימה וכושר זיהוי דפוסים מתקדם. זהו נכס משמעותי בתפקידים הדורשים פתרון בעיות מורכבות.'}
+                    {thinkingResult.level === 'above-average' && 'יכולת חשיבה מעל הממוצע – זיהוי דפוסים טוב ויכולת הסקה לוגית חזקה. חוזקה זו יכולה לתרום בתפקידים אנליטיים ויצירתיים.'}
+                    {thinkingResult.level === 'average' && 'יכולת חשיבה ברמה ממוצעת – בסיס טוב לפיתוח נוסף. תרגול וחשיפה לאתגרים חדשים יכולים לחזק את הגמישות הקוגניטיבית.'}
+                    {thinkingResult.level === 'below-average' && 'יש מקום לחיזוק יכולות החשיבה האנליטית – אך זה לא משקף את כלל היכולות שלכם. חוזקות אחרות שעלו בשאלונים יכולות לפצות.'}
+                    {thinkingResult.level === 'low' && 'הערכת החשיבה מציגה תמונה חלקית בלבד – חוזקות רבות אינן נמדדות במבחן מסוג זה. השאלונים האחרים מספקים תמונה עשירה יותר.'}
+                  </p>
+                </div>
               </div>
             </ExpandableSection>
           )}

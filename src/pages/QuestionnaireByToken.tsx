@@ -472,6 +472,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
           skillsAssignments={state.skillsAssignments}
           preferencesData={state.preferencesData}
           motivationData={state.motivationData}
+          thinkingResult={state.thinkingResult}
           chatMessages={state.chatMessages}
           onChatMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
           onBackToHub={() => updateState({ step: 'hub' })}
