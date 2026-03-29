@@ -152,8 +152,11 @@ const ResultsDashboard = ({
     staticRecommendations.forEach((rec, i) => {
       parts.push(`${i + 1}. ${rec.title} (${rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}) – ${rec.reason}`);
     });
+    if (thinkingResult) {
+      parts.push(`\nהערכת חשיבה וגמישות: ${thinkingResult.totalCorrect}/${thinkingResult.totalQuestions} (רמה: ${thinkingResult.levelLabel}, אחוזון: ${thinkingResult.percentile})`);
+    }
     return parts.join('\n');
-  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, motivationData, intentionDimensions, staticRecommendations]);
+  }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, motivationData, intentionDimensions, staticRecommendations, thinkingResult]);
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12">
