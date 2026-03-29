@@ -10,6 +10,7 @@ import DataProcessingAnimation from '@/components/DataProcessingAnimation';
 import BonusSelection from '@/components/BonusSelection';
 import ConsiderationsQuestionnaire from '@/components/ConsiderationsQuestionnaire';
 import HollandQuestionnaire from '@/components/HollandQuestionnaire';
+import ThinkingSkillsQuestionnaire from '@/components/ThinkingSkillsQuestionnaire';
 import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
 import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
 import MotivationQuestionnaire from '@/components/MotivationQuestionnaire';
