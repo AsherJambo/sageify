@@ -48,7 +48,7 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
     { icon: '🧭', title: 'נטיות תעסוקתיות', desc: 'גלו את הנטיות המקצועיות' },
     { icon: '✦', title: 'חוזקות VIA', desc: 'גלו את הכוחות הפנימיים' },
     { icon: '●', title: 'העדפות ופרופיל אישי', desc: 'העדפות וחלום המגירה' },
-    { icon: '🧠', title: 'הערכת חשיבה וגמישות', desc: 'חשיפת חוזקות חשיבה ייחודיות', comingSoon: true },
+    { icon: '🧠', title: 'הערכת חשיבה וגמישות', desc: 'חשיפת חוזקות חשיבה ייחודיות' },
     { icon: '🧭', title: 'שיחה אישית עם סגי', desc: 'ייעוץ AI מותאם אישית' },
   ];
 
