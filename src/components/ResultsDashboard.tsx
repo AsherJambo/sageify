@@ -222,6 +222,13 @@ const ResultsDashboard = ({
               {preferencesData?.dream && (
                 <p>חלום המגירה: <span className="text-secondary font-semibold">{preferencesData.dream}</span></p>
               )}
+              {thinkingResult && (
+                <p>
+                  הערכת חשיבה וגמישות:{' '}
+                  <span className="font-semibold">{thinkingResult.levelLabel}</span>
+                  {' '}({thinkingResult.totalCorrect} מתוך {thinkingResult.totalQuestions} תשובות נכונות)
+                </p>
+              )}
             </div>
           </div>
         </motion.div>
