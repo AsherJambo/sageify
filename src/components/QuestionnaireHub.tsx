@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import sageifyLogo from '@/assets/owl-logo.png';
-import ThinkingSkillsPlaceholder from '@/components/ThinkingSkillsPlaceholder';
 import OwlMessage from '@/components/OwlMessage';
 
-type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation';
+type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation' | 'thinking';
 
 interface QuestionnaireHubProps {
   completedSections: Record<QuestionnaireSectionId, boolean>;
@@ -20,6 +19,7 @@ const questionnaires: { id: QuestionnaireSectionId; title: string; desc: string;
   { id: 'via', title: 'חוזקות VIA', desc: 'גלו את הכוחות הפנימיים שלכם', icon: '✦', duration: '8–10 דק׳' },
   { id: 'preferences', title: 'העדפות ופרופיל אישי', desc: 'העדפות, סגנון אישי וחלום המגירה', icon: '●', duration: '5–7 דק׳' },
   { id: 'motivation', title: 'מניעים וכוונות', desc: 'מה מניע אתכם ומהי מידת המוכנות שלכם', icon: '🔥', duration: '5–7 דק׳' },
+  { id: 'thinking', title: 'חשיבה וגמישות קוגניטיבית', desc: 'גלו חוזקות חשיבה ייחודיות דרך זיהוי דפוסים ויזואליים', icon: '🧠', duration: '10–15 דק׳' },
 ];
 
 const fadeUp = {
@@ -62,7 +62,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
     const nameMap: Record<QuestionnaireSectionId, string> = {
       skills: 'כישורים', schein: 'עוגנים', considerations: 'שיקולים',
       holland: 'נטיות', via: 'חוזקות VIA', preferences: 'העדפות',
-      motivation: 'מניעים',
+      motivation: 'מניעים', thinking: 'חשיבה',
     };
     return questionnaires
       .filter(q => completedSections[q.id])
@@ -198,39 +198,6 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
             );
           })}
 
-          {/* Thinking Skills - Coming Soon */}
-          <motion.div
-            custom={questionnaires.length}
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-          >
-            <ThinkingSkillsPlaceholder
-              trigger={
-                <div className="text-right p-6 rounded-2xl border border-dashed border-border bg-card/50 shadow-none transition-all duration-300 hover:border-secondary/20 cursor-pointer h-full">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-lg flex-shrink-0 bg-gold-light text-foreground">
-                      🧠
-                    </div>
-                    <div className="flex-1 space-y-1.5">
-                      <div className="flex items-center justify-between gap-2">
-                        <h3 className="font-bold font-display text-foreground tracking-wide text-base">
-                          הערכת חשיבה וגמישות
-                        </h3>
-                        <span className="text-xs bg-gold-light text-foreground px-2.5 py-0.5 rounded-full font-display font-semibold flex-shrink-0">
-                          בקרוב
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        הערכה קצרה שחושפת חוזקות חשיבה ייחודיות ומתרגמת אותן לצעדים הבאים
-                      </p>
-                      <p className="text-xs text-muted-foreground/60 font-display">⏱ 5–8 דק׳</p>
-                    </div>
-                  </div>
-                </div>
-              }
-            />
-          </motion.div>
         </div>
 
         {/* CTA - See Results */}

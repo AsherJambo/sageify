@@ -13,6 +13,7 @@ import BonusSelection from '@/components/BonusSelection';
 import ConsiderationsQuestionnaire from '@/components/ConsiderationsQuestionnaire';
 import HollandQuestionnaire from '@/components/HollandQuestionnaire';
 import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
+import ThinkingSkillsQuestionnaire from '@/components/ThinkingSkillsQuestionnaire';
 import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
 import MotivationQuestionnaire from '@/components/MotivationQuestionnaire';
 import SageAdvisor from '@/components/SageAdvisor';
@@ -26,9 +27,10 @@ import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import type { SkillColumn } from '@/data/skillsData';
 import type { MotivationScores, IntentionAnswers } from '@/data/motivationQuestions';
+import type { ThinkingResult } from '@/data/thinkingQuestions';
 import {
   viaIntro, viaBonusIntro, scheinIntro,
-  considerationsIntro, hollandIntro, skillsIntro, preferencesIntro, motivationIntro,
+  considerationsIntro, hollandIntro, skillsIntro, preferencesIntro, motivationIntro, thinkingIntro,
 } from '@/data/sectionIntros';
 import {
   type Answers, calculateCategoryScores, getMaxScoredQuestions, applyBonus,
@@ -47,11 +49,12 @@ type Step =
   | 'personality-sliders'
   | 'preferences-intro' | 'preferences'
   | 'motivation-intro' | 'motivation'
+  | 'thinking-intro' | 'thinking'
   | 'processing'
   | 'advisor'
   | 'results';
 
-type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation';
+type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation' | 'thinking';
 
 const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
   skills: 'skills-intro',
@@ -61,6 +64,7 @@ const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
   via: 'via-intro',
   preferences: 'preferences-intro',
   motivation: 'motivation-intro',
+  thinking: 'thinking-intro',
 };
 
 interface ResponseData {
@@ -77,6 +81,7 @@ interface ResponseData {
   personalitySliders?: Record<string, number | string>;
   preferencesData?: { preferences: Record<string, string[]>; dream: string };
   motivationData?: { motivationScores: MotivationScores; intentionAnswers: IntentionAnswers };
+  thinkingResult?: ThinkingResult;
   chatMessages?: { role: 'user' | 'assistant'; content: string }[];
 }
 
@@ -94,6 +99,7 @@ const QUESTIONNAIRE_STEPS: Step[] = [
   'via-intro', 'via', 'via-bonus-intro', 'via-bonus',
   'personality-sliders', 'preferences-intro', 'preferences',
   'motivation-intro', 'motivation',
+  'thinking-intro', 'thinking',
 ];
 
 interface QuestionnaireByTokenProps {
@@ -249,6 +255,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
     via: state.viaBonusApplied,
     preferences: !!state.preferencesData && !!state.personalitySliders,
     motivation: !!state.motivationData,
+    thinking: !!state.thinkingResult,
   };
 
   const markComplete = async () => {
@@ -410,6 +417,12 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
       return <>{ProgressBar}<SectionIntro badge={motivationIntro.badge} title={motivationIntro.title} paragraphs={motivationIntro.paragraphs} bulletPoints={motivationIntro.bulletPoints} onContinue={() => updateState({ step: 'motivation' })} />{QuestionnaireSuffix}</>;
     case 'motivation':
       return <>{ProgressBar}<MotivationQuestionnaire onComplete={(motivationScores, intentionAnswers) => updateState({ motivationData: { motivationScores, intentionAnswers }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+
+    // Thinking flow
+    case 'thinking-intro':
+      return <>{ProgressBar}<SectionIntro badge={thinkingIntro.badge} title={thinkingIntro.title} paragraphs={thinkingIntro.paragraphs} onContinue={() => updateState({ step: 'thinking' })} />{QuestionnaireSuffix}</>;
+    case 'thinking':
+      return <>{ProgressBar}<ThinkingSkillsQuestionnaire onComplete={(result) => updateState({ thinkingResult: result, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     case 'processing':
       return <DataProcessingAnimation onComplete={() => {
