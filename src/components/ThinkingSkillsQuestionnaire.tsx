@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { thinkingQuestions, exampleImage, TIME_LIMIT_SECONDS, calculateThinkingResult, type ThinkingResult } from '@/data/thinkingQuestions';
 import QuestionnaireNav from '@/components/QuestionnaireNav';
+import OwlMessage from '@/components/OwlMessage';
+import { getRandomWisdomTip } from '@/lib/owlMessages';
 import sageifyLogo from '@/assets/owl-logo.png';
 
 interface ThinkingSkillsQuestionnaireProps {
@@ -60,6 +62,17 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
   const remainingMinutes = Math.max(0, Math.floor((TIME_LIMIT_SECONDS - elapsed) / 60));
   const remainingSeconds = Math.max(0, (TIME_LIMIT_SECONDS - elapsed) % 60);
   const isTimeLow = elapsed > TIME_LIMIT_SECONDS - 120;
+
+  const encouragement = useMemo(() => {
+    if (answeredCount === 0) return 'קחו נשימה עמוקה ובואו נתחיל 🧠';
+    if (answeredCount <= 3) return 'התחלה מצוינת! המשיכו כך 💪';
+    if (answeredCount <= 7) return 'אתם בכיוון הנכון! 🌟';
+    if (answeredCount <= 11) return 'עוד קצת ומסיימים! כל הכבוד 🎯';
+    if (answeredCount < thinkingQuestions.length) return 'כמעט שם! סיום מרשים 🏆';
+    return 'ענית על הכל! אפשר לסיים ✨';
+  }, [answeredCount]);
+
+  const wisdomTip = useMemo(() => getRandomWisdomTip(), [currentIndex]);
 
   const handleAnswer = (optionNum: number) => {
     setAnswers(prev => ({ ...prev, [question.id]: optionNum }));
@@ -170,29 +183,51 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
   }
 
   // -- Test Phase --
+  const progress = ((answeredCount) / thinkingQuestions.length) * 100;
+
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-6 md:py-10" dir="rtl">
-      <div className="max-w-4xl w-full space-y-5">
-        {/* Top bar: timer + progress */}
-        <div className="flex items-center justify-between bg-card border border-border/60 rounded-2xl px-5 py-3 shadow-[var(--shadow-card)]">
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-display font-semibold text-foreground">
-              שאלה {currentIndex + 1} מתוך {thinkingQuestions.length}
-            </span>
-            <div className="h-1.5 w-32 bg-muted/40 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-secondary rounded-full transition-all duration-500"
-                style={{ width: `${((currentIndex + 1) / thinkingQuestions.length) * 100}%` }}
-              />
-            </div>
+      <div className="max-w-3xl w-full space-y-5">
+        {/* Header with timer */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center space-y-2"
+        >
+          <div className="flex items-center justify-center gap-3">
+            <img src={sageifyLogo} alt="Sageify" className="w-10 h-10 rounded-full ring-2 ring-secondary/20" />
+            <h2 className="text-xl font-bold font-display text-foreground">הערכת חשיבה</h2>
           </div>
-          <div className={`flex items-center gap-2 text-sm font-display font-semibold ${isTimeLow ? 'text-destructive animate-pulse' : 'text-muted-foreground'}`}>
+          <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-display font-semibold ${
+            isTimeLow 
+              ? 'bg-destructive/10 text-destructive animate-pulse' 
+              : 'bg-secondary/10 text-secondary'
+          }`}>
             <span>⏱</span>
             <span>{String(remainingMinutes).padStart(2, '0')}:{String(remainingSeconds).padStart(2, '0')}</span>
           </div>
+        </motion.div>
+
+        {/* Progress bar */}
+        <div className="space-y-1">
+          <div className="flex justify-between text-xs font-display text-muted-foreground px-1">
+            <span>{answeredCount} מתוך {thinkingQuestions.length} שאלות</span>
+            <span>{Math.round(progress)}%</span>
+          </div>
+          <div className="h-1.5 bg-muted/40 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-secondary rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.5 }}
+            />
+          </div>
         </div>
 
-        {/* Question image with clickable answer overlays */}
+        {/* Owl encouragement */}
+        <OwlMessage message={encouragement} variant={answeredCount >= thinkingQuestions.length ? 'celebration' : 'encouragement'} />
+
+        {/* Question card */}
         <AnimatePresence mode="wait">
           <motion.div
             key={question.id}
@@ -200,90 +235,83 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -30 }}
             transition={{ duration: 0.3 }}
-            className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] relative"
+            className="space-y-3"
           >
-            <img
-              src={question.image}
-              alt={`שאלה ${currentIndex + 1}`}
-              className="w-full"
-            />
-            {/* Clickable overlays on the 8 answer options (right side of image, 2 cols × 4 rows) */}
-            {ANSWER_OPTION_OVERLAYS.map((overlay, index) => {
-              const num = index + 1;
-              const isSelected = answers[question.id] === num;
+            <div className="text-center">
+              <span className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary text-sm font-display font-semibold">
+                שאלה {currentIndex + 1} מתוך {thinkingQuestions.length}
+              </span>
+            </div>
 
-              return (
-                <button
-                  key={num}
-                  onClick={() => handleAnswer(num)}
-                  className={`absolute rounded-lg transition-all duration-200 ${
-                    isSelected
-                      ? 'ring-3 ring-secondary bg-secondary/20 shadow-lg'
-                      : 'hover:bg-secondary/10 hover:ring-2 hover:ring-secondary/40'
-                  }`}
+            <div className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] relative">
+              <img
+                src={question.image}
+                alt={`שאלה ${currentIndex + 1}`}
+                className="w-full"
+              />
+              {/* Clickable overlays on the 8 answer options */}
+              {ANSWER_OPTION_OVERLAYS.map((overlay, index) => {
+                const num = index + 1;
+                const isSelected = answers[question.id] === num;
+
+                return (
+                  <button
+                    key={num}
+                    onClick={() => handleAnswer(num)}
+                    className={`absolute rounded-lg transition-all duration-200 ${
+                      isSelected
+                        ? 'ring-3 ring-secondary bg-secondary/20 shadow-lg'
+                        : 'hover:bg-secondary/10 hover:ring-2 hover:ring-secondary/40'
+                    }`}
                     style={{
                       left: `${overlay.left}%`,
                       top: `${overlay.top}%`,
                       width: `${ANSWER_OVERLAY_WIDTH}%`,
                       height: `${overlay.height}%`,
                     }}
-                  title={`תשובה ${num}`}
-                />
-              );
-            })}
+                    title={`תשובה ${num}`}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Selection feedback */}
+            {answers[question.id] && (
+              <motion.p
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center text-sm font-display text-secondary"
+              >
+                ✓ בחרת תשובה {answers[question.id]}
+              </motion.p>
+            )}
           </motion.div>
         </AnimatePresence>
-
-        {/* Navigation */}
-        <div className="flex items-center justify-between gap-4">
-          <button
-            onClick={goPrev}
-            disabled={currentIndex === 0}
-            className="px-6 py-3 rounded-xl border border-border/60 text-sm font-display font-semibold text-foreground hover:bg-muted/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            → הקודמת
-          </button>
-
-          <span className="text-sm font-display text-muted-foreground">
-            {currentIndex + 1} / {thinkingQuestions.length}
-          </span>
-
-          {currentIndex < thinkingQuestions.length - 1 ? (
-            <button
-              onClick={goNext}
-              className="px-6 py-3 rounded-xl bg-secondary/10 text-secondary text-sm font-display font-semibold hover:bg-secondary/20 transition-colors"
-            >
-              הבאה ←
-            </button>
-          ) : (
-            <button
-              onClick={finishTest}
-              disabled={!canFinish}
-              className={`px-6 py-3 rounded-xl text-sm font-display font-semibold transition-all ${
-                canFinish
-                  ? 'bg-primary text-primary-foreground hover:bg-primary/85'
-                  : 'bg-muted text-muted-foreground cursor-not-allowed opacity-60'
-              }`}
-            >
-              סיום ✦
-            </button>
-          )}
-        </div>
 
         {/* Unanswered hint */}
         {currentIndex === thinkingQuestions.length - 1 && !canFinish && (
           <p className="text-center text-sm text-muted-foreground">
-            📋 נשארו {thinkingQuestions.length - answeredCount} שאלות ללא מענה – לחצו על המספרים למעלה כדי לחזור אליהן
+            📋 נשארו {thinkingQuestions.length - answeredCount} שאלות ללא מענה
           </p>
         )}
 
-        {onBackToHub && (
-          <div className="text-center pt-2">
-            <button onClick={onBackToHub} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              ← חזרה למרכז השאלונים
-            </button>
-          </div>
-        )}
+        {/* Wisdom tip */}
+        <p className="text-center text-xs text-muted-foreground/70 italic font-display">
+          💡 {wisdomTip}
+        </p>
+
+        {/* Navigation using QuestionnaireNav */}
+        <QuestionnaireNav
+          onPrev={goPrev}
+          onNext={goNext}
+          onComplete={finishTest}
+          showPrev={currentIndex > 0}
+          showNext={currentIndex < thinkingQuestions.length - 1}
+          showComplete={currentIndex === thinkingQuestions.length - 1}
+          completeDisabled={!canFinish}
+          completeLabel="סיום שאלון חשיבה"
+          onBackToHub={onBackToHub}
+        />
       </div>
     </div>
   );
