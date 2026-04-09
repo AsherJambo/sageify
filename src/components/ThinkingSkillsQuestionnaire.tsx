@@ -5,6 +5,7 @@ import QuestionnaireNav from '@/components/QuestionnaireNav';
 import OwlMessage from '@/components/OwlMessage';
 import { getRandomWisdomTip } from '@/lib/owlMessages';
 import sageifyLogo from '@/assets/owl-logo.png';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ThinkingSkillsQuestionnaireProps {
   onComplete: (result: ThinkingResult) => void;
