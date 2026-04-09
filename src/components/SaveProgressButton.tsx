@@ -30,7 +30,7 @@ const SaveProgressButton = () => {
       }}
     >
       <span className="text-lg">{justSaved ? '✓' : '💾'}</span>
-      <span className="text-sm font-medium text-foreground group-hover:text-secondary transition-colors">
+      <span className="text-base font-medium text-foreground group-hover:text-secondary transition-colors duration-400">
         {justSaved ? 'נשמר!' : 'שמירת התקדמות'}
       </span>
     </motion.button>
