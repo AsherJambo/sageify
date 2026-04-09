@@ -380,6 +380,8 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
                   >
                     ✓ בחרת תשובה {answers[question.id]}
                   </motion.p>
+                )}
+              </>
             )}
           </motion.div>
         </AnimatePresence>
