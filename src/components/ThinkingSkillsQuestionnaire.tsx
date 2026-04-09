@@ -26,6 +26,7 @@ const ANSWER_OPTION_OVERLAYS = [
 const ANSWER_OVERLAY_WIDTH = 11.8;
 
 const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkillsQuestionnaireProps) => {
+  const isMobile = useIsMobile();
   const [phase, setPhase] = useState<'intro' | 'test' | 'done'>('intro');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
