@@ -74,8 +74,8 @@ const SageiInsightBubble = ({ progress, username }: SageiInsightBubbleProps) => 
               className="w-8 h-8 rounded-full ring-2 ring-secondary/20 flex-shrink-0"
             />
             <div className="min-w-0">
-              <p className="text-[11px] font-display font-bold text-secondary tracking-wide mb-0.5">סגי אומר:</p>
-              <p className="text-xs text-foreground leading-snug">{currentInsight}</p>
+              <p className="text-xs font-display font-bold text-secondary tracking-wide mb-0.5">סגי אומר:</p>
+              <p className="text-sm text-foreground leading-snug">{currentInsight}</p>
             </div>
           </div>
         </motion.div>

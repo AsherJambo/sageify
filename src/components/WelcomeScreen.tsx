@@ -133,7 +133,7 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
                   <p className="font-bold font-display text-foreground tracking-wide text-base">
                     {pillar.title}
                   </p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-base text-muted-foreground leading-relaxed">
                     {pillar.desc}
                   </p>
                 </div>
@@ -181,13 +181,13 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground mt-0.5">{area.desc}</p>
+                    <p className="text-base text-muted-foreground mt-0.5">{area.desc}</p>
                   </div>
                 </div>
                 );
               })}
             </div>
-            <p className="text-muted-foreground/60 text-sm mt-5 text-center tracking-wide">
+            <p className="text-muted-foreground text-base mt-5 text-center tracking-wide leading-relaxed">
               בעמוד הבא תבצעו זיהוי קצר, ובהמשך תוכלו לבחור אילו שאלונים למלא · מומלץ להשלים לפחות 3 · ההתקדמות נשמרת אוטומטית
             </p>
           </div>
