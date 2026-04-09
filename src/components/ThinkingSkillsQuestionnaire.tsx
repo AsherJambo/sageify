@@ -5,6 +5,7 @@ import QuestionnaireNav from '@/components/QuestionnaireNav';
 import OwlMessage from '@/components/OwlMessage';
 import { getRandomWisdomTip } from '@/lib/owlMessages';
 import sageifyLogo from '@/assets/owl-logo.png';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ThinkingSkillsQuestionnaireProps {
   onComplete: (result: ThinkingResult) => void;
@@ -25,6 +26,7 @@ const ANSWER_OPTION_OVERLAYS = [
 const ANSWER_OVERLAY_WIDTH = 11.8;
 
 const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkillsQuestionnaireProps) => {
+  const isMobile = useIsMobile();
   const [phase, setPhase] = useState<'intro' | 'test' | 'done'>('intro');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -243,61 +245,143 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
               </span>
             </div>
 
-            <div className="bg-card border-2 border-secondary/20 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] relative">
-              {/* Branded tint overlay on the whole image */}
-              <div className="relative">
-                <img
-                  src={question.image}
-                  alt={`שאלה ${currentIndex + 1}`}
-                  className="w-full mix-blend-multiply"
-                />
-                <div className="absolute inset-0 bg-gradient-to-br from-secondary/[0.03] to-primary/[0.05] pointer-events-none" />
-              </div>
-              {/* Clickable overlays on the 8 answer options */}
-              {ANSWER_OPTION_OVERLAYS.map((overlay, index) => {
-                const num = index + 1;
-                const isSelected = answers[question.id] === num;
+            {isMobile ? (
+              /* ===== MOBILE: Split layout — matrix on top, answers grid below ===== */
+              <>
+                {/* Matrix image — cropped to show only the puzzle (left ~58%) */}
+                <div className="bg-card border-2 border-secondary/20 rounded-2xl overflow-hidden shadow-[var(--shadow-card)]">
+                  <div className="relative overflow-hidden" style={{ paddingBottom: '100%' }}>
+                    <img
+                      src={question.image}
+                      alt={`שאלה ${currentIndex + 1}`}
+                      className="absolute top-0 left-0 h-full mix-blend-multiply"
+                      style={{ width: '175%', maxWidth: 'none' }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-secondary/[0.03] to-primary/[0.05] pointer-events-none" />
+                  </div>
+                </div>
 
-                return (
-                  <button
-                    key={num}
-                    onClick={() => handleAnswer(num)}
-                    className={`absolute rounded-xl border-2 transition-all duration-300 ${
-                      isSelected
-                        ? 'border-secondary bg-secondary/25 shadow-[0_0_16px_hsl(var(--secondary)/0.3)] scale-[1.03]'
-                        : 'border-transparent hover:border-secondary/50 hover:bg-secondary/10 hover:scale-[1.02]'
-                    }`}
-                    style={{
-                      left: `${overlay.left}%`,
-                      top: `${overlay.top}%`,
-                      width: `${ANSWER_OVERLAY_WIDTH}%`,
-                      height: `${overlay.height}%`,
-                    }}
-                    title={`תשובה ${num}`}
+                {/* Answer options — cropped from image, displayed as 2x4 grid */}
+                <div className="space-y-2">
+                  <p className="text-center text-base font-display font-semibold text-foreground">בחרו את התשובה הנכונה:</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {ANSWER_OPTION_OVERLAYS.map((overlay, index) => {
+                      const num = index + 1;
+                      const isSelected = answers[question.id] === num;
+                      return (
+                        <button
+                          key={num}
+                          onClick={() => handleAnswer(num)}
+                          className={`relative bg-card border-2 rounded-xl overflow-hidden transition-all duration-500 min-h-[72px] ${
+                            isSelected
+                              ? 'border-secondary shadow-[0_0_16px_hsl(var(--secondary)/0.3)] scale-[1.02]'
+                              : 'border-border/40 hover:border-secondary/50'
+                          }`}
+                        >
+                          {/* Crop the answer from the full image */}
+                          <div className="relative w-full" style={{ paddingBottom: '100%' }}>
+                            <img
+                              src={question.image}
+                              alt={`תשובה ${num}`}
+                              className="absolute mix-blend-multiply"
+                              style={{
+                                width: `${100 / (ANSWER_OVERLAY_WIDTH / 100)}%`,
+                                height: `${100 / (overlay.height / 100)}%`,
+                                left: `${-(overlay.left / ANSWER_OVERLAY_WIDTH) * 100}%`,
+                                top: `${-(overlay.top / overlay.height) * 100}%`,
+                                maxWidth: 'none',
+                              }}
+                            />
+                          </div>
+                          {/* Answer number badge */}
+                          <div className={`absolute top-1 right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold font-display ${
+                            isSelected ? 'bg-secondary text-white' : 'bg-muted/60 text-muted-foreground'
+                          }`}>
+                            {num}
+                          </div>
+                          {/* Selection checkmark */}
+                          {isSelected && (
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              className="absolute top-1 left-1 w-7 h-7 rounded-full bg-secondary text-white flex items-center justify-center text-sm font-bold shadow-md"
+                            >
+                              ✓
+                            </motion.div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Selection feedback */}
+                {answers[question.id] && (
+                  <motion.p
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center text-base font-display text-secondary font-semibold"
                   >
-                    {isSelected && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-secondary text-white flex items-center justify-center text-xs font-bold shadow-md"
+                    ✓ בחרת תשובה {answers[question.id]}
+                  </motion.p>
+                )}
+              </>
+            ) : (
+              /* ===== DESKTOP: Original combined image with overlays ===== */
+              <>
+                <div className="bg-card border-2 border-secondary/20 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] relative">
+                  <div className="relative">
+                    <img
+                      src={question.image}
+                      alt={`שאלה ${currentIndex + 1}`}
+                      className="w-full mix-blend-multiply"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-secondary/[0.03] to-primary/[0.05] pointer-events-none" />
+                  </div>
+                  {ANSWER_OPTION_OVERLAYS.map((overlay, index) => {
+                    const num = index + 1;
+                    const isSelected = answers[question.id] === num;
+                    return (
+                      <button
+                        key={num}
+                        onClick={() => handleAnswer(num)}
+                        className={`absolute rounded-xl border-2 transition-all duration-300 ${
+                          isSelected
+                            ? 'border-secondary bg-secondary/25 shadow-[0_0_16px_hsl(var(--secondary)/0.3)] scale-[1.03]'
+                            : 'border-transparent hover:border-secondary/50 hover:bg-secondary/10 hover:scale-[1.02]'
+                        }`}
+                        style={{
+                          left: `${overlay.left}%`,
+                          top: `${overlay.top}%`,
+                          width: `${ANSWER_OVERLAY_WIDTH}%`,
+                          height: `${overlay.height}%`,
+                        }}
+                        title={`תשובה ${num}`}
                       >
-                        ✓
-                      </motion.div>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
+                        {isSelected && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-secondary text-white flex items-center justify-center text-xs font-bold shadow-md"
+                          >
+                            ✓
+                          </motion.div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
 
-            {/* Selection feedback */}
-            {answers[question.id] && (
-              <motion.p
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center text-sm font-display text-secondary"
-              >
-                ✓ בחרת תשובה {answers[question.id]}
-              </motion.p>
+                {answers[question.id] && (
+                  <motion.p
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center text-sm font-display text-secondary"
+                  >
+                    ✓ בחרת תשובה {answers[question.id]}
+                  </motion.p>
+                )}
+              </>
             )}
           </motion.div>
         </AnimatePresence>
