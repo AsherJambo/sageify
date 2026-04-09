@@ -69,13 +69,13 @@ const ExpandableSection = ({ title, icon, children }: { title: string; icon: str
 const ScoreBar = ({ label, description, score, maxScore, colorClass = 'bg-secondary' }: {
   label: string; description?: string; score: number; maxScore: number; colorClass?: string;
 }) => (
-  <div className="space-y-1.5">
+  <div className="space-y-2">
     <div className="flex justify-between items-baseline">
-      <span className="text-base font-semibold text-foreground">{label}</span>
-      <span className="text-sm text-muted-foreground font-display">{typeof score === 'number' ? score.toFixed(1) : score}/{maxScore}</span>
+      <span className="text-lg font-semibold text-foreground">{label}</span>
+      <span className="text-base text-muted-foreground font-display">{typeof score === 'number' ? score.toFixed(1) : score}/{maxScore}</span>
     </div>
-    {description && <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>}
-    <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden" role="progressbar" aria-valuenow={score} aria-valuemin={0} aria-valuemax={maxScore}>
+    {description && <p className="text-base text-muted-foreground leading-relaxed">{description}</p>}
+    <div className="w-full h-3.5 bg-muted/50 rounded-full overflow-hidden" role="progressbar" aria-valuenow={score} aria-valuemin={0} aria-valuemax={maxScore}>
       <div className={`h-full ${colorClass} rounded-full progress-bar-fill`} style={{ width: `${(score / maxScore) * 100}%` }} />
     </div>
   </div>
@@ -184,7 +184,7 @@ const ResultsDashboard = ({
           <h1 className="text-2xl md:text-4xl font-bold font-display text-foreground tracking-wide leading-snug">
             הפרופיל שלכם ב-<span className="text-secondary">Sageify</span>
           </h1>
-          <p className="text-base text-muted-foreground">כל התובנות שלכם במקום אחד</p>
+          <p className="text-lg text-muted-foreground">כל התובנות שלכם במקום אחד</p>
         </motion.div>
 
         {/* Partial data notice */}
@@ -291,8 +291,8 @@ const ResultsDashboard = ({
                       <span className="text-3xl flex-shrink-0">{rec.icon}</span>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <h4 className="font-bold font-display text-foreground group-hover:text-secondary transition-colors text-base md:text-lg">{rec.title}</h4>
-                          <span className={`text-sm px-3 py-1 rounded-full font-medium ${
+                          <h4 className="font-bold font-display text-foreground group-hover:text-secondary transition-colors text-lg">{rec.title}</h4>
+                          <span className={`text-base px-3 py-1.5 rounded-full font-medium ${
                             rec.type === 'volunteer' ? 'bg-secondary/15 text-secondary' :
                             rec.type === 'freelance' ? 'bg-primary/15 text-primary' :
                             'bg-muted text-muted-foreground'
@@ -300,7 +300,7 @@ const ResultsDashboard = ({
                             {rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}
                           </span>
                         </div>
-                        <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{rec.reason}</p>
+                        <p className="text-base text-muted-foreground leading-relaxed">{rec.reason}</p>
                       </div>
                     </div>
                   </a>
@@ -312,7 +312,7 @@ const ResultsDashboard = ({
 
         {/* Expandable detail sections */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={4} className="space-y-5">
-          <p className="text-base text-muted-foreground text-center font-medium font-display">לחצו להרחבת הפירוט ▼</p>
+          <p className="text-lg text-muted-foreground text-center font-semibold font-display">👇 לחצו להרחבת הפירוט</p>
 
           <ExpandableSection title="חוזקות VIA – כל הקטגוריות" icon="◆">
             <div className="space-y-5">
@@ -344,8 +344,8 @@ const ResultsDashboard = ({
             <ExpandableSection title="שיקולים מובילים" icon="◆">
               <div className="space-y-3">
                 {topConsiderations.map(([item, pts]) => (
-                  <div key={item} className="flex justify-between items-center bg-background rounded-2xl px-6 py-4 border border-border/60 min-h-[52px]">
-                    <span className="font-medium text-foreground text-base">{item}</span>
+                  <div key={item} className="flex justify-between items-center bg-background rounded-2xl px-6 py-5 border border-border/60 min-h-[56px]">
+                    <span className="font-medium text-foreground text-lg">{item}</span>
                     <span className="text-secondary font-bold font-display text-lg">{pts} נק׳</span>
                   </div>
                 ))}
@@ -357,9 +357,9 @@ const ResultsDashboard = ({
             <ExpandableSection title="כישורים מובילים" icon="●">
               <div className="space-y-3">
                 {winnerSkills.map((skill, i) => (
-                  <div key={i} className="flex items-center gap-4 bg-background rounded-2xl px-6 py-4 border border-border/60 min-h-[52px]">
-                    <span className="w-8 h-8 rounded-full bg-secondary/10 text-secondary flex items-center justify-center font-display font-bold text-sm">{i + 1}</span>
-                    <span className="text-foreground text-base">{skill}</span>
+                  <div key={i} className="flex items-center gap-4 bg-background rounded-2xl px-6 py-5 border border-border/60 min-h-[56px]">
+                    <span className="w-9 h-9 rounded-full bg-secondary/10 text-secondary flex items-center justify-center font-display font-bold text-base">{i + 1}</span>
+                    <span className="text-foreground text-lg">{skill}</span>
                   </div>
                 ))}
               </div>
@@ -377,12 +377,12 @@ const ResultsDashboard = ({
                       return (
                         <div key={cluster.id} className="space-y-1.5">
                           <div className="flex items-center gap-3">
-                            <span className="text-xl">{cluster.icon}</span>
-                            <span className="text-base font-semibold text-foreground">{cluster.title}</span>
-                            <span className="text-sm text-muted-foreground mr-auto font-display">{score}/5</span>
+                            <span className="text-2xl">{cluster.icon}</span>
+                            <span className="text-lg font-semibold text-foreground">{cluster.title}</span>
+                            <span className="text-base text-muted-foreground mr-auto font-display">{score}/5</span>
                           </div>
-                          <p className="text-sm text-muted-foreground leading-relaxed">{motivationClusterDescriptions[cluster.title] || ''}</p>
-                          <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden" role="progressbar" aria-valuenow={score} aria-valuemin={0} aria-valuemax={5}>
+                          <p className="text-base text-muted-foreground leading-relaxed">{motivationClusterDescriptions[cluster.title] || ''}</p>
+                          <div className="w-full h-3.5 bg-muted/50 rounded-full overflow-hidden" role="progressbar" aria-valuenow={score} aria-valuemin={0} aria-valuemax={5}>
                             <div className="h-full bg-primary rounded-full progress-bar-fill" style={{ width: `${(score / 5) * 100}%` }} />
                           </div>
                         </div>
