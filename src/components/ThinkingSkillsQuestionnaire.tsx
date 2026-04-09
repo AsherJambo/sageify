@@ -250,12 +250,12 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
               <>
                 {/* Matrix image — cropped to show only the puzzle (left ~58%) */}
                 <div className="bg-card border-2 border-secondary/20 rounded-2xl overflow-hidden shadow-[var(--shadow-card)]">
-                  <div className="relative overflow-hidden" style={{ paddingBottom: '85%' }}>
+                  <div className="relative overflow-hidden" style={{ paddingBottom: '100%' }}>
                     <img
                       src={question.image}
                       alt={`שאלה ${currentIndex + 1}`}
-                      className="absolute top-0 right-0 h-full mix-blend-multiply"
-                      style={{ width: '172%', maxWidth: 'none', objectFit: 'cover', objectPosition: 'right top' }}
+                      className="absolute top-0 left-0 h-full mix-blend-multiply"
+                      style={{ width: '175%', maxWidth: 'none' }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-br from-secondary/[0.03] to-primary/[0.05] pointer-events-none" />
                   </div>
