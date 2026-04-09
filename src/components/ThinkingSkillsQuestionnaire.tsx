@@ -243,12 +243,16 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
               </span>
             </div>
 
-            <div className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] relative">
-              <img
-                src={question.image}
-                alt={`שאלה ${currentIndex + 1}`}
-                className="w-full"
-              />
+            <div className="bg-card border-2 border-secondary/20 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] relative">
+              {/* Branded tint overlay on the whole image */}
+              <div className="relative">
+                <img
+                  src={question.image}
+                  alt={`שאלה ${currentIndex + 1}`}
+                  className="w-full mix-blend-multiply"
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-secondary/[0.03] to-primary/[0.05] pointer-events-none" />
+              </div>
               {/* Clickable overlays on the 8 answer options */}
               {ANSWER_OPTION_OVERLAYS.map((overlay, index) => {
                 const num = index + 1;
@@ -258,10 +262,10 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
                   <button
                     key={num}
                     onClick={() => handleAnswer(num)}
-                    className={`absolute rounded-lg transition-all duration-200 ${
+                    className={`absolute rounded-xl border-2 transition-all duration-300 ${
                       isSelected
-                        ? 'ring-3 ring-secondary bg-secondary/20 shadow-lg'
-                        : 'hover:bg-secondary/10 hover:ring-2 hover:ring-secondary/40'
+                        ? 'border-secondary bg-secondary/25 shadow-[0_0_16px_hsl(var(--secondary)/0.3)] scale-[1.03]'
+                        : 'border-transparent hover:border-secondary/50 hover:bg-secondary/10 hover:scale-[1.02]'
                     }`}
                     style={{
                       left: `${overlay.left}%`,
@@ -270,7 +274,17 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
                       height: `${overlay.height}%`,
                     }}
                     title={`תשובה ${num}`}
-                  />
+                  >
+                    {isSelected && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-secondary text-white flex items-center justify-center text-xs font-bold shadow-md"
+                      >
+                        ✓
+                      </motion.div>
+                    )}
+                  </button>
                 );
               })}
             </div>
