@@ -10,13 +10,15 @@ const OwlMessage = ({ message, variant = 'encouragement' }: OwlMessageProps) => 
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), 100);
+    const timer = setTimeout(() => setVisible(true), 150);
     return () => clearTimeout(timer);
   }, [message]);
 
   return (
     <div
-      className={`flex items-start gap-4 p-5 rounded-3xl border shadow-[var(--shadow-card)] transition-all duration-700 ${
+      role="status"
+      aria-live="polite"
+      className={`flex items-start gap-4 p-5 md:p-6 rounded-3xl border shadow-[var(--shadow-card)] transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
         variant === 'celebration'
           ? 'bg-secondary/5 border-secondary/20'
           : variant === 'tip'
@@ -29,9 +31,9 @@ const OwlMessage = ({ message, variant = 'encouragement' }: OwlMessageProps) => 
       <img
         src={owlLogo}
         alt="סגי"
-        className="w-10 h-10 rounded-full flex-shrink-0 ring-1 ring-secondary/20 shadow-sm"
+        className="w-11 h-11 rounded-full flex-shrink-0 ring-1 ring-secondary/20 shadow-sm"
       />
-      <p className="text-foreground text-base leading-relaxed pt-0.5">{message}</p>
+      <p className="text-foreground text-lg leading-relaxed pt-0.5">{message}</p>
     </div>
   );
 };
