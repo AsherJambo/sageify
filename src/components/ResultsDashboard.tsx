@@ -344,8 +344,8 @@ const ResultsDashboard = ({
             <ExpandableSection title="שיקולים מובילים" icon="◆">
               <div className="space-y-3">
                 {topConsiderations.map(([item, pts]) => (
-                  <div key={item} className="flex justify-between items-center bg-background rounded-2xl px-6 py-4 border border-border/60 min-h-[52px]">
-                    <span className="font-medium text-foreground text-base">{item}</span>
+                  <div key={item} className="flex justify-between items-center bg-background rounded-2xl px-6 py-5 border border-border/60 min-h-[56px]">
+                    <span className="font-medium text-foreground text-lg">{item}</span>
                     <span className="text-secondary font-bold font-display text-lg">{pts} נק׳</span>
                   </div>
                 ))}
@@ -357,9 +357,9 @@ const ResultsDashboard = ({
             <ExpandableSection title="כישורים מובילים" icon="●">
               <div className="space-y-3">
                 {winnerSkills.map((skill, i) => (
-                  <div key={i} className="flex items-center gap-4 bg-background rounded-2xl px-6 py-4 border border-border/60 min-h-[52px]">
-                    <span className="w-8 h-8 rounded-full bg-secondary/10 text-secondary flex items-center justify-center font-display font-bold text-sm">{i + 1}</span>
-                    <span className="text-foreground text-base">{skill}</span>
+                  <div key={i} className="flex items-center gap-4 bg-background rounded-2xl px-6 py-5 border border-border/60 min-h-[56px]">
+                    <span className="w-9 h-9 rounded-full bg-secondary/10 text-secondary flex items-center justify-center font-display font-bold text-base">{i + 1}</span>
+                    <span className="text-foreground text-lg">{skill}</span>
                   </div>
                 ))}
               </div>
