@@ -151,23 +151,24 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                       <p className="text-sm text-muted-foreground leading-relaxed">{cluster.description}</p>
                     </div>
                   </div>
-                  <div className="flex gap-2 justify-center items-center flex-wrap" dir="ltr">
-                    <span className="text-xs text-muted-foreground/60 w-16 text-right hidden sm:inline">כלל לא</span>
+                  <div className="flex gap-3 justify-center items-center flex-wrap" dir="ltr">
+                    <span className="text-sm text-muted-foreground w-16 text-right hidden sm:inline">כלל לא</span>
                     {SCALE.map(val => (
                       <button
                         key={val}
                         onClick={() => handleMotivationScore(cluster.id, val)}
-                        className={`w-11 h-11 rounded-full font-bold text-lg transition-all duration-300 border-2 ${
+                        className={`w-13 h-13 rounded-full font-bold text-lg transition-all duration-400 border-2 min-w-[52px] min-h-[52px] ${
                           motivationScores[cluster.id] === val
                             ? 'bg-primary text-primary-foreground border-primary scale-110 shadow-[var(--shadow-card)]'
-                            : 'bg-card text-foreground border-border/60 hover:border-secondary/40 hover:scale-105'
+                            : 'bg-card text-foreground border-border hover:border-secondary/40 hover:scale-105'
                         }`}
                         title={scaleLabels[val]}
+                        aria-label={`${scaleLabels[val]} – ${val}`}
                       >
                         {val}
                       </button>
                     ))}
-                    <span className="text-xs text-muted-foreground/60 w-16 text-left hidden sm:inline">מאוד</span>
+                    <span className="text-sm text-muted-foreground w-16 text-left hidden sm:inline">מאוד</span>
                   </div>
                 </div>
               ))}
@@ -200,23 +201,24 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                   <p className="text-lg font-medium text-foreground mb-4 leading-relaxed">
                     {stmt.id}. {stmt.text}
                   </p>
-                  <div className="flex gap-2 justify-center items-center flex-wrap" dir="ltr">
-                    <span className="text-xs text-muted-foreground/60 w-20 text-right hidden sm:inline">לא מסכים כלל</span>
+                  <div className="flex gap-3 justify-center items-center flex-wrap" dir="ltr">
+                    <span className="text-sm text-muted-foreground w-20 text-right hidden sm:inline">לא מסכים כלל</span>
                     {SCALE.map(val => (
                       <button
                         key={val}
                         onClick={() => handleIntentionAnswer(stmt.id, val)}
-                        className={`w-11 h-11 rounded-full font-bold text-lg transition-all duration-300 border-2 ${
+                        className={`w-13 h-13 rounded-full font-bold text-lg transition-all duration-400 border-2 min-w-[52px] min-h-[52px] ${
                           intentionAnswers[stmt.id] === val
                             ? 'bg-primary text-primary-foreground border-primary scale-110 shadow-[var(--shadow-card)]'
-                            : 'bg-card text-foreground border-border/60 hover:border-secondary/40 hover:scale-105'
+                            : 'bg-card text-foreground border-border hover:border-secondary/40 hover:scale-105'
                         }`}
                         title={scaleLabels[val]}
+                        aria-label={`${scaleLabels[val]} – ${val}`}
                       >
                         {val}
                       </button>
                     ))}
-                    <span className="text-xs text-muted-foreground/60 w-20 text-left hidden sm:inline">מסכים לחלוטין</span>
+                    <span className="text-sm text-muted-foreground w-20 text-left hidden sm:inline">מסכים לחלוטין</span>
                   </div>
                 </div>
               ))}
