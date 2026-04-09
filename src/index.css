@@ -76,7 +76,7 @@
     --secondary: 160 22% 30%;
     --secondary-foreground: 0 0% 100%;
     --muted: 160 20% 15%;
-    --muted-foreground: 40 12% 55%;
+    --muted-foreground: 40 12% 50%;
     --accent: 210 28% 40%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62% 30%;
@@ -96,6 +96,7 @@
     font-family: 'Heebo', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-optical-sizing: auto;
   }
 
   body {
@@ -103,6 +104,21 @@
     direction: rtl;
     font-size: 19px;
     line-height: 1.85;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Ensure minimum touch target sizes */
+  button, [role="button"], a, input, select, textarea {
+    min-height: 44px;
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   /* Fixed grain overlay — static canvas that never moves */
