@@ -176,7 +176,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
                   </div>
                   <div className="flex-1 space-y-1.5">
                     <div className="flex items-center justify-between gap-2">
-                      <h3 className="font-bold font-display text-foreground tracking-wide text-base">
+                      <h3 className="font-bold font-display text-foreground tracking-wide text-lg">
                         {q.title}
                       </h3>
                       {completed && (
@@ -184,14 +184,14 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
                           initial={{ opacity: 0, scale: 0.7 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ type: 'spring', stiffness: 400, damping: 20, delay: 0.2 + i * 0.07 }}
-                          className="text-xs bg-secondary/10 text-secondary px-2.5 py-0.5 rounded-full font-display font-semibold flex-shrink-0"
+                          className="text-sm bg-secondary/10 text-secondary px-3 py-1 rounded-full font-display font-semibold flex-shrink-0"
                         >
-                          הושלם
+                          הושלם ✓
                         </motion.span>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{q.desc}</p>
-                    <p className="text-xs text-muted-foreground/60 font-display">⏱ {q.duration}</p>
+                    <p className="text-base text-muted-foreground leading-relaxed">{q.desc}</p>
+                    <p className="text-sm text-muted-foreground font-display flex items-center gap-1.5">⏱ {q.duration}</p>
                   </div>
                 </div>
               </motion.button>
@@ -208,7 +208,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
           className="text-center space-y-4 pb-12"
         >
           {!hasMinimum && (
-            <p className="text-sm text-muted-foreground bg-card border border-border/60 rounded-2xl px-5 py-3 inline-block shadow-[var(--shadow-card)]">
+            <p className="text-base text-muted-foreground bg-card border border-border/60 rounded-2xl px-6 py-4 inline-block shadow-[var(--shadow-card)]">
               📋 יש להשלים לפחות 3 שאלונים כדי לקבל תוצאות ({completedCount}/3)
             </p>
           )}
