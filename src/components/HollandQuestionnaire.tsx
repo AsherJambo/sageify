@@ -58,11 +58,11 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
 
         {/* Progress */}
         <div className="space-y-2">
-          <div className="flex justify-between text-sm text-muted-foreground">
+          <div className="flex justify-between text-base text-muted-foreground">
             <span>{totalAnswered} / {shuffledQuestions.length} שאלות</span>
             <span>עמוד {page + 1} / {totalPages}</span>
           </div>
-          <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
             <div className="h-full bg-secondary rounded-full progress-bar-fill" style={{ width: `${progress}%` }} />
           </div>
         </div>

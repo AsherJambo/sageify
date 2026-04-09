@@ -109,14 +109,14 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
 
         {/* Progress */}
         <div className="space-y-2">
-          <div className="flex justify-between text-sm text-muted-foreground">
+          <div className="flex justify-between text-base text-muted-foreground">
             <span>
               {part === 'A'
                 ? `${Object.keys(motivationScores).length} / ${motivationClusters.length} אשכולות`
                 : `${partBAnswered} / ${intentionStatements.length} אמירות`}
             </span>
           </div>
-          <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
             <div
               className="h-full bg-secondary rounded-full progress-bar-fill"
               style={{ width: `${totalProgress}%` }}
