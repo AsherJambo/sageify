@@ -58,11 +58,11 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
 
         {/* Progress */}
         <div className="space-y-2">
-          <div className="flex justify-between text-sm text-muted-foreground">
+          <div className="flex justify-between text-base text-muted-foreground">
             <span>{totalAnswered} / {shuffledQuestions.length} שאלות</span>
             <span>עמוד {page + 1} / {totalPages}</span>
           </div>
-          <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
             <div className="h-full bg-secondary rounded-full progress-bar-fill" style={{ width: `${progress}%` }} />
           </div>
         </div>
@@ -72,23 +72,25 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
           {pageQuestions.map((q, idx) => (
             <div key={q.id} className="bg-card rounded-3xl p-5 md:p-6 shadow-[var(--shadow-card)] border border-border/60 slide-up" style={{ animationDelay: `${idx * 0.03}s` }}>
               <p className="text-foreground font-medium mb-4 text-lg leading-relaxed">{q.text}</p>
-              <div className="flex gap-3 justify-center" dir="ltr">
+              <div className="flex gap-4 justify-center" dir="ltr">
                 <button
                   onClick={() => handleAnswer(q.id, true)}
-                  className={`px-8 py-2.5 rounded-2xl font-semibold font-display tracking-wide transition-all duration-300 border-2 ${
+                  aria-label={`כן – ${q.text}`}
+                  className={`px-10 py-3.5 rounded-2xl font-semibold font-display tracking-wide transition-all duration-400 border-2 min-h-[52px] text-lg ${
                     answers[q.id] === true
                       ? 'bg-secondary text-secondary-foreground border-secondary scale-[1.03] shadow-[var(--shadow-card)]'
-                      : 'bg-card text-foreground border-border/60 hover:border-secondary/40'
+                      : 'bg-card text-foreground border-border hover:border-secondary/40'
                   }`}
                 >
                   כן ✓
                 </button>
                 <button
                   onClick={() => handleAnswer(q.id, false)}
-                  className={`px-8 py-2.5 rounded-2xl font-semibold font-display tracking-wide transition-all duration-300 border-2 ${
+                  aria-label={`לא – ${q.text}`}
+                  className={`px-10 py-3.5 rounded-2xl font-semibold font-display tracking-wide transition-all duration-400 border-2 min-h-[52px] text-lg ${
                     answers[q.id] === false
                       ? 'bg-muted text-foreground border-muted-foreground/30 scale-[1.03]'
-                      : 'bg-card text-foreground border-border/60 hover:border-muted-foreground/30'
+                      : 'bg-card text-foreground border-border hover:border-muted-foreground/30'
                   }`}
                 >
                   לא ✗

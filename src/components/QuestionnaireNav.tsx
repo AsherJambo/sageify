@@ -86,7 +86,7 @@ const QuestionnaireNav = ({
         <div className="flex justify-center">
           <button
             onClick={() => setShowConfirm(true)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-display font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-base font-display font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-400 min-h-[48px]"
           >
             <span>→</span>
             <span>חזרה לתפריט הראשי</span>
