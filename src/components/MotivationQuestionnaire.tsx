@@ -81,10 +81,10 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
         </div>
 
         {/* Part tabs */}
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-center gap-4">
           <button
             onClick={() => setPart('A')}
-            className={`px-5 py-2.5 rounded-xl font-display font-medium text-sm transition-all duration-300 ${
+            className={`px-6 py-3 rounded-xl font-display font-semibold text-base transition-all duration-400 min-h-[52px] ${
               part === 'A'
                 ? 'bg-primary text-primary-foreground shadow-[var(--shadow-card)]'
                 : 'bg-muted/50 text-muted-foreground hover:bg-muted'
@@ -95,7 +95,7 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
           <button
             onClick={() => partAComplete && setPart('B')}
             disabled={!partAComplete}
-            className={`px-5 py-2.5 rounded-xl font-display font-medium text-sm transition-all duration-300 ${
+            className={`px-6 py-3 rounded-xl font-display font-semibold text-base transition-all duration-400 min-h-[52px] ${
               part === 'B'
                 ? 'bg-primary text-primary-foreground shadow-[var(--shadow-card)]'
                 : partAComplete
