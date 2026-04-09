@@ -30,20 +30,21 @@ interface ResultsDashboardProps {
   tokenId?: string;
 }
 
-/* ── Expandable Section ── */
+/* ── Expandable Section (accessible for elderly) ── */
 const ExpandableSection = ({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className="bg-card rounded-3xl border border-border/60 shadow-[var(--shadow-card)] overflow-hidden">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between px-7 py-5 text-right hover:bg-muted/30 transition-colors duration-200"
+        aria-expanded={open}
+        className="w-full flex items-center justify-between px-6 md:px-8 py-5 md:py-6 text-right hover:bg-muted/30 transition-colors duration-300 min-h-[60px]"
       >
         <div className="flex items-center gap-3">
-          <span className="text-xl">{icon}</span>
-          <span className="text-base font-bold font-display text-foreground tracking-wide">{title}</span>
+          <span className="text-2xl">{icon}</span>
+          <span className="text-lg md:text-xl font-bold font-display text-foreground tracking-wide">{title}</span>
         </div>
-        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-6 h-6 text-muted-foreground transition-transform duration-500 ${open ? 'rotate-180' : ''}`} />
       </button>
       <AnimatePresence>
         {open && (
@@ -51,10 +52,10 @@ const ExpandableSection = ({ title, icon, children }: { title: string; icon: str
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-7 pb-6 pt-1">
+            <div className="px-6 md:px-8 pb-7 pt-2">
               {children}
             </div>
           </motion.div>
@@ -63,6 +64,22 @@ const ExpandableSection = ({ title, icon, children }: { title: string; icon: str
     </div>
   );
 };
+
+/* ── Score Bar (reusable, accessible) ── */
+const ScoreBar = ({ label, description, score, maxScore, colorClass = 'bg-secondary' }: {
+  label: string; description?: string; score: number; maxScore: number; colorClass?: string;
+}) => (
+  <div className="space-y-1.5">
+    <div className="flex justify-between items-baseline">
+      <span className="text-base font-semibold text-foreground">{label}</span>
+      <span className="text-sm text-muted-foreground font-display">{typeof score === 'number' ? score.toFixed(1) : score}/{maxScore}</span>
+    </div>
+    {description && <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>}
+    <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden" role="progressbar" aria-valuenow={score} aria-valuemin={0} aria-valuemax={maxScore}>
+      <div className={`h-full ${colorClass} rounded-full progress-bar-fill`} style={{ width: `${(score / maxScore) * 100}%` }} />
+    </div>
+  </div>
+);
 
 const ResultsDashboard = ({
   viaScores, scheinScores, hollandScores,
@@ -89,7 +106,7 @@ const ResultsDashboard = ({
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+      transition: { duration: 0.9, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
     }),
   };
 
@@ -159,14 +176,15 @@ const ResultsDashboard = ({
   }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, motivationData, intentionDimensions, staticRecommendations, thinkingResult]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-12">
-      <div className="w-full max-w-3xl space-y-8">
+    <div className="min-h-screen flex flex-col items-center px-4 py-10 md:py-14">
+      <div className="w-full max-w-3xl space-y-8 md:space-y-10">
         {/* Header */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={0} className="text-center space-y-5">
-          <img src={owlLogo} alt="Sageify" className="w-20 h-20 mx-auto rounded-full shadow-[var(--shadow-elevated)] animate-float" />
-          <h1 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">
+          <img src={owlLogo} alt="Sageify" className="w-24 h-24 mx-auto rounded-full shadow-[var(--shadow-elevated)] animate-float" />
+          <h1 className="text-2xl md:text-4xl font-bold font-display text-foreground tracking-wide leading-snug">
             הפרופיל שלכם ב-<span className="text-secondary">Sageify</span>
           </h1>
+          <p className="text-base text-muted-foreground">כל התובנות שלכם במקום אחד</p>
         </motion.div>
 
         {/* Partial data notice */}
@@ -176,21 +194,21 @@ const ResultsDashboard = ({
             initial="hidden"
             animate="visible"
             custom={0.5}
-            className="bg-accent/5 border border-accent/20 rounded-2xl p-5 flex items-start gap-4"
+            className="bg-accent/5 border border-accent/20 rounded-2xl p-6 flex items-start gap-4"
             dir="rtl"
           >
-            <img src={owlLogo} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
-            <div className="space-y-1.5">
-               <p className="text-foreground font-semibold font-display text-sm tracking-wide">
+            <img src={owlLogo} alt="" className="w-12 h-12 rounded-full flex-shrink-0" />
+            <div className="space-y-2">
+               <p className="text-foreground font-semibold font-display text-base tracking-wide">
                 📊 התוצאות מבוססות על {completedCount} מתוך {totalQuestionnaires} שאלונים
                </p>
-               <p className="text-muted-foreground text-sm leading-relaxed">
+               <p className="text-muted-foreground text-base leading-relaxed">
                 השלמת שאלונים נוספים תחדד את הפרופיל ותאפשר המלצות מדויקות יותר.
                </p>
                {onBackToHub && (
                  <button
                    onClick={onBackToHub}
-                   className="mt-2 px-5 py-2 rounded-xl bg-secondary text-secondary-foreground text-sm font-medium font-display tracking-wide hover:bg-secondary/85 transition-all duration-200 shadow-sm"
+                   className="mt-3 px-6 py-3 rounded-xl bg-secondary text-secondary-foreground text-base font-medium font-display tracking-wide hover:bg-secondary/85 transition-all duration-300 shadow-sm min-h-[52px]"
                  >
                    חזרה להשלמת שאלונים ←
                  </button>
@@ -201,12 +219,12 @@ const ResultsDashboard = ({
 
         {/* Text Summary */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={1}>
-          <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]" dir="rtl">
-            <div className="flex items-start gap-4 mb-5">
-              <img src={owlLogo} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
-              <h3 className="text-lg font-bold font-display text-secondary tracking-wide pt-1">✦ סיכום התוצאות</h3>
+          <div className="bg-card rounded-3xl p-7 md:p-9 border border-border/60 shadow-[var(--shadow-card)]" dir="rtl">
+            <div className="flex items-start gap-4 mb-6">
+              <img src={owlLogo} alt="" className="w-12 h-12 rounded-full flex-shrink-0" />
+              <h3 className="text-xl md:text-2xl font-bold font-display text-secondary tracking-wide pt-1">✦ סיכום התוצאות</h3>
             </div>
-            <div className="space-y-3 text-foreground text-base leading-relaxed">
+            <div className="space-y-4 text-foreground text-lg leading-[1.85]">
               <p>
                 התוצאות מראות שהחוזקות שלכם הן{' '}
                 <span className="text-secondary font-bold">{topVIA.map(t => `"${t.category}"`).join(' ו')}</span>
@@ -245,7 +263,7 @@ const ResultsDashboard = ({
 
         {/* Smart Match Cards */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={3}>
-          <div className="bg-card rounded-3xl p-8 border border-border/60 shadow-[var(--shadow-card)]">
+          <div className="bg-card rounded-3xl p-7 md:p-9 border border-border/60 shadow-[var(--shadow-card)]">
             <MatchCards
               viaScores={viaScores}
               scheinScores={scheinScores}
@@ -259,8 +277,8 @@ const ResultsDashboard = ({
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={3}>
           <ExpandableSection title="ההמלצות של סגי" icon="🦉">
             {aiRecommendations ? (
-              <div className="bg-background rounded-2xl p-6 border border-border/60">
-                <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_h1]:text-lg [&_h1]:font-display [&_h2]:text-base [&_h2]:font-display [&_h3]:text-sm [&_h3]:font-display [&_ul]:mr-4 [&_ol]:mr-4 [&_li]:mb-1" dir="rtl">
+              <div className="bg-background rounded-2xl p-6 md:p-7 border border-border/60">
+                <div className="prose prose-lg dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-xl [&_h1]:font-display [&_h2]:text-lg [&_h2]:font-display [&_h3]:text-base [&_h3]:font-display [&_ul]:mr-4 [&_ol]:mr-4 [&_li]:mb-2 [&_li]:text-base" dir="rtl">
                   <ReactMarkdown>{aiRecommendations}</ReactMarkdown>
                 </div>
               </div>
@@ -268,13 +286,13 @@ const ResultsDashboard = ({
               <div className="space-y-3">
                 {staticRecommendations.map((rec, i) => (
                   <a key={i} href={rec.platformUrl} target="_blank" rel="noopener noreferrer"
-                    className="block bg-background rounded-2xl p-5 border border-border/60 hover:border-secondary/30 transition-all duration-200 group">
-                    <div className="flex items-start gap-3">
-                      <span className="text-2xl flex-shrink-0">{rec.icon}</span>
+                    className="block bg-background rounded-2xl p-5 md:p-6 border border-border/60 hover:border-secondary/30 transition-all duration-300 group min-h-[60px]">
+                    <div className="flex items-start gap-4">
+                      <span className="text-3xl flex-shrink-0">{rec.icon}</span>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <h4 className="font-bold font-display text-foreground group-hover:text-secondary transition-colors text-sm">{rec.title}</h4>
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          <h4 className="font-bold font-display text-foreground group-hover:text-secondary transition-colors text-base md:text-lg">{rec.title}</h4>
+                          <span className={`text-sm px-3 py-1 rounded-full font-medium ${
                             rec.type === 'volunteer' ? 'bg-secondary/15 text-secondary' :
                             rec.type === 'freelance' ? 'bg-primary/15 text-primary' :
                             'bg-muted text-muted-foreground'
@@ -282,7 +300,7 @@ const ResultsDashboard = ({
                             {rec.type === 'volunteer' ? 'התנדבות' : rec.type === 'freelance' ? 'פרילנס' : 'עבודה'}
                           </span>
                         </div>
-                        <p className="text-xs text-muted-foreground leading-relaxed">{rec.reason}</p>
+                        <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{rec.reason}</p>
                       </div>
                     </div>
                   </a>
@@ -293,48 +311,30 @@ const ResultsDashboard = ({
         </motion.div>
 
         {/* Expandable detail sections */}
-        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={4} className="space-y-4">
-          <p className="text-sm text-muted-foreground text-center font-medium">לחצו להרחבת הפירוט ▼</p>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={4} className="space-y-5">
+          <p className="text-base text-muted-foreground text-center font-medium font-display">לחצו להרחבת הפירוט ▼</p>
 
           <ExpandableSection title="חוזקות VIA – כל הקטגוריות" icon="◆">
-            <div className="space-y-3">
+            <div className="space-y-5">
               {Object.entries(viaScores).sort(([, a], [, b]) => b - a).map(([cat, score]) => (
-                <div key={cat} className="space-y-1">
-                  <span className="text-sm font-medium text-foreground">{cat}</span>
-                  <p className="text-xs text-muted-foreground">{viaCategoryDescriptions[cat] || ''}</p>
-                  <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden">
-                    <div className="h-full bg-secondary rounded-full progress-bar-fill" style={{ width: `${(score / 5) * 100}%` }} />
-                  </div>
-                </div>
+                <ScoreBar key={cat} label={cat} description={viaCategoryDescriptions[cat]} score={score} maxScore={5} colorClass="bg-secondary" />
               ))}
             </div>
           </ExpandableSection>
 
           <ExpandableSection title="עוגנים תעסוקתיים – כל הקטגוריות" icon="●">
-            <div className="space-y-3">
+            <div className="space-y-5">
               {Object.entries(scheinScores).sort(([, a], [, b]) => b - a).map(([cat, score]) => (
-                <div key={cat} className="space-y-1">
-                  <span className="text-sm font-medium text-foreground">{cat}</span>
-                  <p className="text-xs text-muted-foreground">{scheinCategoryDescriptions[cat] || ''}</p>
-                  <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden">
-                    <div className="h-full bg-primary rounded-full progress-bar-fill" style={{ width: `${(score / 7) * 100}%` }} />
-                  </div>
-                </div>
+                <ScoreBar key={cat} label={cat} description={scheinCategoryDescriptions[cat]} score={score} maxScore={7} colorClass="bg-primary" />
               ))}
             </div>
           </ExpandableSection>
 
           {topHolland.length > 0 && (
             <ExpandableSection title="נטיות תעסוקתיות (הולנד)" icon="✦">
-              <div className="space-y-3">
+              <div className="space-y-5">
                 {Object.entries(hollandScores || {}).sort(([, a], [, b]) => b - a).map(([cat, score]) => (
-                  <div key={cat} className="space-y-1">
-                    <span className="text-sm font-medium text-foreground">{cat}</span>
-                    <p className="text-xs text-muted-foreground">{hollandCategoryDescriptions[cat] || ''}</p>
-                    <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden">
-                      <div className="h-full bg-primary rounded-full progress-bar-fill" style={{ width: `${(score / 11) * 100}%` }} />
-                    </div>
-                  </div>
+                  <ScoreBar key={cat} label={cat} description={hollandCategoryDescriptions[cat]} score={score} maxScore={11} colorClass="bg-primary" />
                 ))}
               </div>
             </ExpandableSection>
@@ -342,11 +342,11 @@ const ResultsDashboard = ({
 
           {topConsiderations.length > 0 && (
             <ExpandableSection title="שיקולים מובילים" icon="◆">
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {topConsiderations.map(([item, pts]) => (
-                  <div key={item} className="flex justify-between items-center bg-background rounded-2xl px-5 py-3 border border-border/60">
-                    <span className="font-medium text-foreground text-sm">{item}</span>
-                    <span className="text-secondary font-bold font-display">{pts} נק׳</span>
+                  <div key={item} className="flex justify-between items-center bg-background rounded-2xl px-6 py-4 border border-border/60 min-h-[52px]">
+                    <span className="font-medium text-foreground text-base">{item}</span>
+                    <span className="text-secondary font-bold font-display text-lg">{pts} נק׳</span>
                   </div>
                 ))}
               </div>
@@ -355,11 +355,11 @@ const ResultsDashboard = ({
 
           {winnerSkills.length > 0 && (
             <ExpandableSection title="כישורים מובילים" icon="●">
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {winnerSkills.map((skill, i) => (
-                  <div key={i} className="flex items-center gap-3 bg-background rounded-2xl px-5 py-3 border border-border/60">
-                    <span className="w-7 h-7 rounded-full bg-secondary/8 text-secondary flex items-center justify-center font-display font-bold text-xs">{i + 1}</span>
-                    <span className="text-foreground text-sm">{skill}</span>
+                  <div key={i} className="flex items-center gap-4 bg-background rounded-2xl px-6 py-4 border border-border/60 min-h-[52px]">
+                    <span className="w-8 h-8 rounded-full bg-secondary/10 text-secondary flex items-center justify-center font-display font-bold text-sm">{i + 1}</span>
+                    <span className="text-foreground text-base">{skill}</span>
                   </div>
                 ))}
               </div>
@@ -368,21 +368,21 @@ const ResultsDashboard = ({
 
           {motivationData && (
             <ExpandableSection title="מניעים וכוונות תעסוקתיות" icon="🔥">
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div>
-                  <h4 className="font-bold font-display text-foreground text-sm mb-3 tracking-wide">אשכולות מניעים</h4>
-                  <div className="space-y-3">
+                  <h4 className="font-bold font-display text-foreground text-lg mb-4 tracking-wide">אשכולות מניעים</h4>
+                  <div className="space-y-5">
                     {motivationClusters.map(cluster => {
                       const score = motivationData.motivationScores[cluster.id] || 0;
                       return (
-                        <div key={cluster.id} className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-base">{cluster.icon}</span>
-                            <span className="text-sm font-medium text-foreground">{cluster.title}</span>
-                            <span className="text-xs text-muted-foreground mr-auto">{score}/5</span>
+                        <div key={cluster.id} className="space-y-1.5">
+                          <div className="flex items-center gap-3">
+                            <span className="text-xl">{cluster.icon}</span>
+                            <span className="text-base font-semibold text-foreground">{cluster.title}</span>
+                            <span className="text-sm text-muted-foreground mr-auto font-display">{score}/5</span>
                           </div>
-                          <p className="text-xs text-muted-foreground">{motivationClusterDescriptions[cluster.title] || ''}</p>
-                          <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden">
+                          <p className="text-sm text-muted-foreground leading-relaxed">{motivationClusterDescriptions[cluster.title] || ''}</p>
+                          <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden" role="progressbar" aria-valuenow={score} aria-valuemin={0} aria-valuemax={5}>
                             <div className="h-full bg-primary rounded-full progress-bar-fill" style={{ width: `${(score / 5) * 100}%` }} />
                           </div>
                         </div>
@@ -392,36 +392,34 @@ const ResultsDashboard = ({
                 </div>
                 {intentionDimensions && (
                   <div>
-                    <h4 className="font-bold font-display text-foreground text-sm mb-3 tracking-wide">ממדי כוונות תעסוקתיות</h4>
-                    <div className="space-y-3">
+                    <h4 className="font-bold font-display text-foreground text-lg mb-4 tracking-wide">ממדי כוונות תעסוקתיות</h4>
+                    <div className="space-y-5">
                       {([
                         { key: 'readiness', label: 'מוכנות נפשית', value: intentionDimensions.readiness },
                         { key: 'proactivity', label: 'יוזמה ופרואקטיביות', value: intentionDimensions.proactivity },
                         { key: 'flexibility', label: 'גמישות תעסוקתית', value: intentionDimensions.flexibility },
                       ] as const).map(dim => (
-                        <div key={dim.key} className="space-y-1">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm font-medium text-foreground">{dim.label}</span>
-                            <span className="text-xs text-muted-foreground">{dim.value.toFixed(1)}/5</span>
-                          </div>
-                          <p className="text-xs text-muted-foreground">{intentionDimensionDescriptions[dim.label] || ''}</p>
-                          <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden">
-                            <div className="h-full bg-secondary rounded-full progress-bar-fill" style={{ width: `${(dim.value / 5) * 100}%` }} />
-                          </div>
-                        </div>
+                        <ScoreBar
+                          key={dim.key}
+                          label={dim.label}
+                          description={intentionDimensionDescriptions[dim.label]}
+                          score={dim.value}
+                          maxScore={5}
+                          colorClass="bg-secondary"
+                        />
                       ))}
                     </div>
-                    <div className={`mt-4 rounded-2xl px-5 py-4 border ${
+                    <div className={`mt-5 rounded-2xl px-6 py-5 border ${
                       intentionDimensions.intentionLevel === 'high' ? 'bg-secondary/5 border-secondary/20' :
                       intentionDimensions.intentionLevel === 'low' ? 'bg-destructive/5 border-destructive/20' :
                       'bg-muted/30 border-border/60'
                     }`}>
-                      <p className="font-bold font-display text-foreground text-sm tracking-wide">
+                      <p className="font-bold font-display text-foreground text-base tracking-wide">
                         {intentionDimensions.intentionLevel === 'high' ? '✦ רמת כוונות גבוהה' :
                          intentionDimensions.intentionLevel === 'low' ? '◆ רמת כוונות נמוכה' :
                          '● רמת כוונות בינונית'}
                       </p>
-                      <p className="text-sm text-muted-foreground mt-1">
+                      <p className="text-base text-muted-foreground mt-2 leading-relaxed">
                         ציון כללי: {intentionDimensions.general.toFixed(1)} מתוך 5
                         {intentionDimensions.intentionLevel === 'high' && ' — יש לכם נכונות גבוהה לפעול ולמצוא עיסוק חדש.'}
                         {intentionDimensions.intentionLevel === 'low' && ' — ייתכן שעדיין לא הבשיל הזמן, וזה בסדר גמור.'}
@@ -436,45 +434,45 @@ const ResultsDashboard = ({
 
           {thinkingResult && (
             <ExpandableSection title="חשיבה וגמישות קוגניטיבית" icon="🧠">
-              <div className="space-y-4">
+              <div className="space-y-5">
                 {/* Score summary */}
-                <div className={`rounded-2xl px-5 py-4 border ${
+                <div className={`rounded-2xl px-6 py-5 border ${
                   thinkingResult.level === 'high' || thinkingResult.level === 'above-average'
                     ? 'bg-secondary/5 border-secondary/20'
                     : thinkingResult.level === 'low' || thinkingResult.level === 'below-average'
                       ? 'bg-destructive/5 border-destructive/20'
                       : 'bg-muted/30 border-border/60'
                 }`}>
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="font-bold font-display text-foreground text-sm tracking-wide">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="font-bold font-display text-foreground text-base tracking-wide">
                       רמה: {thinkingResult.levelLabel}
                     </p>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-base text-muted-foreground font-display">
                       אחוזון {thinkingResult.percentile}
                     </span>
                   </div>
-                  <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden mb-2">
+                  <div className="w-full h-3.5 bg-muted/50 rounded-full overflow-hidden mb-3" role="progressbar">
                     <div
                       className="h-full bg-secondary rounded-full progress-bar-fill"
                       style={{ width: `${(thinkingResult.totalCorrect / thinkingResult.totalQuestions) * 100}%` }}
                     />
                   </div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-base text-muted-foreground">
                     {thinkingResult.totalCorrect} תשובות נכונות מתוך {thinkingResult.totalQuestions}
                   </p>
                 </div>
 
                 {/* Time used */}
-                <div className="bg-background rounded-2xl px-5 py-3 border border-border/60 flex items-center justify-between">
-                  <span className="text-sm font-medium text-foreground">⏱ זמן שהושקע</span>
-                  <span className="text-sm text-muted-foreground">
+                <div className="bg-background rounded-2xl px-6 py-4 border border-border/60 flex items-center justify-between min-h-[52px]">
+                  <span className="text-base font-medium text-foreground">⏱ זמן שהושקע</span>
+                  <span className="text-base text-muted-foreground font-display">
                     {Math.floor(thinkingResult.timeUsedSeconds / 60)}:{String(thinkingResult.timeUsedSeconds % 60).padStart(2, '0')} דקות
                   </span>
                 </div>
 
                 {/* Interpretation */}
-                <div className="bg-background rounded-2xl px-5 py-4 border border-border/60">
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                <div className="bg-background rounded-2xl px-6 py-5 border border-border/60">
+                  <p className="text-base text-muted-foreground leading-[1.85]">
                     {thinkingResult.level === 'high' && 'יכולת חשיבה אנליטית גבוהה מאוד – גמישות קוגניטיבית מרשימה וכושר זיהוי דפוסים מתקדם. זהו נכס משמעותי בתפקידים הדורשים פתרון בעיות מורכבות.'}
                     {thinkingResult.level === 'above-average' && 'יכולת חשיבה מעל הממוצע – זיהוי דפוסים טוב ויכולת הסקה לוגית חזקה. חוזקה זו יכולה לתרום בתפקידים אנליטיים ויצירתיים.'}
                     {thinkingResult.level === 'average' && 'יכולת חשיבה ברמה ממוצעת – בסיס טוב לפיתוח נוסף. תרגול וחשיפה לאתגרים חדשים יכולים לחזק את הגמישות הקוגניטיבית.'}
@@ -488,19 +486,19 @@ const ResultsDashboard = ({
 
           {preferencesData && (
             <ExpandableSection title="העדפות אישיות" icon="✦">
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {Object.entries(preferencesData.preferences).map(([key, values]) => (
-                  <div key={key} className="bg-background rounded-2xl px-5 py-3 border border-border/60">
+                  <div key={key} className="bg-background rounded-2xl px-6 py-4 border border-border/60">
                     {values.map((v, i) => (
-                      <p key={i} className="text-foreground text-sm">✓ {v}</p>
+                      <p key={i} className="text-foreground text-base leading-relaxed">✓ {v}</p>
                     ))}
                   </div>
                 ))}
               </div>
               {preferencesData.dream && (
-                <div className="mt-4 bg-secondary/5 rounded-2xl px-5 py-4 border border-secondary/20">
-                  <p className="font-bold font-display text-foreground text-sm tracking-wide">✦ חלום המגירה:</p>
-                  <p className="text-secondary font-semibold">{preferencesData.dream}</p>
+                <div className="mt-4 bg-secondary/5 rounded-2xl px-6 py-5 border border-secondary/20">
+                  <p className="font-bold font-display text-foreground text-base tracking-wide">✦ חלום המגירה:</p>
+                  <p className="text-secondary font-semibold text-lg mt-1">{preferencesData.dream}</p>
                 </div>
               )}
             </ExpandableSection>
@@ -517,21 +515,21 @@ const ResultsDashboard = ({
         </motion.div>
 
         {/* Actions */}
-        <div className="text-center pb-8 space-y-4 print:hidden">
+        <div className="text-center pb-10 space-y-5 print:hidden">
           <button
             onClick={() => window.print()}
-            className="px-8 py-3 rounded-2xl bg-primary text-primary-foreground font-medium font-display tracking-wide hover:bg-primary/85 transition-all duration-300 mx-2 shadow-[var(--shadow-card)]"
+            className="px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-medium font-display text-lg tracking-wide hover:bg-primary/85 transition-all duration-300 mx-2 shadow-[var(--shadow-card)] min-h-[56px]"
           >
             הורדה כ-PDF
           </button>
           <br />
-          <p className="text-muted-foreground mb-3 text-sm">סגי תמיד כאן אם תרצו לעבור שוב</p>
+          <p className="text-muted-foreground mb-3 text-base">סגי תמיד כאן אם תרצו לעבור שוב</p>
           <button
             onClick={() => {
               localStorage.clear();
               window.location.reload();
             }}
-            className="px-8 py-3 rounded-2xl bg-muted text-foreground font-medium font-display tracking-wide hover:bg-muted/80 transition-all duration-300"
+            className="px-10 py-4 rounded-2xl bg-muted text-foreground font-medium font-display text-lg tracking-wide hover:bg-muted/80 transition-all duration-300 min-h-[56px]"
           >
             התחלה מחדש
           </button>
