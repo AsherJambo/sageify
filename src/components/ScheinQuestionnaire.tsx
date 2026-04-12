@@ -2,8 +2,17 @@ import { useMemo } from 'react';
 import { scheinQuestions } from '@/data/scheinQuestions';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
+import AnswerKeyReminder from './AnswerKeyReminder';
 import type { Answers } from '@/lib/scoring';
 import { getScheinEncouragement, getRandomWisdomTip } from '@/lib/owlMessages';
+
+const scheinAnswerKey = [
+  { label: '1', desc: 'לא חשוב לי בכלל' },
+  { label: '2-3', desc: 'חשוב במידה מועטה' },
+  { label: '4', desc: 'חשוב במידה בינונית' },
+  { label: '5-6', desc: 'חשוב במידה רבה' },
+  { label: '7', desc: 'חשוב לי מאד' },
+];
 
 interface ScheinQuestionnaireProps {
   answers: Answers;
@@ -46,6 +55,8 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: Sch
             />
           </div>
         </div>
+
+        <AnswerKeyReminder items={scheinAnswerKey} />
 
         {/* Owl encouragement */}
         {encouragement && <OwlMessage message={encouragement} variant="encouragement" />}
