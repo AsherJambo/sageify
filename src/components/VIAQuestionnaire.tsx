@@ -3,8 +3,17 @@ import { viaQuestions } from '@/data/viaQuestions';
 import StarRating from './StarRating';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
+import AnswerKeyReminder from './AnswerKeyReminder';
 import type { Answers } from '@/lib/scoring';
 import { getVIAEncouragement, getRandomWisdomTip } from '@/lib/owlMessages';
+
+const viaAnswerKey = [
+  { label: '1', desc: 'בכלל לא מתאים לי' },
+  { label: '2', desc: 'מתאים לי במידה מועטה' },
+  { label: '3', desc: 'מתאים לי במידה בינונית' },
+  { label: '4', desc: 'מתאים לי במידה רבה' },
+  { label: '5', desc: 'מתאים לי מאד' },
+];
 
 interface VIAQuestionnaireProps {
   answers: Answers;
@@ -63,6 +72,8 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: VIAQue
             />
           </div>
         </div>
+
+        <AnswerKeyReminder items={viaAnswerKey} />
 
         {/* Owl encouragement */}
         {encouragement && <OwlMessage message={encouragement} variant="encouragement" />}
