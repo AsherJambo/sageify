@@ -3,6 +3,11 @@ import { preferenceQuestions, dreamOptions } from '@/data/preferencesData';
 import { Textarea } from '@/components/ui/textarea';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
+import AnswerKeyReminder from './AnswerKeyReminder';
+
+const preferencesAnswerKey = [
+  { label: 'בחירת אפשרות', desc: 'בחרו את האפשרות המתאימה לכם ביותר מתוך הרשימה' },
+];
 
 interface PreferencesQuestionnaireProps {
   onComplete: (preferences: Record<string, string[]>, dream: string) => void;
@@ -42,6 +47,8 @@ const PreferencesQuestionnaire = ({ onComplete, onBackToHub }: PreferencesQuesti
           <h2 className="text-2xl md:text-3xl font-bold font-display text-foreground tracking-wide">העדפות וחלום המגירה</h2>
           <p className="text-muted-foreground text-lg">ענו על שאלות ההעדפה ובחרו את חלום המגירה שלכם</p>
         </div>
+
+        <AnswerKeyReminder items={preferencesAnswerKey} />
 
         {/* Preference Questions */}
         {preferenceQuestions.map((q) => (
