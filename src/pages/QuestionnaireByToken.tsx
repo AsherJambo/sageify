@@ -304,22 +304,34 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
               שלום, <span className="text-accent">{tokenRow?.username}</span>!
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              {partnerOrg?.custom_welcome_message 
-                ? partnerOrg.custom_welcome_message
-                : 'ברוכים הבאים לשאלון Sageify. הזינו את מספר תעודת הזהות שלכם כדי להתחיל.'}
+              הקישור הזה נוצר עבורכם אישית. לפני שנתחיל, נצטרך לוודא את זהותכם.
             </p>
-            <div className="max-w-xs mx-auto">
+
+            <div className="max-w-sm mx-auto space-y-3">
+              <label className="block text-base font-semibold text-foreground text-right">
+                מספר תעודת זהות
+              </label>
               <input
                 type="text"
                 inputMode="numeric"
                 pattern="[0-9]*"
-                placeholder="מספר תעודת זהות"
+                placeholder="הזינו מספר ת.ז"
                 value={idNumber}
                 onChange={e => setIdNumber(e.target.value.replace(/\D/g, ''))}
-                className="w-full text-center px-4 py-3 rounded-xl border border-border bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full text-center px-4 py-4 rounded-xl border border-border bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-primary min-h-[52px]"
                 maxLength={9}
               />
+              <div className="bg-muted/30 rounded-xl p-4 border border-border/40 text-right space-y-2">
+                <p className="text-base text-muted-foreground leading-relaxed">
+                  <span className="text-secondary font-semibold">🔒 למה זה נדרש?</span>
+                  {' '}מספר ת.ז. משמש אך ורק לזיהוי חד-ערכי שלכם במערכת, כדי לוודא שרק אתם יכולים לגשת לתוצאות שלכם.
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  המידע נשמר באופן מאובטח ואינו משותף עם גורם שלישי.
+                </p>
+              </div>
             </div>
+
             <button
               onClick={async () => {
                 if (idNumber.length < 5) {
@@ -332,7 +344,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
                 updateState({ step: 'hub' });
               }}
               disabled={idNumber.length < 5}
-              className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 min-h-[52px]"
             >
               בואו נתחיל! ←
             </button>
@@ -363,13 +375,13 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
     // Skills flow
     case 'skills-intro':
-      return <>{ProgressBar}<SectionIntro badge={skillsIntro.badge} title={skillsIntro.title} paragraphs={skillsIntro.paragraphs} bulletPoints={skillsIntro.bulletPoints} onContinue={() => updateState({ step: 'skills' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={skillsIntro.badge} title={skillsIntro.title} paragraphs={skillsIntro.paragraphs} bulletPoints={skillsIntro.bulletPoints} exampleQuestions={skillsIntro.exampleQuestions} answerKey={skillsIntro.answerKey} onContinue={() => updateState({ step: 'skills' })} />{QuestionnaireSuffix}</>;
     case 'skills':
       return <>{ProgressBar}<SkillsQuestionnaire onComplete={(assignments) => updateState({ skillsAssignments: assignments, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     // Schein flow
     case 'schein-intro':
-      return <>{ProgressBar}<SectionIntro badge={scheinIntro.badge} title={scheinIntro.title} paragraphs={scheinIntro.paragraphs} onContinue={() => updateState({ step: 'schein' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={scheinIntro.badge} title={scheinIntro.title} paragraphs={scheinIntro.paragraphs} exampleQuestions={scheinIntro.exampleQuestions} answerKey={scheinIntro.answerKey} onContinue={() => updateState({ step: 'schein' })} />{QuestionnaireSuffix}</>;
     case 'schein':
       return <>{ProgressBar}<ScheinQuestionnaire answers={state.scheinAnswers} onAnswer={handleScheinAnswer} onComplete={() => updateState({ step: 'schein-bonus' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
     case 'schein-bonus':
@@ -377,19 +389,19 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
     // Considerations flow
     case 'considerations-intro':
-      return <>{ProgressBar}<SectionIntro badge={considerationsIntro.badge} title={considerationsIntro.title} paragraphs={considerationsIntro.paragraphs} onContinue={() => updateState({ step: 'considerations' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={considerationsIntro.badge} title={considerationsIntro.title} paragraphs={considerationsIntro.paragraphs} exampleQuestions={considerationsIntro.exampleQuestions} answerKey={considerationsIntro.answerKey} onContinue={() => updateState({ step: 'considerations' })} />{QuestionnaireSuffix}</>;
     case 'considerations':
       return <>{ProgressBar}<ConsiderationsQuestionnaire onComplete={(selected, points) => updateState({ considerationsData: { selected, points }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     // Holland flow
     case 'holland-intro':
-      return <>{ProgressBar}<SectionIntro badge={hollandIntro.badge} title={hollandIntro.title} paragraphs={hollandIntro.paragraphs} onContinue={() => updateState({ step: 'holland' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={hollandIntro.badge} title={hollandIntro.title} paragraphs={hollandIntro.paragraphs} exampleQuestions={hollandIntro.exampleQuestions} answerKey={hollandIntro.answerKey} onContinue={() => updateState({ step: 'holland' })} />{QuestionnaireSuffix}</>;
     case 'holland':
       return <>{ProgressBar}<HollandQuestionnaire onComplete={(answers) => updateState({ hollandAnswers: answers, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     // VIA flow
     case 'via-intro':
-      return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} onContinue={() => updateState({ step: 'via' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} exampleQuestions={viaIntro.exampleQuestions} answerKey={viaIntro.answerKey} onContinue={() => updateState({ step: 'via' })} />{QuestionnaireSuffix}</>;
     case 'via':
       return <>{ProgressBar}<VIAQuestionnaire answers={state.viaAnswers} onAnswer={handleViaAnswer} onComplete={() => updateState({ step: 'via-bonus-intro' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
     case 'via-bonus-intro':
@@ -399,7 +411,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
     // Preferences flow
     case 'preferences-intro':
-      return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} onContinue={() => updateState({ step: 'personality-sliders' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} exampleQuestions={preferencesIntro.exampleQuestions} answerKey={preferencesIntro.answerKey} onContinue={() => updateState({ step: 'personality-sliders' })} />{QuestionnaireSuffix}</>;
     case 'personality-sliders':
       return <>{ProgressBar}<PersonalitySliders onComplete={(sliders) => updateState({ personalitySliders: sliders, step: 'preferences' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
     case 'preferences':
@@ -414,13 +426,13 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
     // Motivation flow
     case 'motivation-intro':
-      return <>{ProgressBar}<SectionIntro badge={motivationIntro.badge} title={motivationIntro.title} paragraphs={motivationIntro.paragraphs} bulletPoints={motivationIntro.bulletPoints} onContinue={() => updateState({ step: 'motivation' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={motivationIntro.badge} title={motivationIntro.title} paragraphs={motivationIntro.paragraphs} bulletPoints={motivationIntro.bulletPoints} exampleQuestions={motivationIntro.exampleQuestions} answerKey={motivationIntro.answerKey} onContinue={() => updateState({ step: 'motivation' })} />{QuestionnaireSuffix}</>;
     case 'motivation':
       return <>{ProgressBar}<MotivationQuestionnaire onComplete={(motivationScores, intentionAnswers) => updateState({ motivationData: { motivationScores, intentionAnswers }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     // Thinking flow
     case 'thinking-intro':
-      return <>{ProgressBar}<SectionIntro badge={thinkingIntro.badge} title={thinkingIntro.title} paragraphs={thinkingIntro.paragraphs} onContinue={() => updateState({ step: 'thinking' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={thinkingIntro.badge} title={thinkingIntro.title} paragraphs={thinkingIntro.paragraphs} exampleQuestions={thinkingIntro.exampleQuestions} answerKey={thinkingIntro.answerKey} onContinue={() => updateState({ step: 'thinking' })} />{QuestionnaireSuffix}</>;
     case 'thinking':
       return <>{ProgressBar}<ThinkingSkillsQuestionnaire onComplete={(result) => updateState({ thinkingResult: result, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
