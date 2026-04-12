@@ -133,6 +133,8 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
           </div>
         </div>
 
+        <AnswerKeyReminder items={motivationAnswerKey} />
+
         {/* Encouragement */}
         {encouragement && <OwlMessage message={encouragement} variant="encouragement" />}
 
