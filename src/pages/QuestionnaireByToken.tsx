@@ -304,22 +304,34 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
               שלום, <span className="text-accent">{tokenRow?.username}</span>!
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              {partnerOrg?.custom_welcome_message 
-                ? partnerOrg.custom_welcome_message
-                : 'ברוכים הבאים לשאלון Sageify. הזינו את מספר תעודת הזהות שלכם כדי להתחיל.'}
+              הקישור הזה נוצר עבורכם אישית. לפני שנתחיל, נצטרך לוודא את זהותכם.
             </p>
-            <div className="max-w-xs mx-auto">
+
+            <div className="max-w-sm mx-auto space-y-3">
+              <label className="block text-base font-semibold text-foreground text-right">
+                מספר תעודת זהות
+              </label>
               <input
                 type="text"
                 inputMode="numeric"
                 pattern="[0-9]*"
-                placeholder="מספר תעודת זהות"
+                placeholder="הזינו מספר ת.ז"
                 value={idNumber}
                 onChange={e => setIdNumber(e.target.value.replace(/\D/g, ''))}
-                className="w-full text-center px-4 py-3 rounded-xl border border-border bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full text-center px-4 py-4 rounded-xl border border-border bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-primary min-h-[52px]"
                 maxLength={9}
               />
+              <div className="bg-muted/30 rounded-xl p-4 border border-border/40 text-right space-y-2">
+                <p className="text-base text-muted-foreground leading-relaxed">
+                  <span className="text-secondary font-semibold">🔒 למה זה נדרש?</span>
+                  {' '}מספר ת.ז. משמש אך ורק לזיהוי חד-ערכי שלכם במערכת, כדי לוודא שרק אתם יכולים לגשת לתוצאות שלכם.
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  המידע נשמר באופן מאובטח ואינו משותף עם גורם שלישי.
+                </p>
+              </div>
             </div>
+
             <button
               onClick={async () => {
                 if (idNumber.length < 5) {
@@ -332,7 +344,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
                 updateState({ step: 'hub' });
               }}
               disabled={idNumber.length < 5}
-              className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 min-h-[52px]"
             >
               בואו נתחיל! ←
             </button>
