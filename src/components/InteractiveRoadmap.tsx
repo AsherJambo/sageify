@@ -202,16 +202,16 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
   const progressPct = totalTasks > 0 ? Math.round((completedCount / totalTasks) * 100) : 0;
 
   return (
-    <div className="space-y-6" dir="rtl">
+    <div className="space-y-8" dir="rtl">
       {/* Progress header */}
-      <div className="bg-card/80 backdrop-blur-xl rounded-3xl border border-border/40 p-7 shadow-[var(--shadow-card)]">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold font-display text-foreground tracking-wide">
+      <div className="bg-card/80 backdrop-blur-xl rounded-3xl border border-border/40 p-8 shadow-[var(--shadow-card)]">
+        <div className="flex items-center justify-between mb-5">
+          <h3 className="text-2xl font-bold font-display text-foreground tracking-wide">
             🌿 מפת הדרכים שלכם
           </h3>
-          <span className="text-base font-display font-bold text-secondary">{progressPct}% הושלם</span>
+          <span className="text-lg font-display font-bold text-secondary">{progressPct}% הושלם</span>
         </div>
-        <div className="w-full h-3 bg-muted/40 rounded-full overflow-hidden">
+        <div className="w-full h-4 bg-muted/40 rounded-full overflow-hidden">
           <motion.div
             className="h-full bg-secondary rounded-full"
             initial={{ width: 0 }}
@@ -219,17 +219,17 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           />
         </div>
-        <div className="flex justify-between mt-4">
+        <div className="flex justify-between mt-5">
           {phases.map(p => (
-            <div key={p.id} className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div key={p.id} className="flex items-center gap-2 text-base text-muted-foreground">
               <span className={p.color}>{p.icon}</span>
-              <span>{p.title}</span>
+              <span className="font-medium">{p.title}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Phase cards — Glassmorphism */}
+      {/* Phase cards */}
       <div className="relative">
         <div className="absolute right-6 top-0 bottom-0 w-0.5 bg-border/30 hidden md:block" />
 
@@ -243,7 +243,7 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className={`rounded-3xl border overflow-hidden mb-4 md:mr-10 relative ${
+              className={`rounded-3xl border overflow-hidden mb-5 md:mr-10 relative ${
                 phaseCompleted ? 'opacity-75' : ''
               } ${
                 isExpanded
@@ -252,32 +252,149 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
               }`}
             >
               {/* Timeline dot */}
-              <div className={`hidden md:flex absolute -right-[52px] top-6 w-5 h-5 rounded-full border-2 ${phase.borderColor} ${phaseCompleted ? 'bg-secondary' : 'bg-card'}`} />
+              <div className={`hidden md:flex absolute -right-[52px] top-7 w-6 h-6 rounded-full border-2 ${phase.borderColor} ${phaseCompleted ? 'bg-secondary' : 'bg-card'}`} />
 
               {/* Phase header */}
               <button
                 onClick={() => setExpandedPhase(isExpanded ? null : phase.id)}
-                className={`w-full flex items-center justify-between px-7 py-6 hover:bg-muted/10 transition-all duration-300 min-h-[72px]`}
+                className="w-full flex items-center justify-between px-8 py-7 hover:bg-muted/10 transition-all duration-300 min-h-[80px]"
               >
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-full ${phase.bgColor} border ${phase.borderColor} flex items-center justify-center ${phase.color}`}>
-                    {phaseCompleted ? <CheckCircle2 className="w-6 h-6" /> : phase.icon}
+                <div className="flex items-center gap-5">
+                  <div className={`w-14 h-14 rounded-full ${phase.bgColor} border ${phase.borderColor} flex items-center justify-center ${phase.color}`}>
+                    {phaseCompleted ? <CheckCircle2 className="w-7 h-7" /> : React.cloneElement(phase.icon as React.ReactElement, { className: 'w-6 h-6' })}
                   </div>
                   <div className="text-right">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold font-display text-foreground text-lg">שלב {phase.phase}: {phase.title}</span>
-                      <span className="text-sm text-muted-foreground">({phase.timeframe})</span>
+                    <div className="flex items-center gap-3">
+                      <span className="font-bold font-display text-foreground text-xl">שלב {phase.phase}: {phase.title}</span>
+                      <span className="text-base text-muted-foreground font-medium">({phase.timeframe})</span>
                     </div>
-                    <div className="flex gap-4 mt-1.5">
-                      <span className="text-sm text-muted-foreground">
+                    <div className="flex gap-5 mt-2">
+                      <span className="text-base text-muted-foreground">
                         השפעה: <span className="font-bold text-secondary">{impactLabels[phase.impactLevel]}</span>
                       </span>
-                      <span className="text-sm text-muted-foreground">
+                      <span className="text-base text-muted-foreground">
                         הכנסה: <span className="font-bold text-secondary">{impactLabels[phase.incomePotential]}</span>
                       </span>
                     </div>
                   </div>
                 </div>
+                <ChevronDown className={`w-7 h-7 text-muted-foreground transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Tasks */}
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={springTransition}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-8 pb-7 pt-3 space-y-5">
+                      {phase.tasks.map((task, ti) => {
+                        const taskKey = `${phase.id}:${task.title}`;
+                        const isCompleted = completedTasks.has(taskKey);
+                        const isStarred = starredTasks.has(task.title);
+
+                        return (
+                          <motion.div
+                            key={ti}
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: ti * 0.08, ...springTransition }}
+                            className={`rounded-2xl border p-6 transition-all duration-300 ${
+                              isCompleted
+                                ? 'bg-secondary/5 border-secondary/15 backdrop-blur-sm'
+                                : 'bg-card/60 backdrop-blur-xl border-border/40 hover:bg-card/80 hover:border-secondary/20'
+                            }`}
+                          >
+                            <div className="flex items-start gap-4">
+                              <button
+                                onClick={() => handleTaskToggle(phase.id, task.title)}
+                                aria-label={isCompleted ? 'סמן כלא הושלם' : 'סמן כהושלם'}
+                                className={`mt-1 w-9 h-9 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all min-w-[36px] min-h-[36px] ${
+                                  isCompleted
+                                    ? 'bg-secondary border-secondary text-secondary-foreground'
+                                    : 'border-muted-foreground/40 hover:border-secondary'
+                                }`}
+                              >
+                                {isCompleted && <CheckCircle2 className="w-6 h-6" />}
+                              </button>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-start justify-between gap-3">
+                                  <h4 className={`font-bold text-lg leading-relaxed ${isCompleted ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                                    {task.title}
+                                  </h4>
+                                  <div className="flex items-center gap-2 flex-shrink-0">
+                                    {task.matchScore && (
+                                      <span className="text-sm px-3 py-1.5 rounded-full bg-secondary/10 text-secondary font-bold border border-secondary/15">
+                                        {task.matchScore}% התאמה
+                                      </span>
+                                    )}
+                                    <button
+                                      onClick={() => handleStar(task.title)}
+                                      aria-label={isStarred ? 'הסר מהמועדפים' : 'הוסף למועדפים'}
+                                      className={`transition-colors p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg ${isStarred ? 'text-gold' : 'text-muted-foreground/40 hover:text-gold/60'}`}
+                                    >
+                                      <Star className={`w-6 h-6 ${isStarred ? 'fill-current' : ''}`} />
+                                    </button>
+                                  </div>
+                                </div>
+                                <p className="text-base text-muted-foreground mt-2 leading-relaxed">{task.description}</p>
+                                
+                                {task.whySagei && (
+                                  <motion.div
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2 }}
+                                    className="mt-4 bg-secondary/5 backdrop-blur-sm border border-secondary/10 rounded-xl px-5 py-4"
+                                  >
+                                    <p className="text-base text-secondary font-bold">
+                                      🌿 למה סגי בחר בזה עבורכם:
+                                    </p>
+                                    <p className="text-base text-muted-foreground mt-1.5 leading-relaxed">{task.whySagei}</p>
+                                  </motion.div>
+                                )}
+
+                                {task.successMetric && (
+                                  <div className="mt-3 flex items-center gap-1.5">
+                                    <span className="text-sm px-4 py-1.5 rounded-full bg-muted text-muted-foreground font-medium">
+                                      🎯 {task.successMetric}
+                                    </span>
+                                  </div>
+                                )}
+                                {task.link && (
+                                  <a
+                                    href={task.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={() => tokenId && trackInteraction({
+                                      tokenId,
+                                      interactionType: 'click',
+                                      targetType: 'roadmap_task',
+                                      targetTitle: task.title,
+                                    })}
+                                    className="inline-flex items-center gap-2 text-base text-primary hover:text-primary/80 mt-3 min-h-[48px] font-medium"
+                                  >
+                                    <ExternalLink className="w-5 h-5" />
+                                    למידע נוסף
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
                 <ChevronDown className={`w-6 h-6 text-muted-foreground transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
               </button>
 
