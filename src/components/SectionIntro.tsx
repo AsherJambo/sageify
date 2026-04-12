@@ -1,5 +1,11 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import owlLogo from '@/assets/owl-logo.png';
+
+interface AnswerKeyItem {
+  label: string;
+  desc: string;
+}
 
 interface SectionIntroProps {
   title?: string;
@@ -11,6 +17,8 @@ interface SectionIntroProps {
   onContinue: () => void;
   buttonText?: string;
   contextFeedback?: string;
+  exampleQuestions?: string[];
+  answerKey?: AnswerKeyItem[];
 }
 
 const fadeSlideUp = {
@@ -29,7 +37,11 @@ const SectionIntro = ({
   onContinue,
   buttonText = '← בואו נמשיך',
   contextFeedback,
+  exampleQuestions,
+  answerKey,
 }: SectionIntroProps) => {
+  const [showAnswerKey, setShowAnswerKey] = useState(false);
+
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-16">
       <div className="w-full max-w-2xl space-y-10">
@@ -95,6 +107,63 @@ const SectionIntro = ({
             </p>
           ))}
         </motion.div>
+
+        {/* Example questions */}
+        {exampleQuestions && exampleQuestions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-card rounded-3xl p-8 border border-secondary/15 shadow-[var(--shadow-card)] space-y-4"
+          >
+            <p className="font-semibold font-display text-foreground text-lg tracking-wide">
+              💡 דוגמאות לשאלות בשאלון:
+            </p>
+            <ul className="space-y-3 pr-2">
+              {exampleQuestions.map((eq, i) => (
+                <li key={i} className="flex items-start gap-3 text-foreground text-lg">
+                  <span className="text-secondary/50 mt-0.5 flex-shrink-0 text-base font-bold">{i + 1}.</span>
+                  <span className="italic text-muted-foreground">{eq}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Answer key toggle */}
+            {answerKey && answerKey.length > 0 && (
+              <div className="pt-2">
+                <button
+                  onClick={() => setShowAnswerKey(!showAnswerKey)}
+                  className="flex items-center gap-2 text-secondary hover:text-secondary/80 font-display font-semibold text-base transition-colors duration-200 min-h-[44px]"
+                >
+                  <span className="text-lg">{showAnswerKey ? '▾' : '▸'}</span>
+                  <span>{showAnswerKey ? 'הסתר הגדרות תשובות' : 'הצג הגדרות תשובות'}</span>
+                </button>
+                <AnimatePresence>
+                  {showAnswerKey && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-3 space-y-2 bg-muted/30 rounded-2xl p-5 border border-border/40">
+                        {answerKey.map((item, i) => (
+                          <div key={i} className="flex items-center gap-3 text-base">
+                            <span className="font-bold text-foreground bg-secondary/10 px-3 py-1 rounded-lg text-sm min-w-fit">
+                              {item.label}
+                            </span>
+                            <span className="text-muted-foreground">{item.desc}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+          </motion.div>
+        )}
 
         {/* Notes block */}
         {notes && notes.length > 0 && (
