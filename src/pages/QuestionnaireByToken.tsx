@@ -375,13 +375,13 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
     // Skills flow
     case 'skills-intro':
-      return <>{ProgressBar}<SectionIntro badge={skillsIntro.badge} title={skillsIntro.title} paragraphs={skillsIntro.paragraphs} bulletPoints={skillsIntro.bulletPoints} onContinue={() => updateState({ step: 'skills' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={skillsIntro.badge} title={skillsIntro.title} paragraphs={skillsIntro.paragraphs} bulletPoints={skillsIntro.bulletPoints} exampleQuestions={skillsIntro.exampleQuestions} answerKey={skillsIntro.answerKey} onContinue={() => updateState({ step: 'skills' })} />{QuestionnaireSuffix}</>;
     case 'skills':
       return <>{ProgressBar}<SkillsQuestionnaire onComplete={(assignments) => updateState({ skillsAssignments: assignments, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     // Schein flow
     case 'schein-intro':
-      return <>{ProgressBar}<SectionIntro badge={scheinIntro.badge} title={scheinIntro.title} paragraphs={scheinIntro.paragraphs} onContinue={() => updateState({ step: 'schein' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={scheinIntro.badge} title={scheinIntro.title} paragraphs={scheinIntro.paragraphs} exampleQuestions={scheinIntro.exampleQuestions} answerKey={scheinIntro.answerKey} onContinue={() => updateState({ step: 'schein' })} />{QuestionnaireSuffix}</>;
     case 'schein':
       return <>{ProgressBar}<ScheinQuestionnaire answers={state.scheinAnswers} onAnswer={handleScheinAnswer} onComplete={() => updateState({ step: 'schein-bonus' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
     case 'schein-bonus':
@@ -389,19 +389,19 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
     // Considerations flow
     case 'considerations-intro':
-      return <>{ProgressBar}<SectionIntro badge={considerationsIntro.badge} title={considerationsIntro.title} paragraphs={considerationsIntro.paragraphs} onContinue={() => updateState({ step: 'considerations' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={considerationsIntro.badge} title={considerationsIntro.title} paragraphs={considerationsIntro.paragraphs} exampleQuestions={considerationsIntro.exampleQuestions} answerKey={considerationsIntro.answerKey} onContinue={() => updateState({ step: 'considerations' })} />{QuestionnaireSuffix}</>;
     case 'considerations':
       return <>{ProgressBar}<ConsiderationsQuestionnaire onComplete={(selected, points) => updateState({ considerationsData: { selected, points }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     // Holland flow
     case 'holland-intro':
-      return <>{ProgressBar}<SectionIntro badge={hollandIntro.badge} title={hollandIntro.title} paragraphs={hollandIntro.paragraphs} onContinue={() => updateState({ step: 'holland' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={hollandIntro.badge} title={hollandIntro.title} paragraphs={hollandIntro.paragraphs} exampleQuestions={hollandIntro.exampleQuestions} answerKey={hollandIntro.answerKey} onContinue={() => updateState({ step: 'holland' })} />{QuestionnaireSuffix}</>;
     case 'holland':
       return <>{ProgressBar}<HollandQuestionnaire onComplete={(answers) => updateState({ hollandAnswers: answers, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     // VIA flow
     case 'via-intro':
-      return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} onContinue={() => updateState({ step: 'via' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} exampleQuestions={viaIntro.exampleQuestions} answerKey={viaIntro.answerKey} onContinue={() => updateState({ step: 'via' })} />{QuestionnaireSuffix}</>;
     case 'via':
       return <>{ProgressBar}<VIAQuestionnaire answers={state.viaAnswers} onAnswer={handleViaAnswer} onComplete={() => updateState({ step: 'via-bonus-intro' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
     case 'via-bonus-intro':
@@ -411,7 +411,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
     // Preferences flow
     case 'preferences-intro':
-      return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} onContinue={() => updateState({ step: 'personality-sliders' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={preferencesIntro.badge} title={preferencesIntro.title} paragraphs={preferencesIntro.paragraphs} exampleQuestions={preferencesIntro.exampleQuestions} answerKey={preferencesIntro.answerKey} onContinue={() => updateState({ step: 'personality-sliders' })} />{QuestionnaireSuffix}</>;
     case 'personality-sliders':
       return <>{ProgressBar}<PersonalitySliders onComplete={(sliders) => updateState({ personalitySliders: sliders, step: 'preferences' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
     case 'preferences':
@@ -426,13 +426,13 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
     // Motivation flow
     case 'motivation-intro':
-      return <>{ProgressBar}<SectionIntro badge={motivationIntro.badge} title={motivationIntro.title} paragraphs={motivationIntro.paragraphs} bulletPoints={motivationIntro.bulletPoints} onContinue={() => updateState({ step: 'motivation' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={motivationIntro.badge} title={motivationIntro.title} paragraphs={motivationIntro.paragraphs} bulletPoints={motivationIntro.bulletPoints} exampleQuestions={motivationIntro.exampleQuestions} answerKey={motivationIntro.answerKey} onContinue={() => updateState({ step: 'motivation' })} />{QuestionnaireSuffix}</>;
     case 'motivation':
       return <>{ProgressBar}<MotivationQuestionnaire onComplete={(motivationScores, intentionAnswers) => updateState({ motivationData: { motivationScores, intentionAnswers }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     // Thinking flow
     case 'thinking-intro':
-      return <>{ProgressBar}<SectionIntro badge={thinkingIntro.badge} title={thinkingIntro.title} paragraphs={thinkingIntro.paragraphs} onContinue={() => updateState({ step: 'thinking' })} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<SectionIntro badge={thinkingIntro.badge} title={thinkingIntro.title} paragraphs={thinkingIntro.paragraphs} exampleQuestions={thinkingIntro.exampleQuestions} answerKey={thinkingIntro.answerKey} onContinue={() => updateState({ step: 'thinking' })} />{QuestionnaireSuffix}</>;
     case 'thinking':
       return <>{ProgressBar}<ThinkingSkillsQuestionnaire onComplete={(result) => updateState({ thinkingResult: result, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
