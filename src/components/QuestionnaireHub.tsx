@@ -90,14 +90,16 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
           <h1 className="text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">
             בחרו את השאלונים שלכם
           </h1>
-          <p className="text-muted-foreground text-lg leading-relaxed max-w-xl mx-auto">
-            תוכלו לבחור אילו שאלונים למלא, לפי מה שמרגיש רלוונטי עבורכם.
-            <br />
-            <span className="text-foreground font-medium">
-              להמלצה מדויקת ומשמעותית יותר, מומלץ להשלים לפחות 3 שאלונים.
-            </span>
-          </p>
-        </motion.div>
+          <div className="bg-secondary/[0.06] border border-secondary/20 rounded-2xl px-6 py-5 max-w-xl mx-auto text-right space-y-2">
+            <p className="text-foreground text-lg leading-relaxed font-medium">
+              👇 לפניכם 8 שאלונים. <span className="text-secondary">לחצו על כרטיסייה כדי להתחיל</span>.
+            </p>
+            <p className="text-muted-foreground text-base leading-relaxed">
+              אפשר למלא בכל סדר שתרצו. מומלץ להשלים לפחות 3 שאלונים כדי לקבל תובנות מדויקות.
+              <br />
+              ⏱ ליד כל שאלון מופיע הזמן המשוער למילויו.
+            </p>
+          </div>
 
         {/* Progress indicator */}
         <motion.div
