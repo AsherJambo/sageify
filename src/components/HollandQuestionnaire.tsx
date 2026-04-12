@@ -2,6 +2,12 @@ import { useState, useMemo } from 'react';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
+import AnswerKeyReminder from './AnswerKeyReminder';
+
+const hollandAnswerKey = [
+  { label: 'כן', desc: 'הכישור או היכולת קיימים אצלי' },
+  { label: 'לא', desc: 'הכישור או היכולת לא קיימים אצלי' },
+];
 
 interface HollandQuestionnaireProps {
   onComplete: (answers: Record<number, boolean>) => void;
@@ -66,6 +72,8 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
             <div className="h-full bg-secondary rounded-full progress-bar-fill" style={{ width: `${progress}%` }} />
           </div>
         </div>
+
+        <AnswerKeyReminder items={hollandAnswerKey} />
 
         {/* Questions */}
         <div className="space-y-3">

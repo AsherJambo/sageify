@@ -4,6 +4,12 @@ import { considerationsDistributeIntro } from '@/data/sectionIntros';
 import SectionIntro from './SectionIntro';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
+import AnswerKeyReminder from './AnswerKeyReminder';
+
+const considerationsAnswerKey = [
+  { label: 'שלב 1', desc: 'בחרו עד 6 שיקולים שהכי חשובים לכם' },
+  { label: 'שלב 2', desc: 'חלקו 100 נקודות בין השיקולים שבחרתם לפי חשיבותם' },
+];
 
 interface ConsiderationsQuestionnaireProps {
   onComplete: (selected: string[], points: Record<string, number>) => void;
@@ -74,6 +80,7 @@ const ConsiderationsQuestionnaire = ({ onComplete, onBackToHub }: Considerations
 
         {phase === 'select' && (
           <>
+            <AnswerKeyReminder items={considerationsAnswerKey} />
             <OwlMessage message={`נבחרו ${selected.length} מתוך 6 שיקולים`} variant="encouragement" />
             <div className="space-y-2">
               {considerations.map((item, idx) => (

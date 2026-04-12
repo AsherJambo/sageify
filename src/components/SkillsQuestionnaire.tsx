@@ -2,6 +2,14 @@ import { useState } from 'react';
 import { skills, type SkillColumn } from '@/data/skillsData';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
+import AnswerKeyReminder from './AnswerKeyReminder';
+
+const skillsAnswerKey = [
+  { label: '🏆 ארגז כלים מנצח', desc: 'טוב/ה בזה + רוצה להמשיך' },
+  { label: '🔋 מיצוי', desc: 'טוב/ה בזה, אבל מיציתי' },
+  { label: '🌱 שאיפה', desc: 'לא טוב/ה עדיין, אבל רוצה ללמוד' },
+  { label: '🚫 לא רלוונטי', desc: 'לא טוב/ה ולא מעוניין/ת' },
+];
 
 interface SkillsQuestionnaireProps {
   onComplete: (assignments: Record<number, SkillColumn>) => void;
@@ -65,6 +73,8 @@ const SkillsQuestionnaire = ({ onComplete, onBackToHub }: SkillsQuestionnairePro
             <div className="h-full bg-secondary rounded-full progress-bar-fill" style={{ width: `${progress}%` }} />
           </div>
         </div>
+
+        <AnswerKeyReminder items={skillsAnswerKey} />
 
         {winnerCount >= 5 && winnerCount <= 7 && (
           <OwlMessage message="מעולה! בחרתם בין 5 ל-7 כישורים לארגז המנצח" variant="celebration" />
