@@ -100,8 +100,9 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
               ⏱ ליד כל שאלון מופיע הזמן המשוער למילויו.
             </p>
           </div>
+        </motion.div>
 
-        {/* Progress indicator */}
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
