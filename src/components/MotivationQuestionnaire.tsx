@@ -2,12 +2,21 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import QuestionnaireNav from './QuestionnaireNav';
 import OwlMessage from './OwlMessage';
+import AnswerKeyReminder from './AnswerKeyReminder';
 import {
   motivationClusters,
   intentionStatements,
   type MotivationScores,
   type IntentionAnswers,
 } from '@/data/motivationQuestions';
+
+const motivationAnswerKey = [
+  { label: '1', desc: 'כלל לא' },
+  { label: '2', desc: 'במידה מועטה' },
+  { label: '3', desc: 'במידה בינונית' },
+  { label: '4', desc: 'במידה רבה' },
+  { label: '5', desc: 'במידה רבה מאוד' },
+];
 
 interface MotivationQuestionnaireProps {
   onComplete: (motivationScores: MotivationScores, intentionAnswers: IntentionAnswers) => void;
