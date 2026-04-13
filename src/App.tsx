@@ -35,6 +35,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/app" element={<Index />} />
+              <Route path="/q/:token" element={<QuestionnaireByToken />} />
               <Route path="/partner/:partnerId/q/:token" element={<PartnerQuestionnaire />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin-panel" element={<Admin />} />
