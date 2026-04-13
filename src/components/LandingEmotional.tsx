@@ -16,12 +16,9 @@ const messages = [
 
 const LandingEmotional = () => (
   <section className="py-24 md:py-32 relative overflow-hidden">
-    {/* Subtle organic bg shape */}
-    <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-secondary/[0.03] blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-    
     <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
       <motion.p
-        className="text-sm text-accent font-bold mb-4 tracking-widest uppercase"
+        className="text-sm text-primary font-bold mb-4 tracking-widest uppercase"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
       >
         אתם לא לבד
@@ -41,15 +38,15 @@ const LandingEmotional = () => (
         הגיע הזמן למצוא את הכיוון שמתאים בדיוק לכם.
       </motion.p>
 
-      <div className="space-y-5">
+      <div className="space-y-4">
         {messages.map((msg, i) => (
           <motion.div
             key={i}
-            className="bg-card/80 backdrop-blur-sm border border-border/40 rounded-2xl px-8 py-6 text-right shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow duration-500"
+            className="bg-card border border-border rounded-2xl px-8 py-6 text-right shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow duration-500"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 3}
           >
             <p className="text-foreground text-lg leading-relaxed flex items-start gap-3">
-              <span className="text-secondary text-xl mt-0.5 shrink-0">◆</span>
+              <span className="text-primary text-xl mt-0.5 shrink-0">✦</span>
               {msg}
             </p>
           </motion.div>
@@ -58,7 +55,7 @@ const LandingEmotional = () => (
 
       <motion.a
         href="mailto:sageify.ai@gmail.com"
-        className="inline-flex items-center justify-center mt-14 px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg hover:bg-primary/90 transition-all duration-700 shadow-[var(--shadow-elevated)] hover:translate-y-[-2px]"
+        className="inline-flex items-center justify-center mt-14 px-10 py-4 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[var(--shadow-elevated)] hover:translate-y-[-2px]"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={6}
       >
         גלו את הכיוון שלכם

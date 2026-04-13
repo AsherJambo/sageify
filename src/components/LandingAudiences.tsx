@@ -28,10 +28,10 @@ const LandingAudiences = () => (
         {audiences.map((a, i) => (
           <motion.div
             key={i}
-            className="border border-border/40 bg-card/80 backdrop-blur-sm rounded-2xl p-8 text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500 hover:translate-y-[-3px]"
+            className="border border-border bg-card rounded-2xl p-8 text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500 hover:translate-y-[-3px]"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}
           >
-            <span className="inline-block px-4 py-1.5 rounded-full border border-secondary/25 text-secondary text-xs font-bold mb-6 tracking-widest uppercase">
+            <span className="inline-block px-4 py-1.5 rounded-full border border-primary/25 text-primary text-xs font-bold mb-6 tracking-widest uppercase">
               {a.badge}
             </span>
             <h3 className="text-xl font-bold mb-3 font-serif">{a.title}</h3>

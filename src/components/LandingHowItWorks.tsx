@@ -14,7 +14,7 @@ const steps = [
     icon: MessageSquare,
     step: '01',
     title: 'עונים על שאלות קצרות',
-    desc: 'שאלונים פשוטים שנבנו על בסיס פסיכולוגיה תעסוקתית — בקצב שלכם, בלי לחץ',
+    desc: 'שאלונים פשוטים שנבנו על בסיס פסיכולוגיה תעסוקתית — בקצב שלכם',
     time: '~10 דקות',
   },
   {
@@ -27,20 +27,17 @@ const steps = [
   {
     icon: Map,
     step: '03',
-    title: 'מקבלים כיוון אישי ברור',
+    title: 'מקבלים את מפת הדרכים שלכם',
     desc: 'דוח מפורט עם המלצות מעשיות, הזדמנויות רלוונטיות ומפת דרכים אישית',
     time: 'מיידי',
   },
 ];
 
 const LandingHowItWorks = () => (
-  <section className="py-24 md:py-32 bg-muted/25 relative overflow-hidden">
-    {/* Organic background shape */}
-    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-accent/[0.03] blur-3xl translate-y-1/2 -translate-x-1/4 pointer-events-none" />
-    
+  <section className="py-24 md:py-32 relative overflow-hidden">
     <div className="max-w-4xl mx-auto px-6 relative z-10">
       <motion.p
-        className="text-sm text-accent font-bold text-center mb-4 tracking-widest uppercase"
+        className="text-sm text-primary font-bold text-center mb-4 tracking-widest uppercase"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
       >
         פשוט ומהיר
@@ -49,7 +46,7 @@ const LandingHowItWorks = () => (
         className="text-3xl md:text-[2.75rem] font-bold text-center mb-5 leading-tight"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
       >
-        איך זה עובד? שלושה שלבים בלבד
+        איך זה עובד? שלושה שלבים
       </motion.h2>
       <motion.p
         className="text-muted-foreground text-center text-lg md:text-xl mb-16 max-w-xl mx-auto"
@@ -64,21 +61,20 @@ const LandingHowItWorks = () => (
           return (
             <motion.div
               key={i}
-              className="bg-card/80 backdrop-blur-sm border border-border/40 rounded-2xl p-8 text-center relative shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500 hover:translate-y-[-3px] group"
+              className="bg-card border border-border rounded-2xl p-8 text-center relative shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500 hover:translate-y-[-3px] group"
               initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 3}
             >
-              {/* Step number */}
-              <span className="absolute top-5 left-5 text-xs font-bold text-accent/60 font-display tracking-wider">
+              <span className="absolute top-5 left-5 text-xs font-bold text-primary/50 font-display tracking-wider">
                 {s.step}
               </span>
 
-              <div className="w-16 h-16 rounded-2xl bg-secondary/8 flex items-center justify-center mx-auto mb-6 group-hover:bg-secondary/12 transition-colors duration-500">
-                <Icon className="w-7 h-7 text-secondary" />
+              <div className="w-16 h-16 rounded-2xl bg-primary/8 flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/12 transition-colors duration-500">
+                <Icon className="w-7 h-7 text-primary" />
               </div>
 
               <h3 className="text-xl font-bold mb-3 font-serif">{s.title}</h3>
               <p className="text-muted-foreground text-base leading-relaxed mb-5">{s.desc}</p>
-              <span className="inline-block text-xs font-semibold text-secondary bg-secondary/8 px-4 py-1.5 rounded-full tracking-wide">
+              <span className="inline-block text-xs font-semibold text-primary bg-primary/8 px-4 py-1.5 rounded-full tracking-wide">
                 {s.time}
               </span>
             </motion.div>

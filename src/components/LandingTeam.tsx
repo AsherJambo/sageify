@@ -16,9 +16,7 @@ const team = [
 ];
 
 const LandingTeam = () => (
-  <section className="bg-muted/25 py-24 md:py-32 relative overflow-hidden">
-    <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-accent/[0.03] blur-3xl translate-y-1/2 translate-x-1/3 pointer-events-none" />
-    
+  <section className="bg-muted/20 py-24 md:py-32 relative overflow-hidden">
     <div className="max-w-4xl mx-auto px-6 relative z-10">
       <motion.h2
         className="text-3xl md:text-[2.75rem] font-bold text-center mb-16 leading-tight"
@@ -31,17 +29,17 @@ const LandingTeam = () => (
         {team.map((t, i) => (
           <motion.div
             key={i}
-            className="border border-border/40 bg-card/80 backdrop-blur-sm rounded-2xl p-8 text-center shadow-[var(--shadow-card)]"
+            className="border border-border bg-card rounded-2xl p-8 text-center shadow-[var(--shadow-card)]"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}
           >
             <img
               src={t.img}
               alt={t.name}
-              className="w-28 h-28 rounded-2xl object-cover mx-auto mb-6 border-2 border-border/40 shadow-[var(--shadow-card)] grayscale-[15%]"
+              className="w-28 h-28 rounded-2xl object-cover mx-auto mb-6 border-2 border-border shadow-[var(--shadow-card)] grayscale-[10%]"
               loading="lazy"
             />
             <h3 className="text-xl font-bold mb-1 font-serif">{t.name}</h3>
-            <p className="text-secondary text-sm font-bold mb-3 tracking-wide">{t.role}</p>
+            <p className="text-primary text-sm font-bold mb-3 tracking-wide">{t.role}</p>
             <p className="text-muted-foreground leading-relaxed text-base">{t.desc}</p>
           </motion.div>
         ))}

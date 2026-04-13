@@ -4,6 +4,7 @@ import heroPremium from '@/assets/hero-premium.jpg';
 import { Link } from 'react-router-dom';
 import { Settings } from 'lucide-react';
 
+import LandingNav from '@/components/LandingNav';
 import LandingEmotional from '@/components/LandingEmotional';
 import LandingDashboardPreview from '@/components/LandingDashboardPreview';
 import LandingPillars from '@/components/LandingPillars';
@@ -28,11 +29,13 @@ const fadeUp = {
 const Landing = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <LandingNav />
+
       {/* Hero */}
       <section className="relative w-full overflow-hidden">
         <div className="absolute inset-0">
           <img src={heroPremium} alt="" className="w-full h-full object-cover" width={1920} height={960} />
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(200_14%_18%/0.90)] via-[hsl(200_14%_18%/0.75)] to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(210_12%_16%/0.88)] via-[hsl(210_12%_16%/0.72)] to-background" />
         </div>
 
         {/* Organic wave */}
@@ -42,7 +45,7 @@ const Landing = () => {
           </svg>
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 py-32 md:py-44 text-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-36 pb-32 md:pt-48 md:pb-44 text-center">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
             <img src={sageifyLogo} alt="Sageify Logo" className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-10 drop-shadow-xl rounded-2xl" />
           </motion.div>
@@ -53,7 +56,7 @@ const Landing = () => {
           >
             הקריירה מסתיימת.
             <br />
-            <span className="text-[hsl(105_16%_70%)]">המשמעות רק מתחילה.</span>
+            <span className="text-[hsl(105_20%_72%)]">המשמעות רק מתחילה.</span>
           </motion.h1>
 
           <motion.p
@@ -73,9 +76,9 @@ const Landing = () => {
           >
             <a
               href="mailto:sageify.ai@gmail.com"
-              className="inline-flex items-center justify-center px-12 py-4.5 rounded-2xl bg-primary text-primary-foreground font-bold text-lg hover:opacity-90 transition-all duration-700 shadow-[0_8px_32px_-8px_hsl(105_16%_40%/0.4)] hover:shadow-[0_12px_40px_-8px_hsl(105_16%_40%/0.5)] hover:translate-y-[-2px]"
+              className="inline-flex items-center justify-center px-12 py-4.5 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[0_8px_24px_-6px_hsl(16_72%_50%/0.35)] hover:shadow-[0_12px_32px_-6px_hsl(16_72%_50%/0.45)] hover:translate-y-[-2px]"
             >
-              התחילו את המסע שלכם
+              בואו נתחיל את המסע ✨
             </a>
             <span className="text-white/40 text-sm tracking-wide">פרטיות מלאה</span>
           </motion.div>
@@ -84,19 +87,19 @@ const Landing = () => {
 
       {/* Sections */}
       <LandingEmotional />
-      <LandingDashboardPreview />
+      <div id="dashboard"><LandingDashboardPreview /></div>
       <LandingPillars />
-      <LandingHowItWorks />
+      <div id="how-it-works"><LandingHowItWorks /></div>
       <LandingResultPreview />
       <LandingTrust />
       <LandingAudiences />
-      <LandingPricing />
+      <div id="pricing"><LandingPricing /></div>
       <LandingTeam />
       <LandingFAQ />
       <LandingCTA />
 
       {/* Footer */}
-      <footer className="border-t border-border/40 py-12 bg-secondary/[0.02]">
+      <footer className="border-t border-border/40 py-12 bg-card/50">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <img src={sageifyLogo} alt="Sageify" className="w-8 h-8 rounded-lg" />
