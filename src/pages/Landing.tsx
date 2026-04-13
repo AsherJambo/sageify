@@ -73,7 +73,7 @@ const Landing = () => {
             initial="hidden" animate="visible" variants={fadeUp} custom={3}
           >
             <a
-              href="mailto:info@sageify.co.il"
+              href="mailto:sageify.ai@gmail.com"
               className="inline-flex items-center justify-center px-8 py-3.5 rounded-lg bg-white text-primary font-semibold text-base hover:bg-white/90 transition-all duration-500 shadow-md"
             >
               צרו קשר
@@ -184,7 +184,7 @@ const Landing = () => {
             צרו קשר לקבלת גישה למערכת – לארגונים, ליועצים ולפרטיים
           </p>
           <a
-            href="mailto:info@sageify.co.il"
+            href="mailto:sageify.ai@gmail.com"
             className="inline-flex items-center justify-center px-10 py-3.5 rounded-lg bg-white text-primary font-semibold text-base hover:bg-white/90 transition-all duration-500 shadow-md"
           >
             צרו קשר
