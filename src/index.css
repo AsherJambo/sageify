@@ -6,23 +6,23 @@
 
 @layer base {
   :root {
-    --background: 40 30% 96%;
-    --foreground: 200 28% 14%;
+    --background: 36 24% 95%;
+    --foreground: 200 14% 22%;
 
-    --card: 40 25% 99%;
-    --card-foreground: 200 28% 14%;
+    --card: 36 20% 97%;
+    --card-foreground: 200 14% 22%;
 
-    --popover: 40 25% 99%;
-    --popover-foreground: 200 28% 14%;
+    --popover: 36 20% 97%;
+    --popover-foreground: 200 14% 22%;
 
-    --primary: 200 28% 14%;
-    --primary-foreground: 40 30% 96%;
+    --primary: 105 16% 57%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 158 22% 36%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 200 14% 22%;
+    --secondary-foreground: 36 24% 95%;
 
-    --muted: 38 16% 91%;
-    --muted-foreground: 200 12% 42%;
+    --muted: 36 12% 90%;
+    --muted-foreground: 200 8% 44%;
 
     --accent: 18 48% 52%;
     --accent-foreground: 0 0% 100%;
@@ -30,31 +30,31 @@
     --destructive: 0 55% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 38 14% 86%;
-    --input: 38 14% 86%;
-    --ring: 158 22% 36%;
+    --border: 36 12% 86%;
+    --input: 36 12% 86%;
+    --ring: 105 16% 50%;
 
     --radius: 0.75rem;
 
-    --sage: 158 22% 36%;
-    --sage-light: 158 14% 94%;
-    --sand: 40 28% 88%;
-    --sand-warm: 40 22% 82%;
+    --sage: 105 16% 57%;
+    --sage-light: 105 12% 94%;
+    --sand: 36 24% 91%;
+    --sand-warm: 36 20% 85%;
     --slate-blue: 210 18% 44%;
     --slate-blue-light: 210 16% 90%;
-    --forest: 200 28% 14%;
-    --forest-light: 200 22% 22%;
+    --forest: 200 14% 22%;
+    --forest-light: 200 10% 30%;
     --gold: 36 48% 48%;
     --gold-light: 36 28% 92%;
-    --navy: 200 28% 14%;
-    --navy-light: 200 22% 22%;
+    --navy: 200 14% 22%;
+    --navy-light: 200 10% 30%;
     --terracotta: 18 48% 52%;
     --terracotta-light: 18 32% 91%;
-    --warm-bg: 40 30% 96%;
+    --warm-bg: 36 24% 95%;
 
-    --shadow-diffuse: 0 20px 60px -15px hsl(200 26% 12% / 0.07);
-    --shadow-card: 0 4px 24px -8px hsl(200 26% 12% / 0.05), 0 2px 8px -4px hsl(200 26% 12% / 0.03);
-    --shadow-elevated: 0 16px 48px -12px hsl(200 26% 12% / 0.10), 0 4px 16px -4px hsl(200 26% 12% / 0.04);
+    --shadow-diffuse: 0 20px 60px -15px hsl(200 14% 18% / 0.06);
+    --shadow-card: 0 4px 24px -8px hsl(200 14% 18% / 0.05), 0 2px 8px -4px hsl(200 14% 18% / 0.03);
+    --shadow-elevated: 0 16px 48px -12px hsl(200 14% 18% / 0.09), 0 4px 16px -4px hsl(200 14% 18% / 0.04);
   }
 
   .dark {

@@ -5,10 +5,13 @@ import { Link } from 'react-router-dom';
 import { Settings } from 'lucide-react';
 
 import LandingEmotional from '@/components/LandingEmotional';
+import LandingDashboardPreview from '@/components/LandingDashboardPreview';
+import LandingPillars from '@/components/LandingPillars';
 import LandingHowItWorks from '@/components/LandingHowItWorks';
 import LandingResultPreview from '@/components/LandingResultPreview';
 import LandingTrust from '@/components/LandingTrust';
 import LandingAudiences from '@/components/LandingAudiences';
+import LandingPricing from '@/components/LandingPricing';
 import LandingTeam from '@/components/LandingTeam';
 import LandingFAQ from '@/components/LandingFAQ';
 import LandingCTA from '@/components/LandingCTA';
@@ -29,10 +32,10 @@ const Landing = () => {
       <section className="relative w-full overflow-hidden">
         <div className="absolute inset-0">
           <img src={heroPremium} alt="" className="w-full h-full object-cover" width={1920} height={960} />
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(200_28%_14%/0.88)] via-[hsl(200_28%_14%/0.72)] to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(200_14%_18%/0.90)] via-[hsl(200_14%_18%/0.75)] to-background" />
         </div>
 
-        {/* Organic decorative shape */}
+        {/* Organic wave */}
         <div className="absolute bottom-0 left-0 right-0 h-24 md:h-32">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" className="w-full h-full">
             <path d="M0,40 C360,100 720,0 1080,60 C1260,90 1380,50 1440,40 L1440,120 L0,120 Z" fill="hsl(var(--background))" />
@@ -48,18 +51,20 @@ const Landing = () => {
             className="text-4xl md:text-[3.75rem] font-bold text-white mb-7 leading-[1.12] tracking-tight"
             initial="hidden" animate="visible" variants={fadeUp} custom={1}
           >
-            יודעים שיש עוד פרק —
+            הקריירה מסתיימת.
             <br />
-            אבל לא בטוחים לאן?
+            <span className="text-[hsl(105_16%_70%)]">המשמעות רק מתחילה.</span>
           </motion.h1>
 
           <motion.p
             className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
             initial="hidden" animate="visible" variants={fadeUp} custom={2}
           >
-            תהליך אבחון אישי, מבוסס פסיכולוגיה תעסוקתית,
+            Sageify משלב פסיכולוגיה תעסוקתית ובינה מלאכותית
             <br className="hidden md:block" />
-            שהופך את הניסיון שלכם לכיוון ברור ומעשי
+            כדי להפוך את חוסר הוודאות של הפרישה למסע מובנה
+            <br className="hidden md:block" />
+            לעבר הזהות הבאה שלכם
           </motion.p>
 
           <motion.div
@@ -68,9 +73,9 @@ const Landing = () => {
           >
             <a
               href="mailto:sageify.ai@gmail.com"
-              className="inline-flex items-center justify-center px-12 py-4.5 rounded-2xl bg-white text-primary font-bold text-lg hover:bg-white/95 transition-all duration-700 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.25)] hover:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.3)] hover:translate-y-[-2px]"
+              className="inline-flex items-center justify-center px-12 py-4.5 rounded-2xl bg-primary text-primary-foreground font-bold text-lg hover:opacity-90 transition-all duration-700 shadow-[0_8px_32px_-8px_hsl(105_16%_40%/0.4)] hover:shadow-[0_12px_40px_-8px_hsl(105_16%_40%/0.5)] hover:translate-y-[-2px]"
             >
-              התחילו את התהליך האישי
+              התחילו את המסע שלכם
             </a>
             <span className="text-white/40 text-sm tracking-wide">פרטיות מלאה</span>
           </motion.div>
@@ -79,16 +84,19 @@ const Landing = () => {
 
       {/* Sections */}
       <LandingEmotional />
+      <LandingDashboardPreview />
+      <LandingPillars />
       <LandingHowItWorks />
       <LandingResultPreview />
       <LandingTrust />
       <LandingAudiences />
+      <LandingPricing />
       <LandingTeam />
       <LandingFAQ />
       <LandingCTA />
 
       {/* Footer */}
-      <footer className="border-t border-border/40 py-12 bg-primary/[0.02]">
+      <footer className="border-t border-border/40 py-12 bg-secondary/[0.02]">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <img src={sageifyLogo} alt="Sageify" className="w-8 h-8 rounded-lg" />
