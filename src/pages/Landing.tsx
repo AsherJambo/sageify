@@ -8,7 +8,7 @@ import LandingChallenge from '@/components/LandingChallenge';
 import LandingUniqueness from '@/components/LandingUniqueness';
 import LandingAudiences from '@/components/LandingAudiences';
 import LandingTeam from '@/components/LandingTeam';
-import LandingTestimonials from '@/components/LandingTestimonials';
+
 import LandingFAQ from '@/components/LandingFAQ';
 
 const fadeUp = {
