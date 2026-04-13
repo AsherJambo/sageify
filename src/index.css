@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Heebo:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,84 +6,86 @@
 
 @layer base {
   :root {
-    --background: 40 25% 96%;
-    --foreground: 160 30% 10%;
+    --background: 42 33% 95%;
+    --foreground: 192 32% 16%;
 
-    --card: 40 20% 99%;
-    --card-foreground: 160 30% 10%;
+    --card: 42 30% 98%;
+    --card-foreground: 192 32% 16%;
 
-    --popover: 40 20% 99%;
-    --popover-foreground: 160 30% 10%;
+    --popover: 42 30% 98%;
+    --popover-foreground: 192 32% 16%;
 
-    --primary: 160 35% 18%;
-    --primary-foreground: 40 25% 97%;
+    --primary: 192 32% 16%;
+    --primary-foreground: 42 33% 95%;
 
-    --secondary: 160 28% 32%;
+    --secondary: 155 18% 38%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 40 15% 92%;
-    --muted-foreground: 160 12% 38%;
+    --muted: 42 18% 90%;
+    --muted-foreground: 192 15% 40%;
 
-    --accent: 210 30% 42%;
+    --accent: 16 45% 55%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 48%;
+    --destructive: 0 55% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 12% 85%;
-    --input: 40 12% 85%;
-    --ring: 160 28% 32%;
+    --border: 42 15% 85%;
+    --input: 42 15% 85%;
+    --ring: 155 18% 38%;
 
-    --radius: 1.5rem;
+    --radius: 0.5rem;
 
-    --sage: 160 28% 32%;
-    --sage-light: 160 18% 94%;
-    --sand: 36 30% 88%;
-    --sand-warm: 36 25% 82%;
-    --slate-blue: 210 30% 42%;
-    --slate-blue-light: 210 25% 88%;
-    --forest: 160 35% 18%;
-    --forest-light: 160 25% 26%;
-    --gold: 40 45% 50%;
-    --gold-light: 40 35% 93%;
-    --navy: 160 35% 18%;
-    --navy-light: 160 25% 26%;
-    --warm-bg: 40 25% 96%;
+    --sage: 155 18% 38%;
+    --sage-light: 155 14% 93%;
+    --sand: 42 30% 88%;
+    --sand-warm: 42 25% 82%;
+    --slate-blue: 210 20% 42%;
+    --slate-blue-light: 210 18% 88%;
+    --forest: 192 32% 16%;
+    --forest-light: 192 25% 24%;
+    --gold: 38 45% 50%;
+    --gold-light: 38 30% 92%;
+    --navy: 192 32% 16%;
+    --navy-light: 192 25% 24%;
+    --terracotta: 16 45% 55%;
+    --terracotta-light: 16 35% 90%;
+    --warm-bg: 42 33% 95%;
 
-    --shadow-diffuse: 0 20px 60px -15px hsl(160 30% 12% / 0.07);
-    --shadow-card: 0 8px 40px -12px hsl(160 30% 12% / 0.05), 0 4px 16px -8px hsl(160 30% 12% / 0.03);
-    --shadow-elevated: 0 24px 80px -20px hsl(160 30% 12% / 0.09), 0 8px 24px -8px hsl(160 30% 12% / 0.04);
+    --shadow-diffuse: 0 20px 60px -15px hsl(192 30% 12% / 0.06);
+    --shadow-card: 0 4px 24px -8px hsl(192 30% 12% / 0.04), 0 2px 8px -4px hsl(192 30% 12% / 0.02);
+    --shadow-elevated: 0 16px 48px -12px hsl(192 30% 12% / 0.08), 0 4px 16px -4px hsl(192 30% 12% / 0.03);
 
-    --sidebar-background: 160 35% 18%;
-    --sidebar-foreground: 40 25% 96%;
-    --sidebar-primary: 160 28% 32%;
+    --sidebar-background: 192 32% 16%;
+    --sidebar-foreground: 42 33% 95%;
+    --sidebar-primary: 155 18% 38%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 160 30% 22%;
-    --sidebar-accent-foreground: 40 25% 96%;
-    --sidebar-border: 160 30% 22%;
-    --sidebar-ring: 160 28% 32%;
+    --sidebar-accent: 192 28% 22%;
+    --sidebar-accent-foreground: 42 33% 95%;
+    --sidebar-border: 192 28% 22%;
+    --sidebar-ring: 155 18% 38%;
   }
 
   .dark {
-    --background: 160 30% 6%;
-    --foreground: 40 20% 93%;
-    --card: 160 28% 10%;
-    --card-foreground: 40 20% 93%;
-    --popover: 160 28% 10%;
-    --popover-foreground: 40 20% 93%;
-    --primary: 160 25% 50%;
-    --primary-foreground: 160 30% 6%;
-    --secondary: 160 22% 30%;
+    --background: 192 30% 6%;
+    --foreground: 42 20% 93%;
+    --card: 192 28% 10%;
+    --card-foreground: 42 20% 93%;
+    --popover: 192 28% 10%;
+    --popover-foreground: 42 20% 93%;
+    --primary: 155 22% 50%;
+    --primary-foreground: 192 30% 6%;
+    --secondary: 155 18% 30%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 160 20% 15%;
-    --muted-foreground: 40 12% 50%;
-    --accent: 210 28% 40%;
+    --muted: 192 20% 15%;
+    --muted-foreground: 42 12% 50%;
+    --accent: 16 40% 45%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 62% 30%;
+    --destructive: 0 55% 30%;
     --destructive-foreground: 0 0% 100%;
-    --border: 160 20% 16%;
-    --input: 160 20% 16%;
-    --ring: 160 22% 38%;
+    --border: 192 20% 16%;
+    --input: 192 20% 16%;
+    --ring: 155 18% 38%;
   }
 }
 
@@ -93,7 +95,7 @@
   }
 
   html {
-    font-family: 'Heebo', sans-serif;
+    font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-optical-sizing: auto;
@@ -102,8 +104,8 @@
   body {
     @apply bg-background text-foreground;
     direction: rtl;
-    font-size: 19px;
-    line-height: 1.85;
+    font-size: 17px;
+    line-height: 1.75;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -121,21 +123,22 @@
     }
   }
 
-  /* Fixed grain overlay — static canvas that never moves */
+  /* Subtle paper texture overlay */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     z-index: 9999;
     pointer-events: none;
-    opacity: 0.022;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     background-size: 256px 256px;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
+    font-weight: 700;
   }
 }
 
