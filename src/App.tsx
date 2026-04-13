@@ -33,8 +33,8 @@ const App = () => {
         <HashRouter>
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center">טוען...</div>}>
             <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/q/:token" element={<QuestionnaireByToken />} />
+              <Route path="/" element={<Landing />} />
+              <Route path="/app" element={<Index />} />
               <Route path="/partner/:partnerId/q/:token" element={<PartnerQuestionnaire />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin-panel" element={<Admin />} />
