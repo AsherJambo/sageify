@@ -235,6 +235,9 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* FAQ */}
+      <LandingFAQ />
+
       {/* CTA */}
       <section className="max-w-3xl mx-auto px-6 py-16 md:py-24 text-center">
         <motion.div
