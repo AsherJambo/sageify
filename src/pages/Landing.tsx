@@ -166,8 +166,6 @@ const Landing = () => {
       {/* Audiences */}
       <LandingAudiences />
 
-      {/* Testimonials */}
-      <LandingTestimonials />
 
       {/* Team */}
       <LandingTeam />
