@@ -4,8 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import Index from "./pages/Index";
+import Landing from "./pages/Landing";
 import NotFound from "./pages/NotFound";
+
+const Index = lazy(() => import("./pages/Index"));
 
 const QuestionnaireByToken = lazy(() => import("./pages/QuestionnaireByToken"));
 const Admin = lazy(() => import("./pages/Admin"));
