@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import sageifyLogo from '@/assets/owl-logo.png';
 import heroBanner from '@/assets/hero-banner.png';
 import { Link } from 'react-router-dom';
+import { Settings } from 'lucide-react';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
