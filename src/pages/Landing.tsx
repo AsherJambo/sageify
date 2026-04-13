@@ -3,6 +3,7 @@ import sageifyLogo from '@/assets/owl-logo.png';
 import heroBanner from '@/assets/hero-banner.png';
 import { Link } from 'react-router-dom';
 import { Settings } from 'lucide-react';
+import LandingFAQ from '@/components/LandingFAQ';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -10,6 +11,15 @@ const fadeUp = {
     opacity: 1,
     y: 0,
     transition: { delay: i * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+  }),
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: (i: number) => ({
+    opacity: 1,
+    scale: 1,
+    transition: { delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
@@ -128,10 +138,17 @@ const Landing = () => {
           {pillars.map((p, i) => (
             <motion.div
               key={i}
-              className="rounded-3xl border border-border/60 bg-card p-8 text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow duration-500"
+              className="rounded-3xl border border-border/60 bg-card p-8 text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500"
               initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 2}
+              whileHover={{ y: -6, transition: { duration: 0.3 } }}
             >
-              <span className="text-4xl block mb-4 text-primary">{p.icon}</span>
+              <motion.span
+                className="text-4xl block mb-4 text-primary"
+                whileHover={{ scale: 1.2, rotate: 10 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                {p.icon}
+              </motion.span>
               <h3 className="text-xl font-bold mb-3">{p.title}</h3>
               <p className="text-muted-foreground leading-relaxed">{p.desc}</p>
             </motion.div>
@@ -153,8 +170,9 @@ const Landing = () => {
             {features.map((f, i) => (
               <motion.div
                 key={i}
-                className="rounded-3xl border border-border/60 bg-card p-6 shadow-[var(--shadow-card)]"
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i * 0.5}
+                className="rounded-3xl border border-border/60 bg-card p-6 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-400"
+                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn} custom={i}
+                whileHover={{ y: -4, transition: { duration: 0.25 } }}
               >
                 <span className="text-3xl block mb-3">{f.icon}</span>
                 <h3 className="text-lg font-bold mb-2">{f.title}</h3>
@@ -216,6 +234,9 @@ const Landing = () => {
           </div>
         </div>
       </section>
+
+      {/* FAQ */}
+      <LandingFAQ />
 
       {/* CTA */}
       <section className="max-w-3xl mx-auto px-6 py-16 md:py-24 text-center">
