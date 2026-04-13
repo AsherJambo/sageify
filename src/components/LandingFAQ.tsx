@@ -15,7 +15,7 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
   const [open, setOpen] = useState(false);
   return (
     <motion.div
-      className="border-b border-border/30 last:border-b-0"
+      className="border-b border-border last:border-b-0"
       initial="hidden" whileInView="visible" viewport={{ once: true }}
       variants={{
         hidden: { opacity: 0, y: 16 },
@@ -24,7 +24,7 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
     >
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between gap-4 py-6 md:py-7 text-right hover:text-secondary transition-colors duration-500"
+        className="w-full flex items-center justify-between gap-4 py-6 md:py-7 text-right hover:text-primary transition-colors duration-500"
       >
         <span className="text-base md:text-lg font-semibold leading-relaxed">{q}</span>
         <motion.span
@@ -75,7 +75,7 @@ const LandingFAQ = () => (
       כל מה שצריך לדעת לפני שמתחילים
     </motion.p>
 
-    <div className="border border-border/40 rounded-2xl bg-card/80 backdrop-blur-sm px-7 md:px-9 shadow-[var(--shadow-card)]">
+    <div className="border border-border rounded-2xl bg-card px-7 md:px-9 shadow-[var(--shadow-card)]">
       {faqs.map((faq, i) => (
         <FAQItem key={i} q={faq.q} a={faq.a} index={i} />
       ))}

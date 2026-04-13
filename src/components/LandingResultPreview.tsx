@@ -18,12 +18,9 @@ const sampleResults = [
 
 const LandingResultPreview = () => (
   <section className="py-24 md:py-32 relative overflow-hidden">
-    {/* Organic shape */}
-    <div className="absolute top-1/2 left-0 w-[600px] h-[600px] rounded-full bg-gold/[0.04] blur-3xl -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
-
     <div className="max-w-4xl mx-auto px-6 relative z-10">
       <motion.p
-        className="text-sm text-accent font-bold text-center mb-4 tracking-widest uppercase"
+        className="text-sm text-primary font-bold text-center mb-4 tracking-widest uppercase"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
       >
         דוגמה לתוצאה
@@ -41,20 +38,17 @@ const LandingResultPreview = () => (
         דוח אישי ומפורט שמתרגם את הניסיון שלכם לכיוון ברור ומעשי
       </motion.p>
 
-      {/* Sample result card */}
       <motion.div
-        className="bg-card/90 backdrop-blur-sm border border-border/40 rounded-3xl overflow-hidden shadow-[var(--shadow-elevated)]"
+        className="bg-card border border-border rounded-3xl overflow-hidden shadow-[var(--shadow-elevated)]"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
       >
-        {/* Header */}
-        <div className="bg-primary/[0.04] border-b border-border/40 px-8 py-5">
+        <div className="bg-muted/30 border-b border-border px-8 py-5">
           <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-secondary" />
-            <p className="font-display font-bold text-base tracking-wide">הדוח האישי שלך — דוגמה</p>
+            <div className="w-3 h-3 rounded-full bg-primary" />
+            <p className="font-display font-bold text-base tracking-wide">מפת הדרכים האישית שלך — דוגמה</p>
           </div>
         </div>
 
-        {/* Results */}
         <div className="p-8 md:p-10 space-y-7">
           {sampleResults.map((r, i) => {
             const Icon = r.icon;
@@ -64,11 +58,11 @@ const LandingResultPreview = () => (
                 className="flex items-start gap-5"
                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 4}
               >
-                <div className="w-12 h-12 rounded-2xl bg-secondary/8 flex items-center justify-center shrink-0 mt-0.5">
-                  <Icon className="w-5.5 h-5.5 text-secondary" />
+                <div className="w-12 h-12 rounded-2xl bg-primary/8 flex items-center justify-center shrink-0 mt-0.5">
+                  <Icon className="w-5.5 h-5.5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-accent mb-1.5 tracking-wide uppercase">{r.label}</p>
+                  <p className="text-xs font-bold text-primary mb-1.5 tracking-wide uppercase">{r.label}</p>
                   <p className="text-foreground text-lg leading-relaxed">{r.value}</p>
                 </div>
               </motion.div>
@@ -76,8 +70,7 @@ const LandingResultPreview = () => (
           })}
         </div>
 
-        {/* Footer */}
-        <div className="border-t border-border/40 px-8 py-4 bg-muted/15">
+        <div className="border-t border-border px-8 py-4 bg-muted/15">
           <p className="text-xs text-muted-foreground text-center">
             * זו דוגמה בלבד — הדוח שלכם יהיה מותאם אישית לחלוטין
           </p>
@@ -90,7 +83,7 @@ const LandingResultPreview = () => (
       >
         <a
           href="mailto:sageify.ai@gmail.com"
-          className="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg hover:bg-primary/90 transition-all duration-700 shadow-[var(--shadow-elevated)] hover:translate-y-[-2px]"
+          className="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[var(--shadow-elevated)] hover:translate-y-[-2px]"
         >
           רוצים לקבל את הדוח שלכם? צרו קשר
         </a>

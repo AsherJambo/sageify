@@ -17,12 +17,10 @@ const trustPoints = [
 ];
 
 const LandingTrust = () => (
-  <section className="py-24 md:py-32 bg-muted/25 relative overflow-hidden">
-    <div className="absolute top-0 left-1/2 w-[500px] h-[500px] rounded-full bg-secondary/[0.03] blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-    
+  <section className="py-24 md:py-32 bg-muted/20 relative overflow-hidden">
     <div className="max-w-4xl mx-auto px-6 relative z-10">
       <motion.p
-        className="text-sm text-accent font-bold text-center mb-4 tracking-widest uppercase"
+        className="text-sm text-primary font-bold text-center mb-4 tracking-widest uppercase"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
       >
         למה לסמוך עלינו
@@ -34,17 +32,17 @@ const LandingTrust = () => (
         מערכת שנבנתה בשבילכם
       </motion.h2>
 
-      <div className="grid sm:grid-cols-2 gap-6">
+      <div className="grid sm:grid-cols-2 gap-5">
         {trustPoints.map((t, i) => {
           const Icon = t.icon;
           return (
             <motion.div
               key={i}
-              className="bg-card/80 backdrop-blur-sm border border-border/40 rounded-2xl p-8 flex items-start gap-5 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500 hover:translate-y-[-2px]"
+              className="bg-card border border-border rounded-2xl p-8 flex items-start gap-5 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500 hover:translate-y-[-2px]"
               initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 2}
             >
-              <div className="w-12 h-12 rounded-2xl bg-secondary/8 flex items-center justify-center shrink-0">
-                <Icon className="w-5.5 h-5.5 text-secondary" />
+              <div className="w-12 h-12 rounded-2xl bg-primary/8 flex items-center justify-center shrink-0">
+                <Icon className="w-5.5 h-5.5 text-primary" />
               </div>
               <div>
                 <h3 className="font-bold text-lg mb-2 font-serif">{t.title}</h3>

@@ -11,8 +11,8 @@ const fadeUp = {
 const DonutChart = () => {
   const segments = [
     { label: 'התנדבות', pct: 40, color: 'hsl(105 16% 57%)' },
-    { label: 'פרילנס', pct: 35, color: 'hsl(200 14% 22%)' },
-    { label: 'עבודה', pct: 25, color: 'hsl(18 48% 52%)' },
+    { label: 'פרילנס', pct: 35, color: 'hsl(210 12% 24%)' },
+    { label: 'עבודה', pct: 25, color: 'hsl(16 72% 62%)' },
   ];
 
   const total = segments.reduce((s, seg) => s + seg.pct, 0);
@@ -56,12 +56,6 @@ const DonutChart = () => {
 
 const LandingDashboardPreview = () => (
   <section className="relative py-24 md:py-36 overflow-hidden">
-    <div className="absolute top-0 left-0 right-0 h-20">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" className="w-full h-full">
-        <path d="M0,0 L1440,0 L1440,50 C1200,80 720,20 0,60 Z" fill="hsl(var(--background))" />
-      </svg>
-    </div>
-
     <div className="max-w-5xl mx-auto px-6">
       <motion.p className="text-sm font-semibold text-primary tracking-widest uppercase text-center mb-4"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
@@ -69,20 +63,20 @@ const LandingDashboardPreview = () => (
       </motion.p>
       <motion.h2 className="text-3xl md:text-[2.75rem] font-bold text-center mb-5 leading-tight"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}>
-        לוח הבקרה האישי שלכם
+        מפת הדרכים האישית שלכם
       </motion.h2>
       <motion.p className="text-muted-foreground text-center text-lg mb-16 max-w-lg mx-auto"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}>
         כל התובנות, ההתקדמות וההמלצות — במקום אחד
       </motion.p>
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-6">
         {/* Roadmap Progress */}
         <motion.div
-          className="rounded-2xl border border-border/40 bg-card/90 backdrop-blur-sm p-8 shadow-[var(--shadow-card)]"
+          className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]"
           initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
         >
-          <h3 className="text-lg font-bold mb-6 font-display">מפת הדרכים האישית</h3>
+          <h3 className="text-lg font-bold mb-6 font-display">התקדמות במסע</h3>
           <div className="space-y-5">
             {[
               { label: 'שלב 1 — חקירה', pct: 100 },
@@ -97,7 +91,7 @@ const LandingDashboardPreview = () => (
                 <div className="h-3 rounded-full bg-muted overflow-hidden">
                   <motion.div
                     className="h-full rounded-full"
-                    style={{ backgroundColor: step.pct === 100 ? 'hsl(var(--sage))' : 'hsl(var(--primary))' }}
+                    style={{ backgroundColor: step.pct === 100 ? 'hsl(var(--primary))' : 'hsl(var(--accent))' }}
                     initial={{ width: 0 }}
                     whileInView={{ width: `${step.pct}%` }}
                     viewport={{ once: true }}
@@ -115,7 +109,7 @@ const LandingDashboardPreview = () => (
 
         {/* Activity Distribution */}
         <motion.div
-          className="rounded-2xl border border-border/40 bg-card/90 backdrop-blur-sm p-8 shadow-[var(--shadow-card)]"
+          className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]"
           initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={4}
         >
           <h3 className="text-lg font-bold mb-6 font-display">התפלגות פעילויות מומלצות</h3>

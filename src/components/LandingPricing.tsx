@@ -59,19 +59,19 @@ const LandingPricing = () => (
         תשלום חד-פעמי. בלי מנויים. בלי הפתעות.
       </motion.p>
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-6">
         {plans.map((plan, i) => (
           <motion.div
             key={i}
-            className={`relative rounded-2xl border p-8 md:p-10 shadow-[var(--shadow-card)] transition-all duration-700 ${
+            className={`relative rounded-2xl border p-8 md:p-10 shadow-[var(--shadow-card)] transition-all duration-500 ${
               plan.highlighted
-                ? 'border-primary/40 bg-card shadow-[var(--shadow-elevated)]'
-                : 'border-border/40 bg-card/90 backdrop-blur-sm'
+                ? 'border-accent/40 bg-card shadow-[var(--shadow-elevated)] ring-1 ring-accent/10'
+                : 'border-border bg-card'
             }`}
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 3}
           >
             {plan.highlighted && (
-              <div className="absolute -top-3.5 right-8 px-4 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center gap-1.5">
+              <div className="absolute -top-3.5 right-8 px-4 py-1 rounded-full bg-accent text-accent-foreground text-xs font-bold flex items-center gap-1.5">
                 <Sparkles size={12} />
                 מומלץ
               </div>
@@ -102,11 +102,11 @@ const LandingPricing = () => (
               href="mailto:sageify.ai@gmail.com"
               className={`block text-center w-full py-4 rounded-xl font-bold text-base transition-all duration-500 ${
                 plan.highlighted
-                  ? 'bg-primary text-primary-foreground hover:opacity-90'
+                  ? 'bg-accent text-accent-foreground hover:opacity-90 shadow-sm'
                   : 'bg-muted text-foreground hover:bg-muted-foreground/10'
               }`}
             >
-              התחילו עכשיו
+              בואו נתחיל
             </a>
           </motion.div>
         ))}
