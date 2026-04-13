@@ -3,11 +3,11 @@ import yairImg from '@/assets/team-yair.jpg';
 import asherImg from '@/assets/team-asher.jpg';
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { delay: i * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
@@ -28,39 +28,42 @@ const team = [
 
 const LandingTeam = () => {
   return (
-    <section className="max-w-4xl mx-auto px-6 py-16 md:py-24">
-      <motion.h2
-        className="text-3xl md:text-4xl font-bold text-center mb-12"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeUp}
-        custom={0}
-      >
-        הצוות
-      </motion.h2>
+    <section className="bg-primary/[0.03] py-20 md:py-28">
+      <div className="max-w-4xl mx-auto px-6">
+        <motion.h2
+          className="text-3xl md:text-4xl font-bold text-center mb-14"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          custom={0}
+        >
+          הצוות
+        </motion.h2>
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-        {team.map((t, i) => (
-          <motion.div
-            key={i}
-            className="rounded-3xl border border-border/60 bg-card p-8 text-center shadow-[var(--shadow-card)]"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={i + 1}
-          >
-            <img
-              src={t.img}
-              alt={t.name}
-              className="w-28 h-28 rounded-full object-cover mx-auto mb-5 border-4 border-primary/20 shadow-md"
-            />
-            <h3 className="text-xl font-bold mb-1">{t.name}</h3>
-            <p className="text-primary text-sm font-semibold mb-3">{t.role}</p>
-            <p className="text-muted-foreground leading-relaxed">{t.desc}</p>
-          </motion.div>
-        ))}
+        <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+          {team.map((t, i) => (
+            <motion.div
+              key={i}
+              className="border border-border/50 bg-card rounded-lg p-8 text-center shadow-[var(--shadow-card)]"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={i + 1}
+            >
+              <img
+                src={t.img}
+                alt={t.name}
+                className="w-24 h-24 rounded-full object-cover mx-auto mb-5 border-2 border-border/60 shadow-sm grayscale-[20%]"
+                loading="lazy"
+              />
+              <h3 className="text-xl font-bold mb-1 font-serif">{t.name}</h3>
+              <p className="text-accent text-xs font-semibold mb-3 tracking-wide">{t.role}</p>
+              <p className="text-muted-foreground leading-relaxed text-[15px]">{t.desc}</p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );

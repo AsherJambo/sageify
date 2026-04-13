@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        heebo: ['Heebo', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
         serif: ['Playfair Display', 'serif'],
         display: ['Playfair Display', 'serif'],
       },
@@ -79,6 +79,10 @@ export default {
         navy: {
           DEFAULT: "hsl(var(--navy))",
           light: "hsl(var(--navy-light))",
+        },
+        terracotta: {
+          DEFAULT: "hsl(var(--terracotta))",
+          light: "hsl(var(--terracotta-light))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

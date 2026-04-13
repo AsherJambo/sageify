@@ -34,30 +34,30 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
 
   return (
     <motion.div
-      className="rounded-2xl border border-border/60 bg-card overflow-hidden"
+      className="border-b border-border/40 last:border-b-0"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
       variants={{
-        hidden: { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 16 },
         visible: {
           opacity: 1,
           y: 0,
-          transition: { delay: index * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+          transition: { delay: index * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] },
         },
       }}
     >
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between gap-4 p-5 md:p-6 text-right hover:bg-muted/30 transition-colors"
+        className="w-full flex items-center justify-between gap-4 py-5 md:py-6 text-right hover:text-accent transition-colors duration-400"
       >
-        <span className="text-base md:text-lg font-semibold leading-relaxed">{q}</span>
+        <span className="text-base md:text-[17px] font-medium leading-relaxed">{q}</span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.3 }}
           className="shrink-0 text-muted-foreground"
         >
-          <ChevronDown size={22} />
+          <ChevronDown size={18} />
         </motion.span>
       </button>
       <AnimatePresence>
@@ -69,7 +69,7 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <p className="px-5 md:px-6 pb-5 md:pb-6 text-muted-foreground text-base leading-relaxed">
+            <p className="pb-6 text-muted-foreground text-[15px] leading-relaxed pr-0 md:pr-8">
               {a}
             </p>
           </motion.div>
@@ -81,10 +81,10 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
 
 const LandingFAQ = () => {
   return (
-    <section className="max-w-3xl mx-auto px-6 py-16 md:py-24">
+    <section className="max-w-2xl mx-auto px-6 py-20 md:py-28">
       <motion.h2
         className="text-3xl md:text-4xl font-bold text-center mb-4"
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -92,16 +92,16 @@ const LandingFAQ = () => {
         שאלות נפוצות
       </motion.h2>
       <motion.p
-        className="text-muted-foreground text-center text-lg mb-10 max-w-xl mx-auto"
-        initial={{ opacity: 0, y: 20 }}
+        className="text-muted-foreground text-center text-base mb-12 max-w-md mx-auto"
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ delay: 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       >
         כל מה שצריך לדעת לפני שמתחילים
       </motion.p>
 
-      <div className="flex flex-col gap-3">
+      <div className="border border-border/50 rounded-lg bg-card px-6 md:px-8">
         {faqs.map((faq, i) => (
           <FAQItem key={i} q={faq.q} a={faq.a} index={i} />
         ))}
