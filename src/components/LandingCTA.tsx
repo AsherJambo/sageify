@@ -18,7 +18,7 @@ const LandingCTA = () => (
         הפרק הבא שלכם מתחיל כאן
       </h2>
       <p className="text-primary-foreground/75 text-lg mb-4 max-w-md mx-auto leading-relaxed">
-        תהליך קצר ואישי שייתן לכם בהירות וכיוון — בלי התחייבות
+        תהליך אישי שייתן לכם בהירות וכיוון
       </p>
       <p className="text-primary-foreground/55 text-sm mb-8 max-w-sm mx-auto">
         צרו קשר ונשלח לכם קישור אישי להתחלת התהליך
