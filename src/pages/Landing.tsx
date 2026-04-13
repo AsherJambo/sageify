@@ -63,11 +63,13 @@ const Landing = () => {
             className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
             initial="hidden" animate="visible" variants={fadeUp} custom={2}
           >
-            Sageify משלב תפיסות וכלים של פסיכולוגיה תעסוקתית,
+            Sageify משלב פסיכולוגיה תעסוקתית, תפיסות "שלב הגשר בחיים"
             <br className="hidden md:block" />
-            תפיסות "שלב הגשר בחיים" במעבר לשלב הפרישה,
+            במעבר לשלב הפרישה ובינה מלאכותית
             <br className="hidden md:block" />
-            ובינה מלאכותית
+            כדי להפוך את חוסר הוודאות של הפרישה למסע מובנה
+            <br className="hidden md:block" />
+            לעבר הזהות הבאה שלכם
           </motion.p>
 
           <motion.div
