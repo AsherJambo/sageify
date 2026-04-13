@@ -1,12 +1,12 @@
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { delay: i * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
@@ -72,17 +72,14 @@ const stats = [
 
 const challenges = [
   {
-    icon: '😰',
     title: 'משבר זהות',
     desc: '40% מהפורשים חווים ירידה במצב הנפשי ואובדן סטטוס',
   },
   {
-    icon: '📉',
     title: 'כשל אבחוני',
     desc: 'כלי המדידה הקיימים עוצבו לבני 20, לא לבעלי ניסיון חיים',
   },
   {
-    icon: '🧭',
     title: 'היעדר מצפן',
     desc: 'בדידות וירידה קוגניטיבית מואצת בשל היעדר ייעוד חדש',
   },
@@ -90,34 +87,35 @@ const challenges = [
 
 const LandingChallenge = () => {
   return (
-    <section id="challenge" className="max-w-5xl mx-auto px-6 py-16 md:py-24">
+    <section id="challenge" className="max-w-5xl mx-auto px-6 py-20 md:py-28">
       <motion.div
-        className="text-center mb-12"
+        className="text-center mb-14"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
         variants={fadeUp}
         custom={0}
       >
-        <span className="inline-block px-4 py-1.5 rounded-full bg-destructive/10 text-destructive text-sm font-semibold mb-4">
-          האתגר
-        </span>
+        <p className="text-sm text-accent font-semibold mb-3 tracking-wide">האתגר</p>
         <h2 className="text-3xl md:text-4xl font-bold mb-3">ואקום המשמעות</h2>
+        <p className="text-muted-foreground text-base max-w-lg mx-auto">
+          פרדוקס האריכות: 20-30 שנות חיוניות אל מול תהום של חוסר מעש
+        </p>
       </motion.div>
 
-      {/* Stats Callouts */}
-      <div className="grid md:grid-cols-3 gap-6 mb-14">
+      {/* Stats */}
+      <div className="grid md:grid-cols-3 gap-6 mb-16">
         {stats.map((s, i) => (
           <motion.div
             key={i}
-            className="rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 p-8 text-center"
+            className="border border-border/50 rounded-lg p-8 text-center bg-card"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
             custom={i + 1}
           >
-            <div className="text-5xl md:text-6xl font-black text-primary mb-2 tabular-nums">
+            <div className="text-5xl md:text-6xl font-black text-primary mb-3 tabular-nums font-serif">
               {s.staticDisplay !== undefined ? (
                 s.staticDisplay
               ) : (
@@ -127,28 +125,28 @@ const LandingChallenge = () => {
                 </>
               )}
             </div>
-            <p className="text-lg font-bold mb-1">{s.label}</p>
-            <p className="text-sm text-muted-foreground mb-2">{s.sub}</p>
-            <p className="text-[11px] text-muted-foreground/60 italic">📎 {s.source}</p>
+            <p className="font-semibold text-sm mb-1">{s.label}</p>
+            <p className="text-xs text-muted-foreground mb-3">{s.sub}</p>
+            <p className="text-[10px] text-muted-foreground/50 italic">{s.source}</p>
           </motion.div>
         ))}
       </div>
 
-      {/* Challenge Cards */}
-      <div className="grid md:grid-cols-3 gap-8">
+      {/* Challenge details */}
+      <div className="grid md:grid-cols-3 gap-px bg-border/50 border border-border/50 rounded-lg overflow-hidden">
         {challenges.map((c, i) => (
           <motion.div
             key={i}
-            className="rounded-3xl border border-destructive/20 bg-destructive/[0.03] p-8 text-center"
+            className="bg-card p-8 text-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
             custom={i + 4}
           >
-            <span className="text-4xl block mb-4">{c.icon}</span>
-            <h3 className="text-xl font-bold mb-3">{c.title}</h3>
-            <p className="text-muted-foreground leading-relaxed">{c.desc}</p>
+            <div className="w-6 h-px bg-accent mx-auto mb-5" />
+            <h3 className="text-lg font-bold mb-2 font-serif">{c.title}</h3>
+            <p className="text-muted-foreground text-[15px] leading-relaxed">{c.desc}</p>
           </motion.div>
         ))}
       </div>

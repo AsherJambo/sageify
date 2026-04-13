@@ -1,27 +1,24 @@
 import { motion } from 'framer-motion';
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { delay: i * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
 const pillars = [
   {
-    icon: '🔬',
     title: 'מדע מותאם גיל',
     desc: 'שימוש ב-Geropsychology בניגוד למבחני נטיות גנריים – אבחון שנבנה במיוחד לגיל השלישי',
   },
   {
-    icon: '🔄',
     title: 'מניהול זמן לניהול משמעות',
     desc: 'הפיכת חרדת פרישה לתוכנית עבודה: מנטורינג, יזמות חברתית ותרומה לקהילה',
   },
   {
-    icon: '📊',
     title: 'Data-Driven Insights',
     desc: 'למידת מכונה (AI) המזקקת המלצות מותאמות אישית על בסיס קהילה צומחת של פורשים',
   },
@@ -29,21 +26,19 @@ const pillars = [
 
 const LandingUniqueness = () => {
   return (
-    <section className="bg-primary/[0.03] py-16 md:py-24">
+    <section className="bg-primary/[0.03] py-20 md:py-28">
       <div className="max-w-5xl mx-auto px-6">
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-14"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeUp}
           custom={0}
         >
-          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
-            הפתרון
-          </span>
+          <p className="text-sm text-accent font-semibold mb-3 tracking-wide">הפתרון</p>
           <h2 className="text-3xl md:text-4xl font-bold mb-3">הייחודיות של Sageify</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-base max-w-lg mx-auto">
             מגדירים מחדש את הייעוד בגיל השלישי
           </p>
         </motion.div>
@@ -52,23 +47,17 @@ const LandingUniqueness = () => {
           {pillars.map((p, i) => (
             <motion.div
               key={i}
-              className="rounded-3xl border border-border/60 bg-card p-8 text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500"
+              className="border border-border/50 bg-card rounded-lg p-8 text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeUp}
               custom={i + 1}
-              whileHover={{ y: -6, transition: { duration: 0.3 } }}
+              whileHover={{ y: -4, transition: { duration: 0.4 } }}
             >
-              <motion.span
-                className="text-4xl block mb-4"
-                whileHover={{ scale: 1.2, rotate: 10 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-              >
-                {p.icon}
-              </motion.span>
-              <h3 className="text-xl font-bold mb-3">{p.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{p.desc}</p>
+              <div className="w-8 h-px bg-accent mx-auto mb-6" />
+              <h3 className="text-xl font-bold mb-3 font-serif">{p.title}</h3>
+              <p className="text-muted-foreground leading-relaxed text-[15px]">{p.desc}</p>
             </motion.div>
           ))}
         </div>

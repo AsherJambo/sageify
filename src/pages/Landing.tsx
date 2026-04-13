@@ -1,40 +1,33 @@
 import { motion } from 'framer-motion';
 import sageifyLogo from '@/assets/owl-logo.png';
-import heroBanner from '@/assets/hero-banner.png';
+import heroPremium from '@/assets/hero-premium.jpg';
 import { Link } from 'react-router-dom';
 import { Settings } from 'lucide-react';
-import LandingFAQ from '@/components/LandingFAQ';
+import LandingTrustBar from '@/components/LandingTrustBar';
 import LandingChallenge from '@/components/LandingChallenge';
 import LandingUniqueness from '@/components/LandingUniqueness';
 import LandingAudiences from '@/components/LandingAudiences';
 import LandingTeam from '@/components/LandingTeam';
+import LandingTestimonials from '@/components/LandingTestimonials';
+import LandingFAQ from '@/components/LandingFAQ';
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
-
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: (i: number) => ({
-    opacity: 1,
-    scale: 1,
-    transition: { delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { delay: i * 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
 const Landing = () => {
   const features = [
-    { icon: '🧠', title: 'אינטליגנציה מגובשת', desc: 'מדידת כישורי שיפוט וניסיון המשביחים עם הגיל – לא מבחנים גנריים לבני 20' },
-    { icon: '🧬', title: 'שאלון גנרטיביות', desc: 'אלגוריתם הממפה את הצורך להשאיר חותם (Legacy) ולמצוא משמעות חדשה' },
-    { icon: '🗺️', title: 'מפת דרכים אופרטיבית', desc: 'דוח המצליב נכסי עבר עם צרכים רגשיים עכשוויים – תוכנית פעולה מעשית' },
-    { icon: '🤖', title: 'Data-Driven Insights', desc: 'למידת מכונה (AI) המזקקת המלצות על בסיס קהילה צומחת של פורשים' },
-    { icon: '🔍', title: 'סריקת שוק בזמן אמת', desc: 'חיפוש AI חי שמוצא הזדמנויות ספציפיות: משרות, התנדבויות ומנטורינג' },
-    { icon: '📊', title: 'דוח תוצאות מפורט', desc: 'ניתוח מעמיק של כל הממצאים – להורדה, להדפסה ולשיתוף עם יועצים' },
+    { title: 'אינטליגנציה מגובשת', desc: 'מדידת כישורי שיפוט וניסיון המשביחים עם הגיל – לא מבחנים גנריים לבני 20' },
+    { title: 'שאלון גנרטיביות', desc: 'אלגוריתם הממפה את הצורך להשאיר חותם (Legacy) ולמצוא משמעות חדשה' },
+    { title: 'מפת דרכים אופרטיבית', desc: 'דוח המצליב נכסי עבר עם צרכים רגשיים עכשוויים – תוכנית פעולה מעשית' },
+    { title: 'Data-Driven Insights', desc: 'למידת מכונה (AI) המזקקת המלצות על בסיס קהילה צומחת של פורשים' },
+    { title: 'סריקת שוק בזמן אמת', desc: 'חיפוש AI חי שמוצא הזדמנויות ספציפיות: משרות, התנדבויות ומנטורינג' },
+    { title: 'דוח תוצאות מפורט', desc: 'ניתוח מעמיק של כל הממצאים – להורדה, להדפסה ולשיתוף עם יועצים' },
   ];
 
   const process = [
@@ -49,57 +42,54 @@ const Landing = () => {
       {/* Hero */}
       <section className="relative w-full overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroBanner} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(160_35%_18%/0.85)] via-[hsl(160_35%_18%/0.7)] to-background" />
+          <img src={heroPremium} alt="" className="w-full h-full object-cover" width={1920} height={960} />
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(192_32%_16%/0.82)] via-[hsl(192_32%_16%/0.65)] to-background" />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-6 py-20 md:py-32 text-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 py-24 md:py-36 text-center">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
-            <img src={sageifyLogo} alt="Sageify Logo" className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-6 drop-shadow-xl" />
+            <img src={sageifyLogo} alt="Sageify Logo" className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-8 drop-shadow-lg" />
           </motion.div>
 
           <motion.h1
-            className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight"
+            className="text-4xl md:text-[3.5rem] font-bold text-white mb-5 leading-[1.15]"
             initial="hidden" animate="visible" variants={fadeUp} custom={1}
           >
-            Sageify
+            מגדירים מחדש את
+            <br />
+            הייעוד בגיל השלישי
           </motion.h1>
 
           <motion.p
-            className="text-lg md:text-2xl text-white/90 mb-3 font-light leading-relaxed max-w-3xl mx-auto"
+            className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
             initial="hidden" animate="visible" variants={fadeUp} custom={2}
           >
-            הפרישה היא לא קו הסיום, אלא נקודת השקה מחדש –
-            <br className="hidden md:block" />
-            המקום בו הניסיון הופך לנכס היקר ביותר
-          </motion.p>
-
-          <motion.p
-            className="text-base md:text-lg text-white/70 max-w-2xl mx-auto mb-10"
-            initial="hidden" animate="visible" variants={fadeUp} custom={3}
-          >
-            מערכת אבחון חכמה (SaaS) המבוססת על דאטה ופסיכולוגיה התפתחותית, ההופכת את ניסיון העבר למפת דרכים לייעוד חדש
+            מערכת אבחון חכמה המבוססת על פסיכולוגיה התפתחותית ו-AI,
+            ההופכת את ניסיון העבר למפת דרכים לייעוד חדש
           </motion.p>
 
           <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center"
-            initial="hidden" animate="visible" variants={fadeUp} custom={4}
+            initial="hidden" animate="visible" variants={fadeUp} custom={3}
           >
             <a
               href="mailto:info@sageify.co.il"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-2xl bg-white text-primary font-semibold text-lg hover:bg-white/90 transition-colors shadow-lg"
+              className="inline-flex items-center justify-center px-8 py-3.5 rounded-lg bg-white text-primary font-semibold text-base hover:bg-white/90 transition-all duration-500 shadow-md"
             >
               צרו קשר
             </a>
             <a
               href="#challenge"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-2xl border-2 border-white/40 text-white font-semibold text-lg hover:bg-white/10 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-3.5 rounded-lg border border-white/30 text-white font-medium text-base hover:bg-white/10 transition-all duration-500"
             >
-              למידע נוסף ↓
+              למידע נוסף
             </a>
           </motion.div>
         </div>
       </section>
+
+      {/* Trust Bar */}
+      <LandingTrustBar />
 
       {/* Challenge */}
       <LandingChallenge />
@@ -108,32 +98,37 @@ const Landing = () => {
       <LandingUniqueness />
 
       {/* Features */}
-      <section id="features" className="bg-primary/[0.03] py-16 md:py-24">
+      <section id="features" className="py-20 md:py-28">
         <div className="max-w-5xl mx-auto px-6">
+          <motion.p
+            className="text-sm text-accent font-semibold text-center mb-3 tracking-wide"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+          >
+            Vocation Diagnostics
+          </motion.p>
           <motion.h2
             className="text-3xl md:text-4xl font-bold text-center mb-4"
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
           >
             מה כולל השירות
           </motion.h2>
           <motion.p
-            className="text-muted-foreground text-center text-lg mb-12 max-w-2xl mx-auto"
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
+            className="text-muted-foreground text-center text-base mb-14 max-w-xl mx-auto"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}
           >
-            Vocation Diagnostics – פלטפורמה המותאמת לשינויים הקוגניטיביים של גיל הפרישה
+            פלטפורמה המותאמת לשינויים הקוגניטיביים של גיל הפרישה
           </motion.p>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border/50 border border-border/50 rounded-lg overflow-hidden">
             {features.map((f, i) => (
               <motion.div
                 key={i}
-                className="rounded-3xl border border-border/60 bg-card p-6 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-400"
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn} custom={i}
-                whileHover={{ y: -4, transition: { duration: 0.25 } }}
+                className="bg-card p-8 hover:bg-muted/30 transition-colors duration-500"
+                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}
               >
-                <span className="text-3xl block mb-3">{f.icon}</span>
-                <h3 className="text-lg font-bold mb-2">{f.title}</h3>
-                <p className="text-muted-foreground text-[16px] leading-relaxed">{f.desc}</p>
+                <div className="w-8 h-px bg-accent mb-5" />
+                <h3 className="text-lg font-bold mb-2 font-serif">{f.title}</h3>
+                <p className="text-muted-foreground text-[15px] leading-relaxed">{f.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -141,33 +136,38 @@ const Landing = () => {
       </section>
 
       {/* Process */}
-      <section className="max-w-4xl mx-auto px-6 py-16 md:py-24">
-        <motion.h2
-          className="text-3xl md:text-4xl font-bold text-center mb-12"
-          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
-        >
-          איך זה עובד
-        </motion.h2>
+      <section className="bg-primary py-20 md:py-28">
+        <div className="max-w-4xl mx-auto px-6">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-center text-primary-foreground mb-14"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+          >
+            איך זה עובד
+          </motion.h2>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {process.map((s, i) => (
-            <motion.div
-              key={i}
-              className="text-center"
-              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}
-            >
-              <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary text-primary-foreground text-2xl font-bold mb-4">
-                {s.step}
-              </span>
-              <h3 className="text-lg font-bold mb-2">{s.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{s.desc}</p>
-            </motion.div>
-          ))}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            {process.map((s, i) => (
+              <motion.div
+                key={i}
+                className="text-center"
+                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}
+              >
+                <span className="inline-flex items-center justify-center w-14 h-14 rounded-full border-2 border-primary-foreground/30 text-primary-foreground text-lg font-bold mb-4">
+                  {s.step}
+                </span>
+                <h3 className="text-lg font-bold mb-2 text-primary-foreground">{s.title}</h3>
+                <p className="text-primary-foreground/70 leading-relaxed text-[15px]">{s.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Audiences */}
       <LandingAudiences />
+
+      {/* Testimonials */}
+      <LandingTestimonials />
 
       {/* Team */}
       <LandingTeam />
@@ -176,20 +176,20 @@ const Landing = () => {
       <LandingFAQ />
 
       {/* CTA */}
-      <section className="max-w-3xl mx-auto px-6 py-16 md:py-24 text-center">
+      <section className="max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
         <motion.div
-          className="rounded-3xl bg-primary p-10 md:p-16 shadow-[var(--shadow-elevated)]"
+          className="rounded-lg bg-primary p-12 md:p-16 shadow-[var(--shadow-elevated)]"
           initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
             מוכנים להתחיל?
           </h2>
-          <p className="text-primary-foreground/80 text-lg mb-8 max-w-xl mx-auto">
+          <p className="text-primary-foreground/75 text-base mb-8 max-w-md mx-auto leading-relaxed">
             צרו קשר לקבלת גישה למערכת – לארגונים, ליועצים ולפרטיים
           </p>
           <a
             href="mailto:info@sageify.co.il"
-            className="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-white text-primary font-semibold text-lg hover:bg-white/90 transition-colors shadow-lg"
+            className="inline-flex items-center justify-center px-10 py-3.5 rounded-lg bg-white text-primary font-semibold text-base hover:bg-white/90 transition-all duration-500 shadow-md"
           >
             צרו קשר
           </a>
@@ -197,17 +197,17 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/60 py-8">
+      <footer className="border-t border-border/50 py-10">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <img src={sageifyLogo} alt="Sageify" className="w-8 h-8" />
-            <span className="font-semibold text-lg">Sageify</span>
+            <img src={sageifyLogo} alt="Sageify" className="w-7 h-7" />
+            <span className="font-semibold text-base">Sageify</span>
           </div>
 
           <div className="flex items-center gap-6 text-muted-foreground text-sm">
             <span>© {new Date().getFullYear()} Sageify. כל הזכויות שמורות.</span>
-            <Link to="/admin-panel" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/60 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors text-sm font-medium">
-              <Settings size={15} />
+            <Link to="/admin-panel" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-all duration-400 text-sm font-medium">
+              <Settings size={14} />
               ניהול
             </Link>
           </div>
