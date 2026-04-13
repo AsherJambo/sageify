@@ -18,7 +18,7 @@ const fadeUp = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { delay: i * 0.18, duration: 1, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
@@ -29,16 +29,23 @@ const Landing = () => {
       <section className="relative w-full overflow-hidden">
         <div className="absolute inset-0">
           <img src={heroPremium} alt="" className="w-full h-full object-cover" width={1920} height={960} />
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(192_32%_16%/0.85)] via-[hsl(192_32%_16%/0.70)] to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(200_28%_14%/0.88)] via-[hsl(200_28%_14%/0.72)] to-background" />
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 py-28 md:py-40 text-center">
+        {/* Organic decorative shape */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 md:h-32">
+          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" className="w-full h-full">
+            <path d="M0,40 C360,100 720,0 1080,60 C1260,90 1380,50 1440,40 L1440,120 L0,120 Z" fill="hsl(var(--background))" />
+          </svg>
+        </div>
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6 py-32 md:py-44 text-center">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
-            <img src={sageifyLogo} alt="Sageify Logo" className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-8 drop-shadow-lg" />
+            <img src={sageifyLogo} alt="Sageify Logo" className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-10 drop-shadow-xl rounded-2xl" />
           </motion.div>
 
           <motion.h1
-            className="text-4xl md:text-[3.5rem] font-bold text-white mb-6 leading-[1.15]"
+            className="text-4xl md:text-[3.75rem] font-bold text-white mb-7 leading-[1.12] tracking-tight"
             initial="hidden" animate="visible" variants={fadeUp} custom={1}
           >
             יודעים שיש עוד פרק —
@@ -47,65 +54,50 @@ const Landing = () => {
           </motion.h1>
 
           <motion.p
-            className="text-lg md:text-xl text-white/85 max-w-2xl mx-auto mb-4 leading-relaxed font-light"
+            className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
             initial="hidden" animate="visible" variants={fadeUp} custom={2}
           >
-            תהליך אבחון קצר ואישי, מבוסס פסיכולוגיה תעסוקתית,
+            תהליך אבחון אישי, מבוסס פסיכולוגיה תעסוקתית,
             <br className="hidden md:block" />
             שהופך את הניסיון שלכם לכיוון ברור ומעשי
           </motion.p>
 
-
           <motion.div
-            className="flex flex-col items-center gap-4"
+            className="flex flex-col items-center gap-5"
             initial="hidden" animate="visible" variants={fadeUp} custom={3}
           >
             <a
               href="mailto:sageify.ai@gmail.com"
-              className="inline-flex items-center justify-center px-10 py-4 rounded-lg bg-white text-primary font-semibold text-lg hover:bg-white/90 transition-all duration-500 shadow-md"
+              className="inline-flex items-center justify-center px-12 py-4.5 rounded-2xl bg-white text-primary font-bold text-lg hover:bg-white/95 transition-all duration-700 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.25)] hover:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.3)] hover:translate-y-[-2px]"
             >
               התחילו את התהליך האישי
             </a>
-            <span className="text-white/50 text-sm">פרטיות מלאה</span>
+            <span className="text-white/40 text-sm tracking-wide">פרטיות מלאה</span>
           </motion.div>
         </div>
       </section>
 
-      {/* 1. Emotional validation */}
+      {/* Sections */}
       <LandingEmotional />
-
-      {/* 2. How it works — 3 simple steps */}
       <LandingHowItWorks />
-
-      {/* 3. Result preview */}
       <LandingResultPreview />
-
-      {/* 4. Trust & credibility */}
       <LandingTrust />
-
-      {/* 5. Audiences */}
       <LandingAudiences />
-
-      {/* 6. Team */}
       <LandingTeam />
-
-      {/* 7. FAQ */}
       <LandingFAQ />
-
-      {/* 8. Final CTA */}
       <LandingCTA />
 
       {/* Footer */}
-      <footer className="border-t border-border/50 py-10">
+      <footer className="border-t border-border/40 py-12 bg-primary/[0.02]">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <img src={sageifyLogo} alt="Sageify" className="w-7 h-7" />
-            <span className="font-semibold text-base">Sageify</span>
+            <img src={sageifyLogo} alt="Sageify" className="w-8 h-8 rounded-lg" />
+            <span className="font-display font-bold text-base tracking-wide">Sageify</span>
           </div>
 
           <div className="flex items-center gap-6 text-muted-foreground text-sm">
             <span>© {new Date().getFullYear()} Sageify. כל הזכויות שמורות.</span>
-            <Link to="/admin-panel" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-all duration-400 text-sm font-medium">
+            <Link to="/admin-panel" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/40 text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-all duration-400 text-sm font-medium">
               <Settings size={14} />
               ניהול
             </Link>
