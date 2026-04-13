@@ -78,12 +78,6 @@ const Landing = () => {
             >
               צרו קשר
             </a>
-            <a
-              href="#challenge"
-              className="inline-flex items-center justify-center px-8 py-3.5 rounded-lg border border-white/30 text-white font-medium text-base hover:bg-white/10 transition-all duration-500"
-            >
-              למידע נוסף
-            </a>
           </motion.div>
         </div>
       </section>
