@@ -27,7 +27,7 @@ const plans = [
   },
   {
     name: 'The Premium Journey',
-    nameHe: 'המסלול הפרמיום',
+    nameHe: 'המסלול הפרימיום',
     badge: 'AI + ייעוץ אישי',
     price: '599',
     desc: 'הכל ב-Navigator, בתוספת ליווי אישי של מומחים',
