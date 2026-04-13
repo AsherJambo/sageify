@@ -55,12 +55,6 @@ const Landing = () => {
             שהופך את הניסיון שלכם לכיוון ברור ומעשי
           </motion.p>
 
-          <motion.p
-            className="text-base text-white/60 mb-10"
-            initial="hidden" animate="visible" variants={fadeUp} custom={2.5}
-          >
-            ~10 דקות · אישי לחלוטין · בחינם
-          </motion.p>
 
           <motion.div
             className="flex flex-col items-center gap-4"
