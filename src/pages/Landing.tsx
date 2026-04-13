@@ -170,8 +170,9 @@ const Landing = () => {
             {features.map((f, i) => (
               <motion.div
                 key={i}
-                className="rounded-3xl border border-border/60 bg-card p-6 shadow-[var(--shadow-card)]"
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i * 0.5}
+                className="rounded-3xl border border-border/60 bg-card p-6 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-400"
+                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn} custom={i}
+                whileHover={{ y: -4, transition: { duration: 0.25 } }}
               >
                 <span className="text-3xl block mb-3">{f.icon}</span>
                 <h3 className="text-lg font-bold mb-2">{f.title}</h3>
