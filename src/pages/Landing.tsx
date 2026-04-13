@@ -138,10 +138,17 @@ const Landing = () => {
           {pillars.map((p, i) => (
             <motion.div
               key={i}
-              className="rounded-3xl border border-border/60 bg-card p-8 text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow duration-500"
+              className="rounded-3xl border border-border/60 bg-card p-8 text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500"
               initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 2}
+              whileHover={{ y: -6, transition: { duration: 0.3 } }}
             >
-              <span className="text-4xl block mb-4 text-primary">{p.icon}</span>
+              <motion.span
+                className="text-4xl block mb-4 text-primary"
+                whileHover={{ scale: 1.2, rotate: 10 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                {p.icon}
+              </motion.span>
               <h3 className="text-xl font-bold mb-3">{p.title}</h3>
               <p className="text-muted-foreground leading-relaxed">{p.desc}</p>
             </motion.div>
