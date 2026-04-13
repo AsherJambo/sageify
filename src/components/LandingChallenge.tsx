@@ -128,7 +128,8 @@ const LandingChallenge = () => {
               )}
             </div>
             <p className="text-lg font-bold mb-1">{s.label}</p>
-            <p className="text-sm text-muted-foreground">{s.sub}</p>
+            <p className="text-sm text-muted-foreground mb-2">{s.sub}</p>
+            <p className="text-[11px] text-muted-foreground/60 italic">📎 {s.source}</p>
           </motion.div>
         ))}
       </div>
