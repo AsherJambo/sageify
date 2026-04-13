@@ -50,6 +50,7 @@ const stats = [
     suffix: '%',
     label: 'מהפורשים חווים ירידה במצב הנפשי',
     sub: 'משבר זהות ואובדן סטטוס',
+    source: 'Wang, 2007 – Journal of Applied Gerontology',
   },
   {
     value: 30,
@@ -57,6 +58,7 @@ const stats = [
     prefix: '20-',
     label: 'שנות חיוניות לאחר הפרישה',
     sub: 'פרדוקס האריכות',
+    source: 'WHO Life Expectancy Data, 2023',
   },
   {
     value: 0,
@@ -64,6 +66,7 @@ const stats = [
     label: 'כלי אבחון מותאמים לגיל השלישי',
     sub: 'כשל אבחוני מוחלט',
     staticDisplay: '0',
+    source: 'סקירת ספרות – Geropsychology, 2022',
   },
 ];
 
