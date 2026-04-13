@@ -4,6 +4,10 @@ import heroBanner from '@/assets/hero-banner.png';
 import { Link } from 'react-router-dom';
 import { Settings } from 'lucide-react';
 import LandingFAQ from '@/components/LandingFAQ';
+import LandingChallenge from '@/components/LandingChallenge';
+import LandingUniqueness from '@/components/LandingUniqueness';
+import LandingAudiences from '@/components/LandingAudiences';
+import LandingTeam from '@/components/LandingTeam';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -24,44 +28,20 @@ const scaleIn = {
 };
 
 const Landing = () => {
-  const pillars = [
-    {
-      icon: '◆',
-      title: 'דיוק פסיכולוגי',
-      desc: 'מערכת שנבנתה על ידי מומחי פסיכולוגיה תעסוקתית – מגשרת בין "מי שאתם" ל"מה תעשו מחר"',
-    },
-    {
-      icon: '✦',
-      title: 'סריקת שוק בזמן אמת',
-      desc: 'חיפוש AI חי שמוצא הזדמנויות ספציפיות: משרות, התנדבויות ותפקידים בישראל',
-    },
-    {
-      icon: '●',
-      title: 'חוכמת קהילה',
-      desc: 'סגי מזהה דפוסים בהשוואה לפרופילים דומים – ומראה מה הוביל אחרים לשביעות רצון',
-    },
-  ];
-
   const features = [
-    { icon: '🧠', title: 'אבחון פסיכומטרי מקיף', desc: '8 שאלונים מעולם הפסיכולוגיה התעסוקתית – חוזקות, עוגנים, נטיות ומוטיבציה' },
-    { icon: '🤖', title: 'ייעוץ AI מותאם אישית', desc: 'סגי, היועץ החכם שלנו, מנתח את הפרופיל ומציע מסלולים מותאמים' },
-    { icon: '🔍', title: 'חיפוש הזדמנויות חי', desc: 'סריקת שוק בזמן אמת שמוצאת משרות, התנדבויות ופרויקטים רלוונטיים' },
-    { icon: '🗺️', title: 'מפת דרכים אישית', desc: 'תוכנית פעולה מותאמת עם שלבים ברורים ומשימות פרקטיות' },
-    { icon: '📊', title: 'דוח תוצאות מפורט', desc: 'ניתוח מעמיק של כל הממצאים – להורדה, להדפסה ולשיתוף' },
-    { icon: '🏢', title: 'ממשק ארגוני', desc: 'כלי ניהול לארגונים עם ניתוח אגרגטיבי ותובנות על כלל המשתתפים' },
+    { icon: '🧠', title: 'אינטליגנציה מגובשת', desc: 'מדידת כישורי שיפוט וניסיון המשביחים עם הגיל – לא מבחנים גנריים לבני 20' },
+    { icon: '🧬', title: 'שאלון גנרטיביות', desc: 'אלגוריתם הממפה את הצורך להשאיר חותם (Legacy) ולמצוא משמעות חדשה' },
+    { icon: '🗺️', title: 'מפת דרכים אופרטיבית', desc: 'דוח המצליב נכסי עבר עם צרכים רגשיים עכשוויים – תוכנית פעולה מעשית' },
+    { icon: '🤖', title: 'Data-Driven Insights', desc: 'למידת מכונה (AI) המזקקת המלצות על בסיס קהילה צומחת של פורשים' },
+    { icon: '🔍', title: 'סריקת שוק בזמן אמת', desc: 'חיפוש AI חי שמוצא הזדמנויות ספציפיות: משרות, התנדבויות ומנטורינג' },
+    { icon: '📊', title: 'דוח תוצאות מפורט', desc: 'ניתוח מעמיק של כל הממצאים – להורדה, להדפסה ולשיתוף עם יועצים' },
   ];
 
   const process = [
     { step: '01', title: 'הרשמה', desc: 'מקבלים קישור אישי מהארגון או מהיועץ' },
-    { step: '02', title: 'אבחון', desc: '8 שאלונים קצרים בקצב שלכם – שמירה אוטומטית' },
+    { step: '02', title: 'אבחון', desc: '8 שאלונים מותאמי גיל בקצב שלכם – שמירה אוטומטית' },
     { step: '03', title: 'ניתוח', desc: 'סגי מנתח את התוצאות ובונה פרופיל מקצועי מדויק' },
     { step: '04', title: 'תוצאות', desc: 'דוח מפורט, מפת דרכים אישית וחיפוש הזדמנויות חי' },
-  ];
-
-  const audiences = [
-    { title: 'פורשים ומתכננים פרישה', desc: 'מחפשים תכלית ועיסוק משמעותי בפרק הבא', icon: '🌿' },
-    { title: 'ארגונים ומעסיקים', desc: 'מלווים עובדים בתהליכי מעבר קריירה', icon: '🏛️' },
-    { title: 'יועצי קריירה', desc: 'כלי מקצועי לליווי מטופלים עם תובנות מבוססות נתונים', icon: '🎯' },
   ];
 
   return (
@@ -86,17 +66,19 @@ const Landing = () => {
           </motion.h1>
 
           <motion.p
-            className="text-xl md:text-2xl text-white/90 mb-3 font-light"
+            className="text-lg md:text-2xl text-white/90 mb-3 font-light leading-relaxed max-w-3xl mx-auto"
             initial="hidden" animate="visible" variants={fadeUp} custom={2}
           >
-            לתרגם חיים שלמים של ניסיון לפרק הבא
+            הפרישה היא לא קו הסיום, אלא נקודת השקה מחדש –
+            <br className="hidden md:block" />
+            המקום בו הניסיון הופך לנכס היקר ביותר
           </motion.p>
 
           <motion.p
-            className="text-lg md:text-xl text-white/75 max-w-2xl mx-auto mb-10"
+            className="text-base md:text-lg text-white/70 max-w-2xl mx-auto mb-10"
             initial="hidden" animate="visible" variants={fadeUp} custom={3}
           >
-            פלטפורמת אבחון תעסוקתי חכמה לפורשים – משלבת פסיכולוגיה, AI וסריקת שוק בזמן אמת
+            מערכת אבחון חכמה (SaaS) המבוססת על דאטה ופסיכולוגיה התפתחותית, ההופכת את ניסיון העבר למפת דרכים לייעוד חדש
           </motion.p>
 
           <motion.div
@@ -110,7 +92,7 @@ const Landing = () => {
               צרו קשר
             </a>
             <a
-              href="#features"
+              href="#challenge"
               className="inline-flex items-center justify-center px-8 py-4 rounded-2xl border-2 border-white/40 text-white font-semibold text-lg hover:bg-white/10 transition-colors"
             >
               למידע נוסף ↓
@@ -119,52 +101,27 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Pillars */}
-      <section className="max-w-5xl mx-auto px-6 py-16 md:py-24">
-        <motion.h2
-          className="text-3xl md:text-4xl font-bold text-center mb-4"
-          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
-        >
-          שלושת העמודים
-        </motion.h2>
-        <motion.p
-          className="text-muted-foreground text-center text-lg mb-12 max-w-2xl mx-auto"
-          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
-        >
-          הגישה של Sageify נשענת על שלושה עקרונות מרכזיים
-        </motion.p>
+      {/* Challenge */}
+      <LandingChallenge />
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {pillars.map((p, i) => (
-            <motion.div
-              key={i}
-              className="rounded-3xl border border-border/60 bg-card p-8 text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500"
-              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 2}
-              whileHover={{ y: -6, transition: { duration: 0.3 } }}
-            >
-              <motion.span
-                className="text-4xl block mb-4 text-primary"
-                whileHover={{ scale: 1.2, rotate: 10 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-              >
-                {p.icon}
-              </motion.span>
-              <h3 className="text-xl font-bold mb-3">{p.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{p.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      {/* Uniqueness */}
+      <LandingUniqueness />
 
       {/* Features */}
       <section id="features" className="bg-primary/[0.03] py-16 md:py-24">
         <div className="max-w-5xl mx-auto px-6">
           <motion.h2
-            className="text-3xl md:text-4xl font-bold text-center mb-12"
+            className="text-3xl md:text-4xl font-bold text-center mb-4"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
           >
             מה כולל השירות
           </motion.h2>
+          <motion.p
+            className="text-muted-foreground text-center text-lg mb-12 max-w-2xl mx-auto"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
+          >
+            Vocation Diagnostics – פלטפורמה המותאמת לשינויים הקוגניטיביים של גיל הפרישה
+          </motion.p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((f, i) => (
@@ -210,30 +167,10 @@ const Landing = () => {
       </section>
 
       {/* Audiences */}
-      <section className="bg-primary/[0.03] py-16 md:py-24">
-        <div className="max-w-5xl mx-auto px-6">
-          <motion.h2
-            className="text-3xl md:text-4xl font-bold text-center mb-12"
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
-          >
-            למי זה מתאים
-          </motion.h2>
+      <LandingAudiences />
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {audiences.map((a, i) => (
-              <motion.div
-                key={i}
-                className="rounded-3xl border border-border/60 bg-card p-8 text-center shadow-[var(--shadow-card)]"
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}
-              >
-                <span className="text-5xl block mb-4">{a.icon}</span>
-                <h3 className="text-xl font-bold mb-3">{a.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{a.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Team */}
+      <LandingTeam />
 
       {/* FAQ */}
       <LandingFAQ />
