@@ -248,7 +248,8 @@ const Landing = () => {
 
           <div className="flex items-center gap-6 text-muted-foreground text-sm">
             <span>© {new Date().getFullYear()} Sageify. כל הזכויות שמורות.</span>
-            <Link to="/admin-panel" className="hover:text-foreground transition-colors underline-offset-4 hover:underline min-h-0">
+            <Link to="/admin-panel" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/60 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors text-sm font-medium">
+              <Settings size={15} />
               ניהול
             </Link>
           </div>
