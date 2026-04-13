@@ -3,7 +3,7 @@ import sageifyLogo from '@/assets/owl-logo.png';
 import heroPremium from '@/assets/hero-premium.jpg';
 import { Link } from 'react-router-dom';
 import { Settings } from 'lucide-react';
-import LandingTrustBar from '@/components/LandingTrustBar';
+
 import LandingChallenge from '@/components/LandingChallenge';
 import LandingUniqueness from '@/components/LandingUniqueness';
 import LandingAudiences from '@/components/LandingAudiences';
@@ -88,8 +88,6 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Trust Bar */}
-      <LandingTrustBar />
 
       {/* Challenge */}
       <LandingChallenge />
