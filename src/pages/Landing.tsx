@@ -63,11 +63,11 @@ const Landing = () => {
             className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
             initial="hidden" animate="visible" variants={fadeUp} custom={2}
           >
-            Sageify משלב פסיכולוגיה תעסוקתית ובינה מלאכותית
+            Sageify משלב תפיסות וכלים של פסיכולוגיה תעסוקתית,
             <br className="hidden md:block" />
-            כדי להפוך את חוסר הוודאות של הפרישה למסע מובנה
+            תפיסות "שלב הגשר בחיים" במעבר לשלב הפרישה,
             <br className="hidden md:block" />
-            לעבר הזהות הבאה שלכם
+            ובינה מלאכותית
           </motion.p>
 
           <motion.div
