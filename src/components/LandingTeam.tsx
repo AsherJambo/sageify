@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion';
+import yairImg from '@/assets/team-yair.jpg';
+import asherImg from '@/assets/team-asher.jpg';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -14,13 +16,13 @@ const team = [
     name: 'ד"ר יאיר נעם',
     role: 'מייסד שותף – מדע',
     desc: 'פסיכולוג תעסוקתי, מומחה באבחון מיומנויות. לשעבר ראש ענף המיון של צה"ל.',
-    icon: '🧠',
+    img: yairImg,
   },
   {
     name: 'אשר שטיינברגר',
     role: 'מייסד שותף – טכנולוגיה',
     desc: 'יזם ומנהל פרויקטים מערכתיים, מומחה בחיבור בין אנשים להזדמנויות.',
-    icon: '🚀',
+    img: asherImg,
   },
 ];
 
@@ -49,7 +51,11 @@ const LandingTeam = () => {
             variants={fadeUp}
             custom={i + 1}
           >
-            <span className="text-5xl block mb-4">{t.icon}</span>
+            <img
+              src={t.img}
+              alt={t.name}
+              className="w-28 h-28 rounded-full object-cover mx-auto mb-5 border-4 border-primary/20 shadow-md"
+            />
             <h3 className="text-xl font-bold mb-1">{t.name}</h3>
             <p className="text-primary text-sm font-semibold mb-3">{t.role}</p>
             <p className="text-muted-foreground leading-relaxed">{t.desc}</p>
