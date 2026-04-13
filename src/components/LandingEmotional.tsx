@@ -4,7 +4,7 @@ const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.12, duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { delay: i * 0.14, duration: 0.9, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
@@ -15,22 +15,25 @@ const messages = [
 ];
 
 const LandingEmotional = () => (
-  <section className="py-20 md:py-28 bg-muted/30">
-    <div className="max-w-3xl mx-auto px-6 text-center">
+  <section className="py-24 md:py-32 relative overflow-hidden">
+    {/* Subtle organic bg shape */}
+    <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-secondary/[0.03] blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+    
+    <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
       <motion.p
-        className="text-sm text-accent font-semibold mb-3 tracking-wide"
+        className="text-sm text-accent font-bold mb-4 tracking-widest uppercase"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
       >
         אתם לא לבד
       </motion.p>
       <motion.h2
-        className="text-3xl md:text-4xl font-bold mb-6"
+        className="text-3xl md:text-[2.75rem] font-bold mb-6 leading-tight"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
       >
         ההרגשה הזו מוכרת לכולם
       </motion.h2>
       <motion.p
-        className="text-muted-foreground text-lg leading-relaxed mb-12 max-w-xl mx-auto"
+        className="text-muted-foreground text-lg md:text-xl leading-relaxed mb-14 max-w-xl mx-auto"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}
       >
         פרישה היא לא סוף — היא התחלה. אבל בלי מצפן, קל ללכת לאיבוד.
@@ -42,11 +45,11 @@ const LandingEmotional = () => (
         {messages.map((msg, i) => (
           <motion.div
             key={i}
-            className="bg-card border border-border/50 rounded-lg px-8 py-5 text-right"
+            className="bg-card/80 backdrop-blur-sm border border-border/40 rounded-2xl px-8 py-6 text-right shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow duration-500"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 3}
           >
-            <p className="text-foreground text-[17px] leading-relaxed flex items-start gap-3">
-              <span className="text-accent text-xl mt-0.5 shrink-0">✦</span>
+            <p className="text-foreground text-lg leading-relaxed flex items-start gap-3">
+              <span className="text-secondary text-xl mt-0.5 shrink-0">◆</span>
               {msg}
             </p>
           </motion.div>
@@ -55,10 +58,10 @@ const LandingEmotional = () => (
 
       <motion.a
         href="mailto:sageify.ai@gmail.com"
-        className="inline-flex items-center justify-center mt-12 px-10 py-4 rounded-lg bg-primary text-primary-foreground font-semibold text-lg hover:bg-primary/90 transition-all duration-500 shadow-md"
+        className="inline-flex items-center justify-center mt-14 px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg hover:bg-primary/90 transition-all duration-700 shadow-[var(--shadow-elevated)] hover:translate-y-[-2px]"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={6}
       >
-        גלו את הכיוון שלכם — בחינם
+        גלו את הכיוון שלכם
       </motion.a>
     </div>
   </section>

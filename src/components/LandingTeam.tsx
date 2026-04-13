@@ -5,68 +5,49 @@ import asherImg from '@/assets/team-asher.jpg';
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+    opacity: 1, y: 0,
+    transition: { delay: i * 0.12, duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
 const team = [
-  {
-    name: 'ד"ר יאיר נעם',
-    role: 'מייסד שותף',
-    desc: 'פסיכולוג תעסוקתי, מומחה באבחון מיומנויות. לשעבר ראש ענף המיון של צה"ל.',
-    img: yairImg,
-  },
-  {
-    name: 'אשר שטיינברגר',
-    role: 'מייסד שותף',
-    desc: 'יזם ומנהל פרויקטים מערכתיים, מומחה בחיבור בין אנשים להזדמנויות.',
-    img: asherImg,
-  },
+  { name: 'ד"ר יאיר נעם', role: 'מייסד שותף', desc: 'פסיכולוג תעסוקתי, מומחה באבחון מיומנויות. לשעבר ראש ענף המיון של צה"ל.', img: yairImg },
+  { name: 'אשר שטיינברגר', role: 'מייסד שותף', desc: 'יזם ומנהל פרויקטים מערכתיים, מומחה בחיבור בין אנשים להזדמנויות.', img: asherImg },
 ];
 
-const LandingTeam = () => {
-  return (
-    <section className="bg-primary/[0.03] py-20 md:py-28">
-      <div className="max-w-4xl mx-auto px-6">
-        <motion.h2
-          className="text-3xl md:text-4xl font-bold text-center mb-14"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeUp}
-          custom={0}
-        >
-          הצוות
-        </motion.h2>
+const LandingTeam = () => (
+  <section className="bg-muted/25 py-24 md:py-32 relative overflow-hidden">
+    <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-accent/[0.03] blur-3xl translate-y-1/2 translate-x-1/3 pointer-events-none" />
+    
+    <div className="max-w-4xl mx-auto px-6 relative z-10">
+      <motion.h2
+        className="text-3xl md:text-[2.75rem] font-bold text-center mb-16 leading-tight"
+        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+      >
+        הצוות
+      </motion.h2>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-          {team.map((t, i) => (
-            <motion.div
-              key={i}
-              className="border border-border/50 bg-card rounded-lg p-8 text-center shadow-[var(--shadow-card)]"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              custom={i + 1}
-            >
-              <img
-                src={t.img}
-                alt={t.name}
-                className="w-24 h-24 rounded-full object-cover mx-auto mb-5 border-2 border-border/60 shadow-sm grayscale-[20%]"
-                loading="lazy"
-              />
-              <h3 className="text-xl font-bold mb-1 font-serif">{t.name}</h3>
-              <p className="text-accent text-xs font-semibold mb-3 tracking-wide">{t.role}</p>
-              <p className="text-muted-foreground leading-relaxed text-[15px]">{t.desc}</p>
-            </motion.div>
-          ))}
-        </div>
+      <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        {team.map((t, i) => (
+          <motion.div
+            key={i}
+            className="border border-border/40 bg-card/80 backdrop-blur-sm rounded-2xl p-8 text-center shadow-[var(--shadow-card)]"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}
+          >
+            <img
+              src={t.img}
+              alt={t.name}
+              className="w-28 h-28 rounded-2xl object-cover mx-auto mb-6 border-2 border-border/40 shadow-[var(--shadow-card)] grayscale-[15%]"
+              loading="lazy"
+            />
+            <h3 className="text-xl font-bold mb-1 font-serif">{t.name}</h3>
+            <p className="text-secondary text-sm font-bold mb-3 tracking-wide">{t.role}</p>
+            <p className="text-muted-foreground leading-relaxed text-base">{t.desc}</p>
+          </motion.div>
+        ))}
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 export default LandingTeam;

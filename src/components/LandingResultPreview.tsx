@@ -5,50 +5,37 @@ const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.12, duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { delay: i * 0.12, duration: 0.9, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
 const sampleResults = [
-  {
-    icon: TrendingUp,
-    label: 'הכיוון המומלץ',
-    value: 'מנטורינג וליווי מקצועי לצעירים',
-  },
-  {
-    icon: Heart,
-    label: 'הערכים המובילים שלך',
-    value: 'תרומה לזולת, העברת ידע, יצירתיות',
-  },
-  {
-    icon: Briefcase,
-    label: 'הזדמנויות רלוונטיות',
-    value: '3 תוכניות מנטורינג פעילות באזורך',
-  },
-  {
-    icon: Lightbulb,
-    label: 'תובנה אישית',
-    value: 'הניסיון הניהולי שלך הוא הנכס החזק ביותר — הגיע הזמן להעביר אותו הלאה',
-  },
+  { icon: TrendingUp, label: 'הכיוון המומלץ', value: 'מנטורינג וליווי מקצועי לצעירים' },
+  { icon: Heart, label: 'הערכים המובילים שלך', value: 'תרומה לזולת, העברת ידע, יצירתיות' },
+  { icon: Briefcase, label: 'הזדמנויות רלוונטיות', value: '3 תוכניות מנטורינג פעילות באזורך' },
+  { icon: Lightbulb, label: 'תובנה אישית', value: 'הניסיון הניהולי שלך הוא הנכס החזק ביותר — הגיע הזמן להעביר אותו הלאה' },
 ];
 
 const LandingResultPreview = () => (
-  <section className="py-20 md:py-28 bg-muted/30">
-    <div className="max-w-4xl mx-auto px-6">
+  <section className="py-24 md:py-32 relative overflow-hidden">
+    {/* Organic shape */}
+    <div className="absolute top-1/2 left-0 w-[600px] h-[600px] rounded-full bg-gold/[0.04] blur-3xl -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+
+    <div className="max-w-4xl mx-auto px-6 relative z-10">
       <motion.p
-        className="text-sm text-accent font-semibold text-center mb-3 tracking-wide"
+        className="text-sm text-accent font-bold text-center mb-4 tracking-widest uppercase"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
       >
         דוגמה לתוצאה
       </motion.p>
       <motion.h2
-        className="text-3xl md:text-4xl font-bold text-center mb-4"
+        className="text-3xl md:text-[2.75rem] font-bold text-center mb-5 leading-tight"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
       >
         מה תקבלו בסוף התהליך?
       </motion.h2>
       <motion.p
-        className="text-muted-foreground text-center text-lg mb-14 max-w-xl mx-auto"
+        className="text-muted-foreground text-center text-lg md:text-xl mb-14 max-w-xl mx-auto"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}
       >
         דוח אישי ומפורט שמתרגם את הניסיון שלכם לכיוון ברור ומעשי
@@ -56,33 +43,33 @@ const LandingResultPreview = () => (
 
       {/* Sample result card */}
       <motion.div
-        className="bg-card border border-border/50 rounded-lg overflow-hidden shadow-[0_8px_40px_-12px_hsl(210_45%_14%/0.08)]"
+        className="bg-card/90 backdrop-blur-sm border border-border/40 rounded-3xl overflow-hidden shadow-[var(--shadow-elevated)]"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
       >
         {/* Header */}
-        <div className="bg-primary/5 border-b border-border/50 px-8 py-5">
+        <div className="bg-primary/[0.04] border-b border-border/40 px-8 py-5">
           <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-accent" />
-            <p className="font-semibold text-base">הדוח האישי שלך — דוגמה</p>
+            <div className="w-3 h-3 rounded-full bg-secondary" />
+            <p className="font-display font-bold text-base tracking-wide">הדוח האישי שלך — דוגמה</p>
           </div>
         </div>
 
         {/* Results */}
-        <div className="p-8 space-y-6">
+        <div className="p-8 md:p-10 space-y-7">
           {sampleResults.map((r, i) => {
             const Icon = r.icon;
             return (
               <motion.div
                 key={i}
-                className="flex items-start gap-4"
+                className="flex items-start gap-5"
                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 4}
               >
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                  <Icon className="w-5 h-5 text-primary" />
+                <div className="w-12 h-12 rounded-2xl bg-secondary/8 flex items-center justify-center shrink-0 mt-0.5">
+                  <Icon className="w-5.5 h-5.5 text-secondary" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-accent mb-1">{r.label}</p>
-                  <p className="text-foreground text-[16px] leading-relaxed">{r.value}</p>
+                  <p className="text-xs font-bold text-accent mb-1.5 tracking-wide uppercase">{r.label}</p>
+                  <p className="text-foreground text-lg leading-relaxed">{r.value}</p>
                 </div>
               </motion.div>
             );
@@ -90,7 +77,7 @@ const LandingResultPreview = () => (
         </div>
 
         {/* Footer */}
-        <div className="border-t border-border/50 px-8 py-4 bg-muted/20">
+        <div className="border-t border-border/40 px-8 py-4 bg-muted/15">
           <p className="text-xs text-muted-foreground text-center">
             * זו דוגמה בלבד — הדוח שלכם יהיה מותאם אישית לחלוטין
           </p>
@@ -98,12 +85,12 @@ const LandingResultPreview = () => (
       </motion.div>
 
       <motion.div
-        className="text-center mt-10"
+        className="text-center mt-12"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={8}
       >
         <a
           href="mailto:sageify.ai@gmail.com"
-          className="inline-flex items-center justify-center px-10 py-4 rounded-lg bg-primary text-primary-foreground font-semibold text-lg hover:bg-primary/90 transition-all duration-500 shadow-md"
+          className="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg hover:bg-primary/90 transition-all duration-700 shadow-[var(--shadow-elevated)] hover:translate-y-[-2px]"
         >
           רוצים לקבל את הדוח שלכם? צרו קשר
         </a>
