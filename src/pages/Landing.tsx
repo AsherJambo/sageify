@@ -66,7 +66,7 @@ const Landing = () => {
             >
               התחילו את התהליך האישי
             </a>
-            <span className="text-white/50 text-sm">ללא התחייבות · פרטיות מלאה</span>
+            <span className="text-white/50 text-sm">פרטיות מלאה</span>
           </motion.div>
         </div>
       </section>
