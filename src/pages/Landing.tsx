@@ -3,6 +3,7 @@ import sageifyLogo from '@/assets/owl-logo.png';
 import heroBanner from '@/assets/hero-banner.png';
 import { Link } from 'react-router-dom';
 import { Settings } from 'lucide-react';
+import LandingFAQ from '@/components/LandingFAQ';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -10,6 +11,15 @@ const fadeUp = {
     opacity: 1,
     y: 0,
     transition: { delay: i * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+  }),
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: (i: number) => ({
+    opacity: 1,
+    scale: 1,
+    transition: { delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
