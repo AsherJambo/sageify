@@ -120,6 +120,7 @@ const Landing = () => {
         </div>
       </footer>
     </div>
+    </ContactModalProvider>
   );
 };
 
