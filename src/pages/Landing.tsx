@@ -29,6 +29,7 @@ const fadeUp = {
 
 const Landing = () => {
   return (
+    <ContactModalProvider>
     <div className="min-h-screen bg-background text-foreground">
       <LandingNav />
 
