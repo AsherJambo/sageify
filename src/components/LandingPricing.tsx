@@ -116,7 +116,7 @@ const LandingPricing = () => (
         className="text-center text-muted-foreground text-sm mt-10"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={6}
       >
-        🏢 מחפשים פתרון ארגוני? <a href="mailto:sageify.ai@gmail.com" className="text-primary font-semibold hover:underline">צרו קשר לרישוי B2B</a>
+        🏢 מחפשים פתרון ארגוני? <button onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))} className="text-primary font-semibold hover:underline">צרו קשר לרישוי B2B</button>
       </motion.p>
     </div>
   </section>

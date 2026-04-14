@@ -96,12 +96,12 @@ const LandingNav = () => {
                   {link.label}
                 </button>
               ))}
-              <a
-                href="mailto:sageify.ai@gmail.com"
+              <button
+                onClick={() => { setMobileOpen(false); document.dispatchEvent(new CustomEvent('open-contact-modal')); }}
                 className="block text-center w-full py-3 mt-2 rounded-xl bg-accent text-accent-foreground font-bold"
               >
                 בואו נתחיל
-              </a>
+              </button>
             </div>
           </motion.div>
         )}
