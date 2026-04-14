@@ -60,7 +60,7 @@ const LandingNav = () => {
             </button>
           ))}
           <button
-            onClick={() => { try { const { useContactModal } = require('@/contexts/ContactModalContext'); } catch {} document.dispatchEvent(new CustomEvent('open-contact-modal')); }}
+            onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
             className="px-5 py-2.5 rounded-xl bg-accent text-accent-foreground text-sm font-bold hover:opacity-90 transition-all duration-300 shadow-sm"
           >
             בואו נתחיל
