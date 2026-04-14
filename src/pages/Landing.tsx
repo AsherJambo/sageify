@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import sageifyLogo from '@/assets/owl-logo.png';
 import heroPremium from '@/assets/hero-premium.jpg';
 import { Link } from 'react-router-dom';
+import { ContactModalProvider, useContactModal } from '@/contexts/ContactModalContext';
 import { Settings } from 'lucide-react';
 
 import LandingNav from '@/components/LandingNav';

@@ -23,12 +23,12 @@ const LandingCTA = () => (
         <p className="text-secondary-foreground/70 text-lg mb-10 max-w-md mx-auto leading-relaxed">
           תהליך אישי שייתן לכם בהירות וכיוון
         </p>
-        <a
-          href="mailto:sageify.ai@gmail.com"
+        <button
+          onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
           className="inline-flex items-center justify-center px-12 py-4.5 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[0_8px_24px_-6px_hsl(16_72%_50%/0.3)] hover:translate-y-[-2px]"
         >
           בואו נתחיל ✨
-        </a>
+        </button>
       </div>
     </motion.div>
   </section>
