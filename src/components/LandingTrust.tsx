@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Shield, BookOpen, Users, Heart } from 'lucide-react';
+import { Shield, BookOpen, Users, Heart, Milestone } from 'lucide-react';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -11,6 +11,7 @@ const fadeUp = {
 
 const trustPoints = [
   { icon: BookOpen, title: 'מבוסס על מדע', desc: 'השאלונים מבוססים על מודלים מוכחים מפסיכולוגיה תעסוקתית — Holland, Schein, VIA ועוד' },
+  { icon: Milestone, title: 'מותאם לגיל ולשלב בחיים', desc: 'בנוי על מודלי "שלבי גשר" בחיים — חוויית משתמש, שפה ותובנות שעוצבו במיוחד עבור הגיל השלישי ומעבר הפרישה' },
   { icon: Users, title: 'נבדק עם אנשים אמיתיים', desc: 'עשרות פורשים כבר עברו את התהליך ודיווחו על בהירות חדשה לגבי הכיוון שלהם' },
   { icon: Heart, title: 'נבנה מתוך אכפתיות', desc: 'יצרנו את Sageify כי ראינו שאין כלי מותאם לגיל הפרישה — ורצינו לתקן את זה' },
   { icon: Shield, title: 'פרטיות מלאה', desc: 'המידע שלכם מוגן ומאובטח. אנחנו לא משתפים נתונים עם צד שלישי — לעולם' },
