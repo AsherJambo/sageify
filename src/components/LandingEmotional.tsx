@@ -53,13 +53,13 @@ const LandingEmotional = () => (
         ))}
       </div>
 
-      <motion.a
-        href="mailto:sageify.ai@gmail.com"
+      <motion.button
+        onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
         className="inline-flex items-center justify-center mt-14 px-10 py-4 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[var(--shadow-elevated)] hover:translate-y-[-2px]"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={6}
       >
         גלו את הכיוון שלכם
-      </motion.a>
+      </motion.button>
     </div>
   </section>
 );

@@ -59,12 +59,12 @@ const LandingNav = () => {
               {link.label}
             </button>
           ))}
-          <a
-            href="mailto:sageify.ai@gmail.com"
+          <button
+            onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
             className="px-5 py-2.5 rounded-xl bg-accent text-accent-foreground text-sm font-bold hover:opacity-90 transition-all duration-300 shadow-sm"
           >
             בואו נתחיל
-          </a>
+          </button>
         </nav>
 
         {/* Mobile hamburger */}
@@ -96,12 +96,12 @@ const LandingNav = () => {
                   {link.label}
                 </button>
               ))}
-              <a
-                href="mailto:sageify.ai@gmail.com"
+              <button
+                onClick={() => { setMobileOpen(false); document.dispatchEvent(new CustomEvent('open-contact-modal')); }}
                 className="block text-center w-full py-3 mt-2 rounded-xl bg-accent text-accent-foreground font-bold"
               >
                 בואו נתחיל
-              </a>
+              </button>
             </div>
           </motion.div>
         )}

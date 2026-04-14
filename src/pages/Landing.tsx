@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import sageifyLogo from '@/assets/owl-logo.png';
 import heroPremium from '@/assets/hero-premium.jpg';
 import { Link } from 'react-router-dom';
+import { ContactModalProvider } from '@/contexts/ContactModalContext';
 import { Settings } from 'lucide-react';
 
 import LandingNav from '@/components/LandingNav';
@@ -28,6 +29,7 @@ const fadeUp = {
 
 const Landing = () => {
   return (
+    <ContactModalProvider>
     <div className="min-h-screen bg-background text-foreground">
       <LandingNav />
 
@@ -76,12 +78,12 @@ const Landing = () => {
             className="flex flex-col items-center gap-5"
             initial="hidden" animate="visible" variants={fadeUp} custom={3}
           >
-            <a
-              href="mailto:sageify.ai@gmail.com"
+            <button
+              onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
               className="inline-flex items-center justify-center px-12 py-4.5 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[0_8px_24px_-6px_hsl(16_72%_50%/0.35)] hover:shadow-[0_12px_32px_-6px_hsl(16_72%_50%/0.45)] hover:translate-y-[-2px]"
             >
               בואו נתחיל את המסע ✨
-            </a>
+            </button>
             <span className="text-white/40 text-sm tracking-wide">פרטיות מלאה</span>
           </motion.div>
         </div>
@@ -118,6 +120,7 @@ const Landing = () => {
         </div>
       </footer>
     </div>
+    </ContactModalProvider>
   );
 };
 

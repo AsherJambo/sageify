@@ -81,12 +81,12 @@ const LandingResultPreview = () => (
         className="text-center mt-12"
         initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={8}
       >
-        <a
-          href="mailto:sageify.ai@gmail.com"
+        <button
+          onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
           className="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[var(--shadow-elevated)] hover:translate-y-[-2px]"
         >
           רוצים לקבל את הדוח שלכם? צרו קשר
-        </a>
+        </button>
       </motion.div>
     </div>
   </section>
