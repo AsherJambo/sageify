@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Shield, BookOpen, Users, Heart } from 'lucide-react';
+import { Shield, BookOpen, Users, Heart, Milestone } from 'lucide-react';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
