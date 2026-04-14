@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import ContactFormModal from '@/components/ContactFormModal';
 
 interface ContactModalContextValue {
@@ -15,6 +15,13 @@ export const useContactModal = () => {
 
 export const ContactModalProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setOpen(true);
+    document.addEventListener('open-contact-modal', handler);
+    return () => document.removeEventListener('open-contact-modal', handler);
+  }, []);
+
   return (
     <ContactModalContext.Provider value={{ openContactModal: () => setOpen(true) }}>
       {children}
