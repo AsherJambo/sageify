@@ -1,13 +1,5 @@
 import { motion } from 'framer-motion';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.14, duration: 0.9, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
-
 const messages = [
   'אחרי עשרות שנים של עשייה, ההפסקה הפתאומית יכולה להרגיש מבלבלת',
   'זה טבעי לשאול "מה עכשיו?" — רוב הפורשים מרגישים כך',
@@ -15,51 +7,63 @@ const messages = [
 ];
 
 const LandingEmotional = () => (
-  <section className="py-24 md:py-32 relative overflow-hidden">
-    <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
+  <section className="py-20 md:py-28 relative overflow-hidden">
+    <div className="max-w-2xl mx-auto px-6 md:px-8 relative z-10">
       <motion.p
-        className="text-sm text-primary font-bold mb-4 tracking-widest uppercase"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+        className="text-sm text-primary font-bold mb-5 tracking-widest uppercase text-right"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 1 }}
       >
         אתם לא לבד
       </motion.p>
       <motion.h2
-        className="text-3xl md:text-[2.75rem] font-bold mb-6 leading-tight"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
+        className="text-3xl md:text-[2.6rem] font-bold mb-5 leading-tight text-right"
+        initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
       >
         ההרגשה הזו מוכרת לכולם
       </motion.h2>
       <motion.p
-        className="text-muted-foreground text-lg md:text-xl leading-relaxed mb-14 max-w-xl mx-auto"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}
+        className="text-muted-foreground text-lg md:text-xl leading-[1.85] mb-16 text-right"
+        initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
       >
         פרישה היא לא סוף — היא התחלה. אבל בלי מצפן, קל ללכת לאיבוד.
         <br />
         הגיע הזמן למצוא את הכיוון שמתאים בדיוק לכם.
       </motion.p>
 
-      <div className="space-y-4">
+      {/* Flowing prose-like quotes instead of identical cards */}
+      <div className="space-y-8 md:space-y-10 border-r-2 border-primary/20 pr-8 md:pr-10">
         {messages.map((msg, i) => (
-          <motion.div
+          <motion.p
             key={i}
-            className="bg-card border border-border rounded-2xl px-8 py-6 text-right shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow duration-500"
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 3}
+            className="text-foreground text-lg md:text-xl leading-[1.85] relative"
+            initial={{ opacity: 0, x: 12 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 + i * 0.15, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="text-foreground text-lg leading-relaxed flex items-start gap-3">
-              <span className="text-primary text-xl mt-0.5 shrink-0">✦</span>
-              {msg}
-            </p>
-          </motion.div>
+            <span className="absolute -right-[calc(2rem+5px)] md:-right-[calc(2.5rem+5px)] top-2 w-2.5 h-2.5 rounded-full bg-primary/40" />
+            {msg}
+          </motion.p>
         ))}
       </div>
 
-      <motion.button
-        onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
-        className="inline-flex items-center justify-center mt-14 px-10 py-4 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[var(--shadow-elevated)] hover:translate-y-[-2px]"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={6}
+      <motion.div
+        className="mt-16 text-right"
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.7, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
-        גלו את הכיוון שלכם
-      </motion.button>
+        <button
+          onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
+          className="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[var(--shadow-elevated)] hover:translate-y-[-2px]"
+        >
+          גלו את הכיוון שלכם
+        </button>
+      </motion.div>
     </div>
   </section>
 );

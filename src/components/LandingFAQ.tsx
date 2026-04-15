@@ -15,12 +15,11 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
   const [open, setOpen] = useState(false);
   return (
     <motion.div
-      className="border-b border-border last:border-b-0"
-      initial="hidden" whileInView="visible" viewport={{ once: true }}
-      variants={{
-        hidden: { opacity: 0, y: 16 },
-        visible: { opacity: 1, y: 0, transition: { delay: index * 0.08, duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
-      }}
+      className="border-b border-border/50 last:border-b-0"
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.06, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
       <button
         onClick={() => setOpen(!open)}
@@ -44,7 +43,7 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <p className="pb-7 text-muted-foreground text-base leading-relaxed pr-0 md:pr-8">
+            <p className="pb-7 text-muted-foreground text-base leading-[1.8] pr-0 md:pr-8">
               {a}
             </p>
           </motion.div>
@@ -55,10 +54,10 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
 };
 
 const LandingFAQ = () => (
-  <section className="max-w-2xl mx-auto px-6 py-24 md:py-32">
+  <section className="max-w-2xl mx-auto px-6 py-20 md:py-28">
     <motion.h2
-      className="text-3xl md:text-[2.75rem] font-bold text-center mb-5 leading-tight"
-      initial={{ opacity: 0, y: 20 }}
+      className="text-3xl md:text-[2.5rem] font-bold text-right mb-4 leading-tight"
+      initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -66,8 +65,8 @@ const LandingFAQ = () => (
       שאלות נפוצות
     </motion.h2>
     <motion.p
-      className="text-muted-foreground text-center text-lg mb-14 max-w-md mx-auto"
-      initial={{ opacity: 0, y: 16 }}
+      className="text-muted-foreground text-right text-lg mb-12"
+      initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -75,7 +74,8 @@ const LandingFAQ = () => (
       כל מה שצריך לדעת לפני שמתחילים
     </motion.p>
 
-    <div className="border border-border rounded-2xl bg-card px-7 md:px-9 shadow-[var(--shadow-card)]">
+    {/* No wrapping card — just clean dividers */}
+    <div className="divide-y divide-border/50">
       {faqs.map((faq, i) => (
         <FAQItem key={i} q={faq.q} a={faq.a} index={i} />
       ))}

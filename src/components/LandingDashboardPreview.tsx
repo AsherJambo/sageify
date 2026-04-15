@@ -1,13 +1,5 @@
 import { motion } from 'framer-motion';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.14, duration: 0.9, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
-
 const DonutChart = () => {
   const segments = [
     { label: 'התנדבות', pct: 40, color: 'hsl(105 16% 57%)' },
@@ -55,26 +47,30 @@ const DonutChart = () => {
 };
 
 const LandingDashboardPreview = () => (
-  <section className="relative py-24 md:py-36 overflow-hidden">
-    <div className="max-w-5xl mx-auto px-6">
-      <motion.p className="text-sm font-semibold text-primary tracking-widest uppercase text-center mb-4"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
+  <section className="relative py-20 md:py-28 overflow-hidden">
+    <div className="max-w-4xl mx-auto px-6">
+      <motion.p className="text-sm font-semibold text-primary tracking-widest uppercase text-right mb-4"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 0.8 }}>
         הפלטפורמה
       </motion.p>
-      <motion.h2 className="text-3xl md:text-[2.75rem] font-bold text-center mb-5 leading-tight"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}>
+      <motion.h2 className="text-3xl md:text-[2.6rem] font-bold text-right mb-5 leading-tight"
+        initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.1 }}>
         מפת הדרכים האישית שלכם
       </motion.h2>
-      <motion.p className="text-muted-foreground text-center text-lg mb-16 max-w-lg mx-auto"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}>
+      <motion.p className="text-muted-foreground text-right text-lg mb-14"
+        initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.2 }}>
         כל התובנות, ההתקדמות וההמלצות — במקום אחד
       </motion.p>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Roadmap Progress */}
+      {/* Staggered: progress card wider on top, donut card offset below */}
+      <div className="space-y-6">
         <motion.div
-          className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]"
-          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
+          className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)] md:max-w-xl"
+          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          transition={{ duration: 0.9, delay: 0.25 }}
         >
           <h3 className="text-lg font-bold mb-6 font-display">התקדמות במסע</h3>
           <div className="space-y-5">
@@ -107,10 +103,10 @@ const LandingDashboardPreview = () => (
           </div>
         </motion.div>
 
-        {/* Activity Distribution */}
         <motion.div
-          className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]"
-          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={4}
+          className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)] md:max-w-md md:mr-auto"
+          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          transition={{ duration: 0.9, delay: 0.4 }}
         >
           <h3 className="text-lg font-bold mb-6 font-display">התפלגות פעילויות מומלצות</h3>
           <DonutChart />
