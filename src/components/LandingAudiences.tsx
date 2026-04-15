@@ -1,13 +1,5 @@
 import { motion } from 'framer-motion';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.12, duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
-
 const audiences = [
   { badge: 'B2B', title: 'ארגונים ומעסיקים', desc: 'חבילת Offboarding – ליווי עובדים פורשים עם כלי אבחון מקצועי ותובנות אגרגטיביות' },
   { badge: 'B2C', title: 'פורשים ומתכננים פרישה', desc: 'פורטל אבחון אישי – מחפשים תכלית ועיסוק משמעותי בפרק הבא של החיים' },
@@ -15,29 +7,48 @@ const audiences = [
 ];
 
 const LandingAudiences = () => (
-  <section className="py-24 md:py-32 relative overflow-hidden">
-    <div className="max-w-5xl mx-auto px-6">
+  <section className="py-20 md:py-28 relative overflow-hidden">
+    <div className="max-w-4xl mx-auto px-6">
       <motion.h2
-        className="text-3xl md:text-[2.75rem] font-bold text-center mb-16 leading-tight"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+        className="text-3xl md:text-[2.6rem] font-bold text-center mb-16 leading-tight"
+        initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 1 }}
       >
         למי זה מתאים
       </motion.h2>
 
-      <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-        {audiences.map((a, i) => (
-          <motion.div
-            key={i}
-            className="border border-border bg-card rounded-2xl p-8 text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500 hover:translate-y-[-3px]"
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}
-          >
-            <span className="inline-block px-4 py-1.5 rounded-full border border-primary/25 text-primary text-xs font-bold mb-6 tracking-widest uppercase">
-              {a.badge}
+      {/* Asymmetric: first item wide, next two side by side */}
+      <div className="space-y-6">
+        <motion.div
+          className="border border-border bg-card rounded-2xl p-8 md:p-10 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500 md:max-w-2xl md:mx-auto"
+          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          transition={{ duration: 0.9, delay: 0.15 }}
+        >
+          <div className="flex items-center gap-4 mb-4">
+            <span className="inline-block px-3.5 py-1 rounded-full border border-primary/25 text-primary text-xs font-bold tracking-widest uppercase">
+              {audiences[0].badge}
             </span>
-            <h3 className="text-xl font-bold mb-3 font-serif">{a.title}</h3>
-            <p className="text-muted-foreground leading-relaxed text-base">{a.desc}</p>
-          </motion.div>
-        ))}
+            <h3 className="text-xl font-bold font-serif">{audiences[0].title}</h3>
+          </div>
+          <p className="text-muted-foreground leading-relaxed text-base md:text-lg">{audiences[0].desc}</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {audiences.slice(1).map((a, i) => (
+            <motion.div
+              key={i}
+              className="border border-border bg-card rounded-2xl p-7 md:p-8 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500"
+              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              transition={{ duration: 0.9, delay: 0.3 + i * 0.12 }}
+            >
+              <span className="inline-block px-3.5 py-1 rounded-full border border-primary/25 text-primary text-xs font-bold mb-4 tracking-widest uppercase">
+                {a.badge}
+              </span>
+              <h3 className="text-lg font-bold mb-2 font-serif">{a.title}</h3>
+              <p className="text-muted-foreground leading-relaxed text-base">{a.desc}</p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
