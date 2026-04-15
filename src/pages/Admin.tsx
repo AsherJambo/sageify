@@ -11,6 +11,7 @@ import AdminOpportunityEnricher from '@/components/AdminOpportunityEnricher';
 import AdminUnifiedInsights from '@/components/AdminUnifiedInsights';
 import { Sparkles, BarChart3, Search, Database, Building2 } from 'lucide-react';
 import AdminOrganizations from '@/components/AdminOrganizations';
+import AdminContactSubmissions from '@/components/AdminContactSubmissions';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
@@ -415,7 +416,7 @@ const Admin = () => {
       </div>
 
       <Tabs defaultValue="tokens" className="space-y-6">
-        <TabsList className="flex flex-col md:grid md:grid-cols-4 w-full h-auto gap-2 p-1">
+        <TabsList className="flex flex-col md:grid md:grid-cols-5 w-full h-auto gap-2 p-1">
           <TabsTrigger value="tokens" className="gap-2 w-full">
             📋 ניהול קישורים
           </TabsTrigger>
@@ -430,6 +431,9 @@ const Admin = () => {
           <TabsTrigger value="enrichment" className="gap-2 w-full">
             <Search className="w-4 h-4" />
             העשרת מאגר
+          </TabsTrigger>
+          <TabsTrigger value="contacts" className="gap-2 w-full">
+            ✉️ פניות
           </TabsTrigger>
         </TabsList>
 
@@ -594,6 +598,10 @@ const Admin = () => {
 
         <TabsContent value="enrichment">
           <AdminOpportunityEnricher adminPassword={storedPassword} />
+        </TabsContent>
+
+        <TabsContent value="contacts">
+          <AdminContactSubmissions />
         </TabsContent>
       </Tabs>
     </div>

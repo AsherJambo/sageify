@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, CheckCircle2, Loader2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
 
 const contactSchema = z.object({
@@ -39,9 +40,18 @@ const ContactFormModal = ({ open, onClose }: ContactFormModalProps) => {
       return;
     }
     setStatus('sending');
-    // Simulate submission — replace with real endpoint later
-    await new Promise((r) => setTimeout(r, 1200));
-    setStatus('success');
+    try {
+      const { error } = await supabase.from('contact_submissions').insert({
+        name: result.data.name,
+        email: result.data.email,
+        message: result.data.message,
+      });
+      if (error) throw error;
+      setStatus('success');
+    } catch (err) {
+      console.error('Contact form error:', err);
+      setStatus('idle');
+    }
   };
 
   const handleClose = () => {
