@@ -9,40 +9,32 @@ const trustPoints = [
 ];
 
 const LandingTrust = () => (
-  <section className="py-24 md:py-32">
+  <section className="py-16 md:py-24 bg-muted/8">
+    {/* Different width — medium, between narrow and wide */}
     <div className="max-w-2xl mx-auto px-6">
-      <motion.p
-        className="text-sm text-primary font-semibold text-right mb-3 tracking-wide"
-        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+      <motion.h2
+        className="text-xl md:text-2xl font-bold text-right mb-10 leading-tight"
+        initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.9 }}
       >
         למה לסמוך עלינו
-      </motion.p>
-      <motion.h2
-        className="text-2xl md:text-[2.25rem] font-bold text-right mb-14 leading-tight"
-        initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 0.9, delay: 0.1 }}
-      >
-        מערכת שנבנתה בשבילכם
       </motion.h2>
 
-      <div className="space-y-0">
-        {trustPoints.map((t, i) => {
-          const isLast = i === trustPoints.length - 1;
-          return (
-            <motion.div
-              key={i}
-              className={`py-6 ${!isLast ? 'border-b border-border/40' : ''}`}
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.15 + i * 0.08, duration: 0.7 }}
-            >
-              <h3 className="font-bold text-base mb-1 font-display">{t.title}</h3>
-              <p className="text-muted-foreground text-[0.95rem] leading-[1.8]">{t.desc}</p>
-            </motion.div>
-          );
-        })}
+      {/* Two-column on desktop to break the single-column monotony */}
+      <div className="grid md:grid-cols-2 gap-x-10 gap-y-6">
+        {trustPoints.map((t, i) => (
+          <motion.div
+            key={i}
+            className={i === trustPoints.length - 1 ? 'md:col-span-2 md:max-w-sm' : ''}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 + i * 0.07, duration: 0.7 }}
+          >
+            <h3 className="font-bold text-sm mb-0.5 font-display">{t.title}</h3>
+            <p className="text-muted-foreground text-sm leading-[1.75]">{t.desc}</p>
+          </motion.div>
+        ))}
       </div>
     </div>
   </section>

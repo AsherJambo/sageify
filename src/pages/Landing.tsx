@@ -24,28 +24,23 @@ const Landing = () => {
     <div className="min-h-screen bg-background text-foreground">
       <LandingNav />
 
-      {/* Hero — asymmetric, text left-aligned (RTL = right) */}
+      {/* Hero */}
       <section className="relative w-full overflow-hidden">
         <div className="absolute inset-0">
           <img src={heroPremium} alt="" className="w-full h-full object-cover" width={1920} height={960} />
           <div className="absolute inset-0 bg-[hsl(210_12%_16%/0.82)]" />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-6 pt-32 pb-28 md:pt-44 md:pb-40">
-          <div className="max-w-2xl">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <img src={sageifyLogo} alt="Sageify Logo" className="w-16 h-16 md:w-20 md:h-20 mb-8 rounded-xl" />
+        <div className="relative z-10 max-w-5xl mx-auto px-6 pt-28 pb-24 md:pt-40 md:pb-36">
+          <div className="max-w-lg">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
+              <img src={sageifyLogo} alt="Sageify Logo" className="w-14 h-14 md:w-16 md:h-16 mb-7 rounded-lg" />
             </motion.div>
 
             <motion.h1
-              className="text-3xl md:text-[3.25rem] font-bold text-white mb-6 leading-[1.15] tracking-tight"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="text-2xl md:text-[2.75rem] font-bold text-white mb-5 leading-[1.2] tracking-tight"
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.1 }}
             >
               הקריירה מסתיימת.
               <br />
@@ -53,10 +48,9 @@ const Landing = () => {
             </motion.h1>
 
             <motion.p
-              className="text-base md:text-lg text-white/75 max-w-lg mb-10 leading-[1.8]"
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="text-sm md:text-base text-white/65 max-w-md mb-8 leading-[1.85]"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              transition={{ duration: 0.9, delay: 0.25 }}
             >
               Sageify משלב פסיכולוגיה תעסוקתית, תפיסות "שלב הגשר בחיים"
               {' '}במעבר לשלב הפרישה ובינה מלאכותית
@@ -65,24 +59,21 @@ const Landing = () => {
             </motion.p>
 
             <motion.div
-              className="flex items-center gap-4"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
             >
               <button
                 onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
-                className="px-8 py-3.5 rounded-lg bg-accent text-accent-foreground font-bold text-base hover:opacity-90 transition-opacity duration-300"
+                className="px-7 py-3 rounded-lg bg-accent text-accent-foreground font-bold text-sm hover:opacity-90 transition-opacity duration-300"
               >
                 בואו נתחיל את המסע
               </button>
-              <span className="text-white/35 text-sm">פרטיות מלאה</span>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Sections — varied spacing */}
+      {/* Each section at different widths and spacings — no uniform rhythm */}
       <LandingEmotional />
       <div id="dashboard"><LandingDashboardPreview /></div>
       <LandingPillars />
@@ -95,18 +86,16 @@ const Landing = () => {
       <LandingFAQ />
       <LandingCTA />
 
-      {/* Footer — minimal */}
-      <footer className="py-10 px-6">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <img src={sageifyLogo} alt="Sageify" className="w-7 h-7 rounded-lg" />
-            <span className="font-display font-bold text-sm tracking-wide">Sageify</span>
+      <footer className="py-8 px-6 border-t border-border/20">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <img src={sageifyLogo} alt="Sageify" className="w-6 h-6 rounded-md" />
+            <span className="font-display font-bold text-sm">Sageify</span>
           </div>
-
-          <div className="flex items-center gap-6 text-muted-foreground text-sm">
+          <div className="flex items-center gap-5 text-muted-foreground text-xs">
             <span>© {new Date().getFullYear()} Sageify</span>
-            <Link to="/admin-panel" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm">
-              <Settings size={13} />
+            <Link to="/admin-panel" className="inline-flex items-center gap-1 hover:text-foreground transition-colors text-xs">
+              <Settings size={11} />
               ניהול
             </Link>
           </div>
