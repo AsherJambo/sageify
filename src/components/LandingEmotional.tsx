@@ -7,59 +7,57 @@ const messages = [
 ];
 
 const LandingEmotional = () => (
-  <section className="py-20 md:py-28 relative overflow-hidden">
-    <div className="max-w-2xl mx-auto px-6 md:px-8 relative z-10">
+  <section className="pt-24 pb-16 md:pt-32 md:pb-20">
+    <div className="max-w-2xl mx-auto px-6 md:px-8">
       <motion.p
-        className="text-sm text-primary font-bold mb-5 tracking-widest uppercase text-right"
+        className="text-sm text-primary font-semibold mb-3 tracking-wide text-right"
         initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 0.8 }}
       >
         אתם לא לבד
       </motion.p>
       <motion.h2
-        className="text-3xl md:text-[2.6rem] font-bold mb-5 leading-tight text-right"
-        initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        className="text-2xl md:text-[2.25rem] font-bold mb-4 leading-tight text-right"
+        initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.9, delay: 0.1 }}
       >
         ההרגשה הזו מוכרת לכולם
       </motion.h2>
       <motion.p
-        className="text-muted-foreground text-lg md:text-xl leading-[1.85] mb-16 text-right"
-        initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="text-muted-foreground text-base md:text-lg leading-[1.85] mb-12 text-right"
+        initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.9, delay: 0.2 }}
       >
         פרישה היא לא סוף — היא התחלה. אבל בלי מצפן, קל ללכת לאיבוד.
         <br />
         הגיע הזמן למצוא את הכיוון שמתאים בדיוק לכם.
       </motion.p>
 
-      {/* Flowing prose-like quotes instead of identical cards */}
-      <div className="space-y-8 md:space-y-10 border-r-2 border-primary/20 pr-8 md:pr-10">
+      <div className="space-y-6 border-r border-primary/15 pr-6 md:pr-8">
         {messages.map((msg, i) => (
           <motion.p
             key={i}
-            className="text-foreground text-lg md:text-xl leading-[1.85] relative"
-            initial={{ opacity: 0, x: 12 }}
+            className="text-foreground/85 text-base md:text-[1.05rem] leading-[1.85]"
+            initial={{ opacity: 0, x: 8 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3 + i * 0.15, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ delay: 0.3 + i * 0.12, duration: 0.8 }}
           >
-            <span className="absolute -right-[calc(2rem+5px)] md:-right-[calc(2.5rem+5px)] top-2 w-2.5 h-2.5 rounded-full bg-primary/40" />
             {msg}
           </motion.p>
         ))}
       </div>
 
       <motion.div
-        className="mt-16 text-right"
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        className="mt-12 text-right"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ delay: 0.7, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ delay: 0.6, duration: 0.8 }}
       >
         <button
           onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
-          className="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[var(--shadow-elevated)] hover:translate-y-[-2px]"
+          className="px-8 py-3.5 rounded-lg bg-accent text-accent-foreground font-bold text-base hover:opacity-90 transition-opacity duration-300"
         >
           גלו את הכיוון שלכם
         </button>

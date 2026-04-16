@@ -1,13 +1,5 @@
 import { motion } from 'framer-motion';
-import { Check, Sparkles } from 'lucide-react';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.14, duration: 0.9, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
+import { Check } from 'lucide-react';
 
 const plans = [
   {
@@ -44,55 +36,59 @@ const plans = [
 ];
 
 const LandingPricing = () => (
-  <section className="py-24 md:py-36">
-    <div className="max-w-4xl mx-auto px-6">
-      <motion.p className="text-sm font-semibold text-primary tracking-widest uppercase text-center mb-4"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
+  <section className="py-20 md:py-32">
+    <div className="max-w-3xl mx-auto px-6">
+      <motion.p className="text-sm font-semibold text-primary tracking-wide text-right mb-3"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 0.8 }}>
         מסלולים
       </motion.p>
-      <motion.h2 className="text-3xl md:text-[2.75rem] font-bold text-center mb-5 leading-tight"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}>
+      <motion.h2 className="text-2xl md:text-[2.25rem] font-bold text-right mb-4 leading-tight"
+        initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.9, delay: 0.1 }}>
         בחרו את המסלול שלכם
       </motion.h2>
-      <motion.p className="text-muted-foreground text-center text-lg mb-16 max-w-md mx-auto"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}>
+      <motion.p className="text-muted-foreground text-right text-base mb-12"
+        initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.9, delay: 0.2 }}>
         תשלום חד-פעמי. בלי מנויים. בלי הפתעות.
       </motion.p>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      {/* Side by side but NOT identical — different visual weight */}
+      <div className="flex flex-col md:flex-row gap-5 md:items-start">
         {plans.map((plan, i) => (
           <motion.div
             key={i}
-            className={`relative rounded-2xl border p-8 md:p-10 shadow-[var(--shadow-card)] transition-all duration-500 ${
+            className={`flex-1 border rounded-lg p-7 md:p-8 ${
               plan.highlighted
-                ? 'border-accent/40 bg-card shadow-[var(--shadow-elevated)] ring-1 ring-accent/10'
-                : 'border-border bg-card'
+                ? 'border-accent/30 bg-card'
+                : 'border-border bg-card/50'
             }`}
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 3}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 + i * 0.1 }}
           >
             {plan.highlighted && (
-              <div className="absolute -top-3.5 right-8 px-4 py-1 rounded-full bg-accent text-accent-foreground text-xs font-bold flex items-center gap-1.5">
-                <Sparkles size={12} />
-                מומלץ
-              </div>
+              <span className="inline-block text-[0.65rem] font-bold text-accent tracking-wide uppercase mb-3">מומלץ</span>
             )}
 
-            <div className="mb-6">
-              <span className="text-xs font-semibold text-muted-foreground tracking-wide">{plan.badge}</span>
-              <h3 className="text-2xl font-bold font-display mt-1">{plan.nameHe}</h3>
-              <p className="text-sm text-muted-foreground mt-1">{plan.name}</p>
+            <div className="mb-5">
+              <span className="text-xs text-muted-foreground">{plan.badge}</span>
+              <h3 className="text-xl font-bold font-display mt-0.5">{plan.nameHe}</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">{plan.name}</p>
             </div>
 
-            <div className="flex items-baseline gap-1 mb-2">
-              <span className="text-4xl md:text-5xl font-bold">{plan.price}</span>
-              <span className="text-lg text-muted-foreground">₪</span>
+            <div className="flex items-baseline gap-1 mb-1.5">
+              <span className="text-3xl font-bold">{plan.price}</span>
+              <span className="text-base text-muted-foreground">₪</span>
             </div>
-            <p className="text-sm text-muted-foreground mb-8">{plan.desc}</p>
+            <p className="text-sm text-muted-foreground mb-6">{plan.desc}</p>
 
-            <ul className="space-y-3.5 mb-8">
+            <ul className="space-y-2.5 mb-7">
               {plan.features.map((f, j) => (
-                <li key={j} className="flex items-start gap-3 text-sm">
-                  <Check size={16} className="text-primary mt-0.5 shrink-0" />
+                <li key={j} className="flex items-start gap-2.5 text-sm">
+                  <Check size={14} className="text-primary mt-0.5 shrink-0" />
                   <span>{f}</span>
                 </li>
               ))}
@@ -100,10 +96,10 @@ const LandingPricing = () => (
 
             <button
               onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
-              className={`block text-center w-full py-4 rounded-xl font-bold text-base transition-all duration-500 ${
+              className={`block text-center w-full py-3 rounded-lg font-bold text-sm transition-opacity duration-300 ${
                 plan.highlighted
-                  ? 'bg-accent text-accent-foreground hover:opacity-90 shadow-sm'
-                  : 'bg-muted text-foreground hover:bg-muted-foreground/10'
+                  ? 'bg-accent text-accent-foreground hover:opacity-90'
+                  : 'bg-muted text-foreground hover:opacity-80'
               }`}
             >
               בואו נתחיל
@@ -113,10 +109,11 @@ const LandingPricing = () => (
       </div>
 
       <motion.p
-        className="text-center text-muted-foreground text-sm mt-10"
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={6}
+        className="text-right text-muted-foreground text-sm mt-8"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.4 }}
       >
-        🏢 מחפשים פתרון ארגוני? <button onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))} className="text-primary font-semibold hover:underline">צרו קשר לרישוי B2B</button>
+        מחפשים פתרון ארגוני? <button onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))} className="text-primary font-semibold hover:underline">צרו קשר לרישוי B2B</button>
       </motion.p>
     </div>
   </section>

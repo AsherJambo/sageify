@@ -27,33 +27,32 @@ const LandingNav = () => {
 
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${
         scrolled
-          ? 'bg-card/95 backdrop-blur-md shadow-[var(--shadow-card)] border-b border-border/40'
+          ? 'bg-background/95 backdrop-blur-sm border-b border-border/30'
           : 'bg-transparent'
       }`}
-      initial={{ y: -80 }}
+      initial={{ y: -60 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.5 }}
     >
-      <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-16 md:h-[72px]">
-        <div className="flex items-center gap-2.5">
-          <img src={sageifyLogo} alt="Sageify" className="w-9 h-9 rounded-xl" />
-          <span className={`font-display font-bold text-lg tracking-wide transition-colors duration-500 ${
+      <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14 md:h-16">
+        <div className="flex items-center gap-2">
+          <img src={sageifyLogo} alt="Sageify" className="w-8 h-8 rounded-lg" />
+          <span className={`font-display font-bold text-base tracking-wide transition-colors duration-400 ${
             scrolled ? 'text-foreground' : 'text-white'
           }`}>
             Sageify
           </span>
         </div>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-7">
           {navLinks.map((link) => (
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}
-              className={`text-sm font-semibold transition-colors duration-300 hover:text-primary ${
-                scrolled ? 'text-foreground' : 'text-white/80 hover:text-white'
+              className={`text-sm font-medium transition-colors duration-300 ${
+                scrolled ? 'text-foreground/70 hover:text-foreground' : 'text-white/70 hover:text-white'
               }`}
             >
               {link.label}
@@ -61,44 +60,42 @@ const LandingNav = () => {
           ))}
           <button
             onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
-            className="px-5 py-2.5 rounded-xl bg-accent text-accent-foreground text-sm font-bold hover:opacity-90 transition-all duration-300 shadow-sm"
+            className="px-5 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:opacity-90 transition-opacity duration-300"
           >
             בואו נתחיל
           </button>
         </nav>
 
-        {/* Mobile hamburger */}
         <button
-          className={`md:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-foreground' : 'text-white'}`}
+          className={`md:hidden p-2 ${scrolled ? 'text-foreground' : 'text-white'}`}
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="md:hidden bg-card border-t border-border/40 shadow-lg"
+            className="md:hidden bg-background border-t border-border/30"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
           >
-            <div className="px-6 py-4 space-y-2">
+            <div className="px-6 py-3 space-y-1">
               {navLinks.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => scrollTo(link.href)}
-                  className="block w-full text-right py-3 text-base font-semibold text-foreground hover:text-primary transition-colors"
+                  className="block w-full text-right py-2.5 text-base font-medium text-foreground hover:text-primary transition-colors"
                 >
                   {link.label}
                 </button>
               ))}
               <button
                 onClick={() => { setMobileOpen(false); document.dispatchEvent(new CustomEvent('open-contact-modal')); }}
-                className="block text-center w-full py-3 mt-2 rounded-xl bg-accent text-accent-foreground font-bold"
+                className="block text-center w-full py-2.5 mt-1 rounded-lg bg-accent text-accent-foreground font-bold text-sm"
               >
                 בואו נתחיל
               </button>

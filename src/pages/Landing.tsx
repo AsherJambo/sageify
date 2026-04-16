@@ -18,78 +18,71 @@ import LandingTeam from '@/components/LandingTeam';
 import LandingFAQ from '@/components/LandingFAQ';
 import LandingCTA from '@/components/LandingCTA';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.18, duration: 1, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
-
 const Landing = () => {
   return (
     <ContactModalProvider>
     <div className="min-h-screen bg-background text-foreground">
       <LandingNav />
 
-      {/* Hero */}
+      {/* Hero — asymmetric, text left-aligned (RTL = right) */}
       <section className="relative w-full overflow-hidden">
         <div className="absolute inset-0">
           <img src={heroPremium} alt="" className="w-full h-full object-cover" width={1920} height={960} />
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(210_12%_16%/0.88)] via-[hsl(210_12%_16%/0.72)] to-background" />
+          <div className="absolute inset-0 bg-[hsl(210_12%_16%/0.82)]" />
         </div>
 
-        {/* Organic wave */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 md:h-32">
-          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" className="w-full h-full">
-            <path d="M0,40 C360,100 720,0 1080,60 C1260,90 1380,50 1440,40 L1440,120 L0,120 Z" fill="hsl(var(--background))" />
-          </svg>
-        </div>
-
-        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-36 pb-32 md:pt-48 md:pb-44 text-center">
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
-            <img src={sageifyLogo} alt="Sageify Logo" className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-10 drop-shadow-xl rounded-2xl" />
-          </motion.div>
-
-          <motion.h1
-            className="text-4xl md:text-[3.75rem] font-bold text-white mb-7 leading-[1.12] tracking-tight"
-            initial="hidden" animate="visible" variants={fadeUp} custom={1}
-          >
-            הקריירה מסתיימת.
-            <br />
-            <span className="text-[hsl(105_20%_72%)]">המשמעות רק מתחילה.</span>
-          </motion.h1>
-
-          <motion.p
-            className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light"
-            initial="hidden" animate="visible" variants={fadeUp} custom={2}
-          >
-            Sageify משלב פסיכולוגיה תעסוקתית, תפיסות "שלב הגשר בחיים"
-            <br className="hidden md:block" />
-            במעבר לשלב הפרישה ובינה מלאכותית
-            <br className="hidden md:block" />
-            כדי להפוך את חוסר הוודאות של הפרישה למסע מובנה
-            <br className="hidden md:block" />
-            לעבר הזהות הבאה שלכם
-          </motion.p>
-
-          <motion.div
-            className="flex flex-col items-center gap-5"
-            initial="hidden" animate="visible" variants={fadeUp} custom={3}
-          >
-            <button
-              onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
-              className="inline-flex items-center justify-center px-12 py-4.5 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[0_8px_24px_-6px_hsl(16_72%_50%/0.35)] hover:shadow-[0_12px_32px_-6px_hsl(16_72%_50%/0.45)] hover:translate-y-[-2px]"
+        <div className="relative z-10 max-w-5xl mx-auto px-6 pt-32 pb-28 md:pt-44 md:pb-40">
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              בואו נתחיל את המסע ✨
-            </button>
-            <span className="text-white/40 text-sm tracking-wide">פרטיות מלאה</span>
-          </motion.div>
+              <img src={sageifyLogo} alt="Sageify Logo" className="w-16 h-16 md:w-20 md:h-20 mb-8 rounded-xl" />
+            </motion.div>
+
+            <motion.h1
+              className="text-3xl md:text-[3.25rem] font-bold text-white mb-6 leading-[1.15] tracking-tight"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            >
+              הקריירה מסתיימת.
+              <br />
+              <span className="text-[hsl(105_20%_72%)]">המשמעות רק מתחילה.</span>
+            </motion.h1>
+
+            <motion.p
+              className="text-base md:text-lg text-white/75 max-w-lg mb-10 leading-[1.8]"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            >
+              Sageify משלב פסיכולוגיה תעסוקתית, תפיסות "שלב הגשר בחיים"
+              {' '}במעבר לשלב הפרישה ובינה מלאכותית
+              {' '}כדי להפוך את חוסר הוודאות של הפרישה למסע מובנה
+              {' '}לעבר הזהות הבאה שלכם
+            </motion.p>
+
+            <motion.div
+              className="flex items-center gap-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <button
+                onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
+                className="px-8 py-3.5 rounded-lg bg-accent text-accent-foreground font-bold text-base hover:opacity-90 transition-opacity duration-300"
+              >
+                בואו נתחיל את המסע
+              </button>
+              <span className="text-white/35 text-sm">פרטיות מלאה</span>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Sections */}
+      {/* Sections — varied spacing */}
       <LandingEmotional />
       <div id="dashboard"><LandingDashboardPreview /></div>
       <LandingPillars />
@@ -102,18 +95,18 @@ const Landing = () => {
       <LandingFAQ />
       <LandingCTA />
 
-      {/* Footer */}
-      <footer className="border-t border-border/40 py-12 bg-card/50">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <img src={sageifyLogo} alt="Sageify" className="w-8 h-8 rounded-lg" />
-            <span className="font-display font-bold text-base tracking-wide">Sageify</span>
+      {/* Footer — minimal */}
+      <footer className="py-10 px-6">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5">
+            <img src={sageifyLogo} alt="Sageify" className="w-7 h-7 rounded-lg" />
+            <span className="font-display font-bold text-sm tracking-wide">Sageify</span>
           </div>
 
           <div className="flex items-center gap-6 text-muted-foreground text-sm">
-            <span>© {new Date().getFullYear()} Sageify. כל הזכויות שמורות.</span>
-            <Link to="/admin-panel" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/40 text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-all duration-400 text-sm font-medium">
-              <Settings size={14} />
+            <span>© {new Date().getFullYear()} Sageify</span>
+            <Link to="/admin-panel" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm">
+              <Settings size={13} />
               ניהול
             </Link>
           </div>
