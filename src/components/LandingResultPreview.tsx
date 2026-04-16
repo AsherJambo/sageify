@@ -8,71 +8,56 @@ const sampleResults = [
 ];
 
 const LandingResultPreview = () => (
-  <section className="py-20 md:py-32 bg-muted/10">
-    <div className="max-w-2xl mx-auto px-6">
-      <motion.p
-        className="text-sm text-primary font-semibold text-right mb-3 tracking-wide"
-        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        דוגמה לתוצאה
-      </motion.p>
+  <section className="pt-20 pb-14 md:pt-28 md:pb-20">
+    {/* Back to narrow — contrasts with the wider HowItWorks */}
+    <div className="max-w-xl mx-auto px-6">
       <motion.h2
-        className="text-2xl md:text-[2.25rem] font-bold text-right mb-4 leading-tight"
-        initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 0.9, delay: 0.1 }}
+        className="text-xl md:text-2xl font-bold text-right mb-3 leading-tight"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 0.9 }}
       >
         מה תקבלו בסוף התהליך?
       </motion.h2>
       <motion.p
-        className="text-muted-foreground text-right text-base mb-10"
-        initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 0.9, delay: 0.2 }}
+        className="text-muted-foreground text-right text-sm mb-8"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 0.9, delay: 0.1 }}
       >
         דוח אישי ומפורט שמתרגם את הניסיון שלכם לכיוון ברור ומעשי
       </motion.p>
 
-      {/* Simple text list — no heavy card wrapper */}
-      <motion.div
-        className="border border-border/60 rounded-lg overflow-hidden"
-        initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.25 }}
-      >
-        <div className="border-b border-border/40 px-6 py-3.5 bg-muted/20">
-          <p className="font-display font-bold text-sm">מפת הדרכים האישית שלך — דוגמה</p>
-        </div>
+      {/* No border wrapper, just indented text blocks */}
+      <div className="space-y-5 pr-4 border-r border-border/30">
+        {sampleResults.map((r, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 + i * 0.08, duration: 0.7 }}
+          >
+            <p className="text-[0.7rem] font-semibold text-primary/60 mb-0.5 tracking-wide uppercase">{r.label}</p>
+            <p className="text-foreground text-base leading-relaxed">{r.value}</p>
+          </motion.div>
+        ))}
+      </div>
 
-        <div className="divide-y divide-border/30">
-          {sampleResults.map((r, i) => (
-            <motion.div
-              key={i}
-              className="px-6 py-5"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 + i * 0.08, duration: 0.7 }}
-            >
-              <p className="text-xs font-semibold text-primary mb-1 tracking-wide">{r.label}</p>
-              <p className="text-foreground text-base leading-relaxed">{r.value}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="border-t border-border/40 px-6 py-3 bg-muted/10">
-          <p className="text-xs text-muted-foreground">
-            * זו דוגמה בלבד — הדוח שלכם יהיה מותאם אישית לחלוטין
-          </p>
-        </div>
-      </motion.div>
-
-      <motion.div
-        className="text-right mt-10"
+      <motion.p
+        className="text-xs text-muted-foreground/60 mt-6"
         initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
         transition={{ delay: 0.5, duration: 0.7 }}
       >
+        * זו דוגמה בלבד — הדוח שלכם יהיה מותאם אישית לחלוטין
+      </motion.p>
+
+      <motion.div
+        className="mt-8"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ delay: 0.55, duration: 0.7 }}
+      >
         <button
           onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
-          className="px-8 py-3.5 rounded-lg bg-accent text-accent-foreground font-bold text-base hover:opacity-90 transition-opacity duration-300"
+          className="px-7 py-3 rounded-lg bg-accent text-accent-foreground font-bold text-sm hover:opacity-90 transition-opacity duration-300"
         >
           רוצים לקבל את הדוח שלכם? צרו קשר
         </button>

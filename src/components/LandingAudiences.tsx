@@ -7,37 +7,30 @@ const audiences = [
 ];
 
 const LandingAudiences = () => (
-  <section className="pt-12 pb-20 md:pt-16 md:pb-28 bg-muted/10">
-    <div className="max-w-2xl mx-auto px-6">
-      <motion.h2
-        className="text-2xl md:text-[2.25rem] font-bold text-right mb-10 leading-tight"
-        initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 0.9 }}
-      >
+  <section className="pt-16 pb-10 md:pt-24 md:pb-14">
+    {/* Very narrow — intimate feel, different from Trust's 2-col */}
+    <div className="max-w-md mx-auto px-6">
+      <motion.p className="text-sm text-primary/60 mb-6 text-right"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 0.8 }}>
         למי זה מתאים
-      </motion.h2>
+      </motion.p>
 
-      <div className="space-y-0">
-        {audiences.map((a, i) => {
-          const isLast = i === audiences.length - 1;
-          return (
-            <motion.div
-              key={i}
-              className={`py-6 ${!isLast ? 'border-b border-border/40' : ''}`}
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.15 + i * 0.1 }}
-            >
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-[0.65rem] font-bold text-primary/60 tracking-widest uppercase">{a.badge}</span>
-                <h3 className="text-base font-bold font-display">{a.title}</h3>
-              </div>
-              <p className="text-muted-foreground text-[0.95rem] leading-[1.8]">{a.desc}</p>
-            </motion.div>
-          );
-        })}
-      </div>
+      {/* Single flowing text, not a structured list */}
+      {audiences.map((a, i) => (
+        <motion.p
+          key={i}
+          className="text-base leading-[1.9] mb-5 last:mb-0"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.1 + i * 0.1 }}
+        >
+          <span className="text-[0.6rem] font-bold text-muted-foreground/50 tracking-widest uppercase ml-2">{a.badge}</span>
+          <strong className="font-display font-bold">{a.title}</strong>
+          <span className="text-muted-foreground"> — {a.desc}</span>
+        </motion.p>
+      ))}
     </div>
   </section>
 );

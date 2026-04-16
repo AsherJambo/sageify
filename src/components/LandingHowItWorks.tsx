@@ -1,70 +1,48 @@
 import { motion } from 'framer-motion';
 
 const steps = [
-  {
-    step: '01',
-    title: 'עונים על שאלות קצרות',
-    desc: 'שאלונים פשוטים שנבנו על בסיס פסיכולוגיה תעסוקתית — בקצב שלכם',
-    time: '~10 דקות',
-  },
-  {
-    step: '02',
-    title: 'המערכת מנתחת את התשובות',
-    desc: 'ניתוח מעמיק שמצליב את הניסיון, הערכים והכישורים שלכם לתמונה ברורה',
-    time: 'אוטומטי',
-  },
-  {
-    step: '03',
-    title: 'מקבלים את מפת הדרכים שלכם',
-    desc: 'דוח מפורט עם המלצות מעשיות, הזדמנויות רלוונטיות ומפת דרכים אישית',
-    time: 'מיידי',
-  },
+  { n: '1', title: 'עונים על שאלות קצרות', desc: 'שאלונים פשוטים שנבנו על בסיס פסיכולוגיה תעסוקתית — בקצב שלכם', time: '~10 דקות' },
+  { n: '2', title: 'המערכת מנתחת את התשובות', desc: 'ניתוח מעמיק שמצליב את הניסיון, הערכים והכישורים שלכם לתמונה ברורה', time: 'אוטומטי' },
+  { n: '3', title: 'מקבלים את מפת הדרכים שלכם', desc: 'דוח מפורט עם המלצות מעשיות, הזדמנויות רלוונטיות ומפת דרכים אישית', time: 'מיידי' },
 ];
 
 const LandingHowItWorks = () => (
-  <section className="pt-16 pb-20 md:pt-20 md:pb-28">
-    <div className="max-w-2xl mx-auto px-6">
-      <motion.p
-        className="text-sm text-primary font-semibold text-right mb-3 tracking-wide"
-        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        פשוט ומהיר
-      </motion.p>
+  <section className="py-16 md:py-24 bg-muted/8">
+    {/* Wider than pillars, different width creates rhythm */}
+    <div className="max-w-3xl mx-auto px-6">
       <motion.h2
-        className="text-2xl md:text-[2.25rem] font-bold text-right mb-4 leading-tight"
-        initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 0.9, delay: 0.1 }}
+        className="text-xl md:text-2xl font-bold text-right mb-10 leading-tight"
+        initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.9 }}
       >
         איך זה עובד? שלושה שלבים
       </motion.h2>
-      <motion.p
-        className="text-muted-foreground text-right text-base mb-12"
-        initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 0.9, delay: 0.2 }}
-      >
-        תהליך אישי ונעים — מהשאלה הראשונה ועד לתוצאה ברורה
-      </motion.p>
 
-      <div className="space-y-8">
+      {/* Horizontal on desktop — different from vertical lists above */}
+      <div className="flex flex-col md:flex-row md:gap-10 gap-8">
         {steps.map((s, i) => (
           <motion.div
             key={i}
-            className="flex items-start gap-4"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            className="flex-1"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.25 + i * 0.12, duration: 0.8 }}
+            transition={{ delay: 0.15 + i * 0.1, duration: 0.8 }}
           >
-            <span className="text-[0.7rem] font-bold text-primary/40 font-sans tracking-wider mt-1.5 shrink-0 w-6">{s.step}</span>
-            <div>
-              <h3 className="text-base md:text-lg font-bold font-display mb-1">{s.title}</h3>
-              <p className="text-muted-foreground text-[0.95rem] leading-[1.75] mb-1.5">{s.desc}</p>
-              <span className="text-xs text-primary/60 font-medium">{s.time}</span>
-            </div>
+            <span className="text-3xl font-bold text-border font-display">{s.n}</span>
+            <h3 className="text-base font-bold font-display mt-2 mb-1.5">{s.title}</h3>
+            <p className="text-muted-foreground text-sm leading-[1.75]">{s.desc}</p>
           </motion.div>
         ))}
       </div>
+
+      <motion.p
+        className="text-muted-foreground text-sm mt-8 text-right"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+      >
+        תהליך אישי ונעים — מהשאלה הראשונה ועד לתוצאה ברורה
+      </motion.p>
     </div>
   </section>
 );
