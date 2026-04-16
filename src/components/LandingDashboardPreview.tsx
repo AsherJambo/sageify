@@ -11,8 +11,8 @@ const DonutChart = () => {
   let cumulative = 0;
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <svg viewBox="0 0 120 120" className="w-36 h-36">
+    <div className="flex flex-col items-center gap-3">
+      <svg viewBox="0 0 120 120" className="w-28 h-28">
         {segments.map((seg, i) => {
           const radius = 48;
           const circumference = 2 * Math.PI * radius;
@@ -23,7 +23,7 @@ const DonutChart = () => {
             <circle
               key={i}
               cx="60" cy="60" r={radius}
-              fill="none" stroke={seg.color} strokeWidth="14"
+              fill="none" stroke={seg.color} strokeWidth="12"
               strokeDasharray={`${dashLength} ${circumference - dashLength}`}
               strokeDashoffset={dashOffset}
               strokeLinecap="round"
@@ -34,11 +34,11 @@ const DonutChart = () => {
         <text x="60" y="56" textAnchor="middle" className="fill-foreground text-[13px] font-bold font-sans">65%</text>
         <text x="60" y="72" textAnchor="middle" className="fill-muted-foreground text-[8px] font-sans">השלמת אבחון</text>
       </svg>
-      <div className="flex gap-4 text-sm">
+      <div className="flex gap-4 text-xs text-muted-foreground">
         {segments.map((seg, i) => (
-          <div key={i} className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: seg.color }} />
-            <span className="text-muted-foreground">{seg.label} {seg.pct}%</span>
+          <div key={i} className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: seg.color }} />
+            <span>{seg.label} {seg.pct}%</span>
           </div>
         ))}
       </div>
@@ -47,78 +47,78 @@ const DonutChart = () => {
 };
 
 const LandingDashboardPreview = () => (
-  <section className="relative py-20 md:py-28 overflow-hidden">
+  <section className="py-16 md:py-24">
     <div className="max-w-4xl mx-auto px-6">
-      <motion.p className="text-sm font-semibold text-primary tracking-widest uppercase text-right mb-4"
+      <motion.p className="text-sm font-semibold text-primary tracking-wide text-right mb-3"
         initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
         transition={{ duration: 0.8 }}>
         הפלטפורמה
       </motion.p>
-      <motion.h2 className="text-3xl md:text-[2.6rem] font-bold text-right mb-5 leading-tight"
-        initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.1 }}>
+      <motion.h2 className="text-2xl md:text-[2.25rem] font-bold text-right mb-4 leading-tight"
+        initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.9, delay: 0.1 }}>
         מפת הדרכים האישית שלכם
       </motion.h2>
-      <motion.p className="text-muted-foreground text-right text-lg mb-14"
-        initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.2 }}>
+      <motion.p className="text-muted-foreground text-right text-base mb-10"
+        initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.9, delay: 0.2 }}>
         כל התובנות, ההתקדמות וההמלצות — במקום אחד
       </motion.p>
 
-      {/* Staggered: progress card wider on top, donut card offset below */}
-      <div className="space-y-6">
+      {/* Two items side by side on desktop, stacked on mobile */}
+      <div className="flex flex-col md:flex-row gap-5 md:items-start">
         <motion.div
-          className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)] md:max-w-xl"
-          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.25 }}
+          className="flex-1 border border-border rounded-lg p-6 bg-card/60"
+          initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.25 }}
         >
-          <h3 className="text-lg font-bold mb-6 font-display">התקדמות במסע</h3>
-          <div className="space-y-5">
+          <h3 className="text-base font-bold mb-5 font-display">התקדמות במסע</h3>
+          <div className="space-y-4">
             {[
               { label: 'שלב 1 — חקירה', pct: 100 },
               { label: 'שלב 2 — מעבר', pct: 65 },
               { label: 'שלב 3 — השפעה', pct: 20 },
             ].map((step, i) => (
               <div key={i}>
-                <div className="flex justify-between text-sm mb-1.5">
+                <div className="flex justify-between text-sm mb-1">
                   <span className="font-medium">{step.label}</span>
-                  <span className="text-muted-foreground">{step.pct}%</span>
+                  <span className="text-muted-foreground text-xs">{step.pct}%</span>
                 </div>
-                <div className="h-3 rounded-full bg-muted overflow-hidden">
+                <div className="h-2 rounded-full bg-muted overflow-hidden">
                   <motion.div
                     className="h-full rounded-full"
                     style={{ backgroundColor: step.pct === 100 ? 'hsl(var(--primary))' : 'hsl(var(--accent))' }}
                     initial={{ width: 0 }}
                     whileInView={{ width: `${step.pct}%` }}
                     viewport={{ once: true }}
-                    transition={{ duration: 1.2, delay: 0.3 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 1, delay: 0.3 + i * 0.1 }}
                   />
                 </div>
               </div>
             ))}
           </div>
-          <div className="mt-6 flex items-center gap-2 text-sm text-primary font-semibold">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+          <div className="mt-5 flex items-center gap-2 text-xs text-primary font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
             בעיצומו של שלב המעבר
           </div>
         </motion.div>
 
         <motion.div
-          className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)] md:max-w-md md:mr-auto"
-          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.4 }}
+          className="md:w-72 border border-border rounded-lg p-6 bg-card/60"
+          initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.35 }}
         >
-          <h3 className="text-lg font-bold mb-6 font-display">התפלגות פעילויות מומלצות</h3>
+          <h3 className="text-base font-bold mb-4 font-display">התפלגות פעילויות</h3>
           <DonutChart />
-          <div className="mt-6 grid grid-cols-3 gap-3">
+          <div className="mt-5 grid grid-cols-3 gap-2">
             {[
-              { label: 'חוזקות שזוהו', val: '12' },
+              { label: 'חוזקות', val: '12' },
               { label: 'עוגנים', val: '5' },
               { label: 'התאמות', val: '24' },
             ].map((stat, i) => (
-              <div key={i} className="text-center p-3 rounded-xl bg-muted/50">
-                <div className="text-xl font-bold text-secondary">{stat.val}</div>
-                <div className="text-xs text-muted-foreground mt-0.5">{stat.label}</div>
+              <div key={i} className="text-center py-2">
+                <div className="text-lg font-bold text-secondary">{stat.val}</div>
+                <div className="text-[10px] text-muted-foreground">{stat.label}</div>
               </div>
             ))}
           </div>

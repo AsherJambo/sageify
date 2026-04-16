@@ -8,37 +8,36 @@ const team = [
 ];
 
 const LandingTeam = () => (
-  <section className="bg-muted/20 py-24 md:py-32 relative overflow-hidden">
-    <div className="max-w-3xl mx-auto px-6 relative z-10">
+  <section className="py-16 md:py-24">
+    <div className="max-w-2xl mx-auto px-6">
       <motion.h2
-        className="text-3xl md:text-[2.5rem] font-bold text-right mb-14 leading-tight"
-        initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 1 }}
+        className="text-2xl md:text-[2.25rem] font-bold text-right mb-10 leading-tight"
+        initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.9 }}
       >
         הצוות
       </motion.h2>
 
-      {/* Horizontal layout per person — less card-like, more editorial */}
-      <div className="space-y-10">
+      <div className="space-y-8">
         {team.map((t, i) => (
           <motion.div
             key={i}
-            className="flex items-start gap-6 md:gap-8"
-            initial={{ opacity: 0, y: 14 }}
+            className="flex items-start gap-5"
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.15 + i * 0.15, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ delay: 0.1 + i * 0.12, duration: 0.8 }}
           >
             <img
               src={t.img}
               alt={t.name}
-              className="w-24 h-24 md:w-28 md:h-28 rounded-2xl object-cover border-2 border-border shadow-[var(--shadow-card)] grayscale-[10%] shrink-0"
+              className="w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover grayscale-[15%] shrink-0"
               loading="lazy"
             />
-            <div className="pt-1">
-              <h3 className="text-xl font-bold mb-1 font-serif">{t.name}</h3>
-              <p className="text-primary text-sm font-bold mb-3 tracking-wide">{t.role}</p>
-              <p className="text-muted-foreground leading-[1.8] text-base">{t.desc}</p>
+            <div className="pt-0.5">
+              <h3 className="text-lg font-bold font-display">{t.name}</h3>
+              <p className="text-primary text-xs font-semibold mb-2">{t.role}</p>
+              <p className="text-muted-foreground text-[0.95rem] leading-[1.75]">{t.desc}</p>
             </div>
           </motion.div>
         ))}

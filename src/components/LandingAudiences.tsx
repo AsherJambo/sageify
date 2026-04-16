@@ -7,48 +7,36 @@ const audiences = [
 ];
 
 const LandingAudiences = () => (
-  <section className="py-20 md:py-28 relative overflow-hidden">
-    <div className="max-w-4xl mx-auto px-6">
+  <section className="pt-12 pb-20 md:pt-16 md:pb-28 bg-muted/10">
+    <div className="max-w-2xl mx-auto px-6">
       <motion.h2
-        className="text-3xl md:text-[2.6rem] font-bold text-center mb-16 leading-tight"
-        initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 1 }}
+        className="text-2xl md:text-[2.25rem] font-bold text-right mb-10 leading-tight"
+        initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.9 }}
       >
         למי זה מתאים
       </motion.h2>
 
-      {/* Asymmetric: first item wide, next two side by side */}
-      <div className="space-y-6">
-        <motion.div
-          className="border border-border bg-card rounded-2xl p-8 md:p-10 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500 md:max-w-2xl md:mx-auto"
-          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.15 }}
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <span className="inline-block px-3.5 py-1 rounded-full border border-primary/25 text-primary text-xs font-bold tracking-widest uppercase">
-              {audiences[0].badge}
-            </span>
-            <h3 className="text-xl font-bold font-serif">{audiences[0].title}</h3>
-          </div>
-          <p className="text-muted-foreground leading-relaxed text-base md:text-lg">{audiences[0].desc}</p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {audiences.slice(1).map((a, i) => (
+      <div className="space-y-0">
+        {audiences.map((a, i) => {
+          const isLast = i === audiences.length - 1;
+          return (
             <motion.div
               key={i}
-              className="border border-border bg-card rounded-2xl p-7 md:p-8 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-500"
-              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.3 + i * 0.12 }}
+              className={`py-6 ${!isLast ? 'border-b border-border/40' : ''}`}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.15 + i * 0.1 }}
             >
-              <span className="inline-block px-3.5 py-1 rounded-full border border-primary/25 text-primary text-xs font-bold mb-4 tracking-widest uppercase">
-                {a.badge}
-              </span>
-              <h3 className="text-lg font-bold mb-2 font-serif">{a.title}</h3>
-              <p className="text-muted-foreground leading-relaxed text-base">{a.desc}</p>
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-[0.65rem] font-bold text-primary/60 tracking-widest uppercase">{a.badge}</span>
+                <h3 className="text-base font-bold font-display">{a.title}</h3>
+              </div>
+              <p className="text-muted-foreground text-[0.95rem] leading-[1.8]">{a.desc}</p>
             </motion.div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </div>
   </section>

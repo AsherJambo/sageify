@@ -1,31 +1,40 @@
 import { motion } from 'framer-motion';
 
 const LandingCTA = () => (
-  <section className="px-6 py-20 md:py-28">
-    <motion.div
-      className="max-w-2xl mx-auto rounded-3xl bg-secondary p-12 md:p-16 shadow-[var(--shadow-elevated)] relative overflow-hidden"
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <div className="absolute top-0 right-0 w-[250px] h-[250px] rounded-full bg-primary/10 blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-      
-      <div className="relative z-10 text-right">
-        <h2 className="text-3xl md:text-[2.4rem] font-bold text-secondary-foreground mb-5 leading-tight">
-          הפרק הבא שלכם מתחיל כאן
-        </h2>
-        <p className="text-secondary-foreground/70 text-lg mb-10 leading-relaxed max-w-md">
-          תהליך אישי שייתן לכם בהירות וכיוון
-        </p>
+  <section className="px-6 py-16 md:py-24">
+    <div className="max-w-xl mx-auto text-right">
+      <motion.h2
+        className="text-2xl md:text-[2.25rem] font-bold mb-4 leading-tight"
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.9 }}
+      >
+        הפרק הבא שלכם מתחיל כאן
+      </motion.h2>
+      <motion.p
+        className="text-muted-foreground text-base mb-8 leading-relaxed"
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.9, delay: 0.1 }}
+      >
+        תהליך אישי שייתן לכם בהירות וכיוון
+      </motion.p>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
         <button
           onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
-          className="inline-flex items-center justify-center px-12 py-4.5 rounded-2xl bg-accent text-accent-foreground font-bold text-lg hover:opacity-90 transition-all duration-500 shadow-[0_8px_24px_-6px_hsl(16_72%_50%/0.3)] hover:translate-y-[-2px]"
+          className="px-8 py-3.5 rounded-lg bg-accent text-accent-foreground font-bold text-base hover:opacity-90 transition-opacity duration-300"
         >
-          בואו נתחיל ✨
+          בואו נתחיל
         </button>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   </section>
 );
 
