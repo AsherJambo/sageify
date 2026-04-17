@@ -54,16 +54,12 @@ const LandingPricing = () => (
         תשלום חד-פעמי. בלי מנויים. בלי הפתעות.
       </motion.p>
 
-      {/* Side by side but NOT identical — different visual weight */}
-      <div className="flex flex-col md:flex-row gap-5 md:items-start">
+      {/* No card boxes — plans separated by a vertical line on desktop */}
+      <div className="flex flex-col md:flex-row gap-10 md:gap-14 md:items-start md:divide-x md:divide-x-reverse md:divide-border/50">
         {plans.map((plan, i) => (
           <motion.div
             key={i}
-            className={`flex-1 border rounded-lg p-7 md:p-8 ${
-              plan.highlighted
-                ? 'border-accent/30 bg-card'
-                : 'border-border bg-card/50'
-            }`}
+            className={`flex-1 ${i > 0 ? 'md:pr-14' : ''}`}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -96,13 +92,11 @@ const LandingPricing = () => (
 
             <button
               onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
-              className={`block text-center w-full py-3 rounded-lg font-bold text-sm transition-opacity duration-300 ${
-                plan.highlighted
-                  ? 'bg-accent text-accent-foreground hover:opacity-90'
-                  : 'bg-muted text-foreground hover:opacity-80'
+              className={`text-sm font-bold transition-opacity duration-300 hover:opacity-70 ${
+                plan.highlighted ? 'text-accent' : 'text-foreground'
               }`}
             >
-              בואו נתחיל
+              בואו נתחיל ←
             </button>
           </motion.div>
         ))}

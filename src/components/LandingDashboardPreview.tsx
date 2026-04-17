@@ -58,10 +58,9 @@ const LandingDashboardPreview = () => (
           </motion.p>
         </div>
 
-        {/* Right side: preview content inline */}
-        <div className="flex-1 space-y-6">
+        {/* Right side: preview content inline — no box, just spaced content */}
+        <div className="flex-1 space-y-8">
           <motion.div
-            className="border border-border/50 rounded-lg p-5"
             initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.15 }}
           >
@@ -88,7 +87,7 @@ const LandingDashboardPreview = () => (
           </motion.div>
 
           <motion.div
-            className="flex flex-col sm:flex-row items-start gap-5 sm:items-center"
+            className="flex flex-col sm:flex-row items-start gap-5 sm:items-center pt-2 border-t border-border/30"
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >

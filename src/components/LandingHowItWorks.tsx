@@ -7,7 +7,7 @@ const steps = [
 ];
 
 const LandingHowItWorks = () => (
-  <section className="py-16 md:py-24 bg-muted/8">
+  <section className="py-16 md:py-24">
     {/* Wider than pillars, different width creates rhythm */}
     <div className="max-w-3xl mx-auto px-6">
       <motion.h2
