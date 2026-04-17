@@ -9,7 +9,7 @@ const trustPoints = [
 ];
 
 const LandingTrust = () => (
-  <section className="py-16 md:py-24 bg-muted/8">
+  <section className="py-16 md:py-24">
     {/* Different width — medium, between narrow and wide */}
     <div className="max-w-2xl mx-auto px-6">
       <motion.h2
