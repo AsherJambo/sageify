@@ -8,6 +8,7 @@ import { Settings, Linkedin } from 'lucide-react';
 import LandingNav from '@/components/LandingNav';
 import LandingEmotional from '@/components/LandingEmotional';
 import LandingDashboardPreview from '@/components/LandingDashboardPreview';
+import LandingProductGlimpse from '@/components/LandingProductGlimpse';
 import LandingPillars from '@/components/LandingPillars';
 import LandingHowItWorks from '@/components/LandingHowItWorks';
 import LandingResultPreview from '@/components/LandingResultPreview';
@@ -76,6 +77,7 @@ const Landing = () => {
       {/* Each section at different widths and spacings — no uniform rhythm */}
       <LandingEmotional />
       <div id="dashboard"><LandingDashboardPreview /></div>
+      <LandingProductGlimpse />
       <LandingPillars />
       <div id="how-it-works"><LandingHowItWorks /></div>
       <LandingResultPreview />
