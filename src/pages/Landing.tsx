@@ -3,7 +3,7 @@ import sageifyLogo from '@/assets/owl-logo.png';
 import heroPremium from '@/assets/hero-premium.jpg';
 import { Link } from 'react-router-dom';
 import { ContactModalProvider } from '@/contexts/ContactModalContext';
-import { Settings } from 'lucide-react';
+import { Settings, Linkedin } from 'lucide-react';
 
 import LandingNav from '@/components/LandingNav';
 import LandingEmotional from '@/components/LandingEmotional';
@@ -94,6 +94,16 @@ const Landing = () => {
           </div>
           <div className="flex items-center gap-5 text-muted-foreground text-xs">
             <span>© {new Date().getFullYear()} Sageify</span>
+            <a
+              href="https://www.linkedin.com/company/sageify"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 hover:text-foreground transition-colors text-xs"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={12} />
+              LinkedIn
+            </a>
             <Link to="/admin-panel" className="inline-flex items-center gap-1 hover:text-foreground transition-colors text-xs">
               <Settings size={11} />
               ניהול
