@@ -194,31 +194,49 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center space-y-2"
+          className="relative"
         >
-          <div className="flex items-center justify-center gap-3">
-            <img src={sageifyLogo} alt="Sageify" className="w-10 h-10 rounded-full ring-2 ring-secondary/20" />
-            <h2 className="text-xl font-bold font-display text-foreground">הערכת חשיבה</h2>
-          </div>
-          <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-display font-semibold ${
-            isTimeLow 
-              ? 'bg-destructive/10 text-destructive animate-pulse' 
-              : 'bg-secondary/10 text-secondary'
-          }`}>
-            <span>⏱</span>
-            <span>{String(remainingMinutes).padStart(2, '0')}:{String(remainingSeconds).padStart(2, '0')}</span>
+          {/* Playful confetti decoration */}
+          <div className="absolute -top-2 right-0 text-2xl opacity-40 select-none pointer-events-none" aria-hidden>✦</div>
+          <div className="absolute -top-1 left-2 text-xl opacity-30 select-none pointer-events-none" aria-hidden>✧</div>
+
+          <div className="flex items-center justify-between gap-3">
+            {/* Circular timer badge */}
+            <motion.div
+              animate={isTimeLow ? { scale: [1, 1.05, 1] } : {}}
+              transition={{ repeat: Infinity, duration: 1 }}
+              className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full flex flex-col items-center justify-center font-display font-bold shadow-md border-2 ${
+                isTimeLow
+                  ? 'bg-coral-soft border-coral text-coral'
+                  : 'bg-sunny-soft border-sunny text-foreground'
+              }`}
+            >
+              <span className="text-base md:text-lg leading-none">
+                {String(remainingMinutes).padStart(2, '0')}:{String(remainingSeconds).padStart(2, '0')}
+              </span>
+              <span className="text-[9px] md:text-[10px] opacity-70 mt-0.5">נותר</span>
+            </motion.div>
+
+            <div className="flex-1 text-center">
+              <div className="flex items-center justify-center gap-2">
+                <img src={sageifyLogo} alt="Sageify" className="w-9 h-9 rounded-full ring-2 ring-secondary/20" />
+                <h2 className="text-xl font-bold font-display text-foreground">הערכת חשיבה</h2>
+              </div>
+            </div>
+
+            <div className="w-16 md:w-20" />
           </div>
         </motion.div>
 
-        {/* Progress bar */}
+        {/* Progress bar - colorful */}
         <div className="space-y-1">
           <div className="flex justify-between text-xs font-display text-muted-foreground px-1">
             <span>{answeredCount} מתוך {thinkingQuestions.length} שאלות</span>
             <span>{Math.round(progress)}%</span>
           </div>
-          <div className="h-1.5 bg-muted/40 rounded-full overflow-hidden">
+          <div className="h-2 bg-muted/40 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-secondary rounded-full"
+              className="h-full bg-gradient-to-l from-coral via-sunny to-success rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.5 }}

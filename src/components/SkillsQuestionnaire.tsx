@@ -6,9 +6,9 @@ import AnswerKeyReminder from './AnswerKeyReminder';
 
 const skillsAnswerKey = [
   { label: '🏆 ארגז כלים מנצח', desc: 'טוב/ה בזה + רוצה להמשיך' },
-  { label: '🔋 מיצוי', desc: 'טוב/ה בזה, אבל מיציתי' },
-  { label: '🌱 שאיפה', desc: 'לא טוב/ה עדיין, אבל רוצה ללמוד' },
-  { label: '🚫 לא רלוונטי', desc: 'לא טוב/ה ולא מעוניין/ת' },
+  { label: '🔥 טוב אבל מיציתי', desc: 'טוב/ה בזה, אבל מיציתי' },
+  { label: '🌱 אשמח ללמוד', desc: 'לא טוב/ה עדיין, אבל רוצה ללמוד' },
+  { label: '💤 לא רלוונטי', desc: 'לא טוב/ה ולא מעוניין/ת' },
 ];
 
 interface SkillsQuestionnaireProps {
@@ -16,11 +16,39 @@ interface SkillsQuestionnaireProps {
   onBackToHub?: () => void;
 }
 
-const columnLabels: Record<SkillColumn, { title: string; desc: string; symbol: string }> = {
-  winner: { title: 'ארגז כלים מנצח', desc: 'טוב/ה בזה, נהנה/ית, רוצה להמשיך', symbol: '◆' },
-  burnout: { title: 'טוב/ה אבל מיציתי', desc: 'הצטיינתי בזה, אבל לא בא לי יותר', symbol: '●' },
-  aspire: { title: 'לא טוב מספיק אבל אשמח ללמוד', desc: 'רוצה ללמוד ולעסוק בזה', symbol: '✦' },
-  irrelevant: { title: 'פחות מדבר אליי', desc: 'לא החוזקה שלי או לא מעניין כרגע', symbol: '○' },
+const columnLabels: Record<SkillColumn, { title: string; desc: string; symbol: string; color: string; activeClass: string; hoverClass: string }> = {
+  winner: {
+    title: 'ארגז כלים מנצח',
+    desc: 'טוב/ה בזה, נהנה/ית, רוצה להמשיך',
+    symbol: '🏆',
+    color: 'success',
+    activeClass: 'bg-success text-success-foreground border-success scale-[1.03] shadow-[0_0_18px_hsl(var(--success)/0.35)]',
+    hoverClass: 'hover:border-success/60 hover:bg-success-soft/50',
+  },
+  burnout: {
+    title: 'טוב אבל מיציתי',
+    desc: 'הצטיינתי בזה, אבל לא בא לי יותר',
+    symbol: '🔥',
+    color: 'coral',
+    activeClass: 'bg-coral text-coral-foreground border-coral scale-[1.03] shadow-[0_0_18px_hsl(var(--coral)/0.35)]',
+    hoverClass: 'hover:border-coral/60 hover:bg-coral-soft/50',
+  },
+  aspire: {
+    title: 'אשמח ללמוד',
+    desc: 'רוצה ללמוד ולעסוק בזה',
+    symbol: '🌱',
+    color: 'sky',
+    activeClass: 'bg-sky text-white border-sky scale-[1.03] shadow-[0_0_18px_hsl(var(--sky)/0.35)]',
+    hoverClass: 'hover:border-sky/60 hover:bg-sky-soft/50',
+  },
+  irrelevant: {
+    title: 'פחות מדבר אליי',
+    desc: 'לא החוזקה שלי או לא מעניין כרגע',
+    symbol: '💤',
+    color: 'sunny',
+    activeClass: 'bg-sunny text-foreground border-sunny scale-[1.03] shadow-[0_0_18px_hsl(var(--sunny)/0.35)]',
+    hoverClass: 'hover:border-sunny/60 hover:bg-sunny-soft/50',
+  },
 };
 
 const SkillsQuestionnaire = ({ onComplete, onBackToHub }: SkillsQuestionnaireProps) => {
@@ -86,26 +114,24 @@ const SkillsQuestionnaire = ({ onComplete, onBackToHub }: SkillsQuestionnairePro
             <div key={skill.id} className="bg-card rounded-3xl p-5 border border-border/60 shadow-[var(--shadow-card)] slide-up">
               <p className="text-foreground font-medium mb-4 text-lg leading-relaxed">{skill.id}. {skill.text}</p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {(Object.keys(columnLabels) as SkillColumn[]).map(col => (
-                  <button
-                    key={col}
-                    onClick={() => assign(skill.id, col)}
-                    disabled={col === 'winner' && winnerCount >= 7 && assignments[skill.id] !== 'winner'}
-                    className={`px-3 py-2.5 rounded-2xl text-sm font-medium transition-all duration-300 border-2 ${
-                      assignments[skill.id] === col
-                        ? col === 'winner'
-                          ? 'bg-secondary/10 text-secondary border-secondary/40 shadow-[var(--shadow-card)]'
-                          : col === 'burnout'
-                          ? 'bg-primary/10 text-primary border-primary/40'
-                          : col === 'aspire'
-                          ? 'bg-accent/10 text-accent border-accent/40'
-                          : 'bg-muted text-muted-foreground border-muted-foreground/20'
-                        : 'bg-card text-foreground border-border/60 hover:border-secondary/30 disabled:opacity-25'
-                    }`}
-                  >
-                    <span className="text-xs opacity-60">{columnLabels[col].symbol}</span> {columnLabels[col].title}
-                  </button>
-                ))}
+                {(Object.keys(columnLabels) as SkillColumn[]).map(col => {
+                  const meta = columnLabels[col];
+                  const isActive = assignments[skill.id] === col;
+                  return (
+                    <button
+                      key={col}
+                      onClick={() => assign(skill.id, col)}
+                      disabled={col === 'winner' && winnerCount >= 7 && assignments[skill.id] !== 'winner'}
+                      className={`px-3 py-2.5 rounded-2xl text-sm font-medium transition-all duration-300 border-2 ${
+                        isActive
+                          ? meta.activeClass
+                          : `bg-card text-foreground border-border/60 ${meta.hoverClass} disabled:opacity-25`
+                      }`}
+                    >
+                      <span className="text-base">{meta.symbol}</span> {meta.title}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           ))}

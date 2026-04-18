@@ -68,8 +68,8 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
             <span>{totalAnswered} / {shuffledQuestions.length} שאלות</span>
             <span>עמוד {page + 1} / {totalPages}</span>
           </div>
-          <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-            <div className="h-full bg-secondary rounded-full progress-bar-fill" style={{ width: `${progress}%` }} />
+          <div className="w-full h-2.5 bg-muted rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-l from-coral via-sunny to-success rounded-full progress-bar-fill transition-all duration-700" style={{ width: `${progress}%` }} />
           </div>
         </div>
 
@@ -84,10 +84,10 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
                 <button
                   onClick={() => handleAnswer(q.id, true)}
                   aria-label={`כן – ${q.text}`}
-                  className={`px-10 py-3.5 rounded-2xl font-semibold font-display tracking-wide transition-all duration-400 border-2 min-h-[52px] text-lg ${
+                  className={`px-10 py-3.5 rounded-full font-semibold font-display tracking-wide transition-all duration-300 border-2 min-h-[52px] text-lg ${
                     answers[q.id] === true
-                      ? 'bg-secondary text-secondary-foreground border-secondary scale-[1.03] shadow-[var(--shadow-card)]'
-                      : 'bg-card text-foreground border-border hover:border-secondary/40'
+                      ? 'bg-success text-success-foreground border-success scale-[1.05] shadow-[0_0_24px_hsl(var(--success)/0.35)]'
+                      : 'bg-card text-foreground border-border hover:border-success/50 hover:bg-success-soft/40'
                   }`}
                 >
                   כן ✓
@@ -95,10 +95,10 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
                 <button
                   onClick={() => handleAnswer(q.id, false)}
                   aria-label={`לא – ${q.text}`}
-                  className={`px-10 py-3.5 rounded-2xl font-semibold font-display tracking-wide transition-all duration-400 border-2 min-h-[52px] text-lg ${
+                  className={`px-10 py-3.5 rounded-full font-semibold font-display tracking-wide transition-all duration-300 border-2 min-h-[52px] text-lg ${
                     answers[q.id] === false
-                      ? 'bg-muted text-foreground border-muted-foreground/30 scale-[1.03]'
-                      : 'bg-card text-foreground border-border hover:border-muted-foreground/30'
+                      ? 'bg-coral text-coral-foreground border-coral scale-[1.05] shadow-[0_0_24px_hsl(var(--coral)/0.35)]'
+                      : 'bg-card text-foreground border-border hover:border-coral/50 hover:bg-coral-soft/40'
                   }`}
                 >
                   לא ✗
