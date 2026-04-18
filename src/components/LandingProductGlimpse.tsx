@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import previewHub from '@/assets/preview-hub.png';
-import previewVia from '@/assets/preview-via.png';
-import previewSkills from '@/assets/preview-skills.png';
+import previewHolland from '@/assets/preview-holland-playful.jpg';
+import previewThinking from '@/assets/preview-thinking-playful.jpg';
+import previewSkills from '@/assets/preview-skills-playful.jpg';
 import { Sparkles } from 'lucide-react';
 
 const LandingProductGlimpse = () => {
@@ -61,17 +61,17 @@ const LandingProductGlimpse = () => {
 
           <div className="rounded-md overflow-hidden shadow-[0_20px_60px_-20px_hsl(210_12%_16%/0.18)] border border-border/40 transition-transform duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_70px_-20px_hsl(210_12%_16%/0.25)]">
             <img
-              src={previewHub}
-              alt="מסך בחירת השאלונים — שמונה אזורי חקירה לבחירה חופשית"
+              src={previewHolland}
+              alt="שאלון נטיות תעסוקתיות — כפתורי כן/לא צבעוניים עם קונפטי"
               loading="lazy"
               width={1280}
-              height={708}
+              height={896}
               className="w-full h-auto block"
             />
           </div>
           <figcaption className="text-sm text-muted-foreground mt-5 md:mr-2 max-w-md leading-relaxed">
-            <span className="text-foreground font-medium">תפריט הבחירה.</span>{' '}
-            שמונה תחומי חקירה. בוחרים מה שמרגיש נכון, באיזה סדר שרוצים.
+            <span className="text-foreground font-medium">נטיות תעסוקתיות.</span>{' '}
+            כן או לא, פשוט וכיף. קצב של שיחה, לא של בוחן.
           </figcaption>
         </motion.figure>
 
@@ -129,24 +129,24 @@ const LandingProductGlimpse = () => {
             >
               <div className="absolute inset-0 bg-accent/15 rounded-full animate-pulse" />
               <div className="relative bg-accent text-accent-foreground rounded-full w-10 h-10 md:w-12 md:h-12 flex flex-col items-center justify-center text-[10px] font-bold leading-none shadow-md" style={{ transform: 'rotate(-12deg)' }}>
-                <span className="text-sm">★★★★</span>
-                <span className="text-[8px] mt-0.5 opacity-90">VIA</span>
+                <span className="text-base">🧩</span>
+                <span className="text-[8px] mt-0.5 opacity-90">חידה</span>
               </div>
             </motion.div>
 
             <div className="rounded-md overflow-hidden shadow-[0_16px_50px_-20px_hsl(210_12%_16%/0.16)] border border-border/40 transition-transform duration-500 group-hover:-translate-y-1 group-hover:rotate-[0.5deg]">
               <img
-                src={previewVia}
-                alt="שאלון חוזקות VIA — דירוג בסולם של 1 עד 5"
+                src={previewThinking}
+                alt="מבחן חשיבה — חידת מטריצות חזותית עם טיימר"
                 loading="lazy"
                 width={1280}
-                height={708}
+                height={896}
                 className="w-full h-auto block"
               />
             </div>
             <figcaption className="text-sm text-muted-foreground mt-5 max-w-xs leading-relaxed">
-              <span className="text-foreground font-medium">חוזקות VIA.</span>{' '}
-              מזהים את הדפוסים שחזרו על עצמם בכל תחנה בקריירה שלכם.
+              <span className="text-foreground font-medium">מבחן חשיבה.</span>{' '}
+              חידות חזותיות, טיימר עדין, וסגי שמלווה אתכם בדרך.
             </figcaption>
           </motion.figure>
         </div>
