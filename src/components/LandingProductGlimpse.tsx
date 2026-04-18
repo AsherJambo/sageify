@@ -129,8 +129,8 @@ const LandingProductGlimpse = () => {
             >
               <div className="absolute inset-0 bg-accent/15 rounded-full animate-pulse" />
               <div className="relative bg-accent text-accent-foreground rounded-full w-10 h-10 md:w-12 md:h-12 flex flex-col items-center justify-center text-[10px] font-bold leading-none shadow-md" style={{ transform: 'rotate(-12deg)' }}>
-                <span className="text-sm">★★★★</span>
-                <span className="text-[8px] mt-0.5 opacity-90">VIA</span>
+                <span className="text-base">🧩</span>
+                <span className="text-[8px] mt-0.5 opacity-90">חידה</span>
               </div>
             </motion.div>
 
