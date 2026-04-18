@@ -52,6 +52,18 @@
     --terracotta-light: 16 40% 93%;
     --warm-bg: 40 20% 97%;
 
+    /* Playful semantic tokens for questionnaires */
+    --success: 142 52% 48%;
+    --success-foreground: 0 0% 100%;
+    --success-soft: 142 40% 92%;
+    --coral: 8 78% 64%;
+    --coral-foreground: 0 0% 100%;
+    --coral-soft: 8 65% 94%;
+    --sky: 200 70% 60%;
+    --sky-soft: 200 65% 93%;
+    --sunny: 42 85% 62%;
+    --sunny-soft: 42 75% 92%;
+
     --shadow-diffuse: 0 20px 60px -15px hsl(210 12% 20% / 0.05);
     --shadow-card: 0 1px 3px 0 hsl(210 12% 20% / 0.04), 0 1px 2px -1px hsl(210 12% 20% / 0.03);
     --shadow-elevated: 0 10px 30px -8px hsl(210 12% 20% / 0.08), 0 4px 12px -4px hsl(210 12% 20% / 0.04);
