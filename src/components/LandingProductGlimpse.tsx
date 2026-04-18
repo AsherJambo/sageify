@@ -61,17 +61,17 @@ const LandingProductGlimpse = () => {
 
           <div className="rounded-md overflow-hidden shadow-[0_20px_60px_-20px_hsl(210_12%_16%/0.18)] border border-border/40 transition-transform duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_70px_-20px_hsl(210_12%_16%/0.25)]">
             <img
-              src={previewHub}
-              alt="מסך בחירת השאלונים — שמונה אזורי חקירה לבחירה חופשית"
+              src={previewHolland}
+              alt="שאלון נטיות תעסוקתיות — כפתורי כן/לא צבעוניים עם קונפטי"
               loading="lazy"
               width={1280}
-              height={708}
+              height={896}
               className="w-full h-auto block"
             />
           </div>
           <figcaption className="text-sm text-muted-foreground mt-5 md:mr-2 max-w-md leading-relaxed">
-            <span className="text-foreground font-medium">תפריט הבחירה.</span>{' '}
-            שמונה תחומי חקירה. בוחרים מה שמרגיש נכון, באיזה סדר שרוצים.
+            <span className="text-foreground font-medium">נטיות תעסוקתיות.</span>{' '}
+            כן או לא, פשוט וכיף. קצב של שיחה, לא של בוחן.
           </figcaption>
         </motion.figure>
 
@@ -136,17 +136,17 @@ const LandingProductGlimpse = () => {
 
             <div className="rounded-md overflow-hidden shadow-[0_16px_50px_-20px_hsl(210_12%_16%/0.16)] border border-border/40 transition-transform duration-500 group-hover:-translate-y-1 group-hover:rotate-[0.5deg]">
               <img
-                src={previewVia}
-                alt="שאלון חוזקות VIA — דירוג בסולם של 1 עד 5"
+                src={previewThinking}
+                alt="מבחן חשיבה — חידת מטריצות חזותית עם טיימר"
                 loading="lazy"
                 width={1280}
-                height={708}
+                height={896}
                 className="w-full h-auto block"
               />
             </div>
             <figcaption className="text-sm text-muted-foreground mt-5 max-w-xs leading-relaxed">
-              <span className="text-foreground font-medium">חוזקות VIA.</span>{' '}
-              מזהים את הדפוסים שחזרו על עצמם בכל תחנה בקריירה שלכם.
+              <span className="text-foreground font-medium">מבחן חשיבה.</span>{' '}
+              חידות חזותיות, טיימר עדין, וסגי שמלווה אתכם בדרך.
             </figcaption>
           </motion.figure>
         </div>
