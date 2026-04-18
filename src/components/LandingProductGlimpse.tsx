@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import previewHub from '@/assets/preview-hub.png';
-import previewVia from '@/assets/preview-via.png';
-import previewSkills from '@/assets/preview-skills.png';
+import previewHolland from '@/assets/preview-holland-playful.jpg';
+import previewThinking from '@/assets/preview-thinking-playful.jpg';
+import previewSkills from '@/assets/preview-skills-playful.jpg';
 import { Sparkles } from 'lucide-react';
 
 const LandingProductGlimpse = () => {
