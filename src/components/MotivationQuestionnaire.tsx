@@ -173,21 +173,24 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                   </div>
                   <div className="flex gap-3 justify-center items-center flex-wrap" dir="ltr">
                     <span className="text-sm text-muted-foreground w-16 text-right hidden sm:inline">כלל לא</span>
-                    {SCALE.map(val => (
-                      <button
-                        key={val}
-                        onClick={() => handleMotivationScore(cluster.id, val)}
-                        className={`w-13 h-13 rounded-full font-bold text-lg transition-all duration-400 border-2 min-w-[52px] min-h-[52px] ${
-                          motivationScores[cluster.id] === val
-                            ? 'bg-primary text-primary-foreground border-primary scale-110 shadow-[var(--shadow-card)]'
-                            : 'bg-card text-foreground border-border hover:border-secondary/40 hover:scale-105'
-                        }`}
-                        title={scaleLabels[val]}
-                        aria-label={`${scaleLabels[val]} – ${val}`}
-                      >
-                        {val}
-                      </button>
-                    ))}
+                    {SCALE.map(val => {
+                      const selected = motivationScores[cluster.id] === val;
+                      return (
+                        <button
+                          key={val}
+                          onClick={() => handleMotivationScore(cluster.id, val)}
+                          className={`w-13 h-13 rounded-full font-bold font-display text-lg transition-all duration-400 border-2 min-w-[52px] min-h-[52px] ${
+                            selected
+                              ? `${SCALE_COLORS[val]} scale-110`
+                              : 'bg-card text-foreground border-border hover:border-secondary/40 hover:scale-105 hover:shadow-md'
+                          }`}
+                          title={scaleLabels[val]}
+                          aria-label={`${scaleLabels[val]} – ${val}`}
+                        >
+                          {val}
+                        </button>
+                      );
+                    })}
                     <span className="text-sm text-muted-foreground w-16 text-left hidden sm:inline">מאוד</span>
                   </div>
                 </div>
