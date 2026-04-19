@@ -32,6 +32,15 @@ const scaleLabels: Record<number, string> = {
   5: 'במידה רבה מאוד',
 };
 
+// פלטה צבעונית לערכי הסולם – קורל → צהוב → תכלת → ירוק
+const SCALE_COLORS: Record<number, string> = {
+  1: 'bg-coral text-coral-foreground border-coral shadow-[0_0_18px_hsl(var(--coral)/0.4)]',
+  2: 'bg-coral/75 text-coral-foreground border-coral/75 shadow-[0_0_16px_hsl(var(--coral)/0.3)]',
+  3: 'bg-sunny text-foreground border-sunny shadow-[0_0_18px_hsl(var(--sunny)/0.4)]',
+  4: 'bg-sky text-foreground border-sky shadow-[0_0_18px_hsl(var(--sky)/0.4)]',
+  5: 'bg-success text-success-foreground border-success shadow-[0_0_22px_hsl(var(--success)/0.45)]',
+};
+
 type Part = 'A' | 'B';
 
 const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestionnaireProps) => {
