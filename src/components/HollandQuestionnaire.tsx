@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
@@ -81,8 +82,9 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
             <div key={q.id} className="bg-card rounded-3xl p-5 md:p-6 shadow-[var(--shadow-card)] border border-border/60 slide-up" style={{ animationDelay: `${idx * 0.03}s` }}>
               <p className="text-foreground font-medium mb-4 text-lg leading-relaxed">{q.text}</p>
               <div className="flex gap-4 justify-center" dir="ltr">
-                <button
+                <motion.button
                   onClick={() => handleAnswer(q.id, true)}
+                  whileTap={{ scale: 0.9, transition: { type: "spring", stiffness: 400, damping: 15 } }}
                   aria-label={`כן – ${q.text}`}
                   className={`px-10 py-3.5 rounded-full font-semibold font-display tracking-wide transition-all duration-300 border-2 min-h-[52px] text-lg ${
                     answers[q.id] === true
@@ -91,9 +93,10 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
                   }`}
                 >
                   כן ✓
-                </button>
-                <button
+                </motion.button>
+                <motion.button
                   onClick={() => handleAnswer(q.id, false)}
+                  whileTap={{ scale: 0.9, transition: { type: "spring", stiffness: 400, damping: 15 } }}
                   aria-label={`לא – ${q.text}`}
                   className={`px-10 py-3.5 rounded-full font-semibold font-display tracking-wide transition-all duration-300 border-2 min-h-[52px] text-lg ${
                     answers[q.id] === false
@@ -102,7 +105,7 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
                   }`}
                 >
                   לא ✗
-                </button>
+                </motion.button>
               </div>
             </div>
           ))}

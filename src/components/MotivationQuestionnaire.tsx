@@ -176,9 +176,10 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                     {SCALE.map(val => {
                       const selected = motivationScores[cluster.id] === val;
                       return (
-                        <button
+                        <motion.button
                           key={val}
                           onClick={() => handleMotivationScore(cluster.id, val)}
+                          whileTap={{ scale: 0.88, transition: { type: "spring", stiffness: 400, damping: 15 } }}
                           className={`w-13 h-13 rounded-full font-bold font-display text-lg transition-all duration-400 border-2 min-w-[52px] min-h-[52px] ${
                             selected
                               ? `${SCALE_COLORS[val]} scale-110`
@@ -188,7 +189,7 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                           aria-label={`${scaleLabels[val]} – ${val}`}
                         >
                           {val}
-                        </button>
+                        </motion.button>
                       );
                     })}
                     <span className="text-sm text-muted-foreground w-16 text-left hidden sm:inline">מאוד</span>
@@ -229,9 +230,10 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                     {SCALE.map(val => {
                       const selected = intentionAnswers[stmt.id] === val;
                       return (
-                        <button
+                        <motion.button
                           key={val}
                           onClick={() => handleIntentionAnswer(stmt.id, val)}
+                          whileTap={{ scale: 0.88, transition: { type: "spring", stiffness: 400, damping: 15 } }}
                           className={`w-13 h-13 rounded-full font-bold font-display text-lg transition-all duration-400 border-2 min-w-[52px] min-h-[52px] ${
                             selected
                               ? `${SCALE_COLORS[val]} scale-110`
@@ -241,7 +243,7 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                           aria-label={`${scaleLabels[val]} – ${val}`}
                         >
                           {val}
-                        </button>
+                        </motion.button>
                       );
                     })}
                     <span className="text-sm text-muted-foreground w-20 text-left hidden sm:inline">מסכים לחלוטין</span>
