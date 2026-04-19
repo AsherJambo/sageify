@@ -32,6 +32,15 @@ const scaleLabels: Record<number, string> = {
   5: 'במידה רבה מאוד',
 };
 
+// פלטה צבעונית לערכי הסולם – קורל → צהוב → תכלת → ירוק
+const SCALE_COLORS: Record<number, string> = {
+  1: 'bg-coral text-coral-foreground border-coral shadow-[0_0_18px_hsl(var(--coral)/0.4)]',
+  2: 'bg-coral/75 text-coral-foreground border-coral/75 shadow-[0_0_16px_hsl(var(--coral)/0.3)]',
+  3: 'bg-sunny text-foreground border-sunny shadow-[0_0_18px_hsl(var(--sunny)/0.4)]',
+  4: 'bg-sky text-foreground border-sky shadow-[0_0_18px_hsl(var(--sky)/0.4)]',
+  5: 'bg-success text-success-foreground border-success shadow-[0_0_22px_hsl(var(--success)/0.45)]',
+};
+
 type Part = 'A' | 'B';
 
 const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestionnaireProps) => {
@@ -125,9 +134,9 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                 : `${partBAnswered} / ${intentionStatements.length} אמירות`}
             </span>
           </div>
-          <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+          <div className="w-full h-2.5 bg-muted rounded-full overflow-hidden">
             <div
-              className="h-full bg-secondary rounded-full progress-bar-fill"
+              className="h-full bg-gradient-to-l from-coral via-sunny to-success rounded-full progress-bar-fill transition-all duration-700"
               style={{ width: `${totalProgress}%` }}
             />
           </div>
@@ -164,21 +173,24 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                   </div>
                   <div className="flex gap-3 justify-center items-center flex-wrap" dir="ltr">
                     <span className="text-sm text-muted-foreground w-16 text-right hidden sm:inline">כלל לא</span>
-                    {SCALE.map(val => (
-                      <button
-                        key={val}
-                        onClick={() => handleMotivationScore(cluster.id, val)}
-                        className={`w-13 h-13 rounded-full font-bold text-lg transition-all duration-400 border-2 min-w-[52px] min-h-[52px] ${
-                          motivationScores[cluster.id] === val
-                            ? 'bg-primary text-primary-foreground border-primary scale-110 shadow-[var(--shadow-card)]'
-                            : 'bg-card text-foreground border-border hover:border-secondary/40 hover:scale-105'
-                        }`}
-                        title={scaleLabels[val]}
-                        aria-label={`${scaleLabels[val]} – ${val}`}
-                      >
-                        {val}
-                      </button>
-                    ))}
+                    {SCALE.map(val => {
+                      const selected = motivationScores[cluster.id] === val;
+                      return (
+                        <button
+                          key={val}
+                          onClick={() => handleMotivationScore(cluster.id, val)}
+                          className={`w-13 h-13 rounded-full font-bold font-display text-lg transition-all duration-400 border-2 min-w-[52px] min-h-[52px] ${
+                            selected
+                              ? `${SCALE_COLORS[val]} scale-110`
+                              : 'bg-card text-foreground border-border hover:border-secondary/40 hover:scale-105 hover:shadow-md'
+                          }`}
+                          title={scaleLabels[val]}
+                          aria-label={`${scaleLabels[val]} – ${val}`}
+                        >
+                          {val}
+                        </button>
+                      );
+                    })}
                     <span className="text-sm text-muted-foreground w-16 text-left hidden sm:inline">מאוד</span>
                   </div>
                 </div>
@@ -214,21 +226,24 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                   </p>
                   <div className="flex gap-3 justify-center items-center flex-wrap" dir="ltr">
                     <span className="text-sm text-muted-foreground w-20 text-right hidden sm:inline">לא מסכים כלל</span>
-                    {SCALE.map(val => (
-                      <button
-                        key={val}
-                        onClick={() => handleIntentionAnswer(stmt.id, val)}
-                        className={`w-13 h-13 rounded-full font-bold text-lg transition-all duration-400 border-2 min-w-[52px] min-h-[52px] ${
-                          intentionAnswers[stmt.id] === val
-                            ? 'bg-primary text-primary-foreground border-primary scale-110 shadow-[var(--shadow-card)]'
-                            : 'bg-card text-foreground border-border hover:border-secondary/40 hover:scale-105'
-                        }`}
-                        title={scaleLabels[val]}
-                        aria-label={`${scaleLabels[val]} – ${val}`}
-                      >
-                        {val}
-                      </button>
-                    ))}
+                    {SCALE.map(val => {
+                      const selected = intentionAnswers[stmt.id] === val;
+                      return (
+                        <button
+                          key={val}
+                          onClick={() => handleIntentionAnswer(stmt.id, val)}
+                          className={`w-13 h-13 rounded-full font-bold font-display text-lg transition-all duration-400 border-2 min-w-[52px] min-h-[52px] ${
+                            selected
+                              ? `${SCALE_COLORS[val]} scale-110`
+                              : 'bg-card text-foreground border-border hover:border-secondary/40 hover:scale-105 hover:shadow-md'
+                          }`}
+                          title={scaleLabels[val]}
+                          aria-label={`${scaleLabels[val]} – ${val}`}
+                        >
+                          {val}
+                        </button>
+                      );
+                    })}
                     <span className="text-sm text-muted-foreground w-20 text-left hidden sm:inline">מסכים לחלוטין</span>
                   </div>
                 </div>

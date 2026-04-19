@@ -33,12 +33,12 @@ const StarRating = ({ value, onChange, max = 5 }: StarRatingProps) => {
             className="p-1.5 transition-all duration-400 hover:scale-115 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 rounded-lg min-h-[48px] min-w-[48px] flex items-center justify-center"
           >
             <Star
-              size={34}
+              size={36}
               strokeWidth={1.5}
               className={`transition-all duration-400 ${
                 star <= active
-                  ? 'fill-secondary text-secondary drop-shadow-sm'
-                  : 'fill-none text-border'
+                  ? 'fill-sunny text-sunny drop-shadow-[0_0_8px_hsl(var(--sunny)/0.5)]'
+                  : 'fill-none text-border hover:text-sunny/50'
               }`}
             />
           </button>
@@ -47,7 +47,7 @@ const StarRating = ({ value, onChange, max = 5 }: StarRatingProps) => {
       {/* Active label */}
       <div className="h-6 flex items-center">
         {active > 0 && (
-          <span className="text-sm font-display font-medium text-secondary tracking-wide animate-fade-in">
+          <span className="text-sm font-display font-medium text-foreground bg-sunny-soft px-3 py-0.5 rounded-full tracking-wide animate-fade-in">
             {LABELS[active]}
           </span>
         )}
