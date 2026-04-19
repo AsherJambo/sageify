@@ -47,7 +47,7 @@ const StarRating = ({ value, onChange, max = 5 }: StarRatingProps) => {
       {/* Active label */}
       <div className="h-6 flex items-center">
         {active > 0 && (
-          <span className="text-sm font-display font-medium text-secondary tracking-wide animate-fade-in">
+          <span className="text-sm font-display font-medium text-foreground bg-sunny-soft px-3 py-0.5 rounded-full tracking-wide animate-fade-in">
             {LABELS[active]}
           </span>
         )}
