@@ -81,19 +81,23 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: Sch
               </p>
               <div className="flex gap-2 justify-center items-center flex-wrap" dir="ltr">
                 <span className="text-xs text-muted-foreground/60 w-20 text-right hidden sm:inline">לא מסכים כלל</span>
-                {SCALE.map(val => (
-                  <button
-                    key={val}
-                    onClick={() => onAnswer(q.id, val)}
-                    className={`w-11 h-11 rounded-full font-bold text-lg transition-all duration-300 border-2 ${
-                      answers[q.id] === val
-                        ? 'bg-primary text-primary-foreground border-primary scale-110 shadow-[var(--shadow-card)]'
-                        : 'bg-card text-foreground border-border/60 hover:border-secondary/40 hover:scale-105'
-                    }`}
-                  >
-                    {val}
-                  </button>
-                ))}
+                {SCALE.map(val => {
+                  const colors = SCALE_COLORS[val];
+                  const selected = answers[q.id] === val;
+                  return (
+                    <button
+                      key={val}
+                      onClick={() => onAnswer(q.id, val)}
+                      className={`w-12 h-12 rounded-full font-bold font-display text-lg transition-all duration-300 border-2 ${
+                        selected
+                          ? `${colors.bg} scale-110 ${colors.shadow}`
+                          : 'bg-card text-foreground border-border/60 hover:border-secondary/40 hover:scale-105 hover:shadow-md'
+                      }`}
+                    >
+                      {val}
+                    </button>
+                  );
+                })}
                 <span className="text-xs text-muted-foreground/60 w-20 text-left hidden sm:inline">מסכים לחלוטין</span>
               </div>
             </div>
