@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { scheinQuestions } from '@/data/scheinQuestions';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
@@ -85,9 +86,10 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: Sch
                   const colors = SCALE_COLORS[val];
                   const selected = answers[q.id] === val;
                   return (
-                    <button
+                    <motion.button
                       key={val}
                       onClick={() => onAnswer(q.id, val)}
+                      whileTap={{ scale: 0.88, transition: { type: "spring", stiffness: 400, damping: 15 } }}
                       className={`w-12 h-12 rounded-full font-bold font-display text-lg transition-all duration-300 border-2 ${
                         selected
                           ? `${colors.bg} scale-110 ${colors.shadow}`
@@ -95,7 +97,7 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: Sch
                       }`}
                     >
                       {val}
-                    </button>
+                    </motion.button>
                   );
                 })}
                 <span className="text-xs text-muted-foreground/60 w-20 text-left hidden sm:inline">מסכים לחלוטין</span>

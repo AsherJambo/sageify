@@ -1,5 +1,6 @@
 import { Star } from 'lucide-react';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 interface StarRatingProps {
   value: number;
@@ -23,12 +24,13 @@ const StarRating = ({ value, onChange, max = 5 }: StarRatingProps) => {
     <div className="flex flex-col items-center gap-3">
       <div className="flex gap-3 justify-center items-center" dir="ltr">
         {Array.from({ length: max }, (_, i) => i + 1).map((star) => (
-          <button
+          <motion.button
             key={star}
             type="button"
             onClick={() => onChange(star)}
             onMouseEnter={() => setHovered(star)}
             onMouseLeave={() => setHovered(0)}
+            whileTap={{ scale: 0.8, transition: { type: "spring", stiffness: 400, damping: 12 } }}
             aria-label={`${LABELS[star]} – ${star} מתוך ${max}`}
             className="p-1.5 transition-all duration-400 hover:scale-115 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 rounded-lg min-h-[48px] min-w-[48px] flex items-center justify-center"
           >
@@ -41,7 +43,7 @@ const StarRating = ({ value, onChange, max = 5 }: StarRatingProps) => {
                   : 'fill-none text-border hover:text-sunny/50'
               }`}
             />
-          </button>
+          </motion.button>
         ))}
       </div>
       {/* Active label */}

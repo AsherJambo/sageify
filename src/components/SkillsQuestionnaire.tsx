@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { skills, type SkillColumn } from '@/data/skillsData';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
@@ -118,10 +119,11 @@ const SkillsQuestionnaire = ({ onComplete, onBackToHub }: SkillsQuestionnairePro
                   const meta = columnLabels[col];
                   const isActive = assignments[skill.id] === col;
                   return (
-                    <button
+                    <motion.button
                       key={col}
                       onClick={() => assign(skill.id, col)}
                       disabled={col === 'winner' && winnerCount >= 7 && assignments[skill.id] !== 'winner'}
+                      whileTap={!(col === 'winner' && winnerCount >= 7 && assignments[skill.id] !== 'winner') ? { scale: 0.92, transition: { type: "spring", stiffness: 400, damping: 15 } } : undefined}
                       className={`px-3 py-2.5 rounded-2xl text-sm font-medium transition-all duration-300 border-2 ${
                         isActive
                           ? meta.activeClass
@@ -129,7 +131,7 @@ const SkillsQuestionnaire = ({ onComplete, onBackToHub }: SkillsQuestionnairePro
                       }`}
                     >
                       <span className="text-base">{meta.symbol}</span> {meta.title}
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
