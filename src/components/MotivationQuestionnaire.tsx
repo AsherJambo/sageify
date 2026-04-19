@@ -134,9 +134,9 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                 : `${partBAnswered} / ${intentionStatements.length} אמירות`}
             </span>
           </div>
-          <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+          <div className="w-full h-2.5 bg-muted rounded-full overflow-hidden">
             <div
-              className="h-full bg-secondary rounded-full progress-bar-fill"
+              className="h-full bg-gradient-to-l from-coral via-sunny to-success rounded-full progress-bar-fill transition-all duration-700"
               style={{ width: `${totalProgress}%` }}
             />
           </div>
