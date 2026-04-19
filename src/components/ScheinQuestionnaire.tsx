@@ -23,6 +23,17 @@ interface ScheinQuestionnaireProps {
 
 const SCALE = [1, 2, 3, 4, 5, 6, 7];
 
+// צבע לכל ערך בסולם – מקורל (לא מסכים) דרך צהוב/תכלת לירוק (מסכים מאוד)
+const SCALE_COLORS: Record<number, { bg: string; shadow: string }> = {
+  1: { bg: 'bg-coral text-coral-foreground border-coral', shadow: 'shadow-[0_0_20px_hsl(var(--coral)/0.4)]' },
+  2: { bg: 'bg-coral/80 text-coral-foreground border-coral/80', shadow: 'shadow-[0_0_18px_hsl(var(--coral)/0.3)]' },
+  3: { bg: 'bg-sunny text-foreground border-sunny', shadow: 'shadow-[0_0_18px_hsl(var(--sunny)/0.4)]' },
+  4: { bg: 'bg-sunny/90 text-foreground border-sunny/90', shadow: 'shadow-[0_0_18px_hsl(var(--sunny)/0.35)]' },
+  5: { bg: 'bg-sky text-foreground border-sky', shadow: 'shadow-[0_0_18px_hsl(var(--sky)/0.4)]' },
+  6: { bg: 'bg-success/80 text-success-foreground border-success/80', shadow: 'shadow-[0_0_20px_hsl(var(--success)/0.35)]' },
+  7: { bg: 'bg-success text-success-foreground border-success', shadow: 'shadow-[0_0_24px_hsl(var(--success)/0.45)]' },
+};
+
 const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: ScheinQuestionnaireProps) => {
   const totalAnswered = Object.keys(answers).length;
   const allAnswered = totalAnswered >= scheinQuestions.length;
