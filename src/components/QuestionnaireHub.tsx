@@ -286,7 +286,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
           )}
           <div>
             <motion.button
-              onClick={hasMinimum ? onViewResults : undefined}
+              onClick={hasMinimum ? () => { celebrationConfetti(); onViewResults(); } : undefined}
               disabled={!hasMinimum}
               animate={hasMinimum ? {
                 scale: [1, 1.06, 1],
