@@ -1,7 +1,9 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
 import sageifyLogo from '@/assets/owl-logo.png';
 import OwlMessage from '@/components/OwlMessage';
+import { celebrationConfetti, sparkleConfetti } from '@/lib/confetti';
 
 type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation' | 'thinking';
 
