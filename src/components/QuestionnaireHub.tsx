@@ -90,13 +90,23 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
     <div className="min-h-screen flex flex-col items-center px-4 py-10 md:py-16" dir="rtl">
       <div className="max-w-3xl w-full space-y-10">
 
-        {/* Header */}
+        {/* Header — playful sticker style like landing */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center space-y-4"
+          className="text-center space-y-4 relative"
         >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.6, rotate: -12 }}
+            animate={{ opacity: 1, scale: 1, rotate: -8 }}
+            transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
+            className="absolute top-2 right-2 md:top-0 md:right-8 bg-accent text-accent-foreground text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 inline-flex items-center gap-1.5"
+            style={{ transform: 'rotate(-8deg)' }}
+          >
+            <Sparkles size={12} /> 8 שאלונים
+          </motion.div>
+
           <img
             src={sageifyLogo}
             alt="Sageify"
@@ -118,12 +128,28 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
         </motion.div>
 
 
+        {/* Progress with colorful gradient + level badge */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="bg-card border border-border/60 rounded-2xl p-5 shadow-[var(--shadow-card)]"
+          className="bg-card border border-border/60 rounded-2xl p-5 shadow-[var(--shadow-card)] relative"
         >
+          <motion.div
+            key={completedCount}
+            initial={{ scale: 0.6, opacity: 0, rotate: -6 }}
+            animate={{ scale: 1, opacity: 1, rotate: -4 }}
+            transition={{ type: 'spring', stiffness: 250, damping: 14 }}
+            className="absolute -top-3 -left-3 bg-success text-success-foreground text-[11px] font-bold px-2.5 py-1 rounded-full shadow-md font-display"
+            style={{ transform: 'rotate(-4deg)' }}
+          >
+            {completedCount === 0 ? '🌱 מתחילים' :
+             completedCount < 3 ? `⭐ רמה ${completedCount}` :
+             completedCount < 6 ? `🔥 רמה ${completedCount}` :
+             completedCount < 8 ? `✨ רמה ${completedCount}` :
+             '🏆 אלוף!'}
+          </motion.div>
+
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-display font-semibold text-foreground tracking-wide">
               התקדמות
@@ -132,13 +158,27 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
               {completedCount} מתוך {questionnaires.length} {hasMinimum ? '✦' : `(מומלץ: 3+)`}
             </span>
           </div>
-          <div className="h-2 bg-muted/40 rounded-full overflow-hidden">
+          <div className="h-2.5 bg-muted/40 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-secondary rounded-full"
+              className="h-full bg-gradient-to-l from-coral via-sunny to-success rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${(completedCount / questionnaires.length) * 100}%` }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             />
+          </div>
+
+          {/* Milestone dots */}
+          <div className="flex justify-between mt-3 px-0.5">
+            {Array.from({ length: questionnaires.length }).map((_, i) => (
+              <motion.div
+                key={i}
+                animate={i < completedCount ? { scale: [1, 1.4, 1] } : {}}
+                transition={{ duration: 0.5, delay: i * 0.05 }}
+                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                  i < completedCount ? 'bg-success' : 'bg-muted'
+                }`}
+              />
+            ))}
           </div>
         </motion.div>
 
