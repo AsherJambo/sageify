@@ -4,8 +4,10 @@ import { scheinQuestions } from '@/data/scheinQuestions';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
 import AnswerKeyReminder from './AnswerKeyReminder';
+import QuestProgressBadge from './QuestProgressBadge';
 import type { Answers } from '@/lib/scoring';
 import { getScheinEncouragement, getRandomWisdomTip } from '@/lib/owlMessages';
+import { burstConfetti } from '@/lib/confetti';
 
 const scheinAnswerKey = [
   { label: '1', desc: 'לא חשוב לי בכלל' },
@@ -24,7 +26,6 @@ interface ScheinQuestionnaireProps {
 
 const SCALE = [1, 2, 3, 4, 5, 6, 7];
 
-// צבע לכל ערך בסולם – מקורל (לא מסכים) דרך צהוב/תכלת לירוק (מסכים מאוד)
 const SCALE_COLORS: Record<number, { bg: string; shadow: string }> = {
   1: { bg: 'bg-coral text-coral-foreground border-coral', shadow: 'shadow-[0_0_20px_hsl(var(--coral)/0.4)]' },
   2: { bg: 'bg-coral/80 text-coral-foreground border-coral/80', shadow: 'shadow-[0_0_18px_hsl(var(--coral)/0.3)]' },
@@ -45,6 +46,7 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: Sch
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <QuestProgressBadge current={totalAnswered} total={scheinQuestions.length} label="עוגנים" icon="⚓" />
       <div className="w-full max-w-2xl space-y-8">
         {/* Header */}
         <div className="text-center space-y-3">
@@ -109,7 +111,7 @@ const ScheinQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: Sch
         <QuestionnaireNav
           showPrev={false}
           showComplete
-          onComplete={onComplete}
+          onComplete={() => { burstConfetti(); onComplete(); }}
           completeDisabled={!allAnswered}
           completeLabel="סיום שאלון עוגנים"
           onBackToHub={onBackToHub}
