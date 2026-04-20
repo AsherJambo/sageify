@@ -39,7 +39,7 @@ const QuestProgressBadge = ({ current, total, label, icon }: QuestProgressBadgeP
       initial={{ opacity: 0, scale: 0.6, y: -10, rotate: -8 }}
       animate={{ opacity: 1, scale: 1, y: 0, rotate: -4 }}
       transition={{ duration: 0.5, type: 'spring', stiffness: 200, damping: 14 }}
-      className="fixed top-3 left-3 md:top-5 md:left-6 z-40 pointer-events-none select-none"
+      className="fixed top-3 left-3 md:top-5 md:left-auto md:right-6 z-40 pointer-events-none select-none"
       style={{ transform: 'rotate(-4deg)' }}
     >
       <motion.div
