@@ -4,8 +4,10 @@ import StarRating from './StarRating';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
 import AnswerKeyReminder from './AnswerKeyReminder';
+import QuestProgressBadge from './QuestProgressBadge';
 import type { Answers } from '@/lib/scoring';
 import { getVIAEncouragement, getRandomWisdomTip } from '@/lib/owlMessages';
+import { burstConfetti } from '@/lib/confetti';
 
 const viaAnswerKey = [
   { label: '1', desc: 'בכלל לא מתאים לי' },
@@ -49,6 +51,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: VIAQue
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <QuestProgressBadge current={totalAnswered} total={viaQuestions.length} label="חוזקות" icon="✦" />
       <div className="w-full max-w-2xl space-y-8">
         {/* Header */}
         <div className="text-center space-y-3">
@@ -102,7 +105,7 @@ const VIAQuestionnaire = ({ answers, onAnswer, onComplete, onBackToHub }: VIAQue
           onNext={() => setPage(p => p + 1)}
           nextDisabled={answeredOnPage < currentQuestions.length}
           showComplete={page === totalPages - 1}
-          onComplete={onComplete}
+          onComplete={() => { burstConfetti(); onComplete(); }}
           completeDisabled={!allAnswered}
           completeLabel="סיום שאלון חוזקות"
           onBackToHub={onBackToHub}
