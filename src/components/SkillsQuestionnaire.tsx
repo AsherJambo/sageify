@@ -4,6 +4,8 @@ import { skills, type SkillColumn } from '@/data/skillsData';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
 import AnswerKeyReminder from './AnswerKeyReminder';
+import QuestProgressBadge from './QuestProgressBadge';
+import { burstConfetti } from '@/lib/confetti';
 
 const skillsAnswerKey = [
   { label: '🏆 ארגז כלים מנצח', desc: 'טוב/ה בזה + רוצה להמשיך' },
@@ -71,6 +73,7 @@ const SkillsQuestionnaire = ({ onComplete, onBackToHub }: SkillsQuestionnairePro
       return;
     }
     setError(null);
+    burstConfetti();
     onComplete(assignments);
   };
 
@@ -83,6 +86,7 @@ const SkillsQuestionnaire = ({ onComplete, onBackToHub }: SkillsQuestionnairePro
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <QuestProgressBadge current={totalAssigned} total={skills.length} label="כישורים" icon="◆" />
       <div className="w-full max-w-3xl space-y-8">
         <div className="text-center space-y-3">
           <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
