@@ -4,6 +4,7 @@ import { thinkingQuestions, exampleImage, TIME_LIMIT_SECONDS, calculateThinkingR
 import QuestionnaireNav from '@/components/QuestionnaireNav';
 import OwlMessage from '@/components/OwlMessage';
 import { getRandomWisdomTip } from '@/lib/owlMessages';
+import { burstConfetti } from '@/lib/confetti';
 import sageifyLogo from '@/assets/owl-logo.png';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -51,6 +52,7 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
     const timeUsed = Math.floor((Date.now() - startTime) / 1000);
     const result = calculateThinkingResult(answers, timeUsed);
     setPhase('done');
+    burstConfetti();
     onComplete(result);
   }, [answers, startTime, onComplete]);
 

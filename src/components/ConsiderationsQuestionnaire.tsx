@@ -5,6 +5,7 @@ import SectionIntro from './SectionIntro';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
 import AnswerKeyReminder from './AnswerKeyReminder';
+import { burstConfetti } from '@/lib/confetti';
 
 const considerationsAnswerKey = [
   { label: 'שלב 1', desc: 'בחרו עד 6 שיקולים שהכי חשובים לכם' },
@@ -141,7 +142,7 @@ const ConsiderationsQuestionnaire = ({ onComplete, onBackToHub }: Considerations
             <QuestionnaireNav
               showPrev={false}
               showComplete
-              onComplete={() => onComplete(selected, points)}
+              onComplete={() => { burstConfetti(); onComplete(selected, points); }}
               completeDisabled={remaining !== 0}
               completeLabel="סיום שאלון שיקולים"
               onBackToHub={onBackToHub}
