@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import QuestionnaireNav from './QuestionnaireNav';
 import OwlMessage from './OwlMessage';
 import AnswerKeyReminder from './AnswerKeyReminder';
+import QuestProgressBadge from './QuestProgressBadge';
+import { burstConfetti } from '@/lib/confetti';
 import {
   motivationClusters,
   intentionStatements,
@@ -80,8 +82,12 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
 
   const encouragement = getEncouragement();
 
+  const totalDone = Object.keys(motivationScores).length + Object.keys(intentionAnswers).length;
+  const totalQuestions = motivationClusters.length + intentionStatements.length;
+
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <QuestProgressBadge current={totalDone} total={totalQuestions} label="מניעים" icon="🔥" />
       <div className="w-full max-w-2xl space-y-8">
         {/* Header */}
         <div className="text-center space-y-3">
@@ -255,7 +261,7 @@ const MotivationQuestionnaire = ({ onComplete, onBackToHub }: MotivationQuestion
                 showPrev={true}
                 showComplete={true}
                 onPrev={() => setPart('A')}
-                onComplete={() => onComplete(motivationScores, intentionAnswers)}
+                onComplete={() => { burstConfetti(); onComplete(motivationScores, intentionAnswers); }}
                 completeDisabled={!allComplete}
                 completeLabel="סיום שאלון מניעים"
                 onBackToHub={onBackToHub}
