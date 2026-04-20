@@ -59,6 +59,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
   const completedCount = Object.values(completedSections).filter(Boolean).length;
   const hasMinimum = completedCount >= 3;
   const canViewResults = completedCount >= 1;
+  const prevCount = useRef(completedCount);
 
   const completedNames = useMemo(() => {
     const nameMap: Record<QuestionnaireSectionId, string> = {
@@ -72,6 +73,18 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
   }, [completedSections]);
 
   const encouragement = getHubEncouragement(completedCount, completedNames);
+
+  // 🎉 Celebrate milestones: small sparkle on each completion, big confetti at 3 (results unlock) and at all 8
+  useEffect(() => {
+    if (completedCount > prevCount.current) {
+      if (completedCount === 3 || completedCount === questionnaires.length) {
+        celebrationConfetti();
+      } else if (completedCount > 0) {
+        sparkleConfetti();
+      }
+    }
+    prevCount.current = completedCount;
+  }, [completedCount]);
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-10 md:py-16" dir="rtl">
