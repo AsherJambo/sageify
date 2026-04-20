@@ -4,6 +4,8 @@ import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
 import AnswerKeyReminder from './AnswerKeyReminder';
+import QuestProgressBadge from './QuestProgressBadge';
+import { burstConfetti } from '@/lib/confetti';
 
 const hollandAnswerKey = [
   { label: 'כן', desc: 'הכישור או היכולת קיימים אצלי' },
@@ -54,6 +56,7 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12 fade-in">
+      <QuestProgressBadge current={totalAnswered} total={shuffledQuestions.length} label="נטיות" icon="🧭" />
       <div className="w-full max-w-2xl space-y-8">
         <div className="text-center space-y-3">
           <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/8 text-secondary font-medium text-sm tracking-wide border border-secondary/15">
@@ -119,7 +122,7 @@ const HollandQuestionnaire = ({ onComplete, onBackToHub }: HollandQuestionnaireP
           onNext={() => setPage(p => p + 1)}
           nextDisabled={!pageAllAnswered}
           showComplete={page === totalPages - 1}
-          onComplete={() => onComplete(answers)}
+          onComplete={() => { burstConfetti(); onComplete(answers); }}
           completeDisabled={!allAnswered}
           completeLabel="סיום שאלון נטיות"
           onBackToHub={onBackToHub}

@@ -4,6 +4,7 @@ import { Textarea } from '@/components/ui/textarea';
 import OwlMessage from './OwlMessage';
 import QuestionnaireNav from './QuestionnaireNav';
 import AnswerKeyReminder from './AnswerKeyReminder';
+import { burstConfetti } from '@/lib/confetti';
 
 const preferencesAnswerKey = [
   { label: 'בחירת אפשרות', desc: 'בחרו את האפשרות המתאימה לכם ביותר מתוך הרשימה' },
@@ -123,6 +124,7 @@ const PreferencesQuestionnaire = ({ onComplete, onBackToHub }: PreferencesQuesti
             if (openReflection.trim()) {
               finalPrefs['open_reflection'] = [openReflection.trim()];
             }
+            burstConfetti();
             onComplete(finalPrefs, dream);
           }}
           completeDisabled={!canComplete}

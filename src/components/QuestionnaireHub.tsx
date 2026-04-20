@@ -1,7 +1,9 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
 import sageifyLogo from '@/assets/owl-logo.png';
 import OwlMessage from '@/components/OwlMessage';
+import { celebrationConfetti, sparkleConfetti } from '@/lib/confetti';
 
 type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation' | 'thinking';
 
@@ -11,15 +13,15 @@ interface QuestionnaireHubProps {
   onViewResults: () => void;
 }
 
-const questionnaires: { id: QuestionnaireSectionId; title: string; desc: string; icon: string; duration: string }[] = [
-  { id: 'skills', title: 'כישורים ותנאי סף', desc: 'מיינו 20 כישורים לארגז הכלים שלכם', icon: '◆', duration: '5–7 דק׳' },
-  { id: 'schein', title: 'עוגנים תעסוקתיים', desc: 'גלו מה באמת מניע אתכם בעשייה', icon: '⚓', duration: '8–10 דק׳' },
-  { id: 'considerations', title: 'שיקולים בבחירת עיסוק', desc: 'בחרו ותעדפו את השיקולים החשובים לכם', icon: '⚖', duration: '5–7 דק׳' },
-  { id: 'holland', title: 'נטיות תעסוקתיות', desc: 'גלו את הנטיות המקצועיות שלכם', icon: '🧭', duration: '10–12 דק׳' },
-  { id: 'via', title: 'חוזקות VIA', desc: 'גלו את הכוחות הפנימיים שלכם', icon: '✦', duration: '8–10 דק׳' },
-  { id: 'preferences', title: 'העדפות ופרופיל אישי', desc: 'העדפות, סגנון אישי וחלום המגירה', icon: '●', duration: '5–7 דק׳' },
-  { id: 'motivation', title: 'מניעים וכוונות', desc: 'מה מניע אתכם ומהי מידת המוכנות שלכם', icon: '🔥', duration: '5–7 דק׳' },
-  { id: 'thinking', title: 'חשיבה וגמישות קוגניטיבית', desc: 'גלו חוזקות חשיבה ייחודיות דרך זיהוי דפוסים ויזואליים', icon: '🧠', duration: '10–15 דק׳' },
+const questionnaires: { id: QuestionnaireSectionId; title: string; desc: string; icon: string; duration: string; sticker: string; rotate: string }[] = [
+  { id: 'skills', title: 'כישורים ותנאי סף', desc: 'מיינו 20 כישורים לארגז הכלים שלכם', icon: '◆', duration: '5–7 דק׳', sticker: '🏆 ארגז כלים', rotate: '-rotate-2' },
+  { id: 'schein', title: 'עוגנים תעסוקתיים', desc: 'גלו מה באמת מניע אתכם בעשייה', icon: '⚓', duration: '8–10 דק׳', sticker: '⚓ עוגנים', rotate: 'rotate-2' },
+  { id: 'considerations', title: 'שיקולים בבחירת עיסוק', desc: 'בחרו ותעדפו את השיקולים החשובים לכם', icon: '⚖', duration: '5–7 דק׳', sticker: '⚖ ערכים', rotate: '-rotate-1' },
+  { id: 'holland', title: 'נטיות תעסוקתיות', desc: 'גלו את הנטיות המקצועיות שלכם', icon: '🧭', duration: '10–12 דק׳', sticker: '🧭 כן/לא', rotate: 'rotate-1' },
+  { id: 'via', title: 'חוזקות VIA', desc: 'גלו את הכוחות הפנימיים שלכם', icon: '✦', duration: '8–10 דק׳', sticker: '✦ חוזקות', rotate: '-rotate-2' },
+  { id: 'preferences', title: 'העדפות ופרופיל אישי', desc: 'העדפות, סגנון אישי וחלום המגירה', icon: '●', duration: '5–7 דק׳', sticker: '● העדפות', rotate: 'rotate-1' },
+  { id: 'motivation', title: 'מניעים וכוונות', desc: 'מה מניע אתכם ומהי מידת המוכנות שלכם', icon: '🔥', duration: '5–7 דק׳', sticker: '🔥 מניעים', rotate: '-rotate-1' },
+  { id: 'thinking', title: 'חשיבה וגמישות קוגניטיבית', desc: 'גלו חוזקות חשיבה ייחודיות דרך זיהוי דפוסים ויזואליים', icon: '🧠', duration: '10–15 דק׳', sticker: '🧠 חידות', rotate: 'rotate-2' },
 ];
 
 const fadeUp = {
@@ -57,6 +59,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
   const completedCount = Object.values(completedSections).filter(Boolean).length;
   const hasMinimum = completedCount >= 3;
   const canViewResults = completedCount >= 1;
+  const prevCount = useRef(completedCount);
 
   const completedNames = useMemo(() => {
     const nameMap: Record<QuestionnaireSectionId, string> = {
@@ -71,17 +74,39 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
 
   const encouragement = getHubEncouragement(completedCount, completedNames);
 
+  // 🎉 Celebrate milestones: small sparkle on each completion, big confetti at 3 (results unlock) and at all 8
+  useEffect(() => {
+    if (completedCount > prevCount.current) {
+      if (completedCount === 3 || completedCount === questionnaires.length) {
+        celebrationConfetti();
+      } else if (completedCount > 0) {
+        sparkleConfetti();
+      }
+    }
+    prevCount.current = completedCount;
+  }, [completedCount]);
+
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-10 md:py-16" dir="rtl">
       <div className="max-w-3xl w-full space-y-10">
 
-        {/* Header */}
+        {/* Header — playful sticker style like landing */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center space-y-4"
+          className="text-center space-y-4 relative"
         >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.6, rotate: -12 }}
+            animate={{ opacity: 1, scale: 1, rotate: -8 }}
+            transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
+            className="absolute top-2 right-2 md:top-0 md:right-8 bg-accent text-accent-foreground text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 inline-flex items-center gap-1.5"
+            style={{ transform: 'rotate(-8deg)' }}
+          >
+            <Sparkles size={12} /> 8 שאלונים
+          </motion.div>
+
           <img
             src={sageifyLogo}
             alt="Sageify"
@@ -103,12 +128,28 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
         </motion.div>
 
 
+        {/* Progress with colorful gradient + level badge */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="bg-card border border-border/60 rounded-2xl p-5 shadow-[var(--shadow-card)]"
+          className="bg-card border border-border/60 rounded-2xl p-5 shadow-[var(--shadow-card)] relative"
         >
+          <motion.div
+            key={completedCount}
+            initial={{ scale: 0.6, opacity: 0, rotate: -6 }}
+            animate={{ scale: 1, opacity: 1, rotate: -4 }}
+            transition={{ type: 'spring', stiffness: 250, damping: 14 }}
+            className="absolute -top-3 -left-3 bg-success text-success-foreground text-[11px] font-bold px-2.5 py-1 rounded-full shadow-md font-display"
+            style={{ transform: 'rotate(-4deg)' }}
+          >
+            {completedCount === 0 ? '🌱 מתחילים' :
+             completedCount < 3 ? `⭐ רמה ${completedCount}` :
+             completedCount < 6 ? `🔥 רמה ${completedCount}` :
+             completedCount < 8 ? `✨ רמה ${completedCount}` :
+             '🏆 אלוף!'}
+          </motion.div>
+
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-display font-semibold text-foreground tracking-wide">
               התקדמות
@@ -117,13 +158,27 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
               {completedCount} מתוך {questionnaires.length} {hasMinimum ? '✦' : `(מומלץ: 3+)`}
             </span>
           </div>
-          <div className="h-2 bg-muted/40 rounded-full overflow-hidden">
+          <div className="h-2.5 bg-muted/40 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-secondary rounded-full"
+              className="h-full bg-gradient-to-l from-coral via-sunny to-success rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${(completedCount / questionnaires.length) * 100}%` }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             />
+          </div>
+
+          {/* Milestone dots */}
+          <div className="flex justify-between mt-3 px-0.5">
+            {Array.from({ length: questionnaires.length }).map((_, i) => (
+              <motion.div
+                key={i}
+                animate={i < completedCount ? { scale: [1, 1.4, 1] } : {}}
+                transition={{ duration: 0.5, delay: i * 0.05 }}
+                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                  i < completedCount ? 'bg-success' : 'bg-muted'
+                }`}
+              />
+            ))}
           </div>
         </motion.div>
 
@@ -153,20 +208,46 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
                 animate="visible"
                 variants={fadeUp}
                 onClick={() => onSelect(q.id)}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className={`text-right p-6 rounded-2xl border shadow-[var(--shadow-card)] transition-all duration-300 group ${
+                className={`relative text-right p-6 rounded-2xl border shadow-[var(--shadow-card)] transition-all duration-300 group ${
                   completed
                     ? 'bg-secondary/[0.04] border-secondary/25 hover:border-secondary/40'
                     : 'bg-card border-border/60 hover:border-secondary/30 hover:shadow-[var(--shadow-elevated)]'
                 }`}
               >
+                {/* Floating playful sticker — landing-page style */}
+                {completed ? (
+                  <motion.span
+                    initial={{ opacity: 0, scale: 0, rotate: -20 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 6 }}
+                    transition={{ type: 'spring', stiffness: 250, damping: 14, delay: 0.2 + i * 0.07 }}
+                    className="absolute -top-3 -left-3 bg-success text-success-foreground text-[11px] font-bold px-3 py-1 rounded-full shadow-md font-display z-10"
+                    style={{ transform: 'rotate(6deg)' }}
+                  >
+                    הושלם ✓
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    initial={{ opacity: 0, scale: 0.7 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.25 + i * 0.05, type: 'spring', stiffness: 220, damping: 16 }}
+                    className={`absolute -top-2.5 -left-2.5 bg-[hsl(45_70%_88%)] text-foreground text-[10px] font-medium px-2.5 py-1 rounded shadow-sm border border-[hsl(45_50%_75%)] z-10 ${q.rotate}`}
+                  >
+                    {q.sticker}
+                  </motion.span>
+                )}
+
                 <div className="flex items-start gap-4">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg flex-shrink-0 transition-colors duration-300 ${
-                    completed
-                      ? 'bg-secondary/15 text-secondary'
-                      : 'bg-muted/40 text-muted-foreground group-hover:bg-secondary/10 group-hover:text-secondary'
-                  }`}>
+                  <motion.div
+                    whileHover={!completed ? { rotate: [0, -8, 8, 0] } : {}}
+                    transition={{ duration: 0.5 }}
+                    className={`w-12 h-12 rounded-full flex items-center justify-center text-lg flex-shrink-0 transition-colors duration-300 ${
+                      completed
+                        ? 'bg-success/15 text-success'
+                        : 'bg-muted/40 text-muted-foreground group-hover:bg-secondary/10 group-hover:text-secondary'
+                    }`}
+                  >
                     {completed ? (
                       <motion.span
                         initial={{ scale: 0, rotate: -90 }}
@@ -176,23 +257,11 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
                         ✓
                       </motion.span>
                     ) : q.icon}
-                  </div>
+                  </motion.div>
                   <div className="flex-1 space-y-1.5">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3 className="font-bold font-display text-foreground tracking-wide text-lg">
-                        {q.title}
-                      </h3>
-                      {completed && (
-                        <motion.span
-                          initial={{ opacity: 0, scale: 0.7 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ type: 'spring', stiffness: 400, damping: 20, delay: 0.2 + i * 0.07 }}
-                          className="text-sm bg-secondary/10 text-secondary px-3 py-1 rounded-full font-display font-semibold flex-shrink-0"
-                        >
-                          הושלם ✓
-                        </motion.span>
-                      )}
-                    </div>
+                    <h3 className="font-bold font-display text-foreground tracking-wide text-lg">
+                      {q.title}
+                    </h3>
                     <p className="text-base text-muted-foreground leading-relaxed">{q.desc}</p>
                     <p className="text-sm text-muted-foreground font-display flex items-center gap-1.5">⏱ {q.duration}</p>
                   </div>
@@ -217,7 +286,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
           )}
           <div>
             <motion.button
-              onClick={hasMinimum ? onViewResults : undefined}
+              onClick={hasMinimum ? () => { celebrationConfetti(); onViewResults(); } : undefined}
               disabled={!hasMinimum}
               animate={hasMinimum ? {
                 scale: [1, 1.06, 1],
