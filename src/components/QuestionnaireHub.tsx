@@ -208,20 +208,46 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
                 animate="visible"
                 variants={fadeUp}
                 onClick={() => onSelect(q.id)}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className={`text-right p-6 rounded-2xl border shadow-[var(--shadow-card)] transition-all duration-300 group ${
+                className={`relative text-right p-6 rounded-2xl border shadow-[var(--shadow-card)] transition-all duration-300 group ${
                   completed
                     ? 'bg-secondary/[0.04] border-secondary/25 hover:border-secondary/40'
                     : 'bg-card border-border/60 hover:border-secondary/30 hover:shadow-[var(--shadow-elevated)]'
                 }`}
               >
+                {/* Floating playful sticker — landing-page style */}
+                {completed ? (
+                  <motion.span
+                    initial={{ opacity: 0, scale: 0, rotate: -20 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 6 }}
+                    transition={{ type: 'spring', stiffness: 250, damping: 14, delay: 0.2 + i * 0.07 }}
+                    className="absolute -top-3 -left-3 bg-success text-success-foreground text-[11px] font-bold px-3 py-1 rounded-full shadow-md font-display z-10"
+                    style={{ transform: 'rotate(6deg)' }}
+                  >
+                    הושלם ✓
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    initial={{ opacity: 0, scale: 0.7 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.25 + i * 0.05, type: 'spring', stiffness: 220, damping: 16 }}
+                    className={`absolute -top-2.5 -left-2.5 bg-[hsl(45_70%_88%)] text-foreground text-[10px] font-medium px-2.5 py-1 rounded shadow-sm border border-[hsl(45_50%_75%)] z-10 ${q.rotate}`}
+                  >
+                    {q.sticker}
+                  </motion.span>
+                )}
+
                 <div className="flex items-start gap-4">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg flex-shrink-0 transition-colors duration-300 ${
-                    completed
-                      ? 'bg-secondary/15 text-secondary'
-                      : 'bg-muted/40 text-muted-foreground group-hover:bg-secondary/10 group-hover:text-secondary'
-                  }`}>
+                  <motion.div
+                    whileHover={!completed ? { rotate: [0, -8, 8, 0] } : {}}
+                    transition={{ duration: 0.5 }}
+                    className={`w-12 h-12 rounded-full flex items-center justify-center text-lg flex-shrink-0 transition-colors duration-300 ${
+                      completed
+                        ? 'bg-success/15 text-success'
+                        : 'bg-muted/40 text-muted-foreground group-hover:bg-secondary/10 group-hover:text-secondary'
+                    }`}
+                  >
                     {completed ? (
                       <motion.span
                         initial={{ scale: 0, rotate: -90 }}
@@ -231,23 +257,11 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
                         ✓
                       </motion.span>
                     ) : q.icon}
-                  </div>
+                  </motion.div>
                   <div className="flex-1 space-y-1.5">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3 className="font-bold font-display text-foreground tracking-wide text-lg">
-                        {q.title}
-                      </h3>
-                      {completed && (
-                        <motion.span
-                          initial={{ opacity: 0, scale: 0.7 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ type: 'spring', stiffness: 400, damping: 20, delay: 0.2 + i * 0.07 }}
-                          className="text-sm bg-secondary/10 text-secondary px-3 py-1 rounded-full font-display font-semibold flex-shrink-0"
-                        >
-                          הושלם ✓
-                        </motion.span>
-                      )}
-                    </div>
+                    <h3 className="font-bold font-display text-foreground tracking-wide text-lg">
+                      {q.title}
+                    </h3>
                     <p className="text-base text-muted-foreground leading-relaxed">{q.desc}</p>
                     <p className="text-sm text-muted-foreground font-display flex items-center gap-1.5">⏱ {q.duration}</p>
                   </div>
