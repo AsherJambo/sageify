@@ -13,15 +13,15 @@ interface QuestionnaireHubProps {
   onViewResults: () => void;
 }
 
-const questionnaires: { id: QuestionnaireSectionId; title: string; desc: string; icon: string; duration: string }[] = [
-  { id: 'skills', title: 'כישורים ותנאי סף', desc: 'מיינו 20 כישורים לארגז הכלים שלכם', icon: '◆', duration: '5–7 דק׳' },
-  { id: 'schein', title: 'עוגנים תעסוקתיים', desc: 'גלו מה באמת מניע אתכם בעשייה', icon: '⚓', duration: '8–10 דק׳' },
-  { id: 'considerations', title: 'שיקולים בבחירת עיסוק', desc: 'בחרו ותעדפו את השיקולים החשובים לכם', icon: '⚖', duration: '5–7 דק׳' },
-  { id: 'holland', title: 'נטיות תעסוקתיות', desc: 'גלו את הנטיות המקצועיות שלכם', icon: '🧭', duration: '10–12 דק׳' },
-  { id: 'via', title: 'חוזקות VIA', desc: 'גלו את הכוחות הפנימיים שלכם', icon: '✦', duration: '8–10 דק׳' },
-  { id: 'preferences', title: 'העדפות ופרופיל אישי', desc: 'העדפות, סגנון אישי וחלום המגירה', icon: '●', duration: '5–7 דק׳' },
-  { id: 'motivation', title: 'מניעים וכוונות', desc: 'מה מניע אתכם ומהי מידת המוכנות שלכם', icon: '🔥', duration: '5–7 דק׳' },
-  { id: 'thinking', title: 'חשיבה וגמישות קוגניטיבית', desc: 'גלו חוזקות חשיבה ייחודיות דרך זיהוי דפוסים ויזואליים', icon: '🧠', duration: '10–15 דק׳' },
+const questionnaires: { id: QuestionnaireSectionId; title: string; desc: string; icon: string; duration: string; sticker: string; rotate: string }[] = [
+  { id: 'skills', title: 'כישורים ותנאי סף', desc: 'מיינו 20 כישורים לארגז הכלים שלכם', icon: '◆', duration: '5–7 דק׳', sticker: '🏆 ארגז כלים', rotate: '-rotate-2' },
+  { id: 'schein', title: 'עוגנים תעסוקתיים', desc: 'גלו מה באמת מניע אתכם בעשייה', icon: '⚓', duration: '8–10 דק׳', sticker: '⚓ עוגנים', rotate: 'rotate-2' },
+  { id: 'considerations', title: 'שיקולים בבחירת עיסוק', desc: 'בחרו ותעדפו את השיקולים החשובים לכם', icon: '⚖', duration: '5–7 דק׳', sticker: '⚖ ערכים', rotate: '-rotate-1' },
+  { id: 'holland', title: 'נטיות תעסוקתיות', desc: 'גלו את הנטיות המקצועיות שלכם', icon: '🧭', duration: '10–12 דק׳', sticker: '🧭 כן/לא', rotate: 'rotate-1' },
+  { id: 'via', title: 'חוזקות VIA', desc: 'גלו את הכוחות הפנימיים שלכם', icon: '✦', duration: '8–10 דק׳', sticker: '✦ חוזקות', rotate: '-rotate-2' },
+  { id: 'preferences', title: 'העדפות ופרופיל אישי', desc: 'העדפות, סגנון אישי וחלום המגירה', icon: '●', duration: '5–7 דק׳', sticker: '● העדפות', rotate: 'rotate-1' },
+  { id: 'motivation', title: 'מניעים וכוונות', desc: 'מה מניע אתכם ומהי מידת המוכנות שלכם', icon: '🔥', duration: '5–7 דק׳', sticker: '🔥 מניעים', rotate: '-rotate-1' },
+  { id: 'thinking', title: 'חשיבה וגמישות קוגניטיבית', desc: 'גלו חוזקות חשיבה ייחודיות דרך זיהוי דפוסים ויזואליים', icon: '🧠', duration: '10–15 דק׳', sticker: '🧠 חידות', rotate: 'rotate-2' },
 ];
 
 const fadeUp = {
