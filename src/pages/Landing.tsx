@@ -12,7 +12,6 @@ import LandingPillars from '@/components/LandingPillars';
 import LandingHowItWorks from '@/components/LandingHowItWorks';
 import LandingTrust from '@/components/LandingTrust';
 import LandingTeam from '@/components/LandingTeam';
-import LandingFAQ from '@/components/LandingFAQ';
 import LandingCTA from '@/components/LandingCTA';
 
 const Landing = () => {
@@ -70,12 +69,11 @@ const Landing = () => {
 
       {/* The pain → the solution → how → trust → team → CTA */}
       <LandingChallenge />
+      <div id="solution"><LandingPillars /></div>
       <div id="dashboard"><LandingDashboardPreview /></div>
-      <LandingPillars />
       <div id="how-it-works"><LandingHowItWorks /></div>
       <LandingTrust />
       <LandingTeam />
-      <LandingFAQ />
       <LandingCTA />
 
       <footer className="py-8 px-6 border-t border-border/20">

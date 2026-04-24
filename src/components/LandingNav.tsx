@@ -5,8 +5,8 @@ import { Menu, X } from 'lucide-react';
 
 const navLinks = [
   { label: 'הכאב', href: '#challenge' },
+  { label: 'הפתרון', href: '#solution' },
   { label: 'איך זה עובד', href: '#how-it-works' },
-  { label: 'מפת הדרכים', href: '#dashboard' },
 ];
 
 const LandingNav = () => {
