@@ -327,6 +327,7 @@ const MusicScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation:
   const [mood, setMood] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
+  const [saved, setSaved] = useState(false);
 
   const generate = async () => {
     if (!genre || !mood) {
@@ -335,6 +336,7 @@ const MusicScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation:
     }
     setLoading(true);
     setDescription("");
+    setSaved(false);
     try {
       const genreLabel = MUSIC_GENRES.find((g) => g.id === genre)?.label || genre;
       const moodLabel = MUSIC_MOODS.find((m) => m.id === mood)?.label || mood;
@@ -343,21 +345,35 @@ const MusicScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation:
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
+      if (!data?.description) throw new Error("לא התקבל תיאור מוזיקלי");
       setDescription(data.description);
-      addCreation({
-        id: `${Date.now()}`,
-        type: "music",
-        title: `${genreLabel} – ${moodLabel}`,
-        content: data.description,
-        meta: `${genreLabel} • ${moodLabel}`,
-        createdAt: Date.now(),
-      });
       toast.success("הקטע המוזיקלי שלכם מוכן! 🎵");
     } catch (e: any) {
       toast.error(e?.message || "אירעה שגיאה. נסו שוב.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSave = () => {
+    if (!description || saved) return;
+    const genreLabel = MUSIC_GENRES.find((g) => g.id === genre)?.label || genre;
+    const moodLabel = MUSIC_MOODS.find((m) => m.id === mood)?.label || mood;
+    addCreation({
+      id: `${Date.now()}`,
+      type: "music",
+      title: `${genreLabel} – ${moodLabel}`,
+      content: description,
+      meta: `${genreLabel} • ${moodLabel}`,
+      createdAt: Date.now(),
+    });
+    setSaved(true);
+    toast.success("נשמר לגלריה שלכם! 💛");
+  };
+
+  const handleReset = () => {
+    setDescription("");
+    setSaved(false);
   };
 
   return (
@@ -434,7 +450,32 @@ const MusicScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation:
             className="mt-8 p-6 md:p-8 bg-gradient-to-br from-sky-50 to-indigo-50 rounded-3xl border-2 border-sky-200 shadow-lg"
           >
             <div className="text-5xl mb-4 text-center">🎼</div>
+            <div className="text-center mb-4">
+              <span className="inline-block px-4 py-1 rounded-full bg-white/70 text-sky-800 text-base font-semibold">
+                {MUSIC_GENRES.find((g) => g.id === genre)?.label} • {MUSIC_MOODS.find((m) => m.id === mood)?.label}
+              </span>
+            </div>
             <p className="text-xl leading-loose text-amber-950 whitespace-pre-wrap">{description}</p>
+
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <BigButton onClick={handleSave} disabled={saved} className="flex-1">
+                {saved ? (
+                  <>
+                    <span className="text-2xl">✓</span>
+                    נשמר בגלריה
+                  </>
+                ) : (
+                  <>
+                    <ImageIcon className="w-6 h-6" />
+                    שמור לגלריה שלי
+                  </>
+                )}
+              </BigButton>
+              <BigButton variant="ghost" onClick={handleReset} className="flex-1">
+                <Sparkles className="w-6 h-6" />
+                צרו קטע אחר
+              </BigButton>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
