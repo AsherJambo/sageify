@@ -450,7 +450,32 @@ const MusicScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation:
             className="mt-8 p-6 md:p-8 bg-gradient-to-br from-sky-50 to-indigo-50 rounded-3xl border-2 border-sky-200 shadow-lg"
           >
             <div className="text-5xl mb-4 text-center">🎼</div>
+            <div className="text-center mb-4">
+              <span className="inline-block px-4 py-1 rounded-full bg-white/70 text-sky-800 text-base font-semibold">
+                {MUSIC_GENRES.find((g) => g.id === genre)?.label} • {MUSIC_MOODS.find((m) => m.id === mood)?.label}
+              </span>
+            </div>
             <p className="text-xl leading-loose text-amber-950 whitespace-pre-wrap">{description}</p>
+
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <BigButton onClick={handleSave} disabled={saved} className="flex-1">
+                {saved ? (
+                  <>
+                    <span className="text-2xl">✓</span>
+                    נשמר בגלריה
+                  </>
+                ) : (
+                  <>
+                    <ImageIcon className="w-6 h-6" />
+                    שמור לגלריה שלי
+                  </>
+                )}
+              </BigButton>
+              <BigButton variant="ghost" onClick={handleReset} className="flex-1">
+                <Sparkles className="w-6 h-6" />
+                צרו קטע אחר
+              </BigButton>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
