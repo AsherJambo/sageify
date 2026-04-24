@@ -69,8 +69,8 @@ const Landing = () => {
 
       {/* The pain → the solution → how → trust → team → CTA */}
       <LandingChallenge />
+      <div id="solution"><LandingPillars /></div>
       <div id="dashboard"><LandingDashboardPreview /></div>
-      <LandingPillars />
       <div id="how-it-works"><LandingHowItWorks /></div>
       <LandingTrust />
       <LandingTeam />
