@@ -6,15 +6,11 @@ import { ContactModalProvider } from '@/contexts/ContactModalContext';
 import { Settings, Linkedin } from 'lucide-react';
 
 import LandingNav from '@/components/LandingNav';
-import LandingEmotional from '@/components/LandingEmotional';
+import LandingChallenge from '@/components/LandingChallenge';
 import LandingDashboardPreview from '@/components/LandingDashboardPreview';
-import LandingProductGlimpse from '@/components/LandingProductGlimpse';
 import LandingPillars from '@/components/LandingPillars';
 import LandingHowItWorks from '@/components/LandingHowItWorks';
-import LandingResultPreview from '@/components/LandingResultPreview';
 import LandingTrust from '@/components/LandingTrust';
-import LandingAudiences from '@/components/LandingAudiences';
-import LandingPricing from '@/components/LandingPricing';
 import LandingTeam from '@/components/LandingTeam';
 import LandingFAQ from '@/components/LandingFAQ';
 import LandingCTA from '@/components/LandingCTA';
@@ -25,15 +21,15 @@ const Landing = () => {
     <div className="min-h-screen bg-background text-foreground">
       <LandingNav />
 
-      {/* Hero */}
+      {/* Hero — sharp, focused on the pain */}
       <section className="relative w-full overflow-hidden">
         <div className="absolute inset-0">
           <img src={heroPremium} alt="" className="w-full h-full object-cover" width={1920} height={960} />
-          <div className="absolute inset-0 bg-[hsl(210_12%_16%/0.82)]" />
+          <div className="absolute inset-0 bg-[hsl(210_12%_16%/0.85)]" />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-6 pt-28 pb-24 md:pt-40 md:pb-36">
-          <div className="max-w-lg">
+        <div className="relative z-10 max-w-5xl mx-auto px-6 pt-28 pb-20 md:pt-36 md:pb-28">
+          <div className="max-w-xl">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
               <img src={sageifyLogo} alt="Sageify Logo" className="w-14 h-14 md:w-16 md:h-16 mb-7 rounded-lg" />
             </motion.div>
@@ -49,14 +45,12 @@ const Landing = () => {
             </motion.h1>
 
             <motion.p
-              className="text-sm md:text-base text-white/65 max-w-md mb-8 leading-[1.85]"
+              className="text-base md:text-lg text-white/75 max-w-md mb-8 leading-[1.7]"
               initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               transition={{ duration: 0.9, delay: 0.25 }}
             >
-              Sageify משלב פסיכולוגיה תעסוקתית, תפיסות "שלב הגשר בחיים"
-              {' '}במעבר לשלב הפרישה ובינה מלאכותית
-              {' '}כדי להפוך את חוסר הוודאות של הפרישה למסע מובנה
-              {' '}לעבר הזהות הבאה שלכם
+              כלי הפסיכולוגיה התעסוקתית הראשון שמותאם לגיל 60+ —
+              {' '}אבחון מקצועי והכוונה אישית לעשייה אקטיבית בפרק הבא של החיים.
             </motion.p>
 
             <motion.div
@@ -74,16 +68,12 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Each section at different widths and spacings — no uniform rhythm */}
-      <LandingEmotional />
+      {/* The pain → the solution → how → trust → team → CTA */}
+      <LandingChallenge />
       <div id="dashboard"><LandingDashboardPreview /></div>
-      <LandingProductGlimpse />
       <LandingPillars />
       <div id="how-it-works"><LandingHowItWorks /></div>
-      <LandingResultPreview />
       <LandingTrust />
-      <LandingAudiences />
-      <div id="pricing"><LandingPricing /></div>
       <LandingTeam />
       <LandingFAQ />
       <LandingCTA />

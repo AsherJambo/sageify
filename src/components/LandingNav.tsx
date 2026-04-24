@@ -4,9 +4,9 @@ import sageifyLogo from '@/assets/owl-logo.png';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
+  { label: 'הכאב', href: '#challenge' },
   { label: 'איך זה עובד', href: '#how-it-works' },
-  { label: 'מפת הדרכים שלי', href: '#dashboard' },
-  { label: 'מסלולים', href: '#pricing' },
+  { label: 'מפת הדרכים', href: '#dashboard' },
 ];
 
 const LandingNav = () => {
