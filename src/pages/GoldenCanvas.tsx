@@ -327,6 +327,7 @@ const MusicScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation:
   const [mood, setMood] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
+  const [saved, setSaved] = useState(false);
 
   const generate = async () => {
     if (!genre || !mood) {
@@ -335,6 +336,7 @@ const MusicScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation:
     }
     setLoading(true);
     setDescription("");
+    setSaved(false);
     try {
       const genreLabel = MUSIC_GENRES.find((g) => g.id === genre)?.label || genre;
       const moodLabel = MUSIC_MOODS.find((m) => m.id === mood)?.label || mood;
@@ -343,21 +345,35 @@ const MusicScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation:
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
+      if (!data?.description) throw new Error("לא התקבל תיאור מוזיקלי");
       setDescription(data.description);
-      addCreation({
-        id: `${Date.now()}`,
-        type: "music",
-        title: `${genreLabel} – ${moodLabel}`,
-        content: data.description,
-        meta: `${genreLabel} • ${moodLabel}`,
-        createdAt: Date.now(),
-      });
       toast.success("הקטע המוזיקלי שלכם מוכן! 🎵");
     } catch (e: any) {
       toast.error(e?.message || "אירעה שגיאה. נסו שוב.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSave = () => {
+    if (!description || saved) return;
+    const genreLabel = MUSIC_GENRES.find((g) => g.id === genre)?.label || genre;
+    const moodLabel = MUSIC_MOODS.find((m) => m.id === mood)?.label || mood;
+    addCreation({
+      id: `${Date.now()}`,
+      type: "music",
+      title: `${genreLabel} – ${moodLabel}`,
+      content: description,
+      meta: `${genreLabel} • ${moodLabel}`,
+      createdAt: Date.now(),
+    });
+    setSaved(true);
+    toast.success("נשמר לגלריה שלכם! 💛");
+  };
+
+  const handleReset = () => {
+    setDescription("");
+    setSaved(false);
   };
 
   return (
