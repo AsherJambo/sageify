@@ -72,16 +72,16 @@ const stats = [
 
 const challenges = [
   {
-    title: 'משבר זהות',
-    desc: '40% מהפורשים חווים ירידה במצב הנפשי ואובדן סטטוס',
+    title: 'אין כלי אבחון מותאמים',
+    desc: 'מבחני הפסיכולוגיה התעסוקתית הקיימים (Holland, Schein, VIA) עוצבו לבני 20 בתחילת הקריירה — לא לבעלי 40 שנות ניסיון בפתחו של פרק חדש',
   },
   {
-    title: 'כשל אבחוני',
-    desc: 'כלי המדידה הקיימים עוצבו לבני 20, לא לבעלי ניסיון חיים',
+    title: 'אין הכוונה לעשייה אקטיבית',
+    desc: 'הייעוץ הקיים מתמקד בפן הכלכלי (פנסיה, השקעות) ומתעלם מהשאלה האמיתית: "מה אעשה עם 30 שנות החיוניות שנותרו לי?"',
   },
   {
-    title: 'היעדר מצפן',
-    desc: 'בדידות וירידה קוגניטיבית מואצת בשל היעדר ייעוד חדש',
+    title: 'התוצאה: ואקום משמעות',
+    desc: 'ללא מצפן מקצועי מותאם — משבר זהות, בדידות, וירידה קוגניטיבית מואצת בשל היעדר ייעוד פעיל',
   },
 ];
 
@@ -96,16 +96,47 @@ const LandingChallenge = () => {
         variants={fadeUp}
         custom={0}
       >
-        <p className="text-sm text-accent font-semibold mb-3 tracking-wide">האתגר</p>
-        <h2 className="text-3xl md:text-4xl font-bold mb-3">ואקום המשמעות</h2>
-        <p className="text-muted-foreground text-base max-w-lg mx-auto">
-          פרדוקס האריכות: 20-30 שנות חיוניות אל מול תהום של חוסר מעש
+        <p className="text-sm text-accent font-semibold mb-3 tracking-wide">הכאב שאנחנו פותרים</p>
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+          אין כלי פסיכולוגיה תעסוקתית
+          <br />
+          <span className="text-accent">לאבחון והכוונה בגיל השלישי</span>
+        </h2>
+        <p className="text-muted-foreground text-base max-w-xl mx-auto leading-relaxed">
+          בעוד שלצעירים מציעים עשרות מבחני התאמה תעסוקתית — בני 60+ נותרים ללא מצפן מקצועי
+          {' '}בדיוק ברגע שבו נפתחות בפניהם 20-30 שנות חיוניות נוספות
         </p>
       </motion.div>
 
-      {/* Stats */}
-      <div className="grid md:grid-cols-3 gap-6 mb-16">
-        {stats.map((s, i) => (
+      {/* Hero stat — the core pain */}
+      <motion.div
+        className="relative border-2 border-accent/30 rounded-lg p-10 md:p-12 text-center bg-card mb-10 overflow-hidden"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={1}
+      >
+        <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-l from-accent via-accent/60 to-accent" />
+        <p className="text-xs text-accent font-semibold mb-3 tracking-widest uppercase">הכשל האבחוני</p>
+        <div className="text-7xl md:text-8xl font-black text-primary mb-4 tabular-nums font-serif leading-none">
+          0
+        </div>
+        <p className="font-bold text-lg md:text-xl mb-2">
+          כלי פסיכולוגיה תעסוקתית מותאמים לגיל 60+
+        </p>
+        <p className="text-sm text-muted-foreground max-w-md mx-auto mb-4">
+          כל המבחנים הפסיכומטריים והכלים להכוונה לעשייה אקטיבית עוצבו עבור בני 20-40.
+          אין שום מענה מקצועי לבעלי הניסיון.
+        </p>
+        <p className="text-[10px] text-muted-foreground/60 italic">
+          סקירת ספרות – Geropsychology, 2022
+        </p>
+      </motion.div>
+
+      {/* Supporting stats */}
+      <div className="grid md:grid-cols-2 gap-6 mb-16">
+        {stats.filter((_, i) => i !== 2).map((s, i) => (
           <motion.div
             key={i}
             className="border border-border/50 rounded-lg p-8 text-center bg-card"
@@ -113,7 +144,7 @@ const LandingChallenge = () => {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            custom={i + 1}
+            custom={i + 2}
           >
             <div className="text-5xl md:text-6xl font-black text-primary mb-3 tabular-nums font-serif">
               {s.staticDisplay !== undefined ? (
