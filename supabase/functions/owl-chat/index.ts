@@ -325,8 +325,6 @@ ${profileSummary}
 ${dbContext}
 ${crowdWisdom}
 ${activityWisdom}
-${archetypeWisdom}
-${interactionWisdom}
 
 ## יכולת חיפוש הזדמנויות חי (Perplexity):
 יש לך גישה לחיפוש AI חי (Perplexity) שמוצא הזדמנויות אמיתיות ועדכניות באינטרנט.
