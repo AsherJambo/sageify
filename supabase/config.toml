@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.golden-canvas]
 verify_jwt = false
+
+[functions.haredi-match]
+verify_jwt = false
