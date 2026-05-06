@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 
 const Index = lazy(() => import("./pages/Index"));
 const GoldenCanvas = lazy(() => import("./pages/GoldenCanvas"));
+const Haredi = lazy(() => import("./pages/Haredi"));
 
 const QuestionnaireByToken = lazy(() => import("./pages/QuestionnaireByToken"));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -37,6 +38,7 @@ const App = () => {
               <Route path="/" element={<Landing />} />
               <Route path="/app" element={<Index />} />
               <Route path="/golden-canvas" element={<GoldenCanvas />} />
+              <Route path="/haredi" element={<Haredi />} />
               <Route path="/q/:token" element={<QuestionnaireByToken />} />
               <Route path="/partner/:partnerId/q/:token" element={<PartnerQuestionnaire />} />
               <Route path="/admin" element={<Admin />} />
