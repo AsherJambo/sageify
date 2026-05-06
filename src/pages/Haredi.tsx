@@ -1,11 +1,37 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ChevronRight, Sparkles, CheckCircle2, Info, RotateCcw } from 'lucide-react';
+import { Sparkles, CheckCircle2, Info, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { celebrationConfetti, sparkleConfetti } from '@/lib/confetti';
+
+import QuestionnaireHub from '@/components/QuestionnaireHub';
+import SectionIntro from '@/components/SectionIntro';
+import VIAQuestionnaire from '@/components/VIAQuestionnaire';
+import ScheinQuestionnaire from '@/components/ScheinQuestionnaire';
+import PersonalitySliders from '@/components/PersonalitySliders';
+import BonusSelection from '@/components/BonusSelection';
+import ConsiderationsQuestionnaire from '@/components/ConsiderationsQuestionnaire';
+import HollandQuestionnaire from '@/components/HollandQuestionnaire';
+import ThinkingSkillsQuestionnaire from '@/components/ThinkingSkillsQuestionnaire';
+import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
+import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
+import MotivationQuestionnaire from '@/components/MotivationQuestionnaire';
+import { viaQuestions, viaCategories } from '@/data/viaQuestions';
+import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
+import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
+import type { SkillColumn } from '@/data/skillsData';
+import type { MotivationScores, IntentionAnswers } from '@/data/motivationQuestions';
+import type { ThinkingResult } from '@/data/thinkingQuestions';
+import {
+  viaIntro, viaBonusIntro, scheinIntro,
+  considerationsIntro, hollandIntro, skillsIntro, preferencesIntro, motivationIntro, thinkingIntro,
+} from '@/data/sectionIntros';
+import {
+  type Answers, calculateCategoryScores, getMaxScoredQuestions, applyBonus,
+} from '@/lib/scoring';
 
 // ============ TRACKS ============
 type TrackId = 'electricity' | 'software' | 'construction' | 'machinery' | 'auto' | 'medical_devices' | 'health_support';
@@ -22,149 +48,67 @@ const TRACKS: Record<TrackId, { name: string; tagline: string; emoji: string }> 
 
 const TRACK_IDS: TrackId[] = ['electricity', 'software', 'construction', 'machinery', 'auto', 'medical_devices', 'health_support'];
 
-// ============ TYPES ============
-type SectionId = 'skills' | 'inclinations' | 'workstyle' | 'aspirations' | 'values';
-type Step = 'welcome' | 'hub' | SectionId | 'loading' | 'results';
-
-interface Question {
-  id: string;
-  text: string;
-  weights: Partial<Record<TrackId, number>>;
-}
-
-interface Section {
-  id: SectionId;
-  title: string;
-  desc: string;
-  icon: string;
-  duration: string;
-  questions: Question[];
-  scale: { v: number; label: string }[];
-}
-
-// ============ SCALES ============
-const SCALE_AGREEMENT = [
-  { v: 5, label: 'מאוד מתאים לי' },
-  { v: 4, label: 'די מתאים לי' },
-  { v: 3, label: 'במידה בינונית' },
-  { v: 2, label: 'לא ממש' },
-  { v: 1, label: 'בכלל לא' },
-];
-
-const SCALE_IMPORTANCE = [
-  { v: 5, label: 'חשוב לי מאוד' },
-  { v: 4, label: 'חשוב לי' },
-  { v: 3, label: 'בינוני' },
-  { v: 2, label: 'פחות חשוב' },
-  { v: 1, label: 'לא חשוב לי' },
-];
-
-// ============ SECTIONS ============
-const SECTIONS: Section[] = [
-  {
-    id: 'skills',
-    title: 'כישורים וטבע אישי',
-    desc: 'מה אתה טוב בו ומה מושך אותך לעשות בידיים',
-    icon: '🛠️',
-    duration: '3–4 דק׳',
-    scale: SCALE_AGREEMENT,
-    questions: [
-      { id: 's1', text: 'אני נהנה לפרק ולהרכיב דברים, להבין איך מכשירים עובדים מבפנים', weights: { electricity: 3, machinery: 3, auto: 3, medical_devices: 2 } },
-      { id: 's2', text: 'יש לי סבלנות לדיוק רב ולעבודה מדויקת מאוד', weights: { machinery: 3, medical_devices: 3, electricity: 2, software: 1 } },
-      { id: 's3', text: 'אני אוהב לזהות תקלות ולגלות מה השתבש – כמו בלש', weights: { auto: 3, electricity: 3, software: 2, medical_devices: 2 } },
-      { id: 's4', text: 'אני לומד הכי טוב כשאני עושה בידיים, לא רק מקריאה', weights: { electricity: 2, machinery: 2, auto: 2, construction: 3 } },
-      { id: 's5', text: 'אני מעדיף לעבוד עם מספרים, נוסחאות ומבנים מופשטים', weights: { software: 3, medical_devices: 1 } },
-      { id: 's6', text: 'אני סבלני וזורם עם אנשים, גם כשהם במצוקה', weights: { health_support: 3 } },
-    ],
-  },
-  {
-    id: 'inclinations',
-    title: 'נטיות תעסוקתיות',
-    desc: 'איזה סוג עבודה הכי מדבר אליך',
-    icon: '🧭',
-    duration: '3–4 דק׳',
-    scale: SCALE_AGREEMENT,
-    questions: [
-      { id: 'i1', text: 'מתאים לי לשבת שעות מול מסך ולפתור חידות לוגיות', weights: { software: 3, medical_devices: 1 } },
-      { id: 'i2', text: 'אני מעדיף עבודה פיזית ופעילה על פני עבודה משרדית', weights: { construction: 3, electricity: 2, auto: 2, machinery: 1 } },
-      { id: 'i3', text: 'משוך אותי עולם הטכנולוגיה המתקדמת והחדשנות', weights: { software: 3, medical_devices: 3, machinery: 2 } },
-      { id: 'i4', text: 'מתאים לי לעבוד בחוץ, גם כשהמזג אוויר משתנה', weights: { construction: 3, electricity: 2 } },
-      { id: 'i5', text: 'חשוב לי לעזור לאנשים באופן ישיר ולראות את ההשפעה שלי', weights: { health_support: 3, medical_devices: 2 } },
-      { id: 'i6', text: 'אני רואה את עצמי בונה דברים פיזיים גדולים שנשארים לדורות', weights: { construction: 3, electricity: 1 } },
-    ],
-  },
-  {
-    id: 'workstyle',
-    title: 'סביבת עבודה וסגנון',
-    desc: 'איזה סוג סביבה מתאימה לאופי שלך',
-    icon: '🏢',
-    duration: '2–3 דק׳',
-    scale: SCALE_IMPORTANCE,
-    questions: [
-      { id: 'w1', text: 'נוח לי בסביבה שקטה ומסודרת כמו בית חולים או מעבדה', weights: { health_support: 3, medical_devices: 3 } },
-      { id: 'w2', text: 'אני מעדיף לעבוד בכל יום במקום אחר ולא להיות תקוע במשרד', weights: { electricity: 3, auto: 2, construction: 2 } },
-      { id: 'w3', text: 'חשוב לי שיהיה לי שקט וריכוז – בלי הפרעות חברתיות', weights: { software: 3, machinery: 2, medical_devices: 2 } },
-      { id: 'w4', text: 'אני אוהב לעבוד בצוות, עם אנשים סביבי לאורך כל היום', weights: { construction: 2, health_support: 3 } },
-      { id: 'w5', text: 'חשובה לי גמישות בשעות העבודה ובסביבת העבודה', weights: { software: 3 } },
-      { id: 'w6', text: 'מתאים לי לעבוד עם מכונות מתקדמות במפעל מודרני', weights: { machinery: 3, medical_devices: 2 } },
-    ],
-  },
-  {
-    id: 'aspirations',
-    title: 'שאיפות פרנסה',
-    desc: 'איזה מסלול קריירה מתאים לך מבחינה כלכלית',
-    icon: '💼',
-    duration: '2–3 דק׳',
-    scale: SCALE_IMPORTANCE,
-    questions: [
-      { id: 'a1', text: 'אני רואה את עצמי פותח עסק עצמאי תוך כמה שנים', weights: { electricity: 3, auto: 3, construction: 2 } },
-      { id: 'a2', text: 'חשוב לי שכר גבוה ופוטנציאל הכנסה משמעותי', weights: { software: 3, medical_devices: 2, machinery: 1 } },
-      { id: 'a3', text: 'אני מעדיף יציבות, משכורת קבועה ועבודה במקום מסודר', weights: { health_support: 3, medical_devices: 2, machinery: 2 } },
-      { id: 'a4', text: 'חשוב לי להגיע לפרנסה כמה שיותר מהר, גם בלי תואר ארוך', weights: { electricity: 3, auto: 3, construction: 2 } },
-      { id: 'a5', text: 'אני מוכן להשקיע 2-3 שנות לימוד אינטנסיביות בשביל מקצוע מתגמל', weights: { software: 3, medical_devices: 3 } },
-      { id: 'a6', text: 'מעניין אותי לעבוד גם עם לקוחות מחו"ל ולהרוויח במטבע זר', weights: { software: 3 } },
-    ],
-  },
-  {
-    id: 'values',
-    title: 'ערכים והתאמה אישית',
-    desc: 'מה באמת חשוב לך מעבר לכסף ולמקצוע',
-    icon: '✦',
-    duration: '2–3 דק׳',
-    scale: SCALE_IMPORTANCE,
-    questions: [
-      { id: 'v1', text: 'חשוב לי שהעבודה תאפשר לי זמן איכות עם המשפחה', weights: { software: 3, electricity: 2, auto: 2, health_support: 1 } },
-      { id: 'v2', text: 'אני מחפש מקצוע שיש בו תחושת שליחות ותרומה לזולת', weights: { health_support: 3, medical_devices: 2 } },
-      { id: 'v3', text: 'חשוב לי שהמקצוע יהיה מבוקש גם בעוד 20 שנה', weights: { electricity: 3, software: 3, medical_devices: 3, health_support: 2 } },
-      { id: 'v4', text: 'אני מעדיף סביבה שמכבדת את אורח החיים שלי ולא מחייבת פשרות', weights: { electricity: 2, auto: 2, software: 3, health_support: 3, medical_devices: 2 } },
-      { id: 'v5', text: 'חשוב לי לראות תוצאה מוחשית בסוף יום העבודה', weights: { electricity: 3, construction: 3, auto: 3, machinery: 2 } },
-      { id: 'v6', text: 'אני מחפש מסלול שאפשר להתפתח בו ולא לעמוד במקום', weights: { software: 3, medical_devices: 3, machinery: 2 } },
-    ],
-  },
-];
-
-const SECTION_BY_ID: Record<SectionId, Section> = SECTIONS.reduce((acc, s) => { acc[s.id] = s; return acc; }, {} as Record<SectionId, Section>);
-
-// ============ STATE ============
-interface SavedState {
-  step: Step;
-  answers: Record<SectionId, Record<string, number>>;
-}
+// ============ STEPS ============
+type Step =
+  | 'welcome'
+  | 'hub'
+  | 'skills-intro' | 'skills'
+  | 'schein-intro' | 'schein' | 'schein-bonus'
+  | 'considerations-intro' | 'considerations'
+  | 'holland-intro' | 'holland'
+  | 'via-intro' | 'via' | 'via-bonus-intro' | 'via-bonus'
+  | 'personality-sliders'
+  | 'preferences-intro' | 'preferences'
+  | 'motivation-intro' | 'motivation'
+  | 'thinking-intro' | 'thinking'
+  | 'loading'
+  | 'results';
 
 const STORAGE_KEY = 'sageify-haredi-state';
 
-const initialState: SavedState = {
-  step: 'welcome',
-  answers: { skills: {}, inclinations: {}, workstyle: {}, aspirations: {}, values: {} },
-};
+interface SavedState {
+  step: Step;
+  viaAnswers: Answers;
+  scheinAnswers: Answers;
+  viaBonusApplied: boolean;
+  scheinBonusApplied: boolean;
+  finalViaAnswers?: Answers;
+  finalScheinAnswers?: Answers;
+  considerationsData?: { selected: string[]; points: Record<string, number> };
+  hollandAnswers?: Record<number, boolean>;
+  skillsAssignments?: Record<number, SkillColumn>;
+  personalitySliders?: Record<string, number | string>;
+  preferencesData?: { preferences: Record<string, string[]>; dream: string };
+  motivationData?: { motivationScores: MotivationScores; intentionAnswers: IntentionAnswers };
+  thinkingResult?: ThinkingResult;
+}
 
 function loadState(): SavedState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return { ...initialState, ...JSON.parse(raw) };
+    if (raw) return JSON.parse(raw);
   } catch {}
-  return initialState;
+  return {
+    step: 'welcome',
+    viaAnswers: {},
+    scheinAnswers: {},
+    viaBonusApplied: false,
+    scheinBonusApplied: false,
+  };
 }
+
+type QSection = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation' | 'thinking';
+
+const SECTION_FIRST_STEP: Record<QSection, Step> = {
+  skills: 'skills-intro',
+  schein: 'schein-intro',
+  considerations: 'considerations-intro',
+  holland: 'holland-intro',
+  via: 'via-intro',
+  preferences: 'preferences-intro',
+  motivation: 'motivation-intro',
+  thinking: 'thinking-intro',
+};
 
 interface AIExplanation {
   name: string;
@@ -173,127 +117,224 @@ interface AIExplanation {
   firstStep: string;
 }
 
-// ============ MAIN ============
 const Haredi = () => {
   const [state, setState] = useState<SavedState>(loadState);
-  const [topTracks, setTopTracks] = useState<{ id: TrackId; score: number }[]>([]);
+  const [topTracks, setTopTracks] = useState<TrackId[]>([]);
   const [explanations, setExplanations] = useState<AIExplanation[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
-  }, [state]);
-
+  useEffect(() => { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }, [state]);
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [state.step]);
 
-  const completedSections = useMemo(() => {
-    const map: Record<SectionId, boolean> = { skills: false, inclinations: false, workstyle: false, aspirations: false, values: false };
-    SECTIONS.forEach((s) => {
-      map[s.id] = s.questions.every((q) => state.answers[s.id]?.[q.id] !== undefined);
-    });
-    return map;
-  }, [state.answers]);
+  const update = (partial: Partial<SavedState>) => setState(p => ({ ...p, ...partial }));
+  const goToHub = () => update({ step: 'hub' });
+
+  const handleViaAnswer = (id: number, score: number) => update({ viaAnswers: { ...state.viaAnswers, [id]: score } });
+  const handleScheinAnswer = (id: number, score: number) => update({ scheinAnswers: { ...state.scheinAnswers, [id]: score } });
+
+  const viaMaxQuestions = getMaxScoredQuestions(state.viaAnswers, viaQuestions);
+  const scheinMaxQuestions = getMaxScoredQuestions(state.scheinAnswers, scheinQuestions);
+
+  const handleViaBonusComplete = (selectedIds: number[]) => {
+    update({ finalViaAnswers: applyBonus(state.viaAnswers, selectedIds), viaBonusApplied: true, step: 'hub' });
+  };
+  const handleScheinBonusComplete = (selectedIds: number[]) => {
+    update({ finalScheinAnswers: applyBonus(state.scheinAnswers, selectedIds), scheinBonusApplied: true, step: 'hub' });
+  };
+
+  const completedSections: Record<QSection, boolean> = {
+    skills: !!state.skillsAssignments,
+    schein: state.scheinBonusApplied,
+    considerations: !!state.considerationsData,
+    holland: !!state.hollandAnswers,
+    via: state.viaBonusApplied,
+    preferences: !!state.preferencesData && !!state.personalitySliders,
+    motivation: !!state.motivationData,
+    thinking: !!state.thinkingResult,
+  };
 
   const completedCount = Object.values(completedSections).filter(Boolean).length;
   const hasMinimum = completedCount >= 3;
 
-  const update = (partial: Partial<SavedState>) => setState((p) => ({ ...p, ...partial }));
+  const buildProfile = useMemo(() => () => {
+    const viaScores = calculateCategoryScores(state.finalViaAnswers || state.viaAnswers, viaQuestions, viaCategories);
+    const scheinScores = calculateCategoryScores(state.finalScheinAnswers || state.scheinAnswers, scheinQuestions, scheinCategories);
 
-  const handleAnswer = (sectionId: SectionId, qid: string, value: number) => {
-    setState((p) => ({
-      ...p,
-      answers: { ...p.answers, [sectionId]: { ...p.answers[sectionId], [qid]: value } },
-    }));
-  };
+    const hollandScores: Record<string, number> = {};
+    if (state.hollandAnswers) {
+      hollandCategories.forEach(cat => { hollandScores[cat] = 0; });
+      Object.entries(state.hollandAnswers).forEach(([id, val]) => {
+        if (val) {
+          const q = hollandQuestions.find(q => q.id === Number(id));
+          if (q && hollandScores[q.category] !== undefined) hollandScores[q.category] += 1;
+        }
+      });
+    }
 
-  const calculateTopTracks = () => {
+    return {
+      via: viaScores,
+      schein: scheinScores,
+      holland: hollandScores,
+      considerations: state.considerationsData,
+      skills: state.skillsAssignments,
+      preferences: state.preferencesData,
+      personality: state.personalitySliders,
+      motivation: state.motivationData,
+      thinking: state.thinkingResult ? { level: state.thinkingResult.levelLabel, score: state.thinkingResult.totalCorrect } : undefined,
+    };
+  }, [state]);
+
+  // Heuristic ranking of 7 tracks based on Holland + scores
+  const rankTracks = (): TrackId[] => {
+    const profile = buildProfile();
     const scores: Record<TrackId, number> = {
       electricity: 0, software: 0, construction: 0, machinery: 0, auto: 0, medical_devices: 0, health_support: 0,
     };
-    SECTIONS.forEach((s) => {
-      const sectAnswers = state.answers[s.id] || {};
-      s.questions.forEach((q) => {
-        const a = sectAnswers[q.id];
-        if (a === undefined) return;
-        Object.entries(q.weights).forEach(([t, w]) => {
-          scores[t as TrackId] += a * (w as number);
-        });
-      });
-    });
+    const h = profile.holland || {};
+    // Realistic (R)
+    scores.electricity += (h['ביצועי (R)'] || 0) * 2.5;
+    scores.construction += (h['ביצועי (R)'] || 0) * 2.5;
+    scores.auto += (h['ביצועי (R)'] || 0) * 2.5;
+    scores.machinery += (h['ביצועי (R)'] || 0) * 2;
+    // Investigative (I)
+    scores.software += (h['חקרני (I)'] || 0) * 3;
+    scores.medical_devices += (h['חקרני (I)'] || 0) * 2.5;
+    scores.electricity += (h['חקרני (I)'] || 0) * 1;
+    // Social (S)
+    scores.health_support += (h['חברתי (S)'] || 0) * 3;
+    // Conventional (C) — precision
+    scores.machinery += (h['מינהלי (C)'] || 0) * 1.5;
+    scores.medical_devices += (h['מינהלי (C)'] || 0) * 1.5;
+    scores.software += (h['מינהלי (C)'] || 0) * 1;
+    // Enterprising (E)
+    scores.auto += (h['יזמי (E)'] || 0) * 1.5;
+    scores.construction += (h['יזמי (E)'] || 0) * 1.5;
+
+    // VIA boosts
+    const v = profile.via || {};
+    scores.health_support += (v['אנושיות'] || 0) * 0.4;
+    scores.software += (v['חכמה וידע'] || 0) * 0.4;
+    scores.medical_devices += (v['אנושיות'] || 0) * 0.3;
+
+    // Thinking score boost
+    if (profile.thinking?.score) {
+      scores.software += profile.thinking.score * 0.5;
+      scores.medical_devices += profile.thinking.score * 0.3;
+    }
+
     return (Object.entries(scores) as [TrackId, number][])
       .sort((a, b) => b[1] - a[1])
-      .map(([id, score]) => ({ id, score }))
+      .map(([id]) => id)
       .slice(0, 3);
   };
 
   const handleViewResults = async () => {
     if (!hasMinimum) return;
-    const top = calculateTopTracks();
+    const top = rankTracks();
     setTopTracks(top);
     update({ step: 'loading' });
     setError(null);
 
-    // Build profile from answers
-    const profile: { q: string; answer: number }[] = [];
-    SECTIONS.forEach((s) => {
-      s.questions.forEach((q) => {
-        const a = state.answers[s.id]?.[q.id];
-        if (a !== undefined) profile.push({ q: q.text, answer: a });
-      });
-    });
-
     try {
       const { data, error: err } = await supabase.functions.invoke('haredi-match', {
-        body: { topTracks: top.map((t) => TRACKS[t.id].name), profile },
+        body: { topTracks: top.map(t => TRACKS[t].name), profile: buildProfile() },
       });
       if (err) throw err;
-      if (data?.tracks?.length) {
-        setExplanations(data.tracks);
-      } else {
-        setExplanations(top.map((t) => ({ name: TRACKS[t.id].name, why: TRACKS[t.id].tagline, dayInLife: '', firstStep: '' })));
-      }
+      if (data?.tracks?.length) setExplanations(data.tracks);
+      else setExplanations(top.map(t => ({ name: TRACKS[t].name, why: TRACKS[t].tagline, dayInLife: '', firstStep: '' })));
     } catch (e) {
       console.error(e);
       setError('לא הצלחנו לקבל הסבר אישי כעת. הנה התוצאות הבסיסיות:');
-      setExplanations(top.map((t) => ({ name: TRACKS[t.id].name, why: TRACKS[t.id].tagline, dayInLife: '', firstStep: '' })));
+      setExplanations(top.map(t => ({ name: TRACKS[t].name, why: TRACKS[t].tagline, dayInLife: '', firstStep: '' })));
     }
     update({ step: 'results' });
   };
 
   const handleRestart = () => {
     localStorage.removeItem(STORAGE_KEY);
-    setState(initialState);
-    setTopTracks([]);
-    setExplanations(null);
-    setError(null);
+    setState({ step: 'welcome', viaAnswers: {}, scheinAnswers: {}, viaBonusApplied: false, scheinBonusApplied: false });
+    setTopTracks([]); setExplanations(null); setError(null);
   };
 
-  // ========== RENDER ==========
-  if (state.step === 'welcome') return <WelcomeView onStart={() => update({ step: 'hub' })} />;
-  if (state.step === 'hub') return (
-    <HubView
-      completed={completedSections}
-      onSelect={(id) => update({ step: id })}
-      onViewResults={handleViewResults}
-      onRestart={handleRestart}
-    />
-  );
-  if (state.step === 'loading') return <LoadingView />;
-  if (state.step === 'results') return <ResultsView topTracks={topTracks} explanations={explanations} error={error} onRestart={handleRestart} onBackToHub={() => update({ step: 'hub' })} />;
+  // ============ RENDER ============
+  switch (state.step) {
+    case 'welcome':
+      return <WelcomeView onStart={() => update({ step: 'hub' })} />;
 
-  // questionnaire view
-  const section = SECTION_BY_ID[state.step as SectionId];
-  if (!section) return <WelcomeView onStart={() => update({ step: 'hub' })} />;
+    case 'hub':
+      return (
+        <QuestionnaireHub
+          completedSections={completedSections}
+          onSelect={(id) => update({ step: SECTION_FIRST_STEP[id] })}
+          onViewResults={handleViewResults}
+        />
+      );
 
-  return (
-    <SectionView
-      section={section}
-      answers={state.answers[section.id] || {}}
-      onAnswer={(qid, v) => handleAnswer(section.id, qid, v)}
-      onComplete={() => update({ step: 'hub' })}
-      onBackToHub={() => update({ step: 'hub' })}
-    />
-  );
+    // Skills
+    case 'skills-intro':
+      return <SectionIntro {...skillsIntro} onContinue={() => update({ step: 'skills' })} />;
+    case 'skills':
+      return <SkillsQuestionnaire onComplete={(a) => update({ skillsAssignments: a, step: 'hub' })} onBackToHub={goToHub} />;
+
+    // Schein
+    case 'schein-intro':
+      return <SectionIntro {...scheinIntro} onContinue={() => update({ step: 'schein' })} />;
+    case 'schein':
+      return <ScheinQuestionnaire answers={state.scheinAnswers} onAnswer={handleScheinAnswer} onComplete={() => update({ step: 'schein-bonus' })} onBackToHub={goToHub} />;
+    case 'schein-bonus':
+      return <BonusSelection title="כוח ה-3 – עוגנים תעסוקתיים" subtitle="מתוך השאלות שנתת להן את הציון הגבוה ביותר, בחר 3 שהכי מהדהדות אצלך" questions={scheinMaxQuestions} onComplete={handleScheinBonusComplete} onBackToHub={goToHub} />;
+
+    // Considerations
+    case 'considerations-intro':
+      return <SectionIntro {...considerationsIntro} onContinue={() => update({ step: 'considerations' })} />;
+    case 'considerations':
+      return <ConsiderationsQuestionnaire onComplete={(selected, points) => update({ considerationsData: { selected, points }, step: 'hub' })} onBackToHub={goToHub} />;
+
+    // Holland
+    case 'holland-intro':
+      return <SectionIntro {...hollandIntro} onContinue={() => update({ step: 'holland' })} />;
+    case 'holland':
+      return <HollandQuestionnaire onComplete={(answers) => update({ hollandAnswers: answers, step: 'hub' })} onBackToHub={goToHub} />;
+
+    // VIA
+    case 'via-intro':
+      return <SectionIntro {...viaIntro} onContinue={() => update({ step: 'via' })} />;
+    case 'via':
+      return <VIAQuestionnaire answers={state.viaAnswers} onAnswer={handleViaAnswer} onComplete={() => update({ step: 'via-bonus-intro' })} onBackToHub={goToHub} />;
+    case 'via-bonus-intro':
+      return <SectionIntro {...viaBonusIntro} onContinue={() => update({ step: 'via-bonus' })} />;
+    case 'via-bonus':
+      return <BonusSelection title="כוח ה-3 – חוזקות VIA" subtitle="מתוך השאלות שנתת להן את הציון הגבוה ביותר, בחר 3 שהכי מהדהדות אצלך" questions={viaMaxQuestions} onComplete={handleViaBonusComplete} onBackToHub={goToHub} />;
+
+    // Preferences
+    case 'preferences-intro':
+      return <SectionIntro {...preferencesIntro} onContinue={() => update({ step: 'personality-sliders' })} />;
+    case 'personality-sliders':
+      return <PersonalitySliders onComplete={(sliders) => update({ personalitySliders: sliders, step: 'preferences' })} onBackToHub={goToHub} />;
+    case 'preferences':
+      return <PreferencesQuestionnaire onComplete={(preferences, dream) => update({ preferencesData: { preferences, dream }, step: 'hub' })} onBackToHub={goToHub} />;
+
+    // Motivation
+    case 'motivation-intro':
+      return <SectionIntro {...motivationIntro} onContinue={() => update({ step: 'motivation' })} />;
+    case 'motivation':
+      return <MotivationQuestionnaire onComplete={(motivationScores, intentionAnswers) => update({ motivationData: { motivationScores, intentionAnswers }, step: 'hub' })} onBackToHub={goToHub} />;
+
+    // Thinking
+    case 'thinking-intro':
+      return <SectionIntro {...thinkingIntro} onContinue={() => update({ step: 'thinking' })} />;
+    case 'thinking':
+      return <ThinkingSkillsQuestionnaire onComplete={(result) => update({ thinkingResult: result, step: 'hub' })} onBackToHub={goToHub} />;
+
+    case 'loading':
+      return <LoadingView />;
+
+    case 'results':
+      return <ResultsView topTracks={topTracks} explanations={explanations} error={error} onRestart={handleRestart} onBackToHub={goToHub} />;
+
+    default:
+      return <WelcomeView onStart={() => update({ step: 'hub' })} />;
+  }
 };
 
 // ============ WELCOME VIEW ============
@@ -309,7 +350,7 @@ const WelcomeView = ({ onStart }: { onStart: () => void }) => (
             המסלול המקצועי שלך
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-            תהליך אבחון מקצועי קצר שעוזר לך לבחור מקצוע שמתאים לאופי, לכישרונות ולשאיפות —
+            תהליך אבחון מקצועי מקיף שעוזר לך לבחור מקצוע שמתאים לאופי, לכישרונות ולשאיפות —
             מבין שבעה מסלולי הכשרה מבוקשים ומכבדים.
           </p>
         </div>
@@ -320,9 +361,10 @@ const WelcomeView = ({ onStart }: { onStart: () => void }) => (
             <div className="text-sm text-foreground/80 leading-relaxed">
               <p className="font-semibold mb-1">איך זה עובד:</p>
               <p className="mb-2">
-                לפניך 5 שאלונים קצרים. <span className="font-semibold">בחר לפחות 3</span> שמרגישים לך הכי רלוונטיים — אפשר גם למלא את כולם.
+                לפניך 8 שאלונים מקצועיים. <span className="font-semibold">השלם לפחות 3</span> כדי לקבל המלצות —
+                ככל שתשלים יותר, התמונה תהיה מדויקת יותר.
               </p>
-              <p>בסיום נציג לך את 3 המסלולים המתאימים לך ביותר, עם הסבר אישי וצעד ראשון מעשי.</p>
+              <p>בסיום נציג לך את 3 המסלולים המתאימים ביותר, עם הסבר אישי וצעד ראשון מעשי.</p>
             </div>
           </div>
         </div>
@@ -360,221 +402,6 @@ const WelcomeView = ({ onStart }: { onStart: () => void }) => (
   </div>
 );
 
-// ============ HUB VIEW ============
-const HubView = ({
-  completed, onSelect, onViewResults, onRestart,
-}: {
-  completed: Record<SectionId, boolean>;
-  onSelect: (id: SectionId) => void;
-  onViewResults: () => void;
-  onRestart: () => void;
-}) => {
-  const completedCount = Object.values(completed).filter(Boolean).length;
-  const hasMinimum = completedCount >= 3;
-  const prevCount = useRef(completedCount);
-
-  useEffect(() => {
-    if (completedCount > prevCount.current) {
-      if (completedCount === 3 || completedCount === SECTIONS.length) celebrationConfetti();
-      else sparkleConfetti();
-    }
-    prevCount.current = completedCount;
-  }, [completedCount]);
-
-  return (
-    <div dir="rtl" className="min-h-screen bg-background py-12 px-6">
-      <div className="max-w-3xl mx-auto space-y-8">
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center space-y-3">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-secondary/10 text-secondary text-sm font-semibold">
-            הבחירה שלך
-          </div>
-          <h1 className="font-display text-3xl md:text-4xl font-bold text-primary">
-            בחר את השאלונים שלך
-          </h1>
-          <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            5 שאלונים קצרים. השלם <span className="font-semibold text-foreground">לפחות 3</span> כדי לקבל המלצות. אפשר בכל סדר.
-          </p>
-        </motion.div>
-
-        {/* Progress */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-card border border-border/60 rounded-2xl p-5 shadow-soft">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-semibold text-foreground">התקדמות</span>
-            <span className="text-sm text-muted-foreground">
-              {completedCount} מתוך {SECTIONS.length} {hasMinimum ? '✦' : '(מומלץ: 3+)'}
-            </span>
-          </div>
-          <div className="h-2.5 bg-muted/40 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-secondary rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${(completedCount / SECTIONS.length) * 100}%` }}
-              transition={{ duration: 0.7 }}
-            />
-          </div>
-        </motion.div>
-
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {SECTIONS.map((s, i) => {
-            const isDone = completed[s.id];
-            return (
-              <motion.button
-                key={s.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.06 }}
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => onSelect(s.id)}
-                className={`relative text-right p-6 rounded-2xl border shadow-soft transition-all ${
-                  isDone ? 'bg-secondary/[0.04] border-secondary/30' : 'bg-card border-border/60 hover:border-secondary/30'
-                }`}
-              >
-                {isDone && (
-                  <span className="absolute -top-3 -left-3 bg-secondary text-secondary-foreground text-xs font-bold px-3 py-1 rounded-full shadow z-10">
-                    הושלם ✓
-                  </span>
-                )}
-                <div className="flex items-start gap-4">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl flex-shrink-0 ${
-                    isDone ? 'bg-secondary/15 text-secondary' : 'bg-muted/40'
-                  }`}>
-                    {isDone ? '✓' : s.icon}
-                  </div>
-                  <div className="flex-1 space-y-1">
-                    <h3 className="font-display font-bold text-primary text-lg">{s.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                    <p className="text-xs text-muted-foreground">⏱ {s.duration} • {s.questions.length} שאלות</p>
-                  </div>
-                </div>
-              </motion.button>
-            );
-          })}
-        </div>
-
-        {/* CTA */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center space-y-4 pb-8">
-          {!hasMinimum && (
-            <p className="text-sm text-muted-foreground bg-card border border-border/60 rounded-xl px-5 py-3 inline-block">
-              📋 השלם לפחות 3 שאלונים כדי לקבל תוצאות ({completedCount}/3)
-            </p>
-          )}
-          <div>
-            <Button
-              size="lg"
-              onClick={onViewResults}
-              disabled={!hasMinimum}
-              className="px-10 py-6 text-lg bg-primary text-primary-foreground hover:bg-primary/85 disabled:opacity-50"
-            >
-              <Sparkles className="w-5 h-5 ml-2" />
-              לתוצאות שלי
-            </Button>
-          </div>
-          {completedCount > 0 && (
-            <button onClick={onRestart} className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mt-4">
-              <RotateCcw className="w-3 h-3" />
-              להתחיל מחדש
-            </button>
-          )}
-        </motion.div>
-      </div>
-    </div>
-  );
-};
-
-// ============ SECTION (Questionnaire) VIEW ============
-const SectionView = ({
-  section, answers, onAnswer, onComplete, onBackToHub,
-}: {
-  section: Section;
-  answers: Record<string, number>;
-  onAnswer: (qid: string, v: number) => void;
-  onComplete: () => void;
-  onBackToHub: () => void;
-}) => {
-  const [qIndex, setQIndex] = useState(() => {
-    const firstUnanswered = section.questions.findIndex((q) => answers[q.id] === undefined);
-    return firstUnanswered === -1 ? 0 : firstUnanswered;
-  });
-
-  const q = section.questions[qIndex];
-  const progress = ((qIndex + 1) / section.questions.length) * 100;
-  const currentAnswer = answers[q.id];
-
-  const handle = (v: number) => {
-    onAnswer(q.id, v);
-    if (qIndex < section.questions.length - 1) {
-      setTimeout(() => setQIndex(qIndex + 1), 200);
-    } else {
-      setTimeout(() => { sparkleConfetti(); onComplete(); }, 250);
-    }
-  };
-
-  return (
-    <div dir="rtl" className="min-h-screen bg-background">
-      <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-muted/30">
-        <div className="h-full bg-secondary transition-all duration-500" style={{ width: `${progress}%` }} />
-      </div>
-
-      <div className="max-w-2xl mx-auto px-6 pt-16 pb-12">
-        <div className="flex items-center justify-between mb-6 text-sm text-muted-foreground">
-          <button onClick={onBackToHub} className="flex items-center gap-1 hover:text-primary transition-colors">
-            <ChevronRight className="w-4 h-4" />
-            חזרה לרשימה
-          </button>
-          <span>{qIndex + 1} / {section.questions.length}</span>
-        </div>
-
-        <div className="text-center mb-6">
-          <div className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary text-xs font-semibold mb-2">
-            {section.icon} {section.title}
-          </div>
-        </div>
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={q.id}
-            initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.35 }}
-          >
-            <Card className="p-6 md:p-10 shadow-soft border-0 bg-card mb-6">
-              <h2 className="font-display text-xl md:text-2xl font-bold text-primary leading-relaxed mb-6 text-center">
-                {q.text}
-              </h2>
-
-              <div className="space-y-3">
-                {section.scale.map((opt) => (
-                  <button
-                    key={opt.v}
-                    onClick={() => handle(opt.v)}
-                    className={`w-full text-right px-6 py-4 rounded-lg border-2 transition-all text-base md:text-lg font-medium ${
-                      currentAnswer === opt.v
-                        ? 'bg-secondary text-secondary-foreground border-secondary'
-                        : 'bg-card border-border hover:border-secondary/50 hover:bg-muted/30 text-foreground'
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            </Card>
-
-            {qIndex > 0 && (
-              <button
-                onClick={() => setQIndex(qIndex - 1)}
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                ← לשאלה הקודמת
-              </button>
-            )}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    </div>
-  );
-};
-
 // ============ LOADING VIEW ============
 const LoadingView = () => (
   <div dir="rtl" className="min-h-screen bg-background flex items-center justify-center p-6">
@@ -604,12 +431,14 @@ const LoadingView = () => (
 const ResultsView = ({
   topTracks, explanations, error, onRestart, onBackToHub,
 }: {
-  topTracks: { id: TrackId; score: number }[];
+  topTracks: TrackId[];
   explanations: AIExplanation[] | null;
   error: string | null;
   onRestart: () => void;
   onBackToHub: () => void;
-}) => (
+}) => {
+  useEffect(() => { celebrationConfetti(); }, []);
+  return (
   <div dir="rtl" className="min-h-screen bg-background py-12 px-6">
     <div className="max-w-3xl mx-auto">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
@@ -632,11 +461,11 @@ const ResultsView = ({
         )}
 
         <div className="space-y-6 mb-10">
-          {topTracks.map((t, i) => {
-            const meta = TRACKS[t.id];
+          {topTracks.map((tid, i) => {
+            const meta = TRACKS[tid];
             const explain = explanations?.[i];
             return (
-              <motion.div key={t.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: i * 0.15 }}>
+              <motion.div key={tid} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: i * 0.15 }}>
                 <Card className="p-6 md:p-8 shadow-soft border-0 bg-card relative overflow-hidden">
                   <div className="absolute top-4 left-4 bg-secondary text-secondary-foreground rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg">
                     {i + 1}
@@ -698,6 +527,7 @@ const ResultsView = ({
       </motion.div>
     </div>
   </div>
-);
+  );
+};
 
 export default Haredi;
