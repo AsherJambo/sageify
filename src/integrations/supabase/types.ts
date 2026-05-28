@@ -61,6 +61,42 @@ export type Database = {
           },
         ]
       }
+      cocktail_sessions: {
+        Row: {
+          bottles_chosen: Json
+          character_title: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          recommended_track: string
+          riasec_scores: Json
+          top_code: string
+        }
+        Insert: {
+          bottles_chosen?: Json
+          character_title?: string
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          recommended_track?: string
+          riasec_scores?: Json
+          top_code?: string
+        }
+        Update: {
+          bottles_chosen?: Json
+          character_title?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          recommended_track?: string
+          riasec_scores?: Json
+          top_code?: string
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           created_at: string
