@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 const Index = lazy(() => import("./pages/Index"));
 const GoldenCanvas = lazy(() => import("./pages/GoldenCanvas"));
 const Haredi = lazy(() => import("./pages/Haredi"));
+const Cocktail = lazy(() => import("./pages/Cocktail"));
 
 const QuestionnaireByToken = lazy(() => import("./pages/QuestionnaireByToken"));
 const Admin = lazy(() => import("./pages/Admin"));
