@@ -20,3 +20,6 @@ verify_jwt = false
 
 [functions.haredi-match]
 verify_jwt = false
+
+[functions.cocktail-report]
+verify_jwt = false
