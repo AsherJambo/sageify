@@ -10,7 +10,7 @@ import { toast } from '@/hooks/use-toast';
 import { Download, Sparkles, X, GraduationCap, ArrowLeft } from 'lucide-react';
 import owlLogo from '@/assets/owl-logo.png';
 import megoLogo from '@/assets/mego-logo.jpg';
-import { BOTTLES, RIASEC_NAMES, TRACKS, type RIASEC } from '@/data/cocktailBottles';
+import { BOTTLES, RIASEC_NAMES, RIASEC_FULL, TRACKS, type RIASEC } from '@/data/cocktailBottles';
 import OwlChat from '@/components/OwlChat';
 import { cloudClient } from '@/lib/cloudClient';
 
@@ -193,6 +193,7 @@ export default function Cocktail() {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
   const [selected, setSelected] = useState<string[]>([]);
+  const [activeBottleId, setActiveBottleId] = useState<string | null>(null);
   const [report, setReport] = useState<Report | null>(null);
   const [processingLine, setProcessingLine] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -502,6 +503,48 @@ export default function Cocktail() {
                 </Card>
               </div>
 
+              {/* Dynamic bottle info panel */}
+              <AnimatePresence mode="wait">
+                {activeBottleId && (() => {
+                  const b = BOTTLES.find(x => x.id === activeBottleId);
+                  if (!b) return null;
+                  const st = CAT_STYLE[b.category];
+                  return (
+                    <motion.div
+                      key={activeBottleId}
+                      initial={{ opacity: 0, y: -12, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="mb-6"
+                    >
+                      <Card
+                        className="p-5 bg-card/90 backdrop-blur-xl border-border/60 shadow-xl rounded-2xl overflow-hidden"
+                        style={{ borderRight: `4px solid ${st.liquidBot}` }}
+                      >
+                        <div className="flex items-start gap-4">
+                          <div
+                            className="shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-md"
+                            style={{ background: `linear-gradient(135deg, ${st.liquidTop}, ${st.liquidBot})` }}
+                          >
+                            {b.emoji}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                              <h3 className="text-lg font-bold text-secondary">{b.name}</h3>
+                              <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${st.chip}`}>
+                                {RIASEC_FULL[b.category]}
+                              </span>
+                            </div>
+                            <p className="text-[15px] text-foreground/90 leading-relaxed">{b.description}</p>
+                          </div>
+                        </div>
+                      </Card>
+                    </motion.div>
+                  );
+                })()}
+              </AnimatePresence>
+
               {/* Sagi nudges */}
               {selected.length === 3 && (
                 <div className="mb-6"><SagiBubble delay={0}>אני מתחיל לראות כיוון. תמשיך.</SagiBubble></div>
@@ -554,7 +597,7 @@ export default function Cocktail() {
                             return (
                               <motion.button
                                 key={b.id}
-                                onClick={() => toggleBottle(b.id)}
+                                onClick={() => { setActiveBottleId(b.id); toggleBottle(b.id); }}
                                 whileTap={{ scale: 0.93 }}
                                 whileHover={{ y: -6 }}
                                 variants={{
