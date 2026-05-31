@@ -27,14 +27,89 @@ const leadSchema = z.object({
   email: z.string().trim().email('אימייל לא תקין').max(255),
 });
 
-// RIASEC → gradient + ring color (semantic, modern)
-const CAT_STYLE: Record<RIASEC, { grad: string; ring: string; dot: string; chip: string }> = {
-  R: { grad: 'from-amber-200/90 to-orange-300/90', ring: 'ring-amber-400', dot: 'bg-amber-500', chip: 'bg-amber-100 text-amber-900' },
-  I: { grad: 'from-sky-200/90 to-blue-300/90',     ring: 'ring-sky-400',   dot: 'bg-sky-500',   chip: 'bg-sky-100 text-sky-900' },
-  A: { grad: 'from-pink-200/90 to-rose-300/90',    ring: 'ring-pink-400',  dot: 'bg-pink-500',  chip: 'bg-pink-100 text-pink-900' },
-  S: { grad: 'from-emerald-200/90 to-green-300/90',ring: 'ring-emerald-400',dot: 'bg-emerald-500',chip: 'bg-emerald-100 text-emerald-900' },
-  E: { grad: 'from-orange-200/90 to-red-300/90',   ring: 'ring-orange-400',dot: 'bg-orange-500',chip: 'bg-orange-100 text-orange-900' },
-  C: { grad: 'from-violet-200/90 to-purple-300/90',ring: 'ring-violet-400',dot: 'bg-violet-500',chip: 'bg-violet-100 text-violet-900' },
+// RIASEC → bottle liquid colors + chip + shelf label
+const CAT_STYLE: Record<RIASEC, { liquidTop: string; liquidBot: string; glow: string; chip: string; label: string }> = {
+  R: { liquidTop: '#fbbf24', liquidBot: '#d97706', glow: 'shadow-[0_0_20px_rgba(251,191,36,0.6)]', chip: 'bg-amber-100 text-amber-900', label: 'ביצועית' },
+  I: { liquidTop: '#38bdf8', liquidBot: '#0369a1', glow: 'shadow-[0_0_20px_rgba(56,189,248,0.6)]', chip: 'bg-sky-100 text-sky-900',     label: 'חקרנית' },
+  A: { liquidTop: '#f472b6', liquidBot: '#be185d', glow: 'shadow-[0_0_20px_rgba(244,114,182,0.6)]',chip: 'bg-pink-100 text-pink-900',   label: 'אמנותית' },
+  S: { liquidTop: '#4ade80', liquidBot: '#15803d', glow: 'shadow-[0_0_20px_rgba(74,222,128,0.6)]', chip: 'bg-emerald-100 text-emerald-900', label: 'חברתית' },
+  E: { liquidTop: '#fb923c', liquidBot: '#c2410c', glow: 'shadow-[0_0_20px_rgba(251,146,60,0.6)]', chip: 'bg-orange-100 text-orange-900',label: 'יזמית' },
+  C: { liquidTop: '#c084fc', liquidBot: '#7e22ce', glow: 'shadow-[0_0_20px_rgba(192,132,252,0.6)]',chip: 'bg-violet-100 text-violet-900',label: 'מנהלתית' },
+};
+
+// SVG bottle component — glass vial with liquid
+const BottleVial = ({
+  liquidTop, liquidBot, emoji, selected, bubbling,
+}: { liquidTop: string; liquidBot: string; emoji: string; selected: boolean; bubbling: boolean }) => {
+  const gradId = `g-${liquidTop.replace('#','')}`;
+  return (
+    <svg viewBox="0 0 80 130" className="w-full h-full drop-shadow-md overflow-visible">
+      <defs>
+        <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={liquidTop} stopOpacity="0.95" />
+          <stop offset="100%" stopColor={liquidBot} stopOpacity="1" />
+        </linearGradient>
+        <linearGradient id={`glass-${gradId}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
+          <stop offset="40%" stopColor="#ffffff" stopOpacity="0.05" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.1" />
+        </linearGradient>
+        <clipPath id={`clip-${gradId}`}>
+          <path d="M22 50 Q22 45 26 43 L26 35 Q26 32 30 32 L50 32 Q54 32 54 35 L54 43 Q58 45 58 50 L62 115 Q62 122 55 122 L25 122 Q18 122 18 115 Z" />
+        </clipPath>
+      </defs>
+      {/* cork */}
+      <rect x="30" y="18" width="20" height="14" rx="2" fill="#8b6f47" />
+      <rect x="30" y="18" width="20" height="3" rx="1" fill="#6b5337" />
+      {/* neck */}
+      <rect x="32" y="28" width="16" height="8" fill="#e8e8e8" opacity="0.4" />
+      {/* bottle body outline */}
+      <path
+        d="M22 50 Q22 45 26 43 L26 35 Q26 32 30 32 L50 32 Q54 32 54 35 L54 43 Q58 45 58 50 L62 115 Q62 122 55 122 L25 122 Q18 122 18 115 Z"
+        fill="#ffffff" fillOpacity="0.15" stroke="#ffffff" strokeOpacity="0.6" strokeWidth="1.2"
+      />
+      {/* liquid */}
+      <g clipPath={`url(#clip-${gradId})`}>
+        <rect x="0" y="55" width="80" height="80" fill={`url(#${gradId})`} />
+        {/* meniscus wave */}
+        <path d="M10 58 Q40 54 70 58 L70 65 L10 65 Z" fill={liquidTop} opacity="0.7" />
+        {/* bubbles */}
+        {bubbling && (
+          <>
+            <circle cx="32" cy="100" r="2" fill="#fff" opacity="0.7">
+              <animate attributeName="cy" values="115;55" dur="2.2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" dur="2.2s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="46" cy="90" r="1.5" fill="#fff" opacity="0.6">
+              <animate attributeName="cy" values="115;55" dur="2.8s" begin="0.6s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.6;0" dur="2.8s" begin="0.6s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="40" cy="80" r="1.2" fill="#fff" opacity="0.5">
+              <animate attributeName="cy" values="115;55" dur="2.5s" begin="1.2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.5;0" dur="2.5s" begin="1.2s" repeatCount="indefinite" />
+            </circle>
+          </>
+        )}
+      </g>
+      {/* glass shine */}
+      <path
+        d="M22 50 Q22 45 26 43 L26 35 Q26 32 30 32 L50 32 Q54 32 54 35 L54 43 Q58 45 58 50 L62 115 Q62 122 55 122 L25 122 Q18 122 18 115 Z"
+        fill={`url(#glass-${gradId})`}
+      />
+      {/* highlight strip */}
+      <rect x="24" y="55" width="3" height="55" rx="1.5" fill="#ffffff" opacity="0.4" />
+      {/* emoji label on bottle */}
+      <foreignObject x="20" y="78" width="40" height="30">
+        <div style={{ fontSize: 22, textAlign: 'center', filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))' }}>{emoji}</div>
+      </foreignObject>
+      {/* selected ring */}
+      {selected && (
+        <circle cx="40" cy="78" r="34" fill="none" stroke="#fff" strokeWidth="2.5" opacity="0.9">
+          <animate attributeName="r" values="34;38;34" dur="1.6s" repeatCount="indefinite" />
+        </circle>
+      )}
+    </svg>
+  );
 };
 
 const SagiBubble = ({ children, delay = 0.3 }: { children: React.ReactNode; delay?: number }) => (
