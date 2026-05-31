@@ -555,7 +555,7 @@ export default function Cocktail() {
                             return (
                               <motion.button
                                 key={b.id}
-                                onClick={() => toggleBottle(b.id)}
+                                onClick={() => { setActiveBottleId(b.id); toggleBottle(b.id); }}
                                 whileTap={{ scale: 0.93 }}
                                 whileHover={{ y: -6 }}
                                 variants={{
