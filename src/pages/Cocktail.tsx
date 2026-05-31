@@ -317,7 +317,26 @@ export default function Cocktail() {
   return (
     <div className="min-h-screen bg-background py-8 px-4 relative">
       <AmbientBG />
+
+      {/* Milestone burst overlay */}
+      <AnimatePresence>
+        {milestone && (
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 280, damping: 18 }}
+            className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] pointer-events-none"
+          >
+            <div className="bg-gradient-to-l from-accent via-primary to-accent text-white font-bold px-6 py-3 rounded-full shadow-2xl text-base ring-4 ring-white/40">
+              {milestone}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="max-w-5xl mx-auto">
+        {(stage === 'welcome' || stage === 'mixer') && <CoBrandBar />}
         <AnimatePresence mode="wait">
 
           {/* =========== WELCOME =========== */}
