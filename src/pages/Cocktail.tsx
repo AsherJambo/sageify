@@ -193,6 +193,7 @@ export default function Cocktail() {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
   const [selected, setSelected] = useState<string[]>([]);
+  const [activeBottleId, setActiveBottleId] = useState<string | null>(null);
   const [report, setReport] = useState<Report | null>(null);
   const [processingLine, setProcessingLine] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
