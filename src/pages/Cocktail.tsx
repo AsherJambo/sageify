@@ -516,7 +516,7 @@ export default function Cocktail() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.97 }}
                       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                      className="mb-6"
+                      className="mb-6 sticky top-2 z-30"
                     >
                       <Card
                         className="p-5 bg-card/90 backdrop-blur-xl border-border/60 shadow-xl rounded-2xl overflow-hidden"
