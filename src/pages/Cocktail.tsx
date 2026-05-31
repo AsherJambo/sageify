@@ -137,13 +137,54 @@ const PROCESSING_LINES = [
   'מנסח את הזהות המקצועית שלך...',
 ];
 
-// Soft ambient gradient background
-const AmbientBG = () => (
-  <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-    <div className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full bg-accent/20 blur-3xl" />
-    <div className="absolute top-1/3 -left-32 w-[420px] h-[420px] rounded-full bg-primary/20 blur-3xl" />
-    <div className="absolute bottom-0 right-1/4 w-[360px] h-[360px] rounded-full bg-secondary/15 blur-3xl" />
-  </div>
+// Floating bubbles + ambient gradients — game-y atmosphere
+const AmbientBG = () => {
+  const bubbles = Array.from({ length: 14 }, (_, i) => ({
+    id: i,
+    size: 12 + Math.random() * 28,
+    left: Math.random() * 100,
+    delay: Math.random() * 8,
+    duration: 14 + Math.random() * 10,
+    hue: ['#f472b6', '#38bdf8', '#4ade80', '#fb923c', '#c084fc', '#fbbf24'][i % 6],
+  }));
+  return (
+    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+      <div className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full bg-accent/20 blur-3xl" />
+      <div className="absolute top-1/3 -left-32 w-[420px] h-[420px] rounded-full bg-primary/20 blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-[360px] h-[360px] rounded-full bg-secondary/15 blur-3xl" />
+      {bubbles.map(b => (
+        <motion.div
+          key={b.id}
+          className="absolute rounded-full"
+          style={{
+            width: b.size, height: b.size, left: `${b.left}%`, bottom: -60,
+            background: `radial-gradient(circle at 30% 30%, #fff, ${b.hue}66 60%, transparent 70%)`,
+            border: `1px solid ${b.hue}44`,
+          }}
+          animate={{ y: [0, -window.innerHeight - 100], x: [0, 30, -20, 10], opacity: [0, 0.7, 0.7, 0] }}
+          transition={{ duration: b.duration, delay: b.delay, repeat: Infinity, ease: 'easeOut' }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Co-branded sticky header — MEGO × Sageify
+const CoBrandBar = () => (
+  <motion.div
+    initial={{ opacity: 0, y: -10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+    className="flex items-center justify-center gap-3 mb-6 mt-1"
+  >
+    <div className="flex items-center gap-3 bg-card/80 backdrop-blur-xl border border-border/60 rounded-full px-4 py-2 shadow-md">
+      <img src={megoLogo} alt="MEGO" className="w-9 h-9 rounded-full object-cover ring-2 ring-sky-200" />
+      <span className="text-xs font-bold text-secondary tracking-wider">MEGO</span>
+      <span className="text-xs text-muted-foreground">×</span>
+      <span className="text-xs font-bold text-secondary tracking-wider">SAGEIFY</span>
+      <img src={owlLogo} alt="Sageify" className="w-8 h-8 rounded-full bg-card p-0.5" />
+    </div>
+  </motion.div>
 );
 
 export default function Cocktail() {
