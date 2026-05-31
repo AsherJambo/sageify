@@ -425,6 +425,10 @@ export default function Cocktail() {
                 <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-2">The Lab</p>
                 <h1 className="text-3xl md:text-4xl font-bold text-secondary mb-2">המעבדה</h1>
                 <p className="text-muted-foreground">בחר בין 6 ל-14 בקבוקים שמדברים אליך</p>
+                <p className="text-sm text-accent mt-2 flex items-center justify-center gap-1.5">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                  לחץ על הבקבוק כדי להבין את משמעותו
+                </p>
               </div>
 
               {/* Floating Shaker */}
