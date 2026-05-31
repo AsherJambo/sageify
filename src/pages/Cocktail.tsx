@@ -503,7 +503,7 @@ export default function Cocktail() {
                 </Card>
               </div>
 
-              {/* Dynamic bottle info panel */}
+              {/* Dynamic bottle info panel — fixed dock so it's always visible while browsing shelves */}
               <AnimatePresence mode="wait">
                 {activeBottleId && (() => {
                   const b = BOTTLES.find(x => x.id === activeBottleId);
@@ -512,31 +512,39 @@ export default function Cocktail() {
                   return (
                     <motion.div
                       key={activeBottleId}
-                      initial={{ opacity: 0, y: -12, scale: 0.97 }}
+                      initial={{ opacity: 0, y: 30, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                      exit={{ opacity: 0, y: 20, scale: 0.95 }}
                       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                      className="mb-6"
+                      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-1.5rem)] max-w-xl px-1"
                     >
                       <Card
-                        className="p-5 bg-card/90 backdrop-blur-xl border-border/60 shadow-xl rounded-2xl overflow-hidden"
+                        className="p-4 bg-card/95 backdrop-blur-xl border-border/60 shadow-2xl rounded-2xl overflow-hidden relative"
                         style={{ borderRight: `4px solid ${st.liquidBot}` }}
                       >
-                        <div className="flex items-start gap-4">
+                        <button
+                          type="button"
+                          onClick={() => setActiveBottleId(null)}
+                          aria-label="סגור"
+                          className="absolute top-2 left-2 w-7 h-7 rounded-full bg-muted/60 hover:bg-muted text-foreground/70 hover:text-foreground flex items-center justify-center text-sm transition"
+                        >
+                          ✕
+                        </button>
+                        <div className="flex items-start gap-3 pl-7">
                           <div
-                            className="shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-md"
+                            className="shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md"
                             style={{ background: `linear-gradient(135deg, ${st.liquidTop}, ${st.liquidBot})` }}
                           >
                             {b.emoji}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1 flex-wrap">
-                              <h3 className="text-lg font-bold text-secondary">{b.name}</h3>
+                              <h3 className="text-base font-bold text-secondary">{b.name}</h3>
                               <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${st.chip}`}>
                                 {RIASEC_FULL[b.category]}
                               </span>
                             </div>
-                            <p className="text-[15px] text-foreground/90 leading-relaxed">{b.description}</p>
+                            <p className="text-sm text-foreground/90 leading-relaxed">{b.description}</p>
                           </div>
                         </div>
                       </Card>
