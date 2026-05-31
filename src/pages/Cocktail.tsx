@@ -432,46 +432,96 @@ export default function Cocktail() {
                 <div className="mb-6"><SagiBubble delay={0}>זה הופך לפרופיל מעניין. עוד כמה אם בא לך — או עצור כאן.</SagiBubble></div>
               )}
 
-              {/* Bottle shelf */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
-                {BOTTLES.map(b => {
-                  const isSelected = selected.includes(b.id);
-                  const st = CAT_STYLE[b.category];
+              {/* Wooden bottle shelves — grouped by RIASEC */}
+              <div className="space-y-8">
+                {(['R','I','A','S','E','C'] as RIASEC[]).map(cat => {
+                  const bottlesInCat = BOTTLES.filter(b => b.category === cat);
+                  const st = CAT_STYLE[cat];
                   return (
-                    <motion.button
-                      key={b.id}
-                      onClick={() => toggleBottle(b.id)}
-                      whileTap={{ scale: 0.96 }}
-                      whileHover={{ y: -3 }}
-                      className={`relative overflow-hidden rounded-2xl p-4 text-right transition-all duration-300 group
-                        bg-gradient-to-br ${st.grad}
-                        ${isSelected
-                          ? `ring-4 ${st.ring} shadow-lg scale-[0.98]`
-                          : 'shadow-md hover:shadow-xl'}`}
-                    >
-                      {/* Category dot */}
-                      <div className={`absolute top-3 left-3 w-2 h-2 rounded-full ${st.dot}`} />
-                      {/* Selected check */}
-                      {isSelected && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="absolute top-2 left-2 bg-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold shadow"
-                        >
-                          ✓
-                        </motion.div>
-                      )}
+                    <div key={cat} className="relative">
+                      {/* Shelf label tag */}
+                      <div className="flex items-center justify-between mb-3 px-1">
+                        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${st.chip} text-xs font-bold tracking-wide shadow-sm`}>
+                          <span className="w-1.5 h-1.5 rounded-full" style={{ background: st.liquidBot }} />
+                          מדף {st.label}
+                        </div>
+                        <span className="text-[11px] text-muted-foreground tabular-nums">
+                          {bottlesInCat.filter(b => selected.includes(b.id)).length}/{bottlesInCat.length}
+                        </span>
+                      </div>
 
-                      <div className="text-4xl mb-2 drop-shadow-sm">{b.emoji}</div>
-                      <div className="font-bold text-foreground mb-1 text-[15px] leading-tight">{b.name}</div>
-                      <div className="text-xs text-foreground/70 leading-snug">{b.description}</div>
-
-                      {/* Shine */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                    </motion.button>
+                      {/* Shelf surface */}
+                      <div className="relative">
+                        {/* Bottles row */}
+                        <div className="grid grid-cols-4 gap-1 sm:gap-2 md:gap-3 items-end relative z-10 pb-1">
+                          {bottlesInCat.map(b => {
+                            const isSelected = selected.includes(b.id);
+                            return (
+                              <motion.button
+                                key={b.id}
+                                onClick={() => toggleBottle(b.id)}
+                                whileTap={{ scale: 0.93 }}
+                                whileHover={{ y: -6 }}
+                                animate={isSelected ? { y: -4 } : { y: 0 }}
+                                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                                className={`relative flex flex-col items-center pt-2 pb-1 px-1 rounded-t-xl transition-all min-h-0
+                                  ${isSelected ? `bg-white/40 backdrop-blur-sm ${st.glow}` : 'hover:bg-white/20'}`}
+                                style={{ minHeight: 0 }}
+                                title={b.description}
+                              >
+                                {/* Selected check */}
+                                {isSelected && (
+                                  <motion.div
+                                    initial={{ scale: 0, rotate: -90 }}
+                                    animate={{ scale: 1, rotate: 0 }}
+                                    className="absolute -top-1 -left-1 z-20 bg-accent text-accent-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-lg ring-2 ring-white"
+                                  >
+                                    ✓
+                                  </motion.div>
+                                )}
+                                {/* Bottle */}
+                                <div className="w-14 sm:w-16 md:w-20 h-[100px] sm:h-[120px] md:h-[140px]">
+                                  <BottleVial
+                                    liquidTop={st.liquidTop}
+                                    liquidBot={st.liquidBot}
+                                    emoji={b.emoji}
+                                    selected={isSelected}
+                                    bubbling={isSelected}
+                                  />
+                                </div>
+                                {/* Name tag */}
+                                <div className={`mt-1 text-[10px] sm:text-[11px] md:text-xs font-semibold leading-tight text-center px-1 max-w-full
+                                  ${isSelected ? 'text-secondary' : 'text-foreground/80'}`}>
+                                  {b.name}
+                                </div>
+                              </motion.button>
+                            );
+                          })}
+                        </div>
+                        {/* Wooden shelf board */}
+                        <div
+                          className="h-3 sm:h-3.5 rounded-md shadow-[0_6px_12px_-4px_rgba(0,0,0,0.3)]"
+                          style={{
+                            background: 'linear-gradient(180deg, #a87750 0%, #8b5e3c 50%, #6b4423 100%)',
+                            backgroundImage: `
+                              linear-gradient(180deg, #a87750 0%, #8b5e3c 50%, #6b4423 100%),
+                              repeating-linear-gradient(90deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 22px)
+                            `,
+                            backgroundBlendMode: 'multiply',
+                          }}
+                        />
+                        {/* Shelf shadow on wall */}
+                        <div className="h-2 rounded-b-full bg-gradient-to-b from-black/15 to-transparent mx-2" />
+                      </div>
+                    </div>
                   );
                 })}
               </div>
+
+              {/* Hint footer */}
+              <p className="text-center text-xs text-muted-foreground mt-6">
+                💡 גע בבקבוקון כדי להוסיף לשייקר · המראה מעל מעדכן את התקדמותך
+              </p>
             </motion.div>
           )}
 
