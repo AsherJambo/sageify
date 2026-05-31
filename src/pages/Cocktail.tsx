@@ -10,7 +10,7 @@ import { toast } from '@/hooks/use-toast';
 import { Download, Sparkles, X, GraduationCap, ArrowLeft } from 'lucide-react';
 import owlLogo from '@/assets/owl-logo.png';
 import megoLogo from '@/assets/mego-logo.jpg';
-import { BOTTLES, RIASEC_NAMES, TRACKS, type RIASEC } from '@/data/cocktailBottles';
+import { BOTTLES, RIASEC_NAMES, RIASEC_FULL, TRACKS, type RIASEC } from '@/data/cocktailBottles';
 import OwlChat from '@/components/OwlChat';
 import { cloudClient } from '@/lib/cloudClient';
 
