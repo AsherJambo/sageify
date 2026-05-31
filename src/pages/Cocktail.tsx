@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { Download, Sparkles, X, GraduationCap, ArrowLeft } from 'lucide-react';
 import owlLogo from '@/assets/owl-logo.png';
+import megoLogo from '@/assets/mego-logo.jpg';
 import { BOTTLES, RIASEC_NAMES, TRACKS, type RIASEC } from '@/data/cocktailBottles';
 import OwlChat from '@/components/OwlChat';
 import { cloudClient } from '@/lib/cloudClient';
@@ -136,13 +137,54 @@ const PROCESSING_LINES = [
   'מנסח את הזהות המקצועית שלך...',
 ];
 
-// Soft ambient gradient background
-const AmbientBG = () => (
-  <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-    <div className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full bg-accent/20 blur-3xl" />
-    <div className="absolute top-1/3 -left-32 w-[420px] h-[420px] rounded-full bg-primary/20 blur-3xl" />
-    <div className="absolute bottom-0 right-1/4 w-[360px] h-[360px] rounded-full bg-secondary/15 blur-3xl" />
-  </div>
+// Floating bubbles + ambient gradients — game-y atmosphere
+const AmbientBG = () => {
+  const bubbles = Array.from({ length: 14 }, (_, i) => ({
+    id: i,
+    size: 12 + Math.random() * 28,
+    left: Math.random() * 100,
+    delay: Math.random() * 8,
+    duration: 14 + Math.random() * 10,
+    hue: ['#f472b6', '#38bdf8', '#4ade80', '#fb923c', '#c084fc', '#fbbf24'][i % 6],
+  }));
+  return (
+    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+      <div className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full bg-accent/20 blur-3xl" />
+      <div className="absolute top-1/3 -left-32 w-[420px] h-[420px] rounded-full bg-primary/20 blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-[360px] h-[360px] rounded-full bg-secondary/15 blur-3xl" />
+      {bubbles.map(b => (
+        <motion.div
+          key={b.id}
+          className="absolute rounded-full"
+          style={{
+            width: b.size, height: b.size, left: `${b.left}%`, bottom: -60,
+            background: `radial-gradient(circle at 30% 30%, #fff, ${b.hue}66 60%, transparent 70%)`,
+            border: `1px solid ${b.hue}44`,
+          }}
+          animate={{ y: [0, -window.innerHeight - 100], x: [0, 30, -20, 10], opacity: [0, 0.7, 0.7, 0] }}
+          transition={{ duration: b.duration, delay: b.delay, repeat: Infinity, ease: 'easeOut' }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Co-branded sticky header — MEGO × Sageify
+const CoBrandBar = () => (
+  <motion.div
+    initial={{ opacity: 0, y: -10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+    className="flex items-center justify-center gap-3 mb-6 mt-1"
+  >
+    <div className="flex items-center gap-3 bg-card/80 backdrop-blur-xl border border-border/60 rounded-full px-4 py-2 shadow-md">
+      <img src={megoLogo} alt="MEGO" className="w-9 h-9 rounded-full object-cover ring-2 ring-sky-200" />
+      <span className="text-xs font-bold text-secondary tracking-wider">MEGO</span>
+      <span className="text-xs text-muted-foreground">×</span>
+      <span className="text-xs font-bold text-secondary tracking-wider">SAGEIFY</span>
+      <img src={owlLogo} alt="Sageify" className="w-8 h-8 rounded-full bg-card p-0.5" />
+    </div>
+  </motion.div>
 );
 
 export default function Cocktail() {
@@ -184,6 +226,7 @@ export default function Cocktail() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
+  const [milestone, setMilestone] = useState<string | null>(null);
   const toggleBottle = (id: string) => {
     setSelected(prev => {
       if (prev.includes(id)) return prev.filter(x => x !== id);
@@ -191,7 +234,19 @@ export default function Cocktail() {
         toast({ title: 'הגעת לתקרה', description: 'מקסימום 14 בקבוקים — הסר אחד כדי להחליף', variant: 'destructive' });
         return prev;
       }
-      return [...prev, id];
+      const next = [...prev, id];
+      // Milestone bursts
+      const map: Record<number, string> = {
+        3: '✨ +30 XP · התחלת לבנות פרופיל',
+        6: '🔓 6 בקבוקים — נפתח: ערבב את הקוקטייל!',
+        10: '🔥 קומבו פרימיום · עוד 4 לאלוף',
+        14: '👑 שייקר מלא · אלוף!',
+      };
+      if (map[next.length]) {
+        setMilestone(map[next.length]);
+        setTimeout(() => setMilestone(null), 2200);
+      }
+      return next;
     });
   };
 
@@ -262,7 +317,26 @@ export default function Cocktail() {
   return (
     <div className="min-h-screen bg-background py-8 px-4 relative">
       <AmbientBG />
+
+      {/* Milestone burst overlay */}
+      <AnimatePresence>
+        {milestone && (
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 280, damping: 18 }}
+            className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] pointer-events-none"
+          >
+            <div className="bg-gradient-to-l from-accent via-primary to-accent text-white font-bold px-6 py-3 rounded-full shadow-2xl text-base ring-4 ring-white/40">
+              {milestone}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="max-w-5xl mx-auto">
+        {(stage === 'welcome' || stage === 'mixer') && <CoBrandBar />}
         <AnimatePresence mode="wait">
 
           {/* =========== WELCOME =========== */}
