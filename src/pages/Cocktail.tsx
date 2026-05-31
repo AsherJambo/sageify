@@ -434,11 +434,19 @@ export default function Cocktail() {
 
               {/* Wooden bottle shelves — grouped by RIASEC */}
               <div className="space-y-8">
-                {(['R','I','A','S','E','C'] as RIASEC[]).map(cat => {
+                {(['R','I','A','S','E','C'] as RIASEC[]).map((cat, shelfIdx) => {
                   const bottlesInCat = BOTTLES.filter(b => b.category === cat);
                   const st = CAT_STYLE[cat];
+                  const fromX = shelfIdx % 2 === 0 ? 80 : -80;
                   return (
-                    <div key={cat} className="relative">
+                    <motion.div
+                      key={cat}
+                      className="relative"
+                      initial={{ opacity: 0, x: fromX, y: 20 }}
+                      whileInView={{ opacity: 1, x: 0, y: 0 }}
+                      viewport={{ once: true, amount: 0.25, margin: '0px 0px -80px 0px' }}
+                      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    >
                       {/* Shelf label tag */}
                       <div className="flex items-center justify-between mb-3 px-1">
                         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${st.chip} text-xs font-bold tracking-wide shadow-sm`}>
@@ -452,8 +460,17 @@ export default function Cocktail() {
 
                       {/* Shelf surface */}
                       <div className="relative">
-                        {/* Bottles row */}
-                        <div className="grid grid-cols-4 gap-1 sm:gap-2 md:gap-3 items-end relative z-10 pb-1">
+                        {/* Bottles row — staggered drop-in */}
+                        <motion.div
+                          className="grid grid-cols-4 gap-1 sm:gap-2 md:gap-3 items-end relative z-10 pb-1"
+                          initial="hidden"
+                          whileInView="visible"
+                          viewport={{ once: true, amount: 0.2 }}
+                          variants={{
+                            hidden: {},
+                            visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
+                          }}
+                        >
                           {bottlesInCat.map(b => {
                             const isSelected = selected.includes(b.id);
                             return (
@@ -462,14 +479,18 @@ export default function Cocktail() {
                                 onClick={() => toggleBottle(b.id)}
                                 whileTap={{ scale: 0.93 }}
                                 whileHover={{ y: -6 }}
-                                animate={isSelected ? { y: -4 } : { y: 0 }}
-                                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                                className={`relative flex flex-col items-center pt-2 pb-1 px-1 rounded-t-xl transition-all min-h-0
+                                variants={{
+                                  hidden: { opacity: 0, y: -30, scale: 0.85 },
+                                  visible: {
+                                    opacity: 1, y: isSelected ? -4 : 0, scale: 1,
+                                    transition: { type: 'spring', stiffness: 280, damping: 18 },
+                                  },
+                                }}
+                                className={`relative flex flex-col items-center pt-2 pb-1 px-1 rounded-t-xl transition-colors min-h-0
                                   ${isSelected ? `bg-white/40 backdrop-blur-sm ${st.glow}` : 'hover:bg-white/20'}`}
                                 style={{ minHeight: 0 }}
                                 title={b.description}
                               >
-                                {/* Selected check */}
                                 {isSelected && (
                                   <motion.div
                                     initial={{ scale: 0, rotate: -90 }}
@@ -479,7 +500,6 @@ export default function Cocktail() {
                                     ✓
                                   </motion.div>
                                 )}
-                                {/* Bottle */}
                                 <div className="w-14 sm:w-16 md:w-20 h-[100px] sm:h-[120px] md:h-[140px]">
                                   <BottleVial
                                     liquidTop={st.liquidTop}
@@ -489,7 +509,6 @@ export default function Cocktail() {
                                     bubbling={isSelected}
                                   />
                                 </div>
-                                {/* Name tag */}
                                 <div className={`mt-1 text-[10px] sm:text-[11px] md:text-xs font-semibold leading-tight text-center px-1 max-w-full
                                   ${isSelected ? 'text-secondary' : 'text-foreground/80'}`}>
                                   {b.name}
@@ -497,10 +516,14 @@ export default function Cocktail() {
                               </motion.button>
                             );
                           })}
-                        </div>
-                        {/* Wooden shelf board */}
-                        <div
-                          className="h-3 sm:h-3.5 rounded-md shadow-[0_6px_12px_-4px_rgba(0,0,0,0.3)]"
+                        </motion.div>
+                        {/* Wooden shelf board — scales in from center */}
+                        <motion.div
+                          className="h-3 sm:h-3.5 rounded-md shadow-[0_6px_12px_-4px_rgba(0,0,0,0.3)] origin-center"
+                          initial={{ scaleX: 0, opacity: 0 }}
+                          whileInView={{ scaleX: 1, opacity: 1 }}
+                          viewport={{ once: true, amount: 0.3 }}
+                          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                           style={{
                             background: 'linear-gradient(180deg, #a87750 0%, #8b5e3c 50%, #6b4423 100%)',
                             backgroundImage: `
@@ -510,10 +533,9 @@ export default function Cocktail() {
                             backgroundBlendMode: 'multiply',
                           }}
                         />
-                        {/* Shelf shadow on wall */}
                         <div className="h-2 rounded-b-full bg-gradient-to-b from-black/15 to-transparent mx-2" />
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })}
               </div>
