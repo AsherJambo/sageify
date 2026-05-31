@@ -226,6 +226,7 @@ export default function Cocktail() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
+  const [milestone, setMilestone] = useState<string | null>(null);
   const toggleBottle = (id: string) => {
     setSelected(prev => {
       if (prev.includes(id)) return prev.filter(x => x !== id);
@@ -233,7 +234,19 @@ export default function Cocktail() {
         toast({ title: 'הגעת לתקרה', description: 'מקסימום 14 בקבוקים — הסר אחד כדי להחליף', variant: 'destructive' });
         return prev;
       }
-      return [...prev, id];
+      const next = [...prev, id];
+      // Milestone bursts
+      const map: Record<number, string> = {
+        3: '✨ +30 XP · התחלת לבנות פרופיל',
+        6: '🔓 6 בקבוקים — נפתח: ערבב את הקוקטייל!',
+        10: '🔥 קומבו פרימיום · עוד 4 לאלוף',
+        14: '👑 שייקר מלא · אלוף!',
+      };
+      if (map[next.length]) {
+        setMilestone(map[next.length]);
+        setTimeout(() => setMilestone(null), 2200);
+      }
+      return next;
     });
   };
 
