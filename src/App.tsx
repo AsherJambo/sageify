@@ -11,6 +11,7 @@ const Index = lazy(() => import("./pages/Index"));
 const GoldenCanvas = lazy(() => import("./pages/GoldenCanvas"));
 const Haredi = lazy(() => import("./pages/Haredi"));
 const Cocktail = lazy(() => import("./pages/Cocktail"));
+const PreviewHolland = lazy(() => import("./pages/PreviewHolland"));
 
 const QuestionnaireByToken = lazy(() => import("./pages/QuestionnaireByToken"));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -41,6 +42,7 @@ const App = () => {
               <Route path="/golden-canvas" element={<GoldenCanvas />} />
               <Route path="/haredi" element={<Haredi />} />
               <Route path="/cocktail" element={<Cocktail />} />
+              <Route path="/preview/holland" element={<PreviewHolland />} />
               <Route path="/q/:token" element={<QuestionnaireByToken />} />
               <Route path="/partner/:partnerId/q/:token" element={<PartnerQuestionnaire />} />
               <Route path="/admin" element={<Admin />} />
