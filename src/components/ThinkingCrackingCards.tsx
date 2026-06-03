@@ -7,7 +7,7 @@ interface Props {
   onBackToHub?: () => void;
 }
 
-const ThinkingCrackingCards = ({ onComplete }: Props) => {
+const ThinkingCrackingCards = ({ onComplete, onBackToHub }: Props) => {
   const [index, setIndex] = useState(0);
   const [opened, setOpened] = useState(false);
   const [answers, setAnswers] = useState<Record<number, number>>({});
