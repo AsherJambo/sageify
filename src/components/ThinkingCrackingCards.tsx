@@ -51,7 +51,7 @@ const ThinkingCrackingCards = ({ onComplete }: Props) => {
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/40 px-4 py-8" dir="rtl">
       {/* Progress */}
       <div className="max-w-3xl mx-auto mb-6">
-        <div className="flex justify-between text-sm text-muted-foreground mb-2 font-medium">
+        <div className="flex justify-between items-center text-sm text-muted-foreground mb-2 font-medium">
           <span>כרטיס {index + 1} מתוך {total}</span>
           <span>{q.difficulty === 'easy' ? 'קל' : q.difficulty === 'medium' ? 'בינוני' : 'מאתגר'}</span>
         </div>
@@ -63,6 +63,14 @@ const ThinkingCrackingCards = ({ onComplete }: Props) => {
             transition={{ duration: 0.6 }}
           />
         </div>
+        {onBackToHub && (
+          <button
+            onClick={onBackToHub}
+            className="mt-3 text-xs text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
+          >
+            ← חזרה למרכז התצוגה
+          </button>
+        )}
       </div>
 
       <div className="max-w-3xl mx-auto">
