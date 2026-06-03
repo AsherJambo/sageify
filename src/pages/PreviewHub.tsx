@@ -7,6 +7,9 @@ const PREVIEWS = [
   { path: '/preview/schein', title: 'Schein — עוגנים תעסוקתיים', desc: 'Linear Journey — שאלה אחת בכל פעם', emoji: '⚓', tone: 'from-secondary/15 to-secondary/5' },
   { path: '/preview/motivation', title: 'Motivation & Intentions', desc: 'Mixer Garden — צנצנות וזרעים', emoji: '🌱', tone: 'from-success/15 to-success/5' },
   { path: '/preview/thinking', title: 'Thinking Skills', desc: 'כרטיסים מתפצחים — מטריצות', emoji: '🧩', tone: 'from-coral/15 to-coral/5' },
+  { path: '/preview/skills', title: 'Skills — כישורים', desc: 'ארבע עמודות גרירה', emoji: '🏆', tone: 'from-success/15 to-success/5' },
+  { path: '/preview/considerations', title: 'Considerations — שיקולים', desc: 'ענן תגיות אינטראקטיבי', emoji: '⚖', tone: 'from-primary/15 to-primary/5' },
+  { path: '/preview/preferences', title: 'Preferences — העדפות', desc: 'סליידרים זורמים + שאלות פתוחות', emoji: '🌊', tone: 'from-sky/15 to-sky/5' },
 ];
 
 const PreviewHub = () => {
