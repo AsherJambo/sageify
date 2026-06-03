@@ -16,6 +16,7 @@ const PreviewVIA = lazy(() => import("./pages/PreviewVIA"));
 const PreviewSchein = lazy(() => import("./pages/PreviewSchein"));
 const PreviewMotivation = lazy(() => import("./pages/PreviewMotivation"));
 const PreviewThinking = lazy(() => import("./pages/PreviewThinking"));
+const PreviewHub = lazy(() => import("./pages/PreviewHub"));
 
 const QuestionnaireByToken = lazy(() => import("./pages/QuestionnaireByToken"));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -46,6 +47,7 @@ const App = () => {
               <Route path="/golden-canvas" element={<GoldenCanvas />} />
               <Route path="/haredi" element={<Haredi />} />
               <Route path="/cocktail" element={<Cocktail />} />
+              <Route path="/preview" element={<PreviewHub />} />
               <Route path="/preview/holland" element={<PreviewHolland />} />
               <Route path="/preview/via" element={<PreviewVIA />} />
               <Route path="/preview/schein" element={<PreviewSchein />} />
