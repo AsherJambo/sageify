@@ -1,48 +1,62 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
-const PREVIEWS = [
-  { path: '/preview/holland', title: 'Holland — תחומי עניין', desc: 'שאלון מעורבב ללא כותרות קטגוריה', emoji: '🧭', tone: 'from-sky/15 to-sky/5' },
-  { path: '/preview/via', title: 'VIA — חוזקות אופי', desc: 'חוזקות במבט אישי', emoji: '✨', tone: 'from-sunny/15 to-sunny/5' },
-  { path: '/preview/schein', title: 'Schein — עוגנים תעסוקתיים', desc: 'Linear Journey — שאלה אחת בכל פעם', emoji: '⚓', tone: 'from-secondary/15 to-secondary/5' },
-  { path: '/preview/motivation', title: 'Motivation & Intentions', desc: 'Mixer Garden — צנצנות וזרעים', emoji: '🌱', tone: 'from-success/15 to-success/5' },
-  { path: '/preview/thinking', title: 'Thinking Skills', desc: 'כרטיסים מתפצחים — מטריצות', emoji: '🧩', tone: 'from-coral/15 to-coral/5' },
-  { path: '/preview/skills', title: 'Skills — כישורים', desc: 'ארבע עמודות גרירה', emoji: '🏆', tone: 'from-success/15 to-success/5' },
-  { path: '/preview/considerations', title: 'Considerations — שיקולים', desc: 'ענן תגיות אינטראקטיבי', emoji: '⚖', tone: 'from-primary/15 to-primary/5' },
-  { path: '/preview/preferences', title: 'Preferences — העדפות', desc: 'סליידרים זורמים + שאלות פתוחות', emoji: '🌊', tone: 'from-sky/15 to-sky/5' },
-];
+import { PREVIEW_GAMES } from '@/lib/previewGames';
 
 const PreviewHub = () => {
   return (
-    <div dir="rtl" className="min-h-screen bg-background px-4 py-12">
+    <div dir="rtl" className="min-h-screen bg-gradient-to-b from-background via-background to-secondary/5 px-4 py-12">
       <div className="max-w-5xl mx-auto">
-        <header className="text-center mb-12">
-          <p className="text-sm font-medium text-secondary tracking-widest uppercase mb-3">Preview Lab</p>
+        <motion.header
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <span className="inline-block text-xs font-semibold tracking-widest text-secondary uppercase mb-3 px-3 py-1 rounded-full bg-secondary/10">
+            🎮 Preview Lab
+          </span>
           <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-3">
-            מרכז התצוגה המקדימה
+            מרכז המשחקים
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            כל הסגנונות החדשים של השאלונים — לחץ על כל כרטיס כדי להתנסות
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            שמונה משחקים קצרים — כל אחד חושף עוד פיסה מהפרופיל שלך.
+            <br className="hidden sm:block" />
+            בחר משחק והתחל לשחק.
           </p>
-        </header>
+        </motion.header>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {PREVIEWS.map((p, i) => (
+          {PREVIEW_GAMES.map((p, i) => (
             <motion.div
               key={p.path}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.07 }}
+              transition={{ duration: 0.5, delay: i * 0.06 }}
             >
               <Link
                 to={p.path}
-                className={`group block h-full p-6 rounded-2xl bg-gradient-to-br ${p.tone} border border-border/60 hover:border-secondary/40 hover:shadow-xl transition-all duration-300`}
+                className={`group block h-full p-6 rounded-2xl bg-gradient-to-br ${p.tone} border border-border/60 hover:border-secondary/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-300`}
               >
-                <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">{p.emoji}</div>
+                <div className="flex items-start justify-between mb-3">
+                  <div className="text-5xl group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                    {p.emoji}
+                  </div>
+                  <div className="flex flex-col items-end gap-1">
+                    <span className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">
+                      #{String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-background/70 text-muted-foreground">
+                      ⏱ {p.minutes}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-[11px] font-semibold tracking-widest text-muted-foreground uppercase mb-1">
+                  {p.style}
+                </p>
                 <h2 className="font-display text-xl font-bold text-foreground mb-2">{p.title}</h2>
-                <p className="text-base text-muted-foreground leading-relaxed">{p.desc}</p>
-                <div className="mt-5 text-sm font-medium text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
-                  פתח תצוגה ←
+                <p className="text-base text-muted-foreground leading-relaxed">{p.tagline}</p>
+                <div className="mt-5 text-sm font-bold text-secondary opacity-70 group-hover:opacity-100 transition-opacity inline-flex items-center gap-1">
+                  שחק עכשיו <span aria-hidden>←</span>
                 </div>
               </Link>
             </motion.div>
