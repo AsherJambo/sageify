@@ -142,6 +142,64 @@ const Landing = () => {
           </motion.div>
         </main>
 
+        {/* Human consultation — the next step after the game */}
+        <section className="max-w-6xl mx-auto w-full px-4 md:px-6 pb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.6 }}
+            className="relative bg-white rounded-[2rem] border-2 border-[#E5E5E5] border-b-[6px] p-6 md:p-10 shadow-sm"
+          >
+            <div className="grid md:grid-cols-[auto,1fr,auto] items-center gap-6 md:gap-8">
+              {/* Step badge */}
+              <div className="flex md:flex-col items-center md:items-start gap-3">
+                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFF1EA] text-[#D65F36] text-[11px] font-black tracking-widest">
+                  STEP 2 · המענה האנושי
+                </span>
+                <div className="w-16 h-16 rounded-2xl bg-[#89A38F] border-2 border-white shadow-[0_6px_0_0_#6E8771] flex items-center justify-center text-3xl">
+                  🤝
+                </div>
+              </div>
+
+              {/* Copy */}
+              <div className="text-center md:text-right">
+                <h2
+                  className="text-2xl md:text-3xl font-black text-[#2D3A33] mb-3 leading-tight"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  בהמשך למשחק — פגישה אישית עם יועץ.ת תעסוקתי.ת
+                </h2>
+                <p className="text-base md:text-lg text-[#5C6B63] leading-relaxed font-medium">
+                  פגישת ייעוץ ממוקדת של <span className="font-black text-[#2D3A33]">45 דקות</span>.
+                  היועץ/ת מקבל/ת את <span className="font-black text-[#2D3A33]">דוח האינטייק</span> שיצרתם עם סגי מראש,
+                  ועוזר/ת לכם לתרגם את הנתונים היבשים ל<span className="font-black text-[#2D3A33]">תוכנית פעולה מנטלית ופרקטית</span> מותאמת אישית.
+                </p>
+                {/* Mini journey strip */}
+                <div className="mt-5 flex flex-wrap items-center justify-center md:justify-start gap-2 text-xs font-bold text-[#5C6B63]">
+                  <span className="px-3 py-1.5 rounded-full bg-[#FCF9F1] border border-[#E5E5E5]">🎮 משחקים עם סגי</span>
+                  <span className="text-[#89A38F]">←</span>
+                  <span className="px-3 py-1.5 rounded-full bg-[#FCF9F1] border border-[#E5E5E5]">📄 דוח אינטייק</span>
+                  <span className="text-[#89A38F]">←</span>
+                  <span className="px-3 py-1.5 rounded-full bg-[#FFF1EA] border border-[#FFD6C2] text-[#D65F36]">🤝 פגישת ייעוץ 45'</span>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="flex md:justify-end">
+                <button
+                  onClick={openContact}
+                  className="w-full md:w-auto px-8 py-4 bg-[#FF7F50] text-white text-base font-extrabold rounded-2xl border-b-[6px] border-[#D65F36] hover:brightness-105 active:border-b-0 active:translate-y-1.5 transition-all whitespace-nowrap"
+                >
+                  קבעו פגישת ייעוץ
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
+
+
         <footer className="py-6 px-6 border-t border-[#E5E5E5]/60">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-[#5C6B63]">
             <span>© {new Date().getFullYear()} Sageify</span>
