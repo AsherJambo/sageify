@@ -57,14 +57,14 @@ type Step =
 type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation' | 'thinking';
 
 const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
-  skills: 'skills-intro',
-  schein: 'schein-intro',
-  considerations: 'considerations-intro',
-  holland: 'holland-intro',
-  via: 'via-intro',
-  preferences: 'preferences-intro',
-  motivation: 'motivation-intro',
-  thinking: 'thinking-intro',
+  skills: 'skills',
+  schein: 'schein',
+  considerations: 'considerations',
+  holland: 'holland',
+  via: 'via',
+  preferences: 'preferences',
+  motivation: 'motivation',
+  thinking: 'thinking',
 };
 
 interface ResponseData {
@@ -86,7 +86,7 @@ interface ResponseData {
 }
 
 const defaultData: ResponseData = {
-  step: 'landing',
+  step: 'welcome',
   viaAnswers: {},
   scheinAnswers: {},
   viaBonusApplied: false,
