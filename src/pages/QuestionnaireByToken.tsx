@@ -86,12 +86,13 @@ interface ResponseData {
 }
 
 const defaultData: ResponseData = {
-  step: 'welcome',
+  step: 'hub',
   viaAnswers: {},
   scheinAnswers: {},
   viaBonusApplied: false,
   scheinBonusApplied: false,
 };
+
 
 const QUESTIONNAIRE_STEPS: Step[] = [
   'skills-intro', 'skills', 'schein-intro', 'schein', 'schein-bonus',
