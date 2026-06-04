@@ -214,12 +214,12 @@ const ResultsDashboard = ({
                 ועוזר.ת לכם לתרגם את הנתונים לתוכנית פעולה <span className="text-foreground font-semibold">מנטלית ופרקטית</span> מותאמת אישית.
               </p>
             </div>
-            <button
-              onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
-              className="w-full md:w-auto px-8 py-4 bg-primary text-primary-foreground font-bold font-display tracking-wide rounded-2xl shadow-[var(--shadow-elevated)] hover:bg-primary/90 transition whitespace-nowrap min-h-[56px]"
+            <a
+              href="/#/"
+              className="w-full md:w-auto px-8 py-4 bg-primary text-primary-foreground font-bold font-display tracking-wide rounded-2xl shadow-[var(--shadow-elevated)] hover:bg-primary/90 transition whitespace-nowrap min-h-[56px] inline-flex items-center justify-center"
             >
               קבעו פגישת ייעוץ ←
-            </button>
+            </a>
           </div>
         </motion.div>
 
