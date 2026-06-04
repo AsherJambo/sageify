@@ -187,6 +187,42 @@ const ResultsDashboard = ({
           <p className="text-lg text-muted-foreground">כל התובנות שלכם במקום אחד</p>
         </motion.div>
 
+        {/* Human consultation CTA — the next step after Sagi */}
+        <motion.div
+          variants={sectionVariants}
+          initial="hidden"
+          animate="visible"
+          custom={0.3}
+          dir="rtl"
+          className="bg-card rounded-3xl border border-secondary/30 p-6 md:p-8 shadow-[var(--shadow-elevated)] relative overflow-hidden"
+        >
+          <span className="absolute top-4 left-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-black tracking-widest">
+            STEP 2 · המענה האנושי
+          </span>
+          <div className="grid md:grid-cols-[auto,1fr,auto] items-center gap-5 md:gap-6">
+            <div className="w-16 h-16 rounded-2xl bg-secondary/15 flex items-center justify-center text-3xl flex-shrink-0">
+              🤝
+            </div>
+            <div>
+              <h3 className="text-xl md:text-2xl font-bold font-display text-foreground tracking-wide mb-2 mt-5 md:mt-0">
+                הצעד הבא: פגישת ייעוץ אישית (45 דקות)
+              </h3>
+              <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+                סיימתם את המשחק ואת השיחה עם סגי — מצוין. עכשיו{' '}
+                <span className="text-foreground font-semibold">יועץ.ת תעסוקתי.ת אנושי.ת</span>{' '}
+                מקבל.ת את <span className="text-foreground font-semibold">דוח האינטייק</span> שיצרתם,
+                ועוזר.ת לכם לתרגם את הנתונים לתוכנית פעולה <span className="text-foreground font-semibold">מנטלית ופרקטית</span> מותאמת אישית.
+              </p>
+            </div>
+            <button
+              onClick={() => document.dispatchEvent(new CustomEvent('open-contact-modal'))}
+              className="w-full md:w-auto px-8 py-4 bg-primary text-primary-foreground font-bold font-display tracking-wide rounded-2xl shadow-[var(--shadow-elevated)] hover:bg-primary/90 transition whitespace-nowrap min-h-[56px]"
+            >
+              קבעו פגישת ייעוץ ←
+            </button>
+          </div>
+        </motion.div>
+
         {/* Partial data notice */}
         {isPartial && (
           <motion.div
