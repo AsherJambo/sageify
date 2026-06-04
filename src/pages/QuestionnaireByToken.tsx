@@ -156,7 +156,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
         if (isAdminMode) initial.step = 'hub';
         const { data: newResp } = await supabase
           .from('questionnaire_responses')
-          .insert([{ token_id: data.id, response_data: initial }])
+          .insert([{ token_id: data.id, response_data: JSON.parse(JSON.stringify(initial)) }])
           .select()
           .single();
         if (newResp) setResponseId(newResp.id);
