@@ -142,7 +142,7 @@ const Landing = () => {
           </motion.div>
         </main>
 
-        {/* Human consultation — the next step after the game */}
+        {/* Holistic journey — game + human consultation as ONE flow */}
         <section className="max-w-6xl mx-auto w-full px-4 md:px-6 pb-14">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -151,42 +151,89 @@ const Landing = () => {
             transition={{ duration: 0.6 }}
             className="relative bg-white rounded-[2rem] border-2 border-[#E5E5E5] border-b-[6px] p-6 md:p-10 shadow-sm"
           >
-            <div className="grid md:grid-cols-[auto,1fr,auto] items-center gap-6 md:gap-8">
-              {/* Step badge */}
-              <div className="flex md:flex-col items-center md:items-start gap-3">
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFF1EA] text-[#D65F36] text-[11px] font-black tracking-widest">
-                  STEP 2 · המענה האנושי
-                </span>
-                <div className="w-16 h-16 rounded-2xl bg-[#89A38F] border-2 border-white shadow-[0_6px_0_0_#6E8771] flex items-center justify-center text-3xl">
-                  🤝
-                </div>
-              </div>
+            {/* Section header */}
+            <div className="text-center mb-8 md:mb-10">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFF1EA] text-[#D65F36] text-[11px] font-black tracking-widest mb-4">
+                🌿 מענה הוליסטי — דיגיטלי + אנושי
+              </span>
+              <h2
+                className="text-2xl md:text-4xl font-black text-[#2D3A33] mb-3 leading-tight"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                מסע אחד שלם — מהמשחק{' '}
+                <span className="text-[#FF7F50]">עד תוכנית הפעולה</span>
+              </h2>
+              <p className="text-base md:text-lg text-[#5C6B63] leading-relaxed font-medium max-w-2xl mx-auto">
+                שני חלקים, חוויה אחת. סגי' מגלה איתכם את החוזקות והכיוונים, ואז יועץ/ת אנושי/ת
+                מתרגם/ת את התובנות לתוכנית פעולה מנטלית ופרקטית מותאמת לכם.
+              </p>
+            </div>
 
-              {/* Copy */}
-              <div className="text-center md:text-right">
-                <h2
-                  className="text-2xl md:text-3xl font-black text-[#2D3A33] mb-3 leading-tight"
+            {/* Two connected steps */}
+            <div className="grid md:grid-cols-[1fr,auto,1fr] items-stretch gap-5 md:gap-4">
+              {/* STEP 1 — Game with Sagi */}
+              <div className="relative bg-[#FCF9F1] rounded-[1.5rem] border-2 border-[#E5E5E5] border-b-4 p-6 text-center md:text-right">
+                <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                  <div className="w-14 h-14 rounded-2xl bg-[#89A38F] border-2 border-white shadow-[0_5px_0_0_#6E8771] flex items-center justify-center text-2xl">
+                    🎮
+                  </div>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-white border border-[#E5E5E5] text-[10px] font-black tracking-widest text-[#5C6B63]">
+                    STEP 1 · הגילוי הדיגיטלי
+                  </span>
+                </div>
+                <h3
+                  className="text-xl md:text-2xl font-black text-[#2D3A33] mb-2 leading-tight"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
-                  בהמשך למשחק — פגישה אישית עם יועץ.ת תעסוקתי.ת
-                </h2>
-                <p className="text-base md:text-lg text-[#5C6B63] leading-relaxed font-medium">
-                  פגישת ייעוץ ממוקדת של <span className="font-black text-[#2D3A33]">45 דקות</span>.
-                  היועץ/ת מקבל/ת את <span className="font-black text-[#2D3A33]">דוח האינטייק</span> שיצרתם עם סגי מראש,
-                  ועוזר/ת לכם לתרגם את הנתונים היבשים ל<span className="font-black text-[#2D3A33]">תוכנית פעולה מנטלית ופרקטית</span> מותאמת אישית.
+                  משחקים והתכתבות עם סגי'
+                </h3>
+                <p className="text-sm md:text-base text-[#5C6B63] leading-relaxed font-medium">
+                  8 משחקים קצרים ושיחה חכמה חושפים את החוזקות, המניעים והכיוונים שלכם —
+                  ויוצרים את <span className="font-black text-[#2D3A33]">דוח האינטייק</span> האישי.
                 </p>
-                {/* Mini journey strip */}
-                <div className="mt-5 flex flex-wrap items-center justify-center md:justify-start gap-2 text-xs font-bold text-[#5C6B63]">
-                  <span className="px-3 py-1.5 rounded-full bg-[#FCF9F1] border border-[#E5E5E5]">🎮 משחקים עם סגי</span>
-                  <span className="text-[#89A38F]">←</span>
-                  <span className="px-3 py-1.5 rounded-full bg-[#FCF9F1] border border-[#E5E5E5]">📄 דוח אינטייק</span>
-                  <span className="text-[#89A38F]">←</span>
-                  <span className="px-3 py-1.5 rounded-full bg-[#FFF1EA] border border-[#FFD6C2] text-[#D65F36]">🤝 פגישת ייעוץ 45'</span>
-                </div>
               </div>
 
-              {/* CTA removed — consultation info stays for context */}
-              <div className="hidden md:block" />
+              {/* Connector */}
+              <div className="flex md:flex-col items-center justify-center gap-2 py-2">
+                <span className="hidden md:block w-px h-10 bg-[#E5E5E5]" />
+                <div className="w-10 h-10 rounded-full bg-[#FF7F50] border-2 border-white shadow-[0_4px_0_0_#D65F36] flex items-center justify-center text-white font-black text-lg rotate-180 md:rotate-0">
+                  ←
+                </div>
+                <span className="hidden md:block w-px h-10 bg-[#E5E5E5]" />
+              </div>
+
+              {/* STEP 2 — Human consultation */}
+              <div className="relative bg-[#FCF9F1] rounded-[1.5rem] border-2 border-[#E5E5E5] border-b-4 p-6 text-center md:text-right">
+                <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                  <div className="w-14 h-14 rounded-2xl bg-[#FF7F50] border-2 border-white shadow-[0_5px_0_0_#D65F36] flex items-center justify-center text-2xl">
+                    🤝
+                  </div>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-white border border-[#E5E5E5] text-[10px] font-black tracking-widest text-[#5C6B63]">
+                    STEP 2 · המענה האנושי
+                  </span>
+                </div>
+                <h3
+                  className="text-xl md:text-2xl font-black text-[#2D3A33] mb-2 leading-tight"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  פגישת ייעוץ אישית — 45 דקות
+                </h3>
+                <p className="text-sm md:text-base text-[#5C6B63] leading-relaxed font-medium">
+                  היועץ/ת מקבל/ת את דוח האינטייק מראש, ומתרגם/ת איתכם את הנתונים ל
+                  <span className="font-black text-[#2D3A33]"> תוכנית פעולה מנטלית ופרקטית</span> מותאמת אישית.
+                </p>
+              </div>
+            </div>
+
+            {/* Outcome strip — unified result */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-2 text-xs font-bold text-[#5C6B63]">
+              <span className="px-3 py-1.5 rounded-full bg-[#FCF9F1] border border-[#E5E5E5]">🎮 גילוי</span>
+              <span className="text-[#89A38F]">←</span>
+              <span className="px-3 py-1.5 rounded-full bg-[#FCF9F1] border border-[#E5E5E5]">📄 דוח אינטייק</span>
+              <span className="text-[#89A38F]">←</span>
+              <span className="px-3 py-1.5 rounded-full bg-[#FCF9F1] border border-[#E5E5E5]">🤝 פגישה</span>
+              <span className="text-[#89A38F]">←</span>
+              <span className="px-3 py-1.5 rounded-full bg-[#FFF1EA] border border-[#FFD6C2] text-[#D65F36]">🎯 תוכנית פעולה</span>
             </div>
           </motion.div>
         </section>
