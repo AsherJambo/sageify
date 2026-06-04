@@ -129,11 +129,11 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
         .single();
 
       if (error || !data) { setPageState('invalid'); return; }
-      if (data.completed_at) { setPageState('used'); return; }
+      if (data.completed_at && !isAdminMode) { setPageState('used'); return; }
 
       setTokenRow({ id: data.id, username: data.username });
 
-      if (!data.used) {
+      if (!data.used && !isAdminMode) {
         await supabase.from('questionnaire_tokens').update({ used: true }).eq('id', data.id);
       }
 
@@ -145,14 +145,22 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
       if (existing) {
         setResponseId(existing.id);
-        setState(existing.response_data as unknown as ResponseData);
+        const loaded = existing.response_data as unknown as ResponseData;
+        // Admin: skip welcome/ID screen — go straight to the games hub
+        if (isAdminMode && (loaded.step === 'welcome' || loaded.step === 'landing')) {
+          loaded.step = 'hub';
+        }
+        setState(loaded);
       } else {
+        const initial = JSON.parse(JSON.stringify(defaultData)) as ResponseData;
+        if (isAdminMode) initial.step = 'hub';
         const { data: newResp } = await supabase
           .from('questionnaire_responses')
-          .insert([{ token_id: data.id, response_data: JSON.parse(JSON.stringify(defaultData)) }])
+          .insert([{ token_id: data.id, response_data: initial }])
           .select()
           .single();
         if (newResp) setResponseId(newResp.id);
+        if (isAdminMode) setState(initial);
       }
 
       setPageState('ready');
