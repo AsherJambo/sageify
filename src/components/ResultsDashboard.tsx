@@ -218,7 +218,7 @@ const ResultsDashboard = ({
               href="/#/"
               className="w-full md:w-auto px-8 py-4 bg-primary text-primary-foreground font-bold font-display tracking-wide rounded-2xl shadow-[var(--shadow-elevated)] hover:bg-primary/90 transition whitespace-nowrap min-h-[56px] inline-flex items-center justify-center"
             >
-              קבעו פגישת ייעוץ ←
+              קבעו פגישת ייעוץ תעסוקתי ←
             </a>
           </div>
         </motion.div>
