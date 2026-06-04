@@ -218,10 +218,11 @@ const Landing = () => {
                   className="text-xl md:text-2xl font-black text-[#2D3A33] mb-2 leading-tight"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
-                  פגישת ייעוץ אישית — 45 דקות
+                  ייעוץ תעסוקתי — מומחים לעבודה אחרי פרישה
                 </h3>
                 <p className="text-sm md:text-base text-[#5C6B63] leading-relaxed font-medium">
-                  היועץ/ת מקבל/ת את דוח האינטייק מראש, ומתרגם/ת איתכם את הנתונים ל
+                  יועצ.ת תעסוקתי.ת מומחה.ית <span className="font-black text-[#2D3A33]">לתעסוקה אקטיבית אחרי פרישה</span> מקבל.ת את
+                  דוח האינטייק מראש, ומלווה אתכם בתרגום התובנות ל
                   <span className="font-black text-[#2D3A33]"> תוכנית פעולה מנטלית ופרקטית</span> מותאמת אישית.
                 </p>
               </div>
