@@ -205,11 +205,11 @@ const ResultsDashboard = ({
             </div>
             <div>
               <h3 className="text-xl md:text-2xl font-bold font-display text-foreground tracking-wide mb-2 mt-5 md:mt-0">
-                הצעד הבא: פגישת ייעוץ אישית (45 דקות)
+                הצעד הבא: פגישת ייעוץ תעסוקתי (45 דקות)
               </h3>
               <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
                 סיימתם את המשחק ואת השיחה עם סגי — מצוין. עכשיו{' '}
-                <span className="text-foreground font-semibold">יועץ.ת תעסוקתי.ת אנושי.ת</span>{' '}
+                <span className="text-foreground font-semibold">יועצ.ת תעסוקתי.ת מומחה.ית לתעסוקה אקטיבית אחרי פרישה</span>{' '}
                 מקבל.ת את <span className="text-foreground font-semibold">דוח האינטייק</span> שיצרתם,
                 ועוזר.ת לכם לתרגם את הנתונים לתוכנית פעולה <span className="text-foreground font-semibold">מנטלית ופרקטית</span> מותאמת אישית.
               </p>
