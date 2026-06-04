@@ -57,14 +57,14 @@ type Step =
 type QuestionnaireSectionId = 'skills' | 'schein' | 'considerations' | 'holland' | 'via' | 'preferences' | 'motivation' | 'thinking';
 
 const SECTION_FIRST_STEP: Record<QuestionnaireSectionId, Step> = {
-  skills: 'skills-intro',
-  schein: 'schein-intro',
-  considerations: 'considerations-intro',
-  holland: 'holland-intro',
-  via: 'via-intro',
-  preferences: 'preferences-intro',
-  motivation: 'motivation-intro',
-  thinking: 'thinking-intro',
+  skills: 'skills',
+  schein: 'schein',
+  considerations: 'considerations',
+  holland: 'holland',
+  via: 'via',
+  preferences: 'preferences',
+  motivation: 'motivation',
+  thinking: 'thinking',
 };
 
 interface ResponseData {
@@ -86,7 +86,7 @@ interface ResponseData {
 }
 
 const defaultData: ResponseData = {
-  step: 'landing',
+  step: 'welcome',
   viaAnswers: {},
   scheinAnswers: {},
   viaBonusApplied: false,
@@ -285,51 +285,49 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
   switch (state.step) {
     case 'landing':
-      return <WelcomeScreen onStart={() => updateState({ step: 'welcome' })} partnerOrg={partnerOrg} />;
+      // Legacy state — skip the old landing screen and go straight to the compact welcome.
+      updateState({ step: 'welcome' });
+      return null;
     case 'welcome':
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center px-6">
-        <div className="max-w-lg text-center space-y-6">
-            {partnerOrg?.logo_url && (
-              <div className="flex items-center justify-center gap-4 mb-2">
-                <img src={partnerOrg.logo_url} alt={partnerOrg.org_name} className="w-16 h-16 rounded-lg object-contain" />
-                <span className="text-muted-foreground text-lg">×</span>
-                <img src={owlLogo} alt="Sageify" className="w-16 h-16 rounded-full" />
+        <div dir="rtl" className="min-h-screen flex flex-col items-center justify-center px-6 bg-background">
+          <div className="max-w-md w-full text-center space-y-5">
+            {partnerOrg?.logo_url ? (
+              <div className="flex items-center justify-center gap-3">
+                <img src={partnerOrg.logo_url} alt={partnerOrg.org_name} className="w-14 h-14 rounded-lg object-contain" />
+                <span className="text-muted-foreground">×</span>
+                <img src={owlLogo} alt="Sageify" className="w-14 h-14 rounded-full" />
               </div>
+            ) : (
+              <img src={owlLogo} alt="Sageify" className="w-20 h-20 mx-auto rounded-full shadow-[var(--shadow-elevated)]" />
             )}
-            {!partnerOrg?.logo_url && (
-              <img src={owlLogo} alt="Sageify" className="w-28 h-28 mx-auto rounded-full shadow-[var(--shadow-elevated)] border-2 border-border/30" />
-            )}
-            <h1 className="text-3xl font-bold text-foreground">
-              שלום, <span className="text-accent">{tokenRow?.username}</span>!
-            </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              הקישור הזה נוצר עבורכם אישית. לפני שנתחיל, נצטרך לוודא את זהותכם.
-            </p>
 
-            <div className="max-w-sm mx-auto space-y-3">
-              <label className="block text-base font-semibold text-foreground text-right">
-                מספר תעודת זהות
-              </label>
+            <div className="space-y-2">
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+                שלום <span className="text-accent">{tokenRow?.username}</span> 👋
+              </h1>
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                הקישור הזה נוצר עבורכם אישית.
+                <br />
+                לפני שמתחילים — אמתו את הזהות, וצוללים ישר לאבחון.
+              </p>
+            </div>
+
+            <div className="space-y-2 text-right">
+              <label className="block text-sm font-semibold text-foreground">מספר תעודת זהות</label>
               <input
                 type="text"
                 inputMode="numeric"
                 pattern="[0-9]*"
-                placeholder="הזינו מספר ת.ז"
+                placeholder="הזינו ת.ז"
                 value={idNumber}
                 onChange={e => setIdNumber(e.target.value.replace(/\D/g, ''))}
-                className="w-full text-center px-4 py-4 rounded-xl border border-border bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-primary min-h-[52px]"
+                className="w-full text-center px-4 py-3.5 rounded-xl border border-border bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-primary min-h-[52px]"
                 maxLength={9}
               />
-              <div className="bg-muted/30 rounded-xl p-4 border border-border/40 text-right space-y-2">
-                <p className="text-base text-muted-foreground leading-relaxed">
-                  <span className="text-secondary font-semibold">🔒 למה זה נדרש?</span>
-                  {' '}מספר ת.ז. משמש אך ורק לזיהוי חד-ערכי שלכם במערכת, כדי לוודא שרק אתם יכולים לגשת לתוצאות שלכם.
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  המידע נשמר באופן מאובטח ואינו משותף עם גורם שלישי.
-                </p>
-              </div>
+              <p className="text-xs text-muted-foreground text-center">
+                🔒 משמש לזיהוי בלבד — נשמר באופן מאובטח ואינו משותף.
+              </p>
             </div>
 
             <button
@@ -344,9 +342,9 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
                 updateState({ step: 'hub' });
               }}
               disabled={idNumber.length < 5}
-              className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 min-h-[52px]"
+              className="w-full px-10 py-4 bg-primary text-primary-foreground rounded-2xl text-lg font-semibold font-display tracking-wide hover:bg-primary/85 transition-all shadow-[var(--shadow-elevated)] disabled:opacity-40 disabled:cursor-not-allowed min-h-[52px]"
             >
-              בואו נתחיל! ←
+              לאבחון ←
             </button>
           </div>
         </div>
