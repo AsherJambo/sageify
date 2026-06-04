@@ -559,6 +559,7 @@ const Admin = () => {
                           </>
                         ) : null}
                         <Button size="sm" variant="ghost" onClick={() => copyLink(t.token)}>📋 העתק</Button>
+                        <Button size="sm" variant="ghost" onClick={() => window.open(`${getLink(t.token)}?admin=1`, '_blank')}>🚀 פתח כאדמין</Button>
                         <Button size="sm" variant="ghost" onClick={() => deleteToken(t.id)} className="text-destructive">🗑️</Button>
                       </div>
                     </td>
