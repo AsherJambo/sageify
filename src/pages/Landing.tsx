@@ -185,15 +185,8 @@ const Landing = () => {
                 </div>
               </div>
 
-              {/* CTA */}
-              <div className="flex md:justify-end">
-                <button
-                  onClick={openContact}
-                  className="w-full md:w-auto px-8 py-4 bg-[#FF7F50] text-white text-base font-extrabold rounded-2xl border-b-[6px] border-[#D65F36] hover:brightness-105 active:border-b-0 active:translate-y-1.5 transition-all whitespace-nowrap"
-                >
-                  קבעו פגישת ייעוץ
-                </button>
-              </div>
+              {/* CTA removed — consultation info stays for context */}
+              <div className="hidden md:block" />
             </div>
           </motion.div>
         </section>
