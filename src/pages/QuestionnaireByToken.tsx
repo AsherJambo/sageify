@@ -108,6 +108,7 @@ interface QuestionnaireByTokenProps {
 
 const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) => {
   const { token } = useParams<{ token: string }>();
+  const isAdminMode = typeof window !== 'undefined' && /[?&]admin=1\b/.test(window.location.hash + window.location.search);
   const [tokenRow, setTokenRow] = useState<{ id: string; username: string } | null>(null);
   const [responseId, setResponseId] = useState<string | null>(null);
   const [idNumber, setIdNumber] = useState('');
