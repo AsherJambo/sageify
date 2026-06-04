@@ -29,12 +29,6 @@ const Landing = () => {
               Sageify
             </span>
           </div>
-          <Link
-            to="/preview"
-            className="hidden sm:inline-flex px-5 py-2.5 rounded-2xl bg-white border-2 border-[#E5E5E5] border-b-4 font-bold text-sm text-[#5C6B63] hover:bg-[#F6F2E8] active:border-b-0 active:translate-y-1 transition-all"
-          >
-            כנס למרכז המשחקים
-          </Link>
         </header>
 
         {/* Hero — single screen with running owl video */}
