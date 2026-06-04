@@ -17,7 +17,7 @@ const Landing = () => {
         style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" }}
       >
         {/* Nav */}
-        <header className="max-w-6xl mx-auto w-full px-4 md:px-6 pt-5 pb-2 flex items-center justify-between">
+        <header className="max-w-6xl mx-auto w-full px-4 md:px-6 pt-5 pb-2 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-2xl bg-white border-2 border-[#E5E5E5] border-b-4 flex items-center justify-center p-1.5">
               <img src={sageifyLogo} alt="" className="w-full h-full object-contain" />
@@ -29,6 +29,9 @@ const Landing = () => {
               Sageify
             </span>
           </div>
+          <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border-2 border-[#E5E5E5] border-b-4 text-[11px] font-black text-[#5C6B63] tracking-widest">
+            🎮 GAME CENTER · LIFE 2.0
+          </span>
         </header>
 
         {/* Hero — single screen with running owl video */}
