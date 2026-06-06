@@ -13,127 +13,107 @@ interface QuestionnaireHubProps {
   onViewResults: () => void;
 }
 
-const questionnaires: { id: QuestionnaireSectionId; title: string; desc: string; icon: string; duration: string; sticker: string; rotate: string }[] = [
-  { id: 'skills', title: 'כישורים ותנאי סף', desc: 'מיינו 20 כישורים לארגז הכלים שלכם', icon: '◆', duration: '5–7 דק׳', sticker: '🏆 ארגז כלים', rotate: '-rotate-2' },
-  { id: 'schein', title: 'עוגנים תעסוקתיים', desc: 'גלו מה באמת מניע אתכם בעשייה', icon: '⚓', duration: '8–10 דק׳', sticker: '⚓ עוגנים', rotate: 'rotate-2' },
-  { id: 'considerations', title: 'שיקולים בבחירת עיסוק', desc: 'בחרו ותעדפו את השיקולים החשובים לכם', icon: '⚖', duration: '5–7 דק׳', sticker: '⚖ ערכים', rotate: '-rotate-1' },
-  { id: 'holland', title: 'נטיות תעסוקתיות', desc: 'גלו את הנטיות המקצועיות שלכם', icon: '🧭', duration: '10–12 דק׳', sticker: '🧭 כן/לא', rotate: 'rotate-1' },
-  { id: 'via', title: 'חוזקות VIA', desc: 'גלו את הכוחות הפנימיים שלכם', icon: '✦', duration: '8–10 דק׳', sticker: '✦ חוזקות', rotate: '-rotate-2' },
-  { id: 'preferences', title: 'העדפות ופרופיל אישי', desc: 'העדפות, סגנון אישי וחלום המגירה', icon: '●', duration: '5–7 דק׳', sticker: '● העדפות', rotate: 'rotate-1' },
-  { id: 'motivation', title: 'מניעים וכוונות', desc: 'מה מניע אתכם ומהי מידת המוכנות שלכם', icon: '🔥', duration: '5–7 דק׳', sticker: '🔥 מניעים', rotate: '-rotate-1' },
-  { id: 'thinking', title: 'חשיבה וגמישות קוגניטיבית', desc: 'גלו חוזקות חשיבה ייחודיות דרך זיהוי דפוסים ויזואליים', icon: '🧠', duration: '10–15 דק׳', sticker: '🧠 חידות', rotate: 'rotate-2' },
+interface GameCard {
+  id: QuestionnaireSectionId;
+  emoji: string;
+  title: string;
+  style: string;
+  tagline: string;
+  minutes: string;
+  tone: string;
+}
+
+const games: GameCard[] = [
+  { id: 'holland',        emoji: '🧭', title: 'מצפן נטיות',       style: 'Holland · בלי כותרות',          tagline: 'שאלון מעורבב — בלי קטגוריות, רק תחושה',          minutes: '5 דק׳', tone: 'from-sky/15 to-sky/5' },
+  { id: 'via',            emoji: '✨', title: 'מסע חוזקות',        style: 'VIA · 5 חוזקות־על',              tagline: 'מצאו את החוזקות שמדליקות אתכם',                   minutes: '7 דק׳', tone: 'from-sunny/15 to-sunny/5' },
+  { id: 'schein',         emoji: '⚓', title: 'עוגנים תעסוקתיים', style: 'Schein · Linear Journey',         tagline: 'שאלה אחת בכל פעם — מה באמת מעגן אתכם',            minutes: '6 דק׳', tone: 'from-secondary/15 to-secondary/5' },
+  { id: 'motivation',     emoji: '🌱', title: 'מניעים וכוונות',    style: 'Mixer Garden — צנצנות',           tagline: 'מלאו את הצנצנות שמגדירות את הפרק הבא',            minutes: '4 דק׳', tone: 'from-success/15 to-success/5' },
+  { id: 'thinking',       emoji: '🧩', title: 'חשיבה גמישה',       style: 'כרטיסים מתפצחים',                 tagline: 'פצחו דפוסים — כרטיס אחר כרטיס',                   minutes: '6 דק׳', tone: 'from-coral/15 to-coral/5' },
+  { id: 'skills',         emoji: '🏆', title: 'ארגז כלים',         style: '4 עמודות גרירה',                  tagline: 'מיינו כישורים: זוכים · שורפים · שואפים · לא רלוונטי', minutes: '5 דק׳', tone: 'from-success/15 to-success/5' },
+  { id: 'considerations', emoji: '⚖',  title: 'שיקולים בעיסוק',    style: 'ענן תגיות אינטראקטיבי',           tagline: 'בחרו ושקללו — 100 נקודות, ענן אחד',               minutes: '4 דק׳', tone: 'from-primary/15 to-primary/5' },
+  { id: 'preferences',    emoji: '🌊', title: 'הזרם האישי',        style: 'סליידרים זורמים + חלום',          tagline: 'בין קצוות, ערכים וחלום־מגירה אחד שלכם',           minutes: '6 דק׳', tone: 'from-sky/15 to-sky/5' },
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: 0.1 + i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } }),
+const getHubEncouragement = (completed: number, lastName?: string): string | null => {
+  if (completed === 0) return 'בחרו משחק שמדבר אליכם — אין סדר נכון. אני מלווה אתכם בדרך 🦉';
+  if (completed === 1) return `יופי! סיימתם את שאלון ה${lastName} 🌿 כל משחק נוסף מחדד את התמונה.`;
+  if (completed === 2) return `שני משחקים מאחוריכם — מתחילה להצטייר תמונה מעניינת 🔍 עוד אחד ונוכל לדבר על כיוונים.`;
+  if (completed === 3) return `שלושה משחקים ✦ יש לי מספיק כדי להתחיל לייעץ. רוצים להמשיך או לעבור לתוצאות?`;
+  if (completed === 4) return `ארבעה משחקים — יש לי כבר הרבה מה לספר 🪶 כל אחד נוסף מדייק עוד יותר.`;
+  if (completed === 5) return `חמישה משחקים — התמונה ברורה מאוד! עוד קצת ותראו את המלוא ✨`;
+  if (completed === 6) return `כמעט סיימתם! נשארו עוד 2 משחקים לתמונה המלאה 🎯`;
+  if (completed === 7) return `אתם על קו הסיום — עוד משחק אחד! 🔥`;
+  return `כל הכבוד! השלמתם את כל 8 המשחקים 🎉 התמונה המלאה מוכנה — בואו ניפגש לשיחה`;
 };
 
-const getHubEncouragement = (completed: number, completedNames: string[]): string | null => {
-  if (completed === 0) return null;
-  
-  const lastCompleted = completedNames[completedNames.length - 1];
-  
-  if (completed === 1) {
-    return `יופי! סיימתם את שאלון ה${lastCompleted} 🌿 כל שאלון נוסף מחדד את התמונה ועוזר לי להכיר אתכם טוב יותר.`;
-  }
-  if (completed === 2) {
-    return `שני שאלונים מאחוריכם – כבר מתחילה להצטייר תמונה מעניינת! 🔍 עוד אחד וניתן להתחיל לדבר על כיוונים.`;
-  }
-  if (completed === 3) {
-    return `שלושה שאלונים ✦ עכשיו כבר יש לי מספיק כדי לתת המלצות ראשוניות. רוצים להמשיך או לראות תוצאות?`;
-  }
-  if (completed === 4) {
-    return `ארבעה שאלונים – יש לי כבר הרבה מה לספר לכם! 🪶 כל שאלון נוסף מדייק עוד יותר.`;
-  }
-  if (completed === 5) {
-    return `חמישה שאלונים – התמונה כבר ברורה מאוד! עוד קצת ותוכלו לראות את המלוא ✨`;
-  }
-  if (completed === 6) {
-    return `כמעט השלמתם הכל! נשאר עוד שאלון אחד לתמונה המלאה 🎯`;
-  }
-  return `כל הכבוד! השלמתם את כל השאלונים 🎉 התמונה המלאה מוכנה – בואו נצא לדרך!`;
+const SECTION_SHORT_NAME: Record<QuestionnaireSectionId, string> = {
+  skills: 'כישורים', schein: 'עוגנים', considerations: 'שיקולים',
+  holland: 'נטיות', via: 'חוזקות VIA', preferences: 'העדפות',
+  motivation: 'מניעים', thinking: 'חשיבה',
 };
 
 const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: QuestionnaireHubProps) => {
   const completedCount = Object.values(completedSections).filter(Boolean).length;
   const hasMinimum = completedCount >= 3;
-  const canViewResults = completedCount >= 1;
   const prevCount = useRef(completedCount);
 
-  const completedNames = useMemo(() => {
-    const nameMap: Record<QuestionnaireSectionId, string> = {
-      skills: 'כישורים', schein: 'עוגנים', considerations: 'שיקולים',
-      holland: 'נטיות', via: 'חוזקות VIA', preferences: 'העדפות',
-      motivation: 'מניעים', thinking: 'חשיבה',
-    };
-    return questionnaires
-      .filter(q => completedSections[q.id])
-      .map(q => nameMap[q.id]);
+  const lastCompletedName = useMemo(() => {
+    const completed = games.filter(g => completedSections[g.id]);
+    return completed.length ? SECTION_SHORT_NAME[completed[completed.length - 1].id] : undefined;
   }, [completedSections]);
 
-  const encouragement = getHubEncouragement(completedCount, completedNames);
+  const encouragement = getHubEncouragement(completedCount, lastCompletedName);
 
-  // 🎉 Celebrate milestones: small sparkle on each completion, big confetti at 3 (results unlock) and at all 8
   useEffect(() => {
     if (completedCount > prevCount.current) {
-      if (completedCount === 3 || completedCount === questionnaires.length) {
-        celebrationConfetti();
-      } else if (completedCount > 0) {
-        sparkleConfetti();
-      }
+      if (completedCount === 3 || completedCount === games.length) celebrationConfetti();
+      else if (completedCount > 0) sparkleConfetti();
     }
     prevCount.current = completedCount;
   }, [completedCount]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-10 md:py-16" dir="rtl">
-      <div className="max-w-3xl w-full space-y-10">
+    <div dir="rtl" className="min-h-screen bg-gradient-to-b from-background via-background to-secondary/5 px-4 py-10 md:py-14">
+      <div className="max-w-5xl mx-auto space-y-10">
 
-        {/* Header — playful sticker style like landing */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
+        {/* Header */}
+        <motion.header
+          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center space-y-4 relative"
+          transition={{ duration: 0.6 }}
+          className="text-center relative"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.6, rotate: -12 }}
-            animate={{ opacity: 1, scale: 1, rotate: -8 }}
-            transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
-            className="absolute top-2 right-2 md:top-0 md:right-8 bg-accent text-accent-foreground text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 inline-flex items-center gap-1.5"
-            style={{ transform: 'rotate(-8deg)' }}
+            animate={{ opacity: 1, scale: 1, rotate: -6 }}
+            transition={{ duration: 0.6, delay: 0.3, type: 'spring' }}
+            className="absolute top-0 right-2 md:right-8 bg-accent text-accent-foreground text-xs font-bold px-3 py-1.5 rounded-full shadow-lg inline-flex items-center gap-1.5 z-10"
+            style={{ transform: 'rotate(-6deg)' }}
           >
-            <Sparkles size={12} /> 8 שאלונים
+            <Sparkles size={12} /> 8 משחקים
           </motion.div>
 
-          <img
-            src={sageifyLogo}
-            alt="Sageify"
-            className="w-20 h-20 mx-auto rounded-full shadow-[var(--shadow-card)] border-2 border-white/15"
-          />
-          <h1 className="text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">
-            בחרו את השאלונים שלכם
+          <img src={sageifyLogo} alt="Sageify" className="w-20 h-20 mx-auto rounded-full shadow-[var(--shadow-card)] border-2 border-white/15 mb-4" />
+
+          <span className="inline-block text-xs font-semibold tracking-widest text-secondary uppercase mb-3 px-3 py-1 rounded-full bg-secondary/10">
+            🎮 מרכז המשחקים של סגי
+          </span>
+          <h1 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-3">
+            בחרו משחק והתחילו
           </h1>
-          <div className="bg-secondary/[0.06] border border-secondary/20 rounded-2xl px-6 py-5 max-w-xl mx-auto text-right space-y-2">
-            <p className="text-foreground text-lg leading-relaxed font-medium">
-              👇 לפניכם 8 שאלונים. <span className="text-secondary">לחצו על כרטיסייה כדי להתחיל</span>.
-            </p>
-            <p className="text-muted-foreground text-base leading-relaxed">
-              אפשר למלא בכל סדר שתרצו. מומלץ להשלים לפחות 3 שאלונים כדי לקבל תובנות מדויקות.
-              <br />
-              ⏱ ליד כל שאלון מופיע הזמן המשוער למילויו.
-            </p>
-          </div>
-        </motion.div>
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            שמונה משחקים קצרים — כל אחד חושף עוד פיסה מהפרופיל שלכם.
+            <br className="hidden sm:block" />
+            אפשר לשחק בכל סדר. מומלץ להשלים לפחות 3 כדי לקבל ייעוץ מדויק.
+          </p>
+        </motion.header>
 
-
-        {/* Progress with colorful gradient + level badge */}
+        {/* Progress + level badge */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          className="bg-card border border-border/60 rounded-2xl p-5 shadow-[var(--shadow-card)] relative"
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="bg-card border border-border/60 rounded-2xl p-5 shadow-[var(--shadow-card)] relative max-w-2xl mx-auto"
         >
           <motion.div
             key={completedCount}
@@ -151,34 +131,18 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
           </motion.div>
 
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-display font-semibold text-foreground tracking-wide">
-              התקדמות
-            </span>
+            <span className="text-sm font-display font-semibold text-foreground tracking-wide">התקדמות</span>
             <span className="text-sm text-muted-foreground">
-              {completedCount} מתוך {questionnaires.length} {hasMinimum ? '✦' : `(מומלץ: 3+)`}
+              {completedCount} מתוך {games.length} {hasMinimum ? '✦' : `(מומלץ: 3+)`}
             </span>
           </div>
           <div className="h-2.5 bg-muted/40 rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-gradient-to-l from-coral via-sunny to-success rounded-full"
               initial={{ width: 0 }}
-              animate={{ width: `${(completedCount / questionnaires.length) * 100}%` }}
+              animate={{ width: `${(completedCount / games.length) * 100}%` }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             />
-          </div>
-
-          {/* Milestone dots */}
-          <div className="flex justify-between mt-3 px-0.5">
-            {Array.from({ length: questionnaires.length }).map((_, i) => (
-              <motion.div
-                key={i}
-                animate={i < completedCount ? { scale: [1, 1.4, 1] } : {}}
-                transition={{ duration: 0.5, delay: i * 0.05 }}
-                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                  i < completedCount ? 'bg-success' : 'bg-muted'
-                }`}
-              />
-            ))}
           </div>
         </motion.div>
 
@@ -187,7 +151,8 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="max-w-2xl mx-auto"
           >
             <OwlMessage
               message={encouragement}
@@ -196,92 +161,75 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
           </motion.div>
         )}
 
-        {/* Questionnaire cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {questionnaires.map((q, i) => {
-            const completed = completedSections[q.id];
+        {/* Game grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {games.map((g, i) => {
+            const completed = completedSections[g.id];
             return (
               <motion.button
-                key={q.id}
-                custom={i}
-                initial="hidden"
-                animate="visible"
-                variants={fadeUp}
-                onClick={() => onSelect(q.id)}
-                whileHover={{ scale: 1.02, y: -2 }}
+                key={g.id}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
+                whileHover={{ y: -4 }}
                 whileTap={{ scale: 0.98 }}
-                className={`relative text-right p-6 rounded-2xl border shadow-[var(--shadow-card)] transition-all duration-300 group ${
+                onClick={() => onSelect(g.id)}
+                className={`group relative text-right h-full p-6 rounded-2xl bg-gradient-to-br ${g.tone} border transition-all duration-300 shadow-[var(--shadow-card)] ${
                   completed
-                    ? 'bg-secondary/[0.04] border-secondary/25 hover:border-secondary/40'
-                    : 'bg-card border-border/60 hover:border-secondary/30 hover:shadow-[var(--shadow-elevated)]'
+                    ? 'border-success/40 hover:border-success/60'
+                    : 'border-border/60 hover:border-secondary/40 hover:shadow-xl'
                 }`}
               >
-                {/* Floating playful sticker — landing-page style */}
-                {completed ? (
+                {completed && (
                   <motion.span
                     initial={{ opacity: 0, scale: 0, rotate: -20 }}
                     animate={{ opacity: 1, scale: 1, rotate: 6 }}
-                    transition={{ type: 'spring', stiffness: 250, damping: 14, delay: 0.2 + i * 0.07 }}
+                    transition={{ type: 'spring', stiffness: 250, damping: 14 }}
                     className="absolute -top-3 -left-3 bg-success text-success-foreground text-[11px] font-bold px-3 py-1 rounded-full shadow-md font-display z-10"
                     style={{ transform: 'rotate(6deg)' }}
                   >
                     הושלם ✓
                   </motion.span>
-                ) : (
-                  <motion.span
-                    initial={{ opacity: 0, scale: 0.7 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.25 + i * 0.05, type: 'spring', stiffness: 220, damping: 16 }}
-                    className={`absolute -top-2.5 -left-2.5 bg-[hsl(45_70%_88%)] text-foreground text-[10px] font-medium px-2.5 py-1 rounded shadow-sm border border-[hsl(45_50%_75%)] z-10 ${q.rotate}`}
-                  >
-                    {q.sticker}
-                  </motion.span>
                 )}
 
-                <div className="flex items-start gap-4">
-                  <motion.div
-                    whileHover={!completed ? { rotate: [0, -8, 8, 0] } : {}}
-                    transition={{ duration: 0.5 }}
-                    className={`w-12 h-12 rounded-full flex items-center justify-center text-lg flex-shrink-0 transition-colors duration-300 ${
-                      completed
-                        ? 'bg-success/15 text-success'
-                        : 'bg-muted/40 text-muted-foreground group-hover:bg-secondary/10 group-hover:text-secondary'
-                    }`}
-                  >
-                    {completed ? (
-                      <motion.span
-                        initial={{ scale: 0, rotate: -90 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 15, delay: 0.15 + i * 0.07 }}
-                      >
-                        ✓
-                      </motion.span>
-                    ) : q.icon}
-                  </motion.div>
-                  <div className="flex-1 space-y-1.5">
-                    <h3 className="font-bold font-display text-foreground tracking-wide text-lg">
-                      {q.title}
-                    </h3>
-                    <p className="text-base text-muted-foreground leading-relaxed">{q.desc}</p>
-                    <p className="text-sm text-muted-foreground font-display flex items-center gap-1.5">⏱ {q.duration}</p>
+                <div className="flex items-start justify-between mb-3">
+                  <div className="text-5xl group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                    {g.emoji}
                   </div>
+                  <div className="flex flex-col items-end gap-1">
+                    <span className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">
+                      #{String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-background/70 text-muted-foreground">
+                      ⏱ {g.minutes}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-[11px] font-semibold tracking-widest text-muted-foreground uppercase mb-1">
+                  {g.style}
+                </p>
+                <h2 className="font-display text-xl font-bold text-foreground mb-2">{g.title}</h2>
+                <p className="text-base text-muted-foreground leading-relaxed">{g.tagline}</p>
+                <div className={`mt-5 text-sm font-bold inline-flex items-center gap-1 transition-opacity ${
+                  completed ? 'text-success opacity-90' : 'text-secondary opacity-70 group-hover:opacity-100'
+                }`}>
+                  {completed ? 'שחקו שוב' : 'שחקו עכשיו'} <span aria-hidden>←</span>
                 </div>
               </motion.button>
             );
           })}
-
         </div>
 
-        {/* CTA - See Results */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-          className="text-center space-y-4 pb-12"
+          transition={{ delay: 0.5, duration: 0.6 }}
+          className="text-center space-y-4 pb-8"
         >
           {!hasMinimum && (
             <p className="text-base text-muted-foreground bg-card border border-border/60 rounded-2xl px-6 py-4 inline-block shadow-[var(--shadow-card)]">
-              📋 יש להשלים לפחות 3 שאלונים כדי לקבל תוצאות ({completedCount}/3)
+              📋 השלימו לפחות 3 משחקים כדי לקבל ייעוץ ({completedCount}/3)
             </p>
           )}
           <div>
@@ -304,7 +252,7 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
               }`}
             >
               <span className="flex items-center gap-3 justify-center">
-                לתוצאות ולשיחה עם סגי
+                לשיחה עם סגי ולתיאום פגישה
                 <span className="inline-block transition-transform duration-300 group-hover:translate-x-[6px]">←</span>
               </span>
             </motion.button>
