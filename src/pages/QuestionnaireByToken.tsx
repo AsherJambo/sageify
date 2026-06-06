@@ -22,6 +22,7 @@ import PersonalitySliders from '@/components/PersonalitySliders';
 import DataProcessingAnimation from '@/components/DataProcessingAnimation';
 import SageiInsightBubble from '@/components/SageiInsightBubble';
 import SaveProgressButton from '@/components/SaveProgressButton';
+import ScheduleMeetingCTA from '@/components/ScheduleMeetingCTA';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
@@ -482,24 +483,30 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
               updateState({ step: 'results' });
             }}
           />
+          <ScheduleMeetingCTA variant="floating" />
         </>
       );
     case 'results':
       return (
-        <ResultsDashboard
-          viaScores={viaScores}
-          scheinScores={scheinScores}
-          hollandScores={hollandScores}
-          considerationsData={state.considerationsData}
-          skillsAssignments={state.skillsAssignments}
-          preferencesData={state.preferencesData}
-          motivationData={state.motivationData}
-          thinkingResult={state.thinkingResult}
-          chatMessages={state.chatMessages}
-          onChatMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
-          onBackToHub={() => updateState({ step: 'hub' })}
-          tokenId={tokenRow?.id}
-        />
+        <>
+          <ResultsDashboard
+            viaScores={viaScores}
+            scheinScores={scheinScores}
+            hollandScores={hollandScores}
+            considerationsData={state.considerationsData}
+            skillsAssignments={state.skillsAssignments}
+            preferencesData={state.preferencesData}
+            motivationData={state.motivationData}
+            thinkingResult={state.thinkingResult}
+            chatMessages={state.chatMessages}
+            onChatMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
+            onBackToHub={() => updateState({ step: 'hub' })}
+            tokenId={tokenRow?.id}
+          />
+          <div className="px-4 pb-12">
+            <ScheduleMeetingCTA variant="banner" />
+          </div>
+        </>
       );
     default:
       return null;
