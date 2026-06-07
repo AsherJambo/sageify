@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CalendarCheck } from 'lucide-react';
-import ContactFormModal from '@/components/ContactFormModal';
+import MeetingBookingModal from '@/components/MeetingBookingModal';
 
 interface ScheduleMeetingCTAProps {
   variant?: 'banner' | 'floating';
@@ -30,7 +30,7 @@ const ScheduleMeetingCTA = ({ variant = 'banner' }: ScheduleMeetingCTAProps) => 
           <CalendarCheck size={18} />
           תיאום פגישה עם יועץ
         </motion.button>
-        <ContactFormModal open={open} onClose={() => setOpen(false)} />
+        <MeetingBookingModal open={open} onClose={() => setOpen(false)} />
       </>
     );
   }
@@ -68,7 +68,7 @@ const ScheduleMeetingCTA = ({ variant = 'banner' }: ScheduleMeetingCTAProps) => 
           </div>
         </div>
       </motion.div>
-      <ContactFormModal open={open} onClose={() => setOpen(false)} />
+      <MeetingBookingModal open={open} onClose={() => setOpen(false)} />
     </>
   );
 };
