@@ -15,16 +15,46 @@ const TIME_SLOTS = [
   '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00',
 ];
 
+// Strict email pattern (RFC-ish, no spaces, single @, real TLD)
+const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+// Hebrew + English letters, spaces, hyphen, apostrophe (e.g. כהן-לוי, O'Brien)
+const NAME_RE = /^[A-Za-z\u0590-\u05FF\s'\-]+$/;
+
+// Normalize Israeli phone: strip spaces/dashes/parens/+972 → 0XXXXXXXXX
+const normalizePhone = (raw: string) => {
+  let p = raw.replace(/[\s\-()]/g, '');
+  if (p.startsWith('+972')) p = '0' + p.slice(4);
+  else if (p.startsWith('972')) p = '0' + p.slice(3);
+  return p;
+};
+// Valid Israeli mobile (05X-XXXXXXX) or landline (0X-XXXXXXX), 9–10 digits total
+const PHONE_RE = /^0(5\d{8}|[2-489]\d{7,8})$/;
+
 const schema = z.object({
-  name: z.string().trim().min(2, 'נא להזין שם מלא').max(100),
-  email: z.string().trim().email('כתובת מייל לא תקינה').max(255),
+  name: z
+    .string()
+    .trim()
+    .min(2, 'שם קצר מדי — נא להזין שם מלא')
+    .max(60, 'שם ארוך מדי (עד 60 תווים)')
+    .regex(NAME_RE, 'השם יכול להכיל רק אותיות, רווחים ומקפים')
+    .refine((v) => v.split(/\s+/).filter(Boolean).length >= 2, {
+      message: 'נא להזין שם פרטי ושם משפחה',
+    }),
+  email: z
+    .string()
+    .trim()
+    .min(1, 'נא להזין כתובת מייל')
+    .max(255, 'כתובת מייל ארוכה מדי')
+    .regex(EMAIL_RE, 'כתובת מייל לא תקינה (לדוגמה: name@example.com)'),
   phone: z
     .string()
     .trim()
-    .min(9, 'נא להזין מספר טלפון תקין')
-    .max(20)
-    .regex(/^[0-9+\-\s()]+$/, 'מספר טלפון לא תקין'),
-  notes: z.string().trim().max(1000).optional(),
+    .min(1, 'נא להזין מספר טלפון')
+    .transform(normalizePhone)
+    .refine((v) => PHONE_RE.test(v), {
+      message: 'מספר טלפון ישראלי לא תקין (לדוגמה: 050-1234567)',
+    }),
+  notes: z.string().trim().max(1000, 'הערות ארוכות מדי (עד 1000 תווים)').optional(),
 });
 
 interface MeetingBookingModalProps {
@@ -53,12 +83,21 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
     setTimeout(reset, 300);
   };
 
+  const validateField = (field: 'name' | 'email' | 'phone', value: string) => {
+    const fieldSchema = (schema.shape as any)[field];
+    const r = fieldSchema.safeParse(value);
+    setErrors((p) => ({ ...p, [field]: r.success ? '' : r.error.issues[0].message }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const fieldErrors: Record<string, string> = {};
     const parsed = schema.safeParse({ name, email, phone, notes: notes || undefined });
     if (!parsed.success) {
-      parsed.error.issues.forEach((i) => { fieldErrors[i.path[0] as string] = i.message; });
+      parsed.error.issues.forEach((i) => {
+        const key = i.path[0] as string;
+        if (!fieldErrors[key]) fieldErrors[key] = i.message;
+      });
     }
     if (!date) fieldErrors.date = 'נא לבחור תאריך';
     if (!time) fieldErrors.time = 'נא לבחור שעה';
@@ -69,13 +108,14 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
     setErrors({});
     setStatus('sending');
     try {
+      const clean = parsed.data!;
       const { error } = await supabase.from('meeting_bookings').insert({
-        name: name.trim(),
-        email: email.trim(),
-        phone: phone.trim(),
+        name: clean.name,
+        email: clean.email.toLowerCase(),
+        phone: clean.phone, // already normalized
         meeting_date: format(date!, 'yyyy-MM-dd'),
         meeting_time: time,
-        notes: notes.trim() || null,
+        notes: clean.notes || null,
       });
       if (error) throw error;
       setStatus('success');
@@ -216,11 +256,22 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
 
                   {/* Name */}
                   <div>
-                    <label className="block text-sm font-semibold mb-1.5">שם מלא</label>
+                    <label htmlFor="mb-name" className="block text-sm font-semibold mb-1.5">
+                      שם מלא <span className="text-destructive">*</span>
+                    </label>
                     <input
+                      id="mb-name"
                       type="text"
                       value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                        if (errors.name) setErrors((p) => ({ ...p, name: '' }));
+                      }}
+                      onBlur={(e) => validateField('name', e.target.value)}
+                      autoComplete="name"
+                      maxLength={60}
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? 'mb-name-err' : undefined}
                       className={cn(
                         'w-full px-4 py-3 rounded-xl border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30',
                         errors.name ? 'border-destructive' : 'border-border',
@@ -228,16 +279,28 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
                       placeholder="ישראל ישראלי"
                       disabled={status === 'sending'}
                     />
-                    {errors.name && <p className="text-xs text-destructive mt-1">{errors.name}</p>}
+                    {errors.name && <p id="mb-name-err" className="text-xs text-destructive mt-1">{errors.name}</p>}
                   </div>
 
                   {/* Phone */}
                   <div>
-                    <label className="block text-sm font-semibold mb-1.5">טלפון</label>
+                    <label htmlFor="mb-phone" className="block text-sm font-semibold mb-1.5">
+                      טלפון <span className="text-destructive">*</span>
+                    </label>
                     <input
+                      id="mb-phone"
                       type="tel"
+                      inputMode="tel"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                        if (errors.phone) setErrors((p) => ({ ...p, phone: '' }));
+                      }}
+                      onBlur={(e) => validateField('phone', e.target.value)}
+                      autoComplete="tel"
+                      maxLength={20}
+                      aria-invalid={!!errors.phone}
+                      aria-describedby={errors.phone ? 'mb-phone-err' : 'mb-phone-hint'}
                       className={cn(
                         'w-full px-4 py-3 rounded-xl border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30',
                         errors.phone ? 'border-destructive' : 'border-border',
@@ -246,16 +309,34 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
                       dir="ltr"
                       disabled={status === 'sending'}
                     />
-                    {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
+                    {errors.phone ? (
+                      <p id="mb-phone-err" className="text-xs text-destructive mt-1">{errors.phone}</p>
+                    ) : (
+                      <p id="mb-phone-hint" className="text-xs text-muted-foreground mt-1">
+                        מספר ישראלי, נייד או קווי
+                      </p>
+                    )}
                   </div>
 
                   {/* Email */}
                   <div>
-                    <label className="block text-sm font-semibold mb-1.5">כתובת מייל</label>
+                    <label htmlFor="mb-email" className="block text-sm font-semibold mb-1.5">
+                      כתובת מייל <span className="text-destructive">*</span>
+                    </label>
                     <input
+                      id="mb-email"
                       type="email"
+                      inputMode="email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (errors.email) setErrors((p) => ({ ...p, email: '' }));
+                      }}
+                      onBlur={(e) => validateField('email', e.target.value)}
+                      autoComplete="email"
+                      maxLength={255}
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? 'mb-email-err' : undefined}
                       className={cn(
                         'w-full px-4 py-3 rounded-xl border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30',
                         errors.email ? 'border-destructive' : 'border-border',
@@ -264,8 +345,9 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
                       dir="ltr"
                       disabled={status === 'sending'}
                     />
-                    {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
+                    {errors.email && <p id="mb-email-err" className="text-xs text-destructive mt-1">{errors.email}</p>}
                   </div>
+
 
                   {/* Notes */}
                   <div>
