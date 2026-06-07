@@ -224,6 +224,39 @@ export type Database = {
           },
         ]
       }
+      meeting_bookings: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          meeting_date: string
+          meeting_time: string
+          name: string
+          notes: string | null
+          phone: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          meeting_date: string
+          meeting_time: string
+          name: string
+          notes?: string | null
+          phone: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          meeting_date?: string
+          meeting_time?: string
+          name?: string
+          notes?: string | null
+          phone?: string
+        }
+        Relationships: []
+      }
       opportunities: {
         Row: {
           category: string
