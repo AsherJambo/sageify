@@ -256,11 +256,22 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
 
                   {/* Name */}
                   <div>
-                    <label className="block text-sm font-semibold mb-1.5">שם מלא</label>
+                    <label htmlFor="mb-name" className="block text-sm font-semibold mb-1.5">
+                      שם מלא <span className="text-destructive">*</span>
+                    </label>
                     <input
+                      id="mb-name"
                       type="text"
                       value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                        if (errors.name) setErrors((p) => ({ ...p, name: '' }));
+                      }}
+                      onBlur={(e) => validateField('name', e.target.value)}
+                      autoComplete="name"
+                      maxLength={60}
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? 'mb-name-err' : undefined}
                       className={cn(
                         'w-full px-4 py-3 rounded-xl border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30',
                         errors.name ? 'border-destructive' : 'border-border',
@@ -268,16 +279,28 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
                       placeholder="ישראל ישראלי"
                       disabled={status === 'sending'}
                     />
-                    {errors.name && <p className="text-xs text-destructive mt-1">{errors.name}</p>}
+                    {errors.name && <p id="mb-name-err" className="text-xs text-destructive mt-1">{errors.name}</p>}
                   </div>
 
                   {/* Phone */}
                   <div>
-                    <label className="block text-sm font-semibold mb-1.5">טלפון</label>
+                    <label htmlFor="mb-phone" className="block text-sm font-semibold mb-1.5">
+                      טלפון <span className="text-destructive">*</span>
+                    </label>
                     <input
+                      id="mb-phone"
                       type="tel"
+                      inputMode="tel"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                        if (errors.phone) setErrors((p) => ({ ...p, phone: '' }));
+                      }}
+                      onBlur={(e) => validateField('phone', e.target.value)}
+                      autoComplete="tel"
+                      maxLength={20}
+                      aria-invalid={!!errors.phone}
+                      aria-describedby={errors.phone ? 'mb-phone-err' : 'mb-phone-hint'}
                       className={cn(
                         'w-full px-4 py-3 rounded-xl border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30',
                         errors.phone ? 'border-destructive' : 'border-border',
@@ -286,16 +309,34 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
                       dir="ltr"
                       disabled={status === 'sending'}
                     />
-                    {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
+                    {errors.phone ? (
+                      <p id="mb-phone-err" className="text-xs text-destructive mt-1">{errors.phone}</p>
+                    ) : (
+                      <p id="mb-phone-hint" className="text-xs text-muted-foreground mt-1">
+                        מספר ישראלי, נייד או קווי
+                      </p>
+                    )}
                   </div>
 
                   {/* Email */}
                   <div>
-                    <label className="block text-sm font-semibold mb-1.5">כתובת מייל</label>
+                    <label htmlFor="mb-email" className="block text-sm font-semibold mb-1.5">
+                      כתובת מייל <span className="text-destructive">*</span>
+                    </label>
                     <input
+                      id="mb-email"
                       type="email"
+                      inputMode="email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (errors.email) setErrors((p) => ({ ...p, email: '' }));
+                      }}
+                      onBlur={(e) => validateField('email', e.target.value)}
+                      autoComplete="email"
+                      maxLength={255}
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? 'mb-email-err' : undefined}
                       className={cn(
                         'w-full px-4 py-3 rounded-xl border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30',
                         errors.email ? 'border-destructive' : 'border-border',
@@ -304,8 +345,9 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
                       dir="ltr"
                       disabled={status === 'sending'}
                     />
-                    {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
+                    {errors.email && <p id="mb-email-err" className="text-xs text-destructive mt-1">{errors.email}</p>}
                   </div>
+
 
                   {/* Notes */}
                   <div>
