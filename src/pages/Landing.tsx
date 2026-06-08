@@ -87,6 +87,12 @@ const Landing = () => {
               >
                 שחקו דמו חינם
               </Link>
+              <Link
+                to="/counselor"
+                className="w-full sm:w-auto px-10 py-5 bg-[#1A2E35] text-white text-lg font-extrabold rounded-2xl border-b-[6px] border-[#0f1c20] hover:brightness-105 active:border-b-0 active:translate-y-1.5 transition-all"
+              >
+                יועץ תעסוקתי
+              </Link>
             </motion.div>
 
             {/* Mini trust strip */}
