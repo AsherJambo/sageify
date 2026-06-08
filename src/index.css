@@ -69,9 +69,10 @@
     --sunny: 42 85% 62%;
     --sunny-soft: 42 75% 92%;
 
-    --shadow-diffuse: 0 20px 60px -15px hsl(210 12% 20% / 0.05);
-    --shadow-card: 0 1px 3px 0 hsl(210 12% 20% / 0.04), 0 1px 2px -1px hsl(210 12% 20% / 0.03);
-    --shadow-elevated: 0 10px 30px -8px hsl(210 12% 20% / 0.08), 0 4px 12px -4px hsl(210 12% 20% / 0.04);
+    --shadow-diffuse: 0 30px 80px -20px hsl(222 47% 11% / 0.06);
+    --shadow-card: 0 1px 2px 0 hsl(222 47% 11% / 0.04), 0 1px 3px 0 hsl(222 47% 11% / 0.03);
+    --shadow-elevated: 0 20px 50px -15px hsl(222 47% 11% / 0.10), 0 8px 16px -8px hsl(222 47% 11% / 0.04);
+
   }
 
   .dark {
