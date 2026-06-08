@@ -25,6 +25,7 @@ const PreviewHub = lazy(() => import("./pages/PreviewHub"));
 const QuestionnaireByToken = lazy(() => import("./pages/QuestionnaireByToken"));
 const Admin = lazy(() => import("./pages/Admin"));
 const EmployerAdmin = lazy(() => import("./pages/EmployerAdmin"));
+const Counselor = lazy(() => import("./pages/Counselor"));
 const PartnerQuestionnaire = lazy(() => import("./pages/PartnerQuestionnaire"));
 
 const queryClient = new QueryClient();
@@ -65,6 +66,7 @@ const App = () => {
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin-panel" element={<Admin />} />
               <Route path="/employer-admin" element={<EmployerAdmin />} />
+              <Route path="/counselor" element={<Counselor />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
