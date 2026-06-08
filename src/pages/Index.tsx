@@ -3,15 +3,15 @@ import { contextualFeedback } from '@/lib/owlMessages';
 import WelcomeScreen from '@/components/WelcomeScreen';
 import QuestionnaireHub from '@/components/QuestionnaireHub';
 import SectionIntro from '@/components/SectionIntro';
-import VIAQuestionnaire from '@/components/VIAQuestionnaire';
-import ScheinQuestionnaire from '@/components/ScheinQuestionnaire';
+import GameVIA from '@/components/games/GameVIA';
+import GameSchein from '@/components/games/GameSchein';
+import GameSkills from '@/components/games/GameSkills';
+import GameConsiderations from '@/components/games/GameConsiderations';
 import PersonalitySliders from '@/components/PersonalitySliders';
 import DataProcessingAnimation from '@/components/DataProcessingAnimation';
 import BonusSelection from '@/components/BonusSelection';
-import ConsiderationsQuestionnaire from '@/components/ConsiderationsQuestionnaire';
 import HollandQuestionnaire from '@/components/HollandQuestionnaire';
 import ThinkingSkillsQuestionnaire from '@/components/ThinkingSkillsQuestionnaire';
-import SkillsQuestionnaire from '@/components/SkillsQuestionnaire';
 import PreferencesQuestionnaire from '@/components/PreferencesQuestionnaire';
 import MotivationQuestionnaire from '@/components/MotivationQuestionnaire';
 import ResultsDashboard from '@/components/ResultsDashboard';
@@ -198,13 +198,13 @@ const Index = () => {
     case 'skills-intro':
       return <>{ProgressBar}<SectionIntro badge={skillsIntro.badge} title={skillsIntro.title} paragraphs={skillsIntro.paragraphs} bulletPoints={skillsIntro.bulletPoints} exampleQuestions={skillsIntro.exampleQuestions} answerKey={skillsIntro.answerKey} onContinue={() => updateState({ step: 'skills' })} />{QuestionnaireSuffix}</>;
     case 'skills':
-      return <>{ProgressBar}<SkillsQuestionnaire onComplete={(assignments) => updateState({ skillsAssignments: assignments, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<GameSkills onComplete={(assignments) => updateState({ skillsAssignments: assignments, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     // Schein flow
     case 'schein-intro':
       return <>{ProgressBar}<SectionIntro badge={scheinIntro.badge} title={scheinIntro.title} paragraphs={scheinIntro.paragraphs} exampleQuestions={scheinIntro.exampleQuestions} answerKey={scheinIntro.answerKey} onContinue={() => updateState({ step: 'schein' })} />{QuestionnaireSuffix}</>;
     case 'schein':
-      return <>{ProgressBar}<ScheinQuestionnaire answers={state.scheinAnswers} onAnswer={handleScheinAnswer} onComplete={() => updateState({ step: 'schein-bonus' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<GameSchein onComplete={(finalAnswers, _bonusIds) => updateState({ scheinAnswers: finalAnswers, finalScheinAnswers: finalAnswers, scheinBonusApplied: true, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
     case 'schein-bonus':
       return <>{ProgressBar}<BonusSelection title="כוח ה-3 – עוגנים תעסוקתיים" subtitle="מתוך השאלות שנתתם להן את הציון הגבוה ביותר, בחרו 3 שהכי מהדהדות אצלכם" questions={scheinMaxQuestions} onComplete={handleScheinBonusComplete} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
@@ -212,7 +212,7 @@ const Index = () => {
     case 'considerations-intro':
       return <>{ProgressBar}<SectionIntro badge={considerationsIntro.badge} title={considerationsIntro.title} paragraphs={considerationsIntro.paragraphs} exampleQuestions={considerationsIntro.exampleQuestions} answerKey={considerationsIntro.answerKey} onContinue={() => updateState({ step: 'considerations' })} />{QuestionnaireSuffix}</>;
     case 'considerations':
-      return <>{ProgressBar}<ConsiderationsQuestionnaire onComplete={(selected, points) => updateState({ considerationsData: { selected, points }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<GameConsiderations onComplete={(selected, points) => updateState({ considerationsData: { selected, points }, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
 
     // Holland flow
     case 'holland-intro':
@@ -224,7 +224,7 @@ const Index = () => {
     case 'via-intro':
       return <>{ProgressBar}<SectionIntro badge={viaIntro.badge} title={viaIntro.title} paragraphs={viaIntro.paragraphs} exampleQuestions={viaIntro.exampleQuestions} answerKey={viaIntro.answerKey} onContinue={() => updateState({ step: 'via' })} />{QuestionnaireSuffix}</>;
     case 'via':
-      return <>{ProgressBar}<VIAQuestionnaire answers={state.viaAnswers} onAnswer={handleViaAnswer} onComplete={() => updateState({ step: 'via-bonus-intro' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
+      return <>{ProgressBar}<GameVIA onComplete={(finalAnswers, _bonusIds) => updateState({ viaAnswers: finalAnswers, finalViaAnswers: finalAnswers, viaBonusApplied: true, step: 'hub' })} onBackToHub={goToHub} />{QuestionnaireSuffix}</>;
     case 'via-bonus-intro':
       return <>{ProgressBar}<SectionIntro badge={viaBonusIntro.badge} title={viaBonusIntro.title} paragraphs={viaBonusIntro.paragraphs} onContinue={() => updateState({ step: 'via-bonus' })} />{QuestionnaireSuffix}</>;
     case 'via-bonus':
