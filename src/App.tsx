@@ -27,6 +27,12 @@ const Admin = lazy(() => import("./pages/Admin"));
 const EmployerAdmin = lazy(() => import("./pages/EmployerAdmin"));
 const Counselor = lazy(() => import("./pages/Counselor"));
 const PartnerQuestionnaire = lazy(() => import("./pages/PartnerQuestionnaire"));
+const PlayHub = lazy(() => import("./pages/play/PlayHub"));
+const PlayVIA = lazy(() => import("./pages/play/PlayVIA"));
+const PlaySchein = lazy(() => import("./pages/play/PlaySchein"));
+const PlayThinking = lazy(() => import("./pages/play/PlayThinking"));
+const PlaySkills = lazy(() => import("./pages/play/PlaySkills"));
+const PlayConsiderations = lazy(() => import("./pages/play/PlayConsiderations"));
 
 const queryClient = new QueryClient();
 
@@ -67,6 +73,12 @@ const App = () => {
               <Route path="/admin-panel" element={<Admin />} />
               <Route path="/employer-admin" element={<EmployerAdmin />} />
               <Route path="/counselor" element={<Counselor />} />
+              <Route path="/play" element={<PlayHub />} />
+              <Route path="/play/via" element={<PlayVIA />} />
+              <Route path="/play/schein" element={<PlaySchein />} />
+              <Route path="/play/thinking" element={<PlayThinking />} />
+              <Route path="/play/skills" element={<PlaySkills />} />
+              <Route path="/play/considerations" element={<PlayConsiderations />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
