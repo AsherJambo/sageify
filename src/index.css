@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,51 +6,56 @@
 
 @layer base {
   :root {
-    --background: 40 20% 97%;
-    --foreground: 210 12% 24%;
+    /* Premium minimalist palette — clean whites, charcoal, sophisticated navy accent */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 12% 24%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 12% 24%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 105 16% 57%;
+    /* Primary: deep refined navy/indigo */
+    --primary: 222 47% 14%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 12% 24%;
-    --secondary-foreground: 40 20% 97%;
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 36 14% 93%;
-    --muted-foreground: 210 8% 48%;
+    --muted: 210 20% 97%;
+    --muted-foreground: 215 16% 37%;
 
-    --accent: 16 72% 62%;
+    /* Accent: refined emerald, used sparingly */
+    --accent: 158 64% 32%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 55% 45%;
+    --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 36 10% 90%;
-    --input: 36 10% 90%;
-    --ring: 105 16% 50%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 222 47% 14%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
-    --sage: 105 16% 57%;
-    --sage-light: 105 12% 94%;
-    --sand: 36 24% 91%;
-    --sand-warm: 36 20% 85%;
-    --slate-blue: 210 18% 44%;
-    --slate-blue-light: 210 16% 90%;
-    --forest: 210 12% 24%;
-    --forest-light: 210 8% 34%;
-    --gold: 36 60% 52%;
-    --gold-light: 36 28% 92%;
-    --navy: 210 12% 24%;
-    --navy-light: 210 8% 34%;
-    --terracotta: 16 72% 62%;
-    --terracotta-light: 16 40% 93%;
-    --warm-bg: 40 20% 97%;
+    /* Legacy tokens — remapped onto the minimalist palette so existing components inherit the new look */
+    --sage: 158 50% 36%;
+    --sage-light: 158 35% 94%;
+    --sand: 210 20% 97%;
+    --sand-warm: 210 20% 94%;
+    --slate-blue: 222 47% 30%;
+    --slate-blue-light: 220 16% 94%;
+    --forest: 222 47% 11%;
+    --forest-light: 215 19% 35%;
+    --gold: 38 70% 50%;
+    --gold-light: 38 50% 95%;
+    --navy: 222 47% 14%;
+    --navy-light: 222 35% 28%;
+    --terracotta: 14 75% 55%;
+    --terracotta-light: 14 60% 96%;
+    --warm-bg: 210 20% 98%;
+
 
     /* Playful semantic tokens for questionnaires */
     --success: 142 52% 48%;
@@ -64,9 +69,10 @@
     --sunny: 42 85% 62%;
     --sunny-soft: 42 75% 92%;
 
-    --shadow-diffuse: 0 20px 60px -15px hsl(210 12% 20% / 0.05);
-    --shadow-card: 0 1px 3px 0 hsl(210 12% 20% / 0.04), 0 1px 2px -1px hsl(210 12% 20% / 0.03);
-    --shadow-elevated: 0 10px 30px -8px hsl(210 12% 20% / 0.08), 0 4px 12px -4px hsl(210 12% 20% / 0.04);
+    --shadow-diffuse: 0 30px 80px -20px hsl(222 47% 11% / 0.06);
+    --shadow-card: 0 1px 2px 0 hsl(222 47% 11% / 0.04), 0 1px 3px 0 hsl(222 47% 11% / 0.03);
+    --shadow-elevated: 0 20px 50px -15px hsl(222 47% 11% / 0.10), 0 8px 16px -8px hsl(222 47% 11% / 0.04);
+
   }
 
   .dark {
@@ -98,17 +104,19 @@
   }
 
   html {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-optical-sizing: auto;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
   }
 
   body {
     @apply bg-background text-foreground;
     direction: rtl;
     font-size: 17px;
-    line-height: 1.75;
+    line-height: 1.7;
+    letter-spacing: -0.005em;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -126,24 +134,16 @@
     }
   }
 
-  /* Subtle paper texture overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    background-size: 256px 256px;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    color: hsl(var(--foreground));
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
-    letter-spacing: 0.01em;
-    font-weight: 700;
-  }
+  h1 { letter-spacing: -0.03em; font-weight: 800; }
 }
+
 
 @layer components {
   .star-rating {
