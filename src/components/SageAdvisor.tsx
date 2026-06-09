@@ -674,19 +674,25 @@ const SageAdvisor = ({
           {isStreaming && visibleMessages[visibleMessages.length - 1]?.role !== 'assistant' && (
             <div className="flex gap-3 items-start">
               <div className="flex-shrink-0 pt-1">
-                <img src={owlLogo} alt="סגי" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full ring-1 ring-secondary/20 shadow-sm animate-pulse" />
+                <div
+                  className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-card border-2 border-foreground flex items-center justify-center animate-pulse"
+                  style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                >
+                  <img src={owlLogo} alt="סגי" className="w-9 h-9 sm:w-10 sm:h-10 rounded-full" />
+                </div>
               </div>
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-sm font-semibold font-display text-foreground tracking-wide">סגי</span>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-base font-serif font-bold text-foreground tracking-wide">סגי</span>
                 </div>
-                <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 px-4 py-3 sm:px-6 sm:py-5 shadow-[var(--shadow-card)]">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                    <span className="text-muted-foreground text-xs mr-2">מנסח תשובה...</span>
-                  </div>
+                <div
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gold-light border-2 border-foreground"
+                  style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                >
+                  <span className="w-2.5 h-2.5 bg-accent rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-2.5 h-2.5 bg-accent rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-2.5 h-2.5 bg-accent rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <span className="text-foreground text-sm font-bold mr-1">סגי חושב… 🦉</span>
                 </div>
               </div>
             </div>
@@ -695,45 +701,65 @@ const SageAdvisor = ({
 
         {/* Roadmap detected → finish */}
         {roadmapDetected && !isStreaming && (
-          <div className="bg-card rounded-3xl border border-secondary/20 p-6 sm:p-10 shadow-[var(--shadow-elevated)] text-center space-y-5">
-            <div className="w-16 h-16 mx-auto rounded-full bg-secondary/8 flex items-center justify-center text-3xl">✓</div>
-            <h3 className="text-xl font-bold font-display text-foreground tracking-wide">מפת הדרכים שלך מוכנה</h3>
-            <p className="text-muted-foreground text-sm">כל התובנות וההמלצות מחכות לך בסיכום</p>
+          <div
+            className="bg-card rounded-3xl border-2 border-foreground p-6 sm:p-10 text-center space-y-5"
+            style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
+          >
+            <div
+              className="w-20 h-20 mx-auto rounded-full bg-sage border-2 border-foreground flex items-center justify-center text-4xl"
+              style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.85)' }}
+              aria-hidden="true"
+            >🦉</div>
+            <h3 className="text-2xl font-serif font-bold text-foreground tracking-wide">
+              מפת הדרכים שלך מוכנה!
+            </h3>
+            <p className="text-foreground/80 text-base sm:text-lg leading-relaxed">
+              כל התובנות וההמלצות מחכות לך בסיכום
+            </p>
             <Button
               onClick={() => {
                 setPhase('done');
                 onFinish?.();
               }}
-              className="w-full max-w-sm mx-auto py-6 text-lg bg-primary text-primary-foreground hover:bg-primary/85 rounded-2xl shadow-[var(--shadow-elevated)] font-display tracking-wide"
+              className="w-full max-w-sm mx-auto py-7 text-lg bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-2xl border-2 border-foreground font-serif font-bold tracking-wide active:translate-y-[2px] transition-transform"
+              style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
             >
-              סיום והמשך לסיכום
+              ← סיום והמשך לסיכום
             </Button>
           </div>
         )}
 
-        {/* Journey Action Cards */}
+        {/* Journey Action Chips — amber XP chips */}
         {!roadmapDetected && !isStreaming && messages.length >= 2 && (
-          <div dir="rtl" className="flex flex-wrap gap-2 justify-center">
+          <div dir="rtl" className="flex flex-wrap gap-2.5 justify-center">
             {journeyActions.map((action) => (
               <button
                 key={action.label}
                 onClick={() => sendMessage(action.msg)}
-                className="inline-flex items-center gap-1.5 bg-card hover:bg-muted/50 border border-border/60 hover:border-secondary/30 rounded-full px-3.5 py-2 text-xs font-medium text-muted-foreground hover:text-secondary transition-all duration-200"
+                className="inline-flex items-center gap-2 bg-card hover:bg-gold-light border-2 border-foreground rounded-full px-4 py-2.5 text-sm sm:text-base font-bold text-foreground transition-transform active:translate-y-[2px] min-h-[48px]"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
               >
-                <span className="text-sm">{action.icon}</span>
+                <span className="text-base" aria-hidden="true">{action.icon}</span>
                 {action.label}
               </button>
             ))}
           </div>
         )}
 
-        {/* Chat input — unified for all states */}
+        {/* Chat composer — chunky owl prompt */}
         {!isStreaming && messages.length >= 2 && (
-          <div dir="rtl" className="bg-card rounded-2xl border border-border/60 p-3 shadow-[var(--shadow-card)]">
-            <div className="flex gap-2 items-end">
+          <div
+            dir="rtl"
+            className="bg-card rounded-3xl border-2 border-foreground p-3 sm:p-4"
+            style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
+          >
+            <div className="flex gap-3 items-end">
               <div className="flex-shrink-0">
-                <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <span className="text-primary font-display font-bold text-xs">
+                <div
+                  className="w-11 h-11 rounded-full bg-accent text-accent-foreground border-2 border-foreground flex items-center justify-center"
+                  style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                >
+                  <span className="font-serif font-bold text-base">
                     {username ? username.charAt(0) : '👤'}
                   </span>
                 </div>
@@ -742,8 +768,8 @@ const SageAdvisor = ({
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={roadmapDetected ? 'יש עוד שאלות? המשיכו לשוחח...' : 'כתבו שאלה חופשית ליועץ...'}
-                className="resize-none min-h-[40px] max-h-[100px] bg-transparent border-0 focus-visible:ring-0 shadow-none text-sm placeholder:text-muted-foreground/50"
+                placeholder={roadmapDetected ? 'יש עוד שאלות? המשיכו לשוחח עם סגי…' : 'כתבו שאלה חופשית לסגי…'}
+                className="resize-none min-h-[48px] max-h-[120px] bg-transparent border-0 focus-visible:ring-0 shadow-none text-base sm:text-lg placeholder:text-foreground/40 text-foreground"
                 rows={1}
                 disabled={isStreaming}
               />
@@ -751,9 +777,11 @@ const SageAdvisor = ({
                 onClick={() => sendMessage()}
                 disabled={!input.trim() || isStreaming}
                 size="icon"
-                className="flex-shrink-0 w-9 h-9 rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/90 disabled:opacity-30"
+                className="flex-shrink-0 w-12 h-12 rounded-2xl bg-destructive text-destructive-foreground hover:bg-destructive/90 border-2 border-foreground disabled:opacity-40 disabled:cursor-not-allowed active:translate-y-[2px] transition-transform"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                aria-label="שלח"
               >
-                <span className="text-base">←</span>
+                <span className="text-xl font-bold">←</span>
               </Button>
             </div>
           </div>
