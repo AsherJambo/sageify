@@ -10,13 +10,14 @@ interface Props {
   onBackToHub?: () => void;
 }
 
-const CORE_COLORS: Record<VIACategory, string> = {
-  'מיקוד בטוב/נשגבות': 'from-amber-400 to-orange-500',
-  'אנושיות': 'from-rose-400 to-pink-500',
-  'חכמה וידע': 'from-sky-400 to-cyan-500',
-  'אומץ לב': 'from-red-500 to-rose-600',
-  'חוש צדק': 'from-emerald-400 to-teal-500',
-  'מתינות וריסון': 'from-violet-400 to-fuchsia-500',
+// Owl Forest tints — semantic tokens, warm forest palette
+const CORE_TINTS: Record<VIACategory, { bg: string; ring: string; shadow: string }> = {
+  'מיקוד בטוב/נשגבות': { bg: 'bg-accent', ring: 'border-accent', shadow: 'hsl(var(--accent) / 0.5)' },
+  'אנושיות':           { bg: 'bg-coral-soft', ring: 'border-destructive', shadow: 'hsl(var(--destructive) / 0.4)' },
+  'חכמה וידע':         { bg: 'bg-sky-soft', ring: 'border-foreground/30', shadow: 'hsl(var(--foreground) / 0.18)' },
+  'אומץ לב':           { bg: 'bg-destructive', ring: 'border-foreground/30', shadow: 'hsl(var(--destructive) / 0.5)' },
+  'חוש צדק':           { bg: 'bg-sage', ring: 'border-sage', shadow: 'hsl(var(--sage) / 0.5)' },
+  'מתינות וריסון':     { bg: 'bg-sage-light', ring: 'border-sage', shadow: 'hsl(var(--sage) / 0.35)' },
 };
 
 const TARGET = 3;
@@ -29,7 +30,7 @@ const GameVIA = ({ onComplete, onBackToHub }: Props) => {
     () =>
       viaCategories.map((c, i) => ({
         name: c,
-        color: CORE_COLORS[c],
+        tint: CORE_TINTS[c],
         x: ((i * 41) % 70) + 15,
         y: ((i * 27) % 50) + 12,
         delay: (i * 0.07) % 0.6,
@@ -52,12 +53,10 @@ const GameVIA = ({ onComplete, onBackToHub }: Props) => {
   };
 
   const finish = (selected: VIACategory[]) => {
-    // Synthesize Likert: questions in picked categories => 5, otherwise => 3
     const answers: Record<number, number> = {};
     viaQuestions.forEach((q) => {
       answers[q.id] = selected.includes(q.category as VIACategory) ? 5 : 3;
     });
-    // Bonus: 3 questions — one from each picked category (lowest id for stability)
     const bonusIds: number[] = [];
     selected.forEach((cat) => {
       const q = viaQuestions.find((x) => x.category === cat);
@@ -74,27 +73,20 @@ const GameVIA = ({ onComplete, onBackToHub }: Props) => {
       subtitle="הקישו על 3 עולמות שמדליקים אתכם"
       step={picked.length}
       total={TARGET}
-      bg="bg-gradient-to-b from-[#0b0420] via-[#120833] to-[#05010f]"
       onBack={onBackToHub}
     >
       <div className="relative flex-1 overflow-hidden">
-        {/* Central Core */}
+        {/* Central Owl Core — chunky amber medallion */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
           <motion.div
-            animate={{
-              scale: [1, 1.08, 1],
-              boxShadow: [
-                '0 0 60px 10px rgba(168,85,247,0.35)',
-                '0 0 90px 20px rgba(236,72,153,0.55)',
-                '0 0 60px 10px rgba(168,85,247,0.35)',
-              ],
-            }}
+            animate={{ scale: [1, 1.06, 1] }}
             transition={{ duration: 3, repeat: Infinity }}
-            className="w-36 h-36 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-indigo-600 flex items-center justify-center"
+            className="w-36 h-36 rounded-full bg-accent border-4 border-foreground/20 flex items-center justify-center"
+            style={{ boxShadow: '0 8px 0 0 hsl(var(--foreground) / 0.22)' }}
           >
-            <div className="w-28 h-28 rounded-full bg-black/40 backdrop-blur flex flex-col items-center justify-center text-center">
-              <div className="text-4xl font-bold tabular-nums">{picked.length}</div>
-              <div className="text-[10px] tracking-[0.25em] opacity-70">/ {TARGET}</div>
+            <div className="w-28 h-28 rounded-full bg-card border-2 border-foreground/15 flex flex-col items-center justify-center text-center text-foreground">
+              <div className="text-4xl font-serif tabular-nums">{picked.length}</div>
+              <div className="text-[10px] tracking-[0.25em] opacity-60">/ {TARGET}</div>
             </div>
           </motion.div>
           <AnimatePresence>
@@ -105,7 +97,7 @@ const GameVIA = ({ onComplete, onBackToHub }: Props) => {
                 animate={{ scale: 2.6, opacity: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.9 }}
-                className="absolute inset-0 rounded-full border-2 border-fuchsia-400/60 pointer-events-none"
+                className="absolute inset-0 rounded-full border-2 border-accent pointer-events-none"
               />
             )}
           </AnimatePresence>
@@ -130,14 +122,19 @@ const GameVIA = ({ onComplete, onBackToHub }: Props) => {
                   scale: { duration: 0.4 },
                   y: { duration: 3 + it.delay * 4, repeat: Infinity, delay: it.delay },
                 }}
-                whileTap={{ scale: 0.92 }}
-                style={{ left: `${it.x}%`, top: `${it.y}%` }}
-                className={`absolute -translate-x-1/2 -translate-y-1/2 px-4 py-3 min-h-[52px] rounded-2xl text-sm font-bold text-white bg-gradient-to-br ${it.color} shadow-xl border-2 transition-all ${
-                  isPicked ? 'border-white ring-4 ring-white/40' : 'border-white/20'
+                whileTap={{ scale: 0.92, y: 4 }}
+                style={{
+                  left: `${it.x}%`,
+                  top: `${it.y}%`,
+                  boxShadow: `0 6px 0 0 ${it.tint.shadow}`,
+                  minHeight: 52,
+                }}
+                className={`absolute -translate-x-1/2 -translate-y-1/2 px-4 py-3 rounded-2xl text-sm font-bold text-foreground ${it.tint.bg} border-2 transition-all ${
+                  isPicked ? 'border-foreground ring-4 ring-accent/40' : it.tint.ring
                 }`}
               >
                 {it.name}
-                {isPicked && <span className="block text-[10px] opacity-90 mt-0.5">✓ נבחר</span>}
+                {isPicked && <span className="block text-[10px] opacity-80 mt-0.5">✓ נבחר</span>}
               </motion.button>
             );
           })}

@@ -66,23 +66,23 @@ const GameSchein = ({ onComplete, onBackToHub }: Props) => {
       subtitle="השאירו את 3 העוגנים שהכי מעגנים אתכם"
       step={picked.length}
       total={TARGET}
-      bg="bg-gradient-to-b from-[#0a1f33] via-[#0f3457] to-[#020816]"
       onBack={onBackToHub}
     >
-      <div className="px-4 py-6 flex-1 flex flex-col">
+      <div className="px-4 py-6 flex-1 flex flex-col max-w-3xl mx-auto w-full">
         {/* Kept anchors */}
         <div className="mb-6">
-          <p className="text-[11px] tracking-widest opacity-60 mb-2 text-center">העוגנים שלכם</p>
-          <div className="flex gap-2 justify-center min-h-[60px]">
+          <p className="text-[11px] tracking-widest text-foreground/60 mb-2 text-center">העוגנים שלכם</p>
+          <div className="flex gap-2 justify-center min-h-[60px] flex-wrap">
             {picked.length === 0 && (
-              <span className="text-xs opacity-50 self-center">בחרו 3 שמדברים אליכם</span>
+              <span className="text-xs text-foreground/50 self-center">בחרו 3 שמדברים אליכם</span>
             )}
             {picked.map((p) => (
               <motion.div
                 key={p}
                 initial={{ scale: 0.4, y: -20 }}
                 animate={{ scale: 1, y: 0 }}
-                className="px-3 py-2 rounded-xl bg-gradient-to-br from-amber-300 to-orange-400 text-slate-900 text-xs font-bold shadow-lg flex items-center gap-1.5"
+                className="px-3 py-2 rounded-xl bg-accent text-foreground text-xs font-bold flex items-center gap-1.5 border-2 border-foreground/20"
+                style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.20)' }}
               >
                 <span>{ANCHOR_EMOJI[p]}</span>
                 <span>{p}</span>
@@ -111,20 +111,23 @@ const GameSchein = ({ onComplete, onBackToHub }: Props) => {
                     ? { duration: 0.6, ease: 'easeIn' }
                     : { y: { duration: 4, repeat: Infinity }, opacity: { duration: 0.4 } }
                 }
-                className="relative bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-4 flex flex-col items-center gap-3 min-h-[140px]"
+                className="relative bg-card border-2 border-foreground/15 rounded-2xl p-4 flex flex-col items-center gap-3 min-h-[140px]"
+                style={{ boxShadow: '0 5px 0 0 hsl(var(--foreground) / 0.15)' }}
               >
                 <div className="text-3xl">{ANCHOR_EMOJI[c]}</div>
-                <div className="text-sm font-bold text-center leading-tight">{c}</div>
+                <div className="text-sm font-bold text-center leading-tight text-foreground">{c}</div>
                 <div className="flex gap-2 w-full">
                   <button
                     onClick={() => sink(c)}
-                    className="flex-1 text-[11px] py-1.5 rounded-lg bg-white/10 hover:bg-rose-500/30 border border-white/15 transition-colors"
+                    className="flex-1 text-[11px] py-2 rounded-lg bg-secondary text-foreground/70 border-2 border-foreground/10 font-bold active:translate-y-0.5 transition-transform"
+                    style={{ boxShadow: '0 2px 0 0 hsl(var(--foreground) / 0.15)' }}
                   >
                     שחרר ↓
                   </button>
                   <button
                     onClick={() => keep(c)}
-                    className="flex-1 text-[11px] py-1.5 rounded-lg bg-amber-400 text-slate-900 font-bold hover:bg-amber-300 transition-colors"
+                    className="flex-1 text-[11px] py-2 rounded-lg bg-accent text-foreground font-bold border-2 border-foreground/20 active:translate-y-0.5 transition-transform"
+                    style={{ boxShadow: '0 2px 0 0 hsl(var(--foreground) / 0.25)' }}
                   >
                     שמור ★
                   </button>
