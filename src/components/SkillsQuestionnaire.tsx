@@ -41,7 +41,7 @@ const columnLabels: Record<SkillColumn, { title: string; desc: string; symbol: s
     desc: 'רוצה ללמוד ולעסוק בזה',
     symbol: '🌱',
     color: 'sky',
-    activeClass: 'bg-sky text-white border-sky scale-[1.03] shadow-[0_0_18px_hsl(var(--sky)/0.35)]',
+    activeClass: 'bg-sky text-primary-foreground border-sky scale-[1.03] shadow-[0_0_18px_hsl(var(--sky)/0.35)]',
     hoverClass: 'hover:border-sky/60 hover:bg-sky-soft/50',
   },
   irrelevant: {
