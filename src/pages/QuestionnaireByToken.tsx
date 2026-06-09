@@ -115,6 +115,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
   const [responseId, setResponseId] = useState<string | null>(null);
   const [idNumber, setIdNumber] = useState('');
   const [cloudSynced, setCloudSynced] = useState(false);
+  const [cloudSyncFailed, setCloudSyncFailed] = useState(false);
 
   const stateStorageKey = token ? `sageify-state-${token}` : null;
   const chatStorageKey = token ? `sageify-chat-${token}` : null;
@@ -164,59 +165,64 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
     if (!token) { setPageState('invalid'); return; }
 
     (async () => {
-      const { data, error } = await supabase
-        .from('questionnaire_tokens')
-        .select('*')
-        .eq('token', token)
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from('questionnaire_tokens')
+          .select('*')
+          .eq('token', token)
+          .single();
 
-      if (error || !data) { setPageState('invalid'); return; }
-      if (data.completed_at && !isAdminMode) { setPageState('used'); return; }
+        if (error || !data) { setPageState('invalid'); return; }
+        if (data.completed_at && !isAdminMode) { setPageState('used'); return; }
 
-      setTokenRow({ id: data.id, username: data.username });
+        setTokenRow({ id: data.id, username: data.username });
 
-      if (!data.used && !isAdminMode) {
-        await supabase.from('questionnaire_tokens').update({ used: true }).eq('id', data.id);
-      }
-
-      const { data: existing } = await supabase
-        .from('questionnaire_responses')
-        .select('*')
-        .eq('token_id', data.id)
-        .single();
-
-      if (existing) {
-        setResponseId(existing.id);
-        const loaded = existing.response_data as unknown as ResponseData;
-        if (loaded.step === 'welcome' || loaded.step === 'landing') {
-          loaded.step = 'hub';
+        if (!data.used && !isAdminMode) {
+          await supabase.from('questionnaire_tokens').update({ used: true }).eq('id', data.id);
         }
-        // Merge with whatever is already on screen from localStorage —
-        // prefer the longer chat history so we never overwrite a richer local copy.
-        setState(prev => {
-          const localChat = prev.chatMessages || [];
-          const cloudChat = loaded.chatMessages || [];
-          const chatMessages = localChat.length > cloudChat.length ? localChat : cloudChat;
-          return { ...loaded, chatMessages };
-        });
-      } else {
-        // No cloud record yet — push current (possibly local-hydrated) state up
-        setState(prev => {
-          const initial: ResponseData = prev && Object.keys(prev).length > 0
-            ? { ...prev, step: prev.step === 'loading' || prev.step === 'invalid' || prev.step === 'used' ? 'hub' : prev.step }
-            : { ...defaultData, step: 'hub' };
-          supabase
-            .from('questionnaire_responses')
-            .insert([{ token_id: data.id, response_data: JSON.parse(JSON.stringify(initial)) }])
-            .select()
-            .single()
-            .then(({ data: newResp }) => { if (newResp) setResponseId(newResp.id); });
-          return initial;
-        });
-      }
 
-      setCloudSynced(true);
-      setPageState('ready');
+        const { data: existing } = await supabase
+          .from('questionnaire_responses')
+          .select('*')
+          .eq('token_id', data.id)
+          .single();
+
+        if (existing) {
+          setResponseId(existing.id);
+          const loaded = existing.response_data as unknown as ResponseData;
+          if (loaded.step === 'welcome' || loaded.step === 'landing') {
+            loaded.step = 'hub';
+          }
+          // Merge with whatever is already on screen from localStorage —
+          // prefer the longer chat history so we never overwrite a richer local copy.
+          setState(prev => {
+            const localChat = prev.chatMessages || [];
+            const cloudChat = loaded.chatMessages || [];
+            const chatMessages = localChat.length > cloudChat.length ? localChat : cloudChat;
+            return { ...loaded, chatMessages };
+          });
+        } else {
+          // No cloud record yet — push current (possibly local-hydrated) state up
+          setState(prev => {
+            const initial: ResponseData = prev && Object.keys(prev).length > 0
+              ? { ...prev, step: prev.step === 'loading' || prev.step === 'invalid' || prev.step === 'used' ? 'hub' : prev.step }
+              : { ...defaultData, step: 'hub' };
+            supabase
+              .from('questionnaire_responses')
+              .insert([{ token_id: data.id, response_data: JSON.parse(JSON.stringify(initial)) }])
+              .select()
+              .single()
+              .then(({ data: newResp }) => { if (newResp) setResponseId(newResp.id); });
+            return initial;
+          });
+        }
+      } catch (err) {
+        console.error('Cloud sync error:', err);
+        setCloudSyncFailed(true);
+      } finally {
+        setCloudSynced(true);
+        setPageState(prev => (prev === 'loading' ? 'ready' : prev));
+      }
     })();
   }, [token]);
 
