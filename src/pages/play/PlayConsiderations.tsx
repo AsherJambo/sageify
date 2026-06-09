@@ -44,7 +44,7 @@ export default function PlayConsiderations() {
   return (
     <PlayShell
       title="Energy Balancer"
-      bg="bg-gradient-to-b from-[#1e1b4b] via-[#0f172a] to-[#020617]"
+      bg="bg-background"
     >
       {done ? (
         <DoneScreen title="האנרגיה שלך חולקה." subtitle="זה מפת המשקלים האישית שלך.">

@@ -65,7 +65,7 @@ export default function PlaySchein() {
       title="Weight of the Anchor"
       step={Math.max(1, step)}
       total={total}
-      bg="bg-gradient-to-b from-[#021024] via-[#052e4a] to-[#0a4a6e]"
+      bg="bg-background"
     >
       {done && champion ? (
         <DoneScreen title="העוגן שלך נמצא." subtitle="זה הדבר שלא תוותר עליו.">

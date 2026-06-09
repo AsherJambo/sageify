@@ -75,7 +75,7 @@ export default function PlayVIA() {
       title="The Core Forge"
       step={picked.length}
       total={5}
-      bg="bg-gradient-to-b from-[#0b0420] via-[#120833] to-[#05010f]"
+      bg="bg-background"
     >
       {done ? (
         <DoneScreen title="הליבה זהרה." subtitle="חמש החוזקות שלך נחרטו במרכז.">

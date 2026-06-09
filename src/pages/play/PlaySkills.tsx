@@ -62,7 +62,7 @@ export default function PlaySkills() {
       title="The Champion Draft"
       step={idx + 1}
       total={SKILLS.length}
-      bg="bg-gradient-to-b from-[#0f172a] via-[#1e1b4b] to-[#0f172a]"
+      bg="bg-background"
     >
       {done ? (
         <DoneScreen title="הכישורים שלך מסודרים." subtitle="הצוות הראשי שלך מוכן.">
