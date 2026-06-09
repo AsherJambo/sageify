@@ -533,6 +533,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
             initialMessages={state.chatMessages}
             onMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
             onRoadmapReady={() => setAdvisorProgress(100)}
+            isSyncing={!cloudSynced}
             onFinish={() => {
               markComplete();
               if (tokenRow) {
