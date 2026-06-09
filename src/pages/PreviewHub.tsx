@@ -19,14 +19,14 @@ const PreviewHub = () => {
             מרכז המשחקים
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            שמונה משחקים קצרים — כל אחד חושף עוד פיסה מהפרופיל שלך.
+            משחק קצר אחד לטעימה — חושף פיסה מהפרופיל שלך.
             <br className="hidden sm:block" />
-            בחר משחק והתחל לשחק.
+            לחצו והתחילו לשחק.
           </p>
         </motion.header>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {PREVIEW_GAMES.map((p, i) => (
+          {PREVIEW_GAMES.slice(0, 1).map((p, i) => (
             <motion.div
               key={p.path}
               initial={{ opacity: 0, y: 16 }}
