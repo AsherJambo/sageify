@@ -315,7 +315,7 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
                           </div>
                           {/* Answer number badge */}
                           <div className={`absolute top-1 right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold font-display ${
-                            isSelected ? 'bg-secondary text-white' : 'bg-muted/60 text-muted-foreground'
+                            isSelected ? 'bg-accent text-accent-foreground' : 'bg-muted/60 text-muted-foreground'
                           }`}>
                             {num}
                           </div>
@@ -324,7 +324,7 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
                             <motion.div
                               initial={{ scale: 0 }}
                               animate={{ scale: 1 }}
-                              className="absolute top-1 left-1 w-7 h-7 rounded-full bg-secondary text-white flex items-center justify-center text-sm font-bold shadow-md"
+                              className="absolute top-1 left-1 w-7 h-7 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-sm font-bold shadow-md"
                             >
                               ✓
                             </motion.div>
@@ -382,7 +382,7 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
                           <motion.div
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
-                            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-secondary text-white flex items-center justify-center text-xs font-bold shadow-md"
+                            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-xs font-bold shadow-md"
                           >
                             ✓
                           </motion.div>
