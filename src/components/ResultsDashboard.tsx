@@ -258,7 +258,8 @@ const ResultsDashboard = ({
             </div>
             <a
               href="/#/"
-              className="w-full md:w-auto px-8 py-4 bg-primary text-primary-foreground font-bold font-display tracking-wide rounded-2xl shadow-[var(--shadow-elevated)] hover:bg-primary/90 transition whitespace-nowrap min-h-[56px] inline-flex items-center justify-center"
+              style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.22)' }}
+              className="w-full md:w-auto px-8 py-4 bg-destructive text-destructive-foreground font-bold font-display tracking-wide rounded-2xl border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 whitespace-nowrap min-h-[56px] inline-flex items-center justify-center"
             >
               קבעו פגישת ייעוץ תעסוקתי ←
             </a>
@@ -286,7 +287,8 @@ const ResultsDashboard = ({
                {onBackToHub && (
                  <button
                    onClick={onBackToHub}
-                   className="mt-3 px-6 py-3 rounded-xl bg-secondary text-secondary-foreground text-base font-medium font-display tracking-wide hover:bg-secondary/85 transition-all duration-300 shadow-sm min-h-[52px]"
+                   style={{ boxShadow: '0 5px 0 0 hsl(var(--foreground) / 0.18)' }}
+                   className="mt-3 px-6 py-3 rounded-xl bg-accent text-accent-foreground text-base font-bold font-display tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 min-h-[52px]"
                  >
                    חזרה להשלמת שאלונים ←
                  </button>
@@ -596,9 +598,10 @@ const ResultsDashboard = ({
         <div className="text-center pb-10 space-y-5 print:hidden">
           <button
             onClick={() => window.print()}
-            className="px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-medium font-display text-lg tracking-wide hover:bg-primary/85 transition-all duration-300 mx-2 shadow-[var(--shadow-card)] min-h-[56px]"
+            style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.22)' }}
+            className="px-10 py-4 rounded-2xl bg-destructive text-destructive-foreground font-bold font-display text-lg tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 mx-2 min-h-[56px]"
           >
-            הורדה כ-PDF
+            ⬇ הורדה כ-PDF
           </button>
           <br />
           <p className="text-muted-foreground mb-3 text-base">סגי תמיד כאן אם תרצו לעבור שוב</p>
@@ -607,7 +610,8 @@ const ResultsDashboard = ({
               localStorage.clear();
               window.location.reload();
             }}
-            className="px-10 py-4 rounded-2xl bg-muted text-foreground font-medium font-display text-lg tracking-wide hover:bg-muted/80 transition-all duration-300 min-h-[56px]"
+            style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.12)' }}
+            className="px-10 py-4 rounded-2xl bg-card text-foreground font-bold font-display text-lg tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 min-h-[56px]"
           >
             התחלה מחדש
           </button>
