@@ -19,9 +19,9 @@ const PreviewHub = () => {
             מרכז המשחקים
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            שמונה משחקים קצרים — כל אחד חושף עוד פיסה מהפרופיל שלך.
+            משחק קצר אחד לטעימה — חושף פיסה מהפרופיל שלך.
             <br className="hidden sm:block" />
-            בחר משחק והתחל לשחק.
+            לחצו והתחילו לשחק.
           </p>
         </motion.header>
 
