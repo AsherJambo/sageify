@@ -21,8 +21,9 @@ type Card = {
   subtitle: string;
   minutes: string;
   Icon: any;
-  tint: string;        // chunky card tint
-  iconBg: string;      // pill icon bg
+  to: string;
+  tint: string;
+  iconBg: string;
 };
 
 const cards: Card[] = [
