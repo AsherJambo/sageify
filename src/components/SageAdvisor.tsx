@@ -52,6 +52,25 @@ const SageAdvisor = ({
   const [searchResultsByMessage, setSearchResultsByMessage] = useState<Record<number, SearchResult[]>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Sync timer: tracks elapsed seconds while cloud sync is in progress
+  const [syncElapsed, setSyncElapsed] = useState(0);
+  const syncStartRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (!isSyncing) {
+      syncStartRef.current = null;
+      setSyncElapsed(0);
+      return;
+    }
+    if (syncStartRef.current === null) syncStartRef.current = Date.now();
+    setSyncElapsed(Math.floor((Date.now() - syncStartRef.current) / 1000));
+    const id = setInterval(() => {
+      if (syncStartRef.current !== null) {
+        setSyncElapsed(Math.floor((Date.now() - syncStartRef.current) / 1000));
+      }
+    }, 1000);
+    return () => clearInterval(id);
+  }, [isSyncing]);
+
   useEffect(() => {
     if (initialMessages?.some(m => m.content.includes('Sage Action Roadmap'))) {
       setRoadmapDetected(true);
