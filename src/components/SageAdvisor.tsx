@@ -598,24 +598,27 @@ const SageAdvisor = ({
             >
               {msg.role === 'assistant' ? (
                 <>
-                  {/* Sagi avatar */}
+                  {/* Sagi avatar — owl badge */}
                   <div className="flex-shrink-0 pt-1">
-                    <img
-                      src={owlLogo}
-                      alt="סגי"
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full ring-1 ring-secondary/20 shadow-sm"
-                    />
-                  </div>
-                  {/* Sagi message bubble */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-sm font-semibold font-display text-foreground tracking-wide">סגי</span>
-                      <span className="text-[10px] text-muted-foreground/60">יועץ קריירה</span>
+                    <div
+                      className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-card border-2 border-foreground flex items-center justify-center"
+                      style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                    >
+                      <img src={owlLogo} alt="סגי" className="w-9 h-9 sm:w-10 sm:h-10 rounded-full" />
                     </div>
-                    <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 p-4 sm:p-6 shadow-[var(--shadow-card)]">
-                      <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h1]:text-lg [&_h2]:text-secondary [&_h2]:font-display [&_h2]:text-base [&_h3]:text-secondary [&_h3]:font-display [&_h3]:text-sm [&_strong]:text-secondary [&_li]:mb-1.5 [&_ul]:mr-4 [&_ol]:mr-4 text-foreground leading-relaxed text-sm">
-                        <ReactMarkdown>{msg.content}</ReactMarkdown>
-                      </div>
+                  </div>
+                  {/* Sagi message — no bubble; clean reading surface */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-base font-serif font-bold text-foreground tracking-wide">סגי</span>
+                      <span
+                        className="text-xs px-2 py-0.5 rounded-full bg-sage-light text-foreground border border-foreground/30 font-bold"
+                      >
+                        🦉 יועץ קריירה
+                      </span>
+                    </div>
+                    <div className="text-foreground leading-relaxed text-base sm:text-lg prose prose-base max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:font-serif [&_h1]:text-foreground [&_h1]:text-2xl [&_h2]:font-serif [&_h2]:text-foreground [&_h2]:text-xl [&_h3]:font-serif [&_h3]:text-foreground [&_h3]:text-lg [&_strong]:text-foreground [&_strong]:font-bold [&_a]:text-destructive [&_a]:underline [&_a]:decoration-2 [&_a]:underline-offset-2 [&_code]:bg-sand-warm [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-foreground [&_li]:mb-1.5 [&_ul]:mr-5 [&_ol]:mr-5 [&_blockquote]:border-r-4 [&_blockquote]:border-accent [&_blockquote]:pr-4 [&_blockquote]:bg-gold-light [&_blockquote]:py-2 [&_blockquote]:rounded-lg">
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
                     </div>
                     {/* Search results inline after assistant message */}
                     {searchResultsByMessage[originalIdx] && (
@@ -631,19 +634,25 @@ const SageAdvisor = ({
                 <>
                   {/* User avatar */}
                   <div className="flex-shrink-0 pt-1">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
-                      <span className="text-primary font-display font-bold text-sm">
+                    <div
+                      className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-accent text-accent-foreground border-2 border-foreground flex items-center justify-center"
+                      style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                    >
+                      <span className="font-serif font-bold text-lg">
                         {username ? username.charAt(0) : '👤'}
                       </span>
                     </div>
                   </div>
-                  {/* User message bubble */}
+                  {/* User message bubble — coral high-contrast */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-sm font-semibold text-foreground">{username || 'אני'}</span>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-base font-serif font-bold text-foreground">{username || 'אני'}</span>
                     </div>
-                    <div className="bg-primary/5 rounded-2xl rounded-tr-md border border-primary/10 px-4 py-3 sm:px-5 sm:py-4">
-                      <p className="text-foreground text-sm leading-relaxed">{msg.content}</p>
+                    <div
+                      className="bg-destructive text-destructive-foreground rounded-2xl rounded-tr-md border-2 border-foreground px-5 py-4"
+                      style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.85)' }}
+                    >
+                      <p className="text-base sm:text-lg leading-relaxed">{msg.content}</p>
                     </div>
                   </div>
                 </>
