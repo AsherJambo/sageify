@@ -447,29 +447,42 @@ const SageAdvisor = ({
   const visibleMessages = messages.filter(m => m.role !== 'user' || m.content !== 'שלום! סיימתי את כל שאלוני האבחון. אשמח לשמוע את הניתוח שלך ולבנות תכנית פעולה.');
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-3 sm:px-4 py-6 sm:py-12">
+    <div className="min-h-screen flex flex-col items-center px-3 sm:px-4 py-6 sm:py-12 bg-background">
       <div className="w-full max-w-3xl flex flex-col gap-5 sm:gap-8">
-        
-        {/* Header */}
+
+        {/* Header — owl badge + status chip */}
         <div className="text-center space-y-4">
           <div className="relative inline-block">
-            <img src={owlLogo} alt="" className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full ring-2 ring-secondary/20 shadow-[var(--shadow-elevated)]" />
-            <span className="absolute bottom-1 right-1 w-4 h-4 bg-secondary rounded-full border-2 border-background" />
+            <div
+              className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-card border-2 border-foreground flex items-center justify-center"
+              style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
+            >
+              <img src={owlLogo} alt="" className="w-16 h-16 sm:w-20 sm:h-20 rounded-full" />
+            </div>
+            <span className="absolute bottom-0 right-0 w-5 h-5 bg-sage rounded-full border-2 border-foreground" aria-hidden="true" />
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">Sage Career Advisor</h2>
-          <p className="text-muted-foreground text-sm tracking-wide">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-foreground tracking-wide">
+            סגי — היועץ שלך 🦉
+          </h2>
+          <div className="flex justify-center">
             {isStreaming ? (
-              <span className="inline-flex items-center gap-1.5">
-                <span className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
-                מנתח ומייצר תובנות...
+              <span
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent text-accent-foreground border-2 border-foreground text-sm font-bold"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+              >
+                <span className="w-2 h-2 bg-foreground rounded-full animate-pulse" />
+                סגי חושב…
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1.5">
-                <span className="w-2 h-2 bg-secondary/60 rounded-full" />
-                מוכן לייעוץ
+              <span
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sage-light text-foreground border-2 border-foreground text-sm font-bold"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+              >
+                <span className="w-2 h-2 bg-sage rounded-full" />
+                מוכן לשיחה
               </span>
             )}
-          </p>
+          </div>
         </div>
 
         {/* Profile Summary Card — collapsible after first response */}
