@@ -40,6 +40,7 @@ const SageAdvisor = ({
   viaScores, scheinScores, hollandScores,
   considerationsData, skillsAssignments, preferencesData, thinkingResult,
   initialMessages, onMessagesChange, onRoadmapReady, onFinish,
+  isSyncing,
 }: SageAdvisorProps) => {
   const [phase, setPhase] = useState<'loading' | 'chat' | 'done'>(
     initialMessages && initialMessages.length > 0 ? 'chat' : 'loading'
