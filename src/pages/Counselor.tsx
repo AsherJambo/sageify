@@ -139,12 +139,17 @@ const Counselor = () => {
 
   if (!authenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4" dir="rtl">
-        <Card className="w-full max-w-md p-8 space-y-6">
+      <div className="min-h-screen flex items-center justify-center bg-background p-4 relative" dir="rtl">
+        <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+          <div className="absolute -top-24 -right-16 w-80 h-80 rounded-full bg-accent/25 blur-3xl" />
+          <div className="absolute bottom-0 -left-16 w-72 h-72 rounded-full bg-sage/25 blur-3xl" />
+        </div>
+        <Card className="w-full max-w-md p-8 space-y-6 bg-card border-2 border-foreground/10"
+          style={{ boxShadow: '0 8px 0 0 hsl(var(--foreground) / 0.10)' }}>
           <div className="text-center space-y-2">
-            <img src={owlLogo} alt="Sageify" className="w-16 h-16 mx-auto" />
-            <h1 className="text-2xl font-bold">דשבורד יועץ תעסוקתי</h1>
-            <p className="text-sm text-muted-foreground">ניהול פגישות עם משתמשים</p>
+            <img src={owlLogo} alt="Sageify" className="w-20 h-20 mx-auto" />
+            <h1 className="text-3xl font-serif">דשבורד יועץ תעסוקתי</h1>
+            <p className="text-base text-muted-foreground">ניהול פגישות עם משתמשים</p>
           </div>
           <div className="space-y-3">
             <Input
@@ -153,11 +158,16 @@ const Counselor = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-              className="text-center"
+              className="text-center text-lg"
+              style={{ minHeight: 56 }}
             />
-            <Button onClick={handleLogin} className="w-full" size="lg">
+            <button
+              onClick={handleLogin}
+              className="w-full px-8 py-4 bg-destructive text-destructive-foreground rounded-2xl text-lg font-bold border-2 border-foreground/15 transition-all hover:-translate-y-0.5 active:translate-y-1"
+              style={{ minHeight: 56, boxShadow: '0 5px 0 0 hsl(var(--foreground) / 0.85)' }}
+            >
               כניסה
-            </Button>
+            </button>
           </div>
         </Card>
       </div>
@@ -165,15 +175,19 @@ const Counselor = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 p-4 md:p-6" dir="rtl">
+    <div className="min-h-screen bg-background p-4 md:p-6 relative" dir="rtl">
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-24 -right-16 w-80 h-80 rounded-full bg-accent/20 blur-3xl" />
+        <div className="absolute bottom-0 -left-16 w-72 h-72 rounded-full bg-sage/20 blur-3xl" />
+      </div>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <img src={owlLogo} alt="Sageify" className="w-12 h-12" />
+            <img src={owlLogo} alt="Sageify" className="w-14 h-14" />
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold">דשבורד יועץ תעסוקתי</h1>
-              <p className="text-sm text-muted-foreground">פגישות מתוזמנות</p>
+              <h1 className="text-3xl md:text-4xl font-serif">דשבורד יועץ תעסוקתי</h1>
+              <p className="text-base text-muted-foreground">פגישות מתוזמנות</p>
             </div>
           </div>
           <div className="flex gap-2">
