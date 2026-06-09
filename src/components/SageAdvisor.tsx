@@ -418,18 +418,23 @@ const SageAdvisor = ({
   // Loading phase
   if (phase === 'loading') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6">
+      <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-background">
         <div className="max-w-md text-center space-y-8">
-          <img src={owlLogo} alt="Sage Advisor" className="w-28 h-28 mx-auto animate-float rounded-full shadow-[var(--shadow-elevated)]" />
-          <h2 className="text-3xl font-bold font-display text-foreground tracking-wide">
-            מנתח את התוצאות שלך...
+          <div
+            className="w-32 h-32 mx-auto rounded-full bg-card border-2 border-foreground flex items-center justify-center animate-float"
+            style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
+          >
+            <img src={owlLogo} alt="Sagi" className="w-24 h-24 rounded-full" />
+          </div>
+          <h2 className="text-3xl font-serif font-bold text-foreground tracking-wide">
+            סגי מנתח את הסיפור שלך… 🦉
           </h2>
-          <p className="text-muted-foreground text-lg">
-            מעבד את הפרופיל שלך ומכין תובנות מותאמות אישית
+          <p className="text-foreground/75 text-lg leading-relaxed">
+            מכין תובנות אישיות וחם מהתנור עבורך
           </p>
-          <div className="w-full h-2 bg-muted/40 rounded-full overflow-hidden">
+          <div className="w-full h-5 bg-sand-warm rounded-full overflow-hidden border-2 border-foreground">
             <div
-              className="h-full bg-secondary rounded-full progress-bar-fill animate-pulse"
+              className="h-full bg-accent animate-pulse"
               style={{ width: '85%' }}
             />
           </div>
@@ -442,100 +447,134 @@ const SageAdvisor = ({
   const visibleMessages = messages.filter(m => m.role !== 'user' || m.content !== 'שלום! סיימתי את כל שאלוני האבחון. אשמח לשמוע את הניתוח שלך ולבנות תכנית פעולה.');
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-3 sm:px-4 py-6 sm:py-12">
+    <div className="min-h-screen flex flex-col items-center px-3 sm:px-4 py-6 sm:py-12 bg-background">
       <div className="w-full max-w-3xl flex flex-col gap-5 sm:gap-8">
-        
-        {/* Header */}
+
+        {/* Header — owl badge + status chip */}
         <div className="text-center space-y-4">
           <div className="relative inline-block">
-            <img src={owlLogo} alt="" className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full ring-2 ring-secondary/20 shadow-[var(--shadow-elevated)]" />
-            <span className="absolute bottom-1 right-1 w-4 h-4 bg-secondary rounded-full border-2 border-background" />
+            <div
+              className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-card border-2 border-foreground flex items-center justify-center"
+              style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
+            >
+              <img src={owlLogo} alt="" className="w-16 h-16 sm:w-20 sm:h-20 rounded-full" />
+            </div>
+            <span className="absolute bottom-0 right-0 w-5 h-5 bg-sage rounded-full border-2 border-foreground" aria-hidden="true" />
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-foreground tracking-wide">Sage Career Advisor</h2>
-          <p className="text-muted-foreground text-sm tracking-wide">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-foreground tracking-wide">
+            סגי — היועץ שלך 🦉
+          </h2>
+          <div className="flex justify-center">
             {isStreaming ? (
-              <span className="inline-flex items-center gap-1.5">
-                <span className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
-                מנתח ומייצר תובנות...
+              <span
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent text-accent-foreground border-2 border-foreground text-sm font-bold"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+              >
+                <span className="w-2 h-2 bg-foreground rounded-full animate-pulse" />
+                סגי חושב…
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1.5">
-                <span className="w-2 h-2 bg-secondary/60 rounded-full" />
-                מוכן לייעוץ
+              <span
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sage-light text-foreground border-2 border-foreground text-sm font-bold"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+              >
+                <span className="w-2 h-2 bg-sage rounded-full" />
+                מוכן לשיחה
               </span>
             )}
-          </p>
+          </div>
         </div>
 
         {/* Profile Summary Card — collapsible after first response */}
         {visibleMessages.length <= 1 ? (
-          <div className="bg-card rounded-3xl border border-border/60 p-5 sm:p-8 shadow-[var(--shadow-card)]" dir="rtl">
-            <h3 className="text-lg font-bold font-display text-foreground mb-4 flex items-center gap-3 tracking-wide">
-              <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm text-secondary">✦</span>
-              סיכום הפרופיל האישי שלך
+          <div
+            className="bg-card rounded-3xl border-2 border-foreground p-5 sm:p-8"
+            style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
+            dir="rtl"
+          >
+            <h3 className="text-lg sm:text-xl font-serif font-bold text-foreground mb-5 flex items-center gap-3 tracking-wide">
+              <span
+                className="w-10 h-10 rounded-xl bg-accent text-accent-foreground border-2 border-foreground flex items-center justify-center"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                aria-hidden="true"
+              >🪙</span>
+              סיכום הפרופיל שלך
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-              <div className="space-y-1.5">
-                <p className="font-semibold text-foreground">◆ חוזקות מובילות</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-base">
+              <div className="bg-sage-light border-2 border-foreground/25 rounded-2xl p-4 space-y-2">
+                <p className="font-serif font-bold text-foreground flex items-center gap-2">🌿 חוזקות מובילות</p>
                 {topVIA.map(t => (
-                  <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
+                  <p key={t.category} className="text-foreground/80 leading-relaxed">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
                 ))}
               </div>
-              <div className="space-y-1.5">
-                <p className="font-semibold text-foreground">◆ עוגני קריירה</p>
+              <div className="bg-gold-light border-2 border-foreground/25 rounded-2xl p-4 space-y-2">
+                <p className="font-serif font-bold text-foreground flex items-center gap-2">⚓ עוגני קריירה</p>
                 {topSchein.map(t => (
-                  <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
+                  <p key={t.category} className="text-foreground/80 leading-relaxed">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
                 ))}
               </div>
               {topHolland.length > 0 && (
-                <div className="space-y-1.5">
-                  <p className="font-semibold text-foreground">◆ נטיות הולנד</p>
+                <div className="bg-sky-soft border-2 border-foreground/25 rounded-2xl p-4 space-y-2">
+                  <p className="font-serif font-bold text-foreground flex items-center gap-2">🧭 נטיות הולנד</p>
                   {topHolland.map(([c]) => (
-                    <p key={c} className="text-muted-foreground pr-2">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
+                    <p key={c} className="text-foreground/80 leading-relaxed">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
                   ))}
                 </div>
               )}
               {winnerSkills.length > 0 && (
-                <div className="space-y-1.5">
-                  <p className="font-semibold text-foreground">◆ כישורים מובילים</p>
+                <div className="bg-coral-soft border-2 border-foreground/25 rounded-2xl p-4 space-y-2">
+                  <p className="font-serif font-bold text-foreground flex items-center gap-2">🏆 כישורים מובילים</p>
                   {winnerSkills.slice(0, 4).map((s, i) => (
-                    <p key={i} className="text-muted-foreground pr-2">• {s}</p>
+                    <p key={i} className="text-foreground/80 leading-relaxed">• {s}</p>
                   ))}
                 </div>
               )}
             </div>
             {recommendations.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-border">
-                <p className="font-semibold text-foreground mb-2">✦ הצעות עיסוק מהדו״ח</p>
-                {recommendations.map((rec, i) => (
-                  <p key={i} className="text-muted-foreground text-sm pr-2">
-                    {rec.icon} {rec.title} – {rec.reason}
-                  </p>
-                ))}
+              <div className="mt-5 pt-5 border-t-2 border-dashed border-foreground/25">
+                <p className="font-serif font-bold text-foreground mb-3 flex items-center gap-2">✨ הצעות עיסוק מהדו״ח</p>
+                <div className="space-y-2">
+                  {recommendations.map((rec, i) => (
+                    <p key={i} className="text-foreground/80 leading-relaxed">
+                      <span aria-hidden="true">{rec.icon}</span> <span className="font-bold text-foreground">{rec.title}</span> – {rec.reason}
+                    </p>
+                  ))}
+                </div>
               </div>
             )}
             {preferencesData?.dream && (
-              <div className="mt-3">
-                <p className="text-secondary font-semibold text-sm">✦ חלום המגירה: {preferencesData.dream}</p>
+              <div className="mt-4">
+                <span
+                  className="inline-block px-4 py-2 rounded-full bg-accent text-accent-foreground border-2 border-foreground font-bold text-base"
+                  style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                >
+                  💭 חלום המגירה: {preferencesData.dream}
+                </span>
               </div>
             )}
           </div>
         ) : (
           <details className="group" dir="rtl">
-            <summary className="cursor-pointer flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-2">
-              <span className="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center text-xs text-secondary">✦</span>
+            <summary className="cursor-pointer flex items-center justify-center gap-2 text-base font-bold text-foreground/75 hover:text-foreground transition-colors py-2 list-none">
+              <span
+                className="w-7 h-7 rounded-full bg-accent text-accent-foreground border-2 border-foreground flex items-center justify-center text-sm"
+                aria-hidden="true"
+              >🪙</span>
               <span>הצגת סיכום הפרופיל</span>
-              <span className="text-xs transition-transform group-open:rotate-180">▼</span>
+              <span className="text-sm transition-transform group-open:rotate-180">▼</span>
             </summary>
-            <div className="mt-3 bg-card rounded-2xl border border-border/60 p-6 shadow-[var(--shadow-card)]">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div
+              className="mt-3 bg-card rounded-2xl border-2 border-foreground p-5"
+              style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.85)' }}
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-base">
                 <div className="space-y-1">
-                  <p className="font-semibold text-foreground text-xs">◆ חוזקות</p>
-                  {topVIA.map(t => <p key={t.category} className="text-muted-foreground text-xs pr-2">• {t.category}</p>)}
+                  <p className="font-serif font-bold text-foreground">🌿 חוזקות</p>
+                  {topVIA.map(t => <p key={t.category} className="text-foreground/80">• {t.category}</p>)}
                 </div>
                 <div className="space-y-1">
-                  <p className="font-semibold text-foreground text-xs">◆ עוגנים</p>
-                  {topSchein.map(t => <p key={t.category} className="text-muted-foreground text-xs pr-2">• {t.category}</p>)}
+                  <p className="font-serif font-bold text-foreground">⚓ עוגנים</p>
+                  {topSchein.map(t => <p key={t.category} className="text-foreground/80">• {t.category}</p>)}
                 </div>
               </div>
             </div>
@@ -559,24 +598,27 @@ const SageAdvisor = ({
             >
               {msg.role === 'assistant' ? (
                 <>
-                  {/* Sagi avatar */}
+                  {/* Sagi avatar — owl badge */}
                   <div className="flex-shrink-0 pt-1">
-                    <img
-                      src={owlLogo}
-                      alt="סגי"
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full ring-1 ring-secondary/20 shadow-sm"
-                    />
-                  </div>
-                  {/* Sagi message bubble */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-sm font-semibold font-display text-foreground tracking-wide">סגי</span>
-                      <span className="text-[10px] text-muted-foreground/60">יועץ קריירה</span>
+                    <div
+                      className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-card border-2 border-foreground flex items-center justify-center"
+                      style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                    >
+                      <img src={owlLogo} alt="סגי" className="w-9 h-9 sm:w-10 sm:h-10 rounded-full" />
                     </div>
-                    <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 p-4 sm:p-6 shadow-[var(--shadow-card)]">
-                      <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-secondary [&_h1]:font-display [&_h1]:text-lg [&_h2]:text-secondary [&_h2]:font-display [&_h2]:text-base [&_h3]:text-secondary [&_h3]:font-display [&_h3]:text-sm [&_strong]:text-secondary [&_li]:mb-1.5 [&_ul]:mr-4 [&_ol]:mr-4 text-foreground leading-relaxed text-sm">
-                        <ReactMarkdown>{msg.content}</ReactMarkdown>
-                      </div>
+                  </div>
+                  {/* Sagi message — no bubble; clean reading surface */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-base font-serif font-bold text-foreground tracking-wide">סגי</span>
+                      <span
+                        className="text-xs px-2 py-0.5 rounded-full bg-sage-light text-foreground border border-foreground/30 font-bold"
+                      >
+                        🦉 יועץ קריירה
+                      </span>
+                    </div>
+                    <div className="text-foreground leading-relaxed text-base sm:text-lg prose prose-base max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:font-serif [&_h1]:text-foreground [&_h1]:text-2xl [&_h2]:font-serif [&_h2]:text-foreground [&_h2]:text-xl [&_h3]:font-serif [&_h3]:text-foreground [&_h3]:text-lg [&_strong]:text-foreground [&_strong]:font-bold [&_a]:text-destructive [&_a]:underline [&_a]:decoration-2 [&_a]:underline-offset-2 [&_code]:bg-sand-warm [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-foreground [&_li]:mb-1.5 [&_ul]:mr-5 [&_ol]:mr-5 [&_blockquote]:border-r-4 [&_blockquote]:border-accent [&_blockquote]:pr-4 [&_blockquote]:bg-gold-light [&_blockquote]:py-2 [&_blockquote]:rounded-lg">
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
                     </div>
                     {/* Search results inline after assistant message */}
                     {searchResultsByMessage[originalIdx] && (
@@ -592,19 +634,25 @@ const SageAdvisor = ({
                 <>
                   {/* User avatar */}
                   <div className="flex-shrink-0 pt-1">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
-                      <span className="text-primary font-display font-bold text-sm">
+                    <div
+                      className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-accent text-accent-foreground border-2 border-foreground flex items-center justify-center"
+                      style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                    >
+                      <span className="font-serif font-bold text-lg">
                         {username ? username.charAt(0) : '👤'}
                       </span>
                     </div>
                   </div>
-                  {/* User message bubble */}
+                  {/* User message bubble — coral high-contrast */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-sm font-semibold text-foreground">{username || 'אני'}</span>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-base font-serif font-bold text-foreground">{username || 'אני'}</span>
                     </div>
-                    <div className="bg-primary/5 rounded-2xl rounded-tr-md border border-primary/10 px-4 py-3 sm:px-5 sm:py-4">
-                      <p className="text-foreground text-sm leading-relaxed">{msg.content}</p>
+                    <div
+                      className="bg-destructive text-destructive-foreground rounded-2xl rounded-tr-md border-2 border-foreground px-5 py-4"
+                      style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.85)' }}
+                    >
+                      <p className="text-base sm:text-lg leading-relaxed">{msg.content}</p>
                     </div>
                   </div>
                 </>
@@ -626,19 +674,25 @@ const SageAdvisor = ({
           {isStreaming && visibleMessages[visibleMessages.length - 1]?.role !== 'assistant' && (
             <div className="flex gap-3 items-start">
               <div className="flex-shrink-0 pt-1">
-                <img src={owlLogo} alt="סגי" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full ring-1 ring-secondary/20 shadow-sm animate-pulse" />
+                <div
+                  className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-card border-2 border-foreground flex items-center justify-center animate-pulse"
+                  style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                >
+                  <img src={owlLogo} alt="סגי" className="w-9 h-9 sm:w-10 sm:h-10 rounded-full" />
+                </div>
               </div>
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-sm font-semibold font-display text-foreground tracking-wide">סגי</span>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-base font-serif font-bold text-foreground tracking-wide">סגי</span>
                 </div>
-                <div className="bg-card rounded-2xl rounded-tr-md border border-border/60 px-4 py-3 sm:px-6 sm:py-5 shadow-[var(--shadow-card)]">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                    <span className="text-muted-foreground text-xs mr-2">מנסח תשובה...</span>
-                  </div>
+                <div
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gold-light border-2 border-foreground"
+                  style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                >
+                  <span className="w-2.5 h-2.5 bg-accent rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-2.5 h-2.5 bg-accent rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-2.5 h-2.5 bg-accent rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <span className="text-foreground text-sm font-bold mr-1">סגי חושב… 🦉</span>
                 </div>
               </div>
             </div>
@@ -647,45 +701,65 @@ const SageAdvisor = ({
 
         {/* Roadmap detected → finish */}
         {roadmapDetected && !isStreaming && (
-          <div className="bg-card rounded-3xl border border-secondary/20 p-6 sm:p-10 shadow-[var(--shadow-elevated)] text-center space-y-5">
-            <div className="w-16 h-16 mx-auto rounded-full bg-secondary/8 flex items-center justify-center text-3xl">✓</div>
-            <h3 className="text-xl font-bold font-display text-foreground tracking-wide">מפת הדרכים שלך מוכנה</h3>
-            <p className="text-muted-foreground text-sm">כל התובנות וההמלצות מחכות לך בסיכום</p>
+          <div
+            className="bg-card rounded-3xl border-2 border-foreground p-6 sm:p-10 text-center space-y-5"
+            style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
+          >
+            <div
+              className="w-20 h-20 mx-auto rounded-full bg-sage border-2 border-foreground flex items-center justify-center text-4xl"
+              style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.85)' }}
+              aria-hidden="true"
+            >🦉</div>
+            <h3 className="text-2xl font-serif font-bold text-foreground tracking-wide">
+              מפת הדרכים שלך מוכנה!
+            </h3>
+            <p className="text-foreground/80 text-base sm:text-lg leading-relaxed">
+              כל התובנות וההמלצות מחכות לך בסיכום
+            </p>
             <Button
               onClick={() => {
                 setPhase('done');
                 onFinish?.();
               }}
-              className="w-full max-w-sm mx-auto py-6 text-lg bg-primary text-primary-foreground hover:bg-primary/85 rounded-2xl shadow-[var(--shadow-elevated)] font-display tracking-wide"
+              className="w-full max-w-sm mx-auto py-7 text-lg bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-2xl border-2 border-foreground font-serif font-bold tracking-wide active:translate-y-[2px] transition-transform"
+              style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
             >
-              סיום והמשך לסיכום
+              ← סיום והמשך לסיכום
             </Button>
           </div>
         )}
 
-        {/* Journey Action Cards */}
+        {/* Journey Action Chips — amber XP chips */}
         {!roadmapDetected && !isStreaming && messages.length >= 2 && (
-          <div dir="rtl" className="flex flex-wrap gap-2 justify-center">
+          <div dir="rtl" className="flex flex-wrap gap-2.5 justify-center">
             {journeyActions.map((action) => (
               <button
                 key={action.label}
                 onClick={() => sendMessage(action.msg)}
-                className="inline-flex items-center gap-1.5 bg-card hover:bg-muted/50 border border-border/60 hover:border-secondary/30 rounded-full px-3.5 py-2 text-xs font-medium text-muted-foreground hover:text-secondary transition-all duration-200"
+                className="inline-flex items-center gap-2 bg-card hover:bg-gold-light border-2 border-foreground rounded-full px-4 py-2.5 text-sm sm:text-base font-bold text-foreground transition-transform active:translate-y-[2px] min-h-[48px]"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
               >
-                <span className="text-sm">{action.icon}</span>
+                <span className="text-base" aria-hidden="true">{action.icon}</span>
                 {action.label}
               </button>
             ))}
           </div>
         )}
 
-        {/* Chat input — unified for all states */}
+        {/* Chat composer — chunky owl prompt */}
         {!isStreaming && messages.length >= 2 && (
-          <div dir="rtl" className="bg-card rounded-2xl border border-border/60 p-3 shadow-[var(--shadow-card)]">
-            <div className="flex gap-2 items-end">
+          <div
+            dir="rtl"
+            className="bg-card rounded-3xl border-2 border-foreground p-3 sm:p-4"
+            style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
+          >
+            <div className="flex gap-3 items-end">
               <div className="flex-shrink-0">
-                <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <span className="text-primary font-display font-bold text-xs">
+                <div
+                  className="w-11 h-11 rounded-full bg-accent text-accent-foreground border-2 border-foreground flex items-center justify-center"
+                  style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                >
+                  <span className="font-serif font-bold text-base">
                     {username ? username.charAt(0) : '👤'}
                   </span>
                 </div>
@@ -694,8 +768,8 @@ const SageAdvisor = ({
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={roadmapDetected ? 'יש עוד שאלות? המשיכו לשוחח...' : 'כתבו שאלה חופשית ליועץ...'}
-                className="resize-none min-h-[40px] max-h-[100px] bg-transparent border-0 focus-visible:ring-0 shadow-none text-sm placeholder:text-muted-foreground/50"
+                placeholder={roadmapDetected ? 'יש עוד שאלות? המשיכו לשוחח עם סגי…' : 'כתבו שאלה חופשית לסגי…'}
+                className="resize-none min-h-[48px] max-h-[120px] bg-transparent border-0 focus-visible:ring-0 shadow-none text-base sm:text-lg placeholder:text-foreground/40 text-foreground"
                 rows={1}
                 disabled={isStreaming}
               />
@@ -703,9 +777,11 @@ const SageAdvisor = ({
                 onClick={() => sendMessage()}
                 disabled={!input.trim() || isStreaming}
                 size="icon"
-                className="flex-shrink-0 w-9 h-9 rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/90 disabled:opacity-30"
+                className="flex-shrink-0 w-12 h-12 rounded-2xl bg-destructive text-destructive-foreground hover:bg-destructive/90 border-2 border-foreground disabled:opacity-40 disabled:cursor-not-allowed active:translate-y-[2px] transition-transform"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                aria-label="שלח"
               >
-                <span className="text-base">←</span>
+                <span className="text-xl font-bold">←</span>
               </Button>
             </div>
           </div>
