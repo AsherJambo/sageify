@@ -29,6 +29,7 @@ interface SageAdvisorProps {
   onMessagesChange?: (messages: ChatMessage[]) => void;
   onRoadmapReady?: () => void;
   onFinish?: () => void;
+  isSyncing?: boolean;
 }
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://mxyyirizhnwkmvcbnypn.supabase.co';
@@ -39,6 +40,7 @@ const SageAdvisor = ({
   viaScores, scheinScores, hollandScores,
   considerationsData, skillsAssignments, preferencesData, thinkingResult,
   initialMessages, onMessagesChange, onRoadmapReady, onFinish,
+  isSyncing,
 }: SageAdvisorProps) => {
   const [phase, setPhase] = useState<'loading' | 'chat' | 'done'>(
     initialMessages && initialMessages.length > 0 ? 'chat' : 'loading'
@@ -483,6 +485,17 @@ const SageAdvisor = ({
               </span>
             )}
           </div>
+          {isSyncing && initialMessages && initialMessages.length > 0 && (
+            <div className="flex justify-center mt-2">
+              <span
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-light text-foreground border-2 border-foreground text-sm font-bold"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+              >
+                <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+                היסטוריית השיחה נטענה מהזיכרון המקומי • מסתנכן עם הענן…
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Profile Summary Card — collapsible after first response */}

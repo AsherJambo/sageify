@@ -114,6 +114,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
   const [tokenRow, setTokenRow] = useState<{ id: string; username: string } | null>(null);
   const [responseId, setResponseId] = useState<string | null>(null);
   const [idNumber, setIdNumber] = useState('');
+  const [cloudSynced, setCloudSynced] = useState(false);
 
   const stateStorageKey = token ? `sageify-state-${token}` : null;
   const chatStorageKey = token ? `sageify-chat-${token}` : null;
@@ -214,6 +215,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
         });
       }
 
+      setCloudSynced(true);
       setPageState('ready');
     })();
   }, [token]);
@@ -531,6 +533,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
             initialMessages={state.chatMessages}
             onMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
             onRoadmapReady={() => setAdvisorProgress(100)}
+            isSyncing={!cloudSynced}
             onFinish={() => {
               markComplete();
               if (tokenRow) {
