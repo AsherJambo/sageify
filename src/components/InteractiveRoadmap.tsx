@@ -12,15 +12,16 @@ interface RoadmapTask {
   matchScore?: number;
 }
 
+type PhaseTone = 'sage' | 'amber' | 'coral';
+
 interface RoadmapPhase {
   id: string;
   phase: number;
   title: string;
   subtitle: string;
+  emoji: string;
   icon: React.ReactNode;
-  color: string;
-  borderColor: string;
-  bgColor: string;
+  tone: PhaseTone;
   tasks: RoadmapTask[];
   impactLevel: 'Low' | 'Medium' | 'High';
   incomePotential: 'Low' | 'Medium' | 'High';
@@ -73,6 +74,57 @@ function getMatchScore(phase: number): number {
   return phase === 1 ? 78 : phase === 2 ? 88 : 94;
 }
 
+// Owl Forest tone palette — chunky, cream surfaces with semantic accents
+const toneStyles: Record<PhaseTone, {
+  surface: string;       // closed card background
+  surfaceOpen: string;   // expanded card background
+  border: string;        // border color class
+  ring: string;          // forest border for chunky outline
+  chipBg: string;        // icon chip background
+  chipText: string;      // icon chip text color
+  accentText: string;    // label highlight color
+  shadow: string;        // chunky bottom shadow (closed)
+  shadowOpen: string;    // chunky bottom shadow (expanded)
+  dot: string;           // timeline dot bg when active
+}> = {
+  sage: {
+    surface: 'bg-sage-light',
+    surfaceOpen: 'bg-card',
+    border: 'border-sage',
+    ring: 'border-foreground',
+    chipBg: 'bg-sage',
+    chipText: 'text-foreground',
+    accentText: 'text-foreground',
+    shadow: '0 6px 0 0 hsl(var(--sage) / 0.55)',
+    shadowOpen: '0 6px 0 0 hsl(var(--foreground) / 0.9)',
+    dot: 'bg-sage',
+  },
+  amber: {
+    surface: 'bg-gold-light',
+    surfaceOpen: 'bg-card',
+    border: 'border-accent',
+    ring: 'border-foreground',
+    chipBg: 'bg-accent',
+    chipText: 'text-accent-foreground',
+    accentText: 'text-foreground',
+    shadow: '0 6px 0 0 hsl(var(--accent) / 0.6)',
+    shadowOpen: '0 6px 0 0 hsl(var(--foreground) / 0.9)',
+    dot: 'bg-accent',
+  },
+  coral: {
+    surface: 'bg-coral-soft',
+    surfaceOpen: 'bg-card',
+    border: 'border-destructive',
+    ring: 'border-foreground',
+    chipBg: 'bg-destructive',
+    chipText: 'text-destructive-foreground',
+    accentText: 'text-foreground',
+    shadow: '0 6px 0 0 hsl(var(--destructive) / 0.55)',
+    shadowOpen: '0 6px 0 0 hsl(var(--foreground) / 0.9)',
+    dot: 'bg-destructive',
+  },
+};
+
 const springTransition = {
   type: 'spring' as const,
   stiffness: 200,
@@ -94,10 +146,9 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
       phase: 1,
       title: 'חקירה',
       subtitle: 'Exploration',
-      icon: <Users className="w-5 h-5" />,
-      color: 'text-secondary',
-      borderColor: 'border-secondary/20',
-      bgColor: 'bg-secondary/5',
+      emoji: '🔭',
+      icon: <Users className="w-6 h-6" />,
+      tone: 'sage',
       impactLevel: 'Medium',
       incomePotential: 'Low',
       timeframe: '0-30 ימים',
@@ -116,10 +167,9 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
       phase: 2,
       title: 'מעבר',
       subtitle: 'Transition',
-      icon: <TrendingUp className="w-5 h-5" />,
-      color: 'text-primary',
-      borderColor: 'border-primary/20',
-      bgColor: 'bg-primary/5',
+      emoji: '🌱',
+      icon: <TrendingUp className="w-6 h-6" />,
+      tone: 'amber',
       impactLevel: 'High',
       incomePotential: 'Medium',
       timeframe: '30-90 ימים',
@@ -138,10 +188,9 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
       phase: 3,
       title: 'השפעה',
       subtitle: 'Impact',
-      icon: <Zap className="w-5 h-5" />,
-      color: 'text-accent-foreground',
-      borderColor: 'border-accent/20',
-      bgColor: 'bg-accent/5',
+      emoji: '🦉',
+      icon: <Zap className="w-6 h-6" />,
+      tone: 'coral',
       impactLevel: 'High',
       incomePotential: 'High',
       timeframe: '90+ ימים',
@@ -203,39 +252,55 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
 
   return (
     <div className="space-y-8" dir="rtl">
-      {/* Progress header */}
-      <div className="bg-card/80 backdrop-blur-xl rounded-3xl border border-border/40 p-8 shadow-[var(--shadow-card)]">
-        <div className="flex items-center justify-between mb-5">
-          <h3 className="text-2xl font-bold font-display text-foreground tracking-wide">
-            🌿 מפת הדרכים שלכם
+      {/* Progress header — chunky owl card */}
+      <div
+        className="bg-card border-2 border-foreground rounded-3xl p-7"
+        style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
+      >
+        <div className="flex items-center justify-between mb-5 gap-4 flex-wrap">
+          <h3 className="text-2xl font-serif font-bold text-foreground tracking-wide flex items-center gap-2">
+            <span aria-hidden="true">🦉</span>
+            מפת הדרכים שלכם
           </h3>
-          <span className="text-lg font-display font-bold text-secondary">{progressPct}% הושלם</span>
+          <span
+            className="text-lg font-serif font-bold px-4 py-1.5 rounded-full bg-accent text-accent-foreground border-2 border-foreground"
+            style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+          >
+            🪙 {progressPct}% הושלם
+          </span>
         </div>
-        <div className="w-full h-4 bg-muted/40 rounded-full overflow-hidden">
+        <div className="w-full h-5 bg-sand-warm rounded-full overflow-hidden border-2 border-foreground">
           <motion.div
-            className="h-full bg-secondary rounded-full"
+            className="h-full bg-accent"
             initial={{ width: 0 }}
             animate={{ width: `${progressPct}%` }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           />
         </div>
-        <div className="flex justify-between mt-5">
-          {phases.map(p => (
-            <div key={p.id} className="flex items-center gap-2 text-base text-muted-foreground">
-              <span className={p.color}>{p.icon}</span>
-              <span className="font-medium">{p.title}</span>
-            </div>
-          ))}
+        <div className="flex justify-between mt-5 gap-3 flex-wrap">
+          {phases.map(p => {
+            const s = toneStyles[p.tone];
+            return (
+              <div
+                key={p.id}
+                className={`flex items-center gap-2 text-base font-medium text-foreground px-3 py-1.5 rounded-full border-2 border-foreground ${s.surface}`}
+              >
+                <span aria-hidden="true">{p.emoji}</span>
+                <span>{p.title}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {/* Phase cards */}
       <div className="relative">
-        <div className="absolute right-6 top-0 bottom-0 w-0.5 bg-border/30 hidden md:block" />
+        <div className="absolute right-6 top-4 bottom-4 w-1 bg-foreground/15 rounded-full hidden md:block" />
 
         {phases.map((phase, idx) => {
           const isExpanded = expandedPhase === phase.id;
           const phaseCompleted = phase.tasks.every(t => completedTasks.has(`${phase.id}:${t.title}`));
+          const s = toneStyles[phase.tone];
 
           return (
             <motion.div
@@ -243,42 +308,51 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className={`rounded-3xl border overflow-hidden mb-5 md:mr-10 relative ${
-                phaseCompleted ? 'opacity-75' : ''
-              } ${
-                isExpanded
-                  ? 'bg-card/90 backdrop-blur-2xl border-secondary/25 shadow-[var(--shadow-elevated)]'
-                  : 'bg-card/70 backdrop-blur-xl border-border/40 shadow-[var(--shadow-card)]'
-              }`}
+              className={`rounded-3xl overflow-hidden mb-7 md:mr-12 relative border-2 border-foreground ${
+                isExpanded ? s.surfaceOpen : s.surface
+              } ${phaseCompleted ? 'opacity-90' : ''}`}
+              style={{ boxShadow: isExpanded ? s.shadowOpen : s.shadow }}
             >
               {/* Timeline dot */}
-              <div className={`hidden md:flex absolute -right-[52px] top-7 w-6 h-6 rounded-full border-2 ${phase.borderColor} ${phaseCompleted ? 'bg-secondary' : 'bg-card'}`} />
+              <div
+                className={`hidden md:flex absolute -right-[58px] top-8 w-7 h-7 rounded-full border-2 border-foreground items-center justify-center ${phaseCompleted ? s.dot : 'bg-card'}`}
+                aria-hidden="true"
+              >
+                {phaseCompleted && <CheckCircle2 className="w-4 h-4 text-foreground" />}
+              </div>
 
               {/* Phase header */}
               <button
                 onClick={() => setExpandedPhase(isExpanded ? null : phase.id)}
-                className="w-full flex items-center justify-between px-8 py-7 hover:bg-muted/10 transition-all duration-300 min-h-[80px]"
+                className="w-full flex items-center justify-between px-6 md:px-8 py-6 hover:bg-foreground/5 transition-colors duration-200 min-h-[88px] text-right"
               >
-                <div className="flex items-center gap-5">
-                  <div className={`w-14 h-14 rounded-full ${phase.bgColor} border ${phase.borderColor} flex items-center justify-center ${phase.color}`}>
-                    {phaseCompleted ? <CheckCircle2 className="w-7 h-7" /> : React.cloneElement(phase.icon as React.ReactElement, { className: 'w-6 h-6' })}
+                <div className="flex items-center gap-4 md:gap-5">
+                  <div
+                    className={`w-16 h-16 rounded-2xl border-2 border-foreground flex items-center justify-center text-2xl ${s.chipBg} ${s.chipText}`}
+                    style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                  >
+                    {phaseCompleted ? <CheckCircle2 className="w-7 h-7" /> : <span aria-hidden="true">{phase.emoji}</span>}
                   </div>
                   <div className="text-right">
-                    <div className="flex items-center gap-3">
-                      <span className="font-bold font-display text-foreground text-xl">שלב {phase.phase}: {phase.title}</span>
-                      <span className="text-base text-muted-foreground font-medium">({phase.timeframe})</span>
-                    </div>
-                    <div className="flex gap-5 mt-2">
-                      <span className="text-base text-muted-foreground">
-                        השפעה: <span className="font-bold text-secondary">{impactLabels[phase.impactLevel]}</span>
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <span className="font-bold font-serif text-foreground text-xl md:text-2xl">
+                        שלב {phase.phase}: {phase.title}
                       </span>
-                      <span className="text-base text-muted-foreground">
-                        הכנסה: <span className="font-bold text-secondary">{impactLabels[phase.incomePotential]}</span>
+                      <span className="text-sm md:text-base text-foreground/70 font-medium px-2.5 py-0.5 rounded-full bg-card border border-foreground/30">
+                        {phase.timeframe}
+                      </span>
+                    </div>
+                    <div className="flex gap-2 mt-2 flex-wrap">
+                      <span className="text-sm md:text-base text-foreground/80 px-3 py-1 rounded-full bg-card border-2 border-foreground/20">
+                        השפעה: <span className="font-bold text-foreground">{impactLabels[phase.impactLevel]}</span>
+                      </span>
+                      <span className="text-sm md:text-base text-foreground/80 px-3 py-1 rounded-full bg-card border-2 border-foreground/20">
+                        הכנסה: <span className="font-bold text-foreground">{impactLabels[phase.incomePotential]}</span>
                       </span>
                     </div>
                   </div>
                 </div>
-                <ChevronDown className={`w-7 h-7 text-muted-foreground transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-7 h-7 text-foreground transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
               </button>
 
               {/* Tasks */}
@@ -291,7 +365,7 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
                     transition={springTransition}
                     className="overflow-hidden"
                   >
-                    <div className="px-8 pb-7 pt-3 space-y-5">
+                    <div className="px-6 md:px-8 pb-7 pt-2 space-y-5">
                       {phase.tasks.map((task, ti) => {
                         const taskKey = `${phase.id}:${task.title}`;
                         const isCompleted = completedTasks.has(taskKey);
@@ -303,63 +377,83 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
                             initial={{ opacity: 0, y: 12 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: ti * 0.08, ...springTransition }}
-                            className={`rounded-2xl border p-6 transition-all duration-300 ${
+                            className={`rounded-2xl border-2 p-5 md:p-6 transition-colors duration-200 ${
                               isCompleted
-                                ? 'bg-secondary/5 border-secondary/15 backdrop-blur-sm'
-                                : 'bg-card/60 backdrop-blur-xl border-border/40 hover:bg-card/80 hover:border-secondary/20'
+                                ? `${s.surface} border-foreground/40`
+                                : 'bg-card border-foreground/25 hover:border-foreground/50'
                             }`}
+                            style={{
+                              boxShadow: isCompleted
+                                ? '0 3px 0 0 hsl(var(--foreground) / 0.35)'
+                                : '0 4px 0 0 hsl(var(--foreground) / 0.55)',
+                            }}
                           >
                             <div className="flex items-start gap-4">
                               <button
                                 onClick={() => handleTaskToggle(phase.id, task.title)}
                                 aria-label={isCompleted ? 'סמן כלא הושלם' : 'סמן כהושלם'}
-                                className={`mt-1 w-9 h-9 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all min-w-[36px] min-h-[36px] ${
+                                className={`mt-1 w-12 h-12 rounded-xl border-2 border-foreground flex-shrink-0 flex items-center justify-center transition-transform active:translate-y-[2px] ${
                                   isCompleted
-                                    ? 'bg-secondary border-secondary text-secondary-foreground'
-                                    : 'border-muted-foreground/40 hover:border-secondary'
+                                    ? 'bg-sage text-foreground'
+                                    : 'bg-card hover:bg-sand-warm'
                                 }`}
+                                style={{
+                                  boxShadow: isCompleted
+                                    ? '0 2px 0 0 hsl(var(--foreground) / 0.7)'
+                                    : '0 3px 0 0 hsl(var(--foreground) / 0.7)',
+                                }}
                               >
                                 {isCompleted && <CheckCircle2 className="w-6 h-6" />}
                               </button>
                               <div className="flex-1 min-w-0">
-                                <div className="flex items-start justify-between gap-3">
-                                  <h4 className={`font-bold text-lg leading-relaxed ${isCompleted ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                                <div className="flex items-start justify-between gap-3 flex-wrap">
+                                  <h4 className={`font-serif font-bold text-lg md:text-xl leading-relaxed ${isCompleted ? 'line-through text-foreground/50' : 'text-foreground'}`}>
                                     {task.title}
                                   </h4>
                                   <div className="flex items-center gap-2 flex-shrink-0">
                                     {task.matchScore && (
-                                      <span className="text-sm px-3 py-1.5 rounded-full bg-secondary/10 text-secondary font-bold border border-secondary/15">
-                                        {task.matchScore}% התאמה
+                                      <span
+                                        className="text-sm px-3 py-1.5 rounded-full bg-accent text-accent-foreground font-bold border-2 border-foreground"
+                                        style={{ boxShadow: '0 2px 0 0 hsl(var(--foreground) / 0.85)' }}
+                                      >
+                                        🪙 {task.matchScore}% XP
                                       </span>
                                     )}
                                     <button
                                       onClick={() => handleStar(task.title)}
                                       aria-label={isStarred ? 'הסר מהמועדפים' : 'הוסף למועדפים'}
-                                      className={`transition-colors p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg ${isStarred ? 'text-gold' : 'text-muted-foreground/40 hover:text-gold/60'}`}
+                                      className={`transition-colors p-2 min-w-[48px] min-h-[48px] flex items-center justify-center rounded-xl border-2 ${
+                                        isStarred
+                                          ? 'bg-accent text-accent-foreground border-foreground'
+                                          : 'bg-card text-foreground/50 border-foreground/30 hover:text-foreground hover:border-foreground/60'
+                                      }`}
+                                      style={isStarred ? { boxShadow: '0 2px 0 0 hsl(var(--foreground) / 0.85)' } : undefined}
                                     >
                                       <Star className={`w-6 h-6 ${isStarred ? 'fill-current' : ''}`} />
                                     </button>
                                   </div>
                                 </div>
-                                <p className="text-base text-muted-foreground mt-2 leading-relaxed">{task.description}</p>
-                                
+                                <p className="text-base md:text-lg text-foreground/80 mt-2 leading-relaxed">{task.description}</p>
+
                                 {task.whySagei && (
                                   <motion.div
                                     initial={{ opacity: 0, y: 8 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.2 }}
-                                    className="mt-4 bg-secondary/5 backdrop-blur-sm border border-secondary/10 rounded-xl px-5 py-4"
+                                    className="mt-4 bg-sand-warm border-2 border-foreground/30 rounded-2xl px-5 py-4"
+                                    style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.35)' }}
                                   >
-                                    <p className="text-base text-secondary font-bold">
-                                      🌿 למה סגי בחר בזה עבורכם:
+                                    <p className="text-base font-serif font-bold text-foreground flex items-center gap-2">
+                                      <span aria-hidden="true">🦉</span>
+                                      למה סגי בחר בזה עבורכם:
                                     </p>
-                                    <p className="text-base text-muted-foreground mt-1.5 leading-relaxed">{task.whySagei}</p>
+                                    <p className="text-base text-foreground/80 mt-1.5 leading-relaxed">{task.whySagei}</p>
                                   </motion.div>
                                 )}
 
                                 {task.successMetric && (
-                                  <div className="mt-3 flex items-center gap-1.5">
-                                    <span className="text-sm px-4 py-1.5 rounded-full bg-muted text-muted-foreground font-medium">
+                                  <div className="mt-3 flex items-center gap-1.5 flex-wrap">
+                                    <span className="text-sm px-4 py-1.5 rounded-full bg-sage-light text-foreground font-medium border-2 border-foreground/30">
                                       🎯 {task.successMetric}
                                     </span>
                                   </div>
@@ -375,7 +469,8 @@ const InteractiveRoadmap = ({ chatMessages, tokenId, viaTop, scheinTop }: Intera
                                       targetType: 'roadmap_task',
                                       targetTitle: task.title,
                                     })}
-                                    className="inline-flex items-center gap-2 text-base text-primary hover:text-primary/80 mt-3 min-h-[48px] font-medium"
+                                    className="inline-flex items-center gap-2 text-base text-destructive-foreground bg-destructive hover:bg-destructive/90 mt-4 px-4 py-2 rounded-xl border-2 border-foreground font-bold min-h-[48px]"
+                                    style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
                                   >
                                     <ExternalLink className="w-5 h-5" />
                                     למידע נוסף
