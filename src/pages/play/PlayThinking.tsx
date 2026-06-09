@@ -72,7 +72,7 @@ export default function PlayThinking() {
       title="The Laser Matrix"
       step={idx + 1}
       total={PUZZLES.length}
-      bg="bg-gradient-to-b from-[#020617] via-[#0b1029] to-[#04081a]"
+      bg="bg-background"
     >
       {done ? (
         <DoneScreen
