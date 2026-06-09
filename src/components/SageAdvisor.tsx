@@ -52,6 +52,25 @@ const SageAdvisor = ({
   const [searchResultsByMessage, setSearchResultsByMessage] = useState<Record<number, SearchResult[]>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Sync timer: tracks elapsed seconds while cloud sync is in progress
+  const [syncElapsed, setSyncElapsed] = useState(0);
+  const syncStartRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (!isSyncing) {
+      syncStartRef.current = null;
+      setSyncElapsed(0);
+      return;
+    }
+    if (syncStartRef.current === null) syncStartRef.current = Date.now();
+    setSyncElapsed(Math.floor((Date.now() - syncStartRef.current) / 1000));
+    const id = setInterval(() => {
+      if (syncStartRef.current !== null) {
+        setSyncElapsed(Math.floor((Date.now() - syncStartRef.current) / 1000));
+      }
+    }, 1000);
+    return () => clearInterval(id);
+  }, [isSyncing]);
+
   useEffect(() => {
     if (initialMessages?.some(m => m.content.includes('Sage Action Roadmap'))) {
       setRoadmapDetected(true);
@@ -485,17 +504,54 @@ const SageAdvisor = ({
               </span>
             )}
           </div>
-          {isSyncing && initialMessages && initialMessages.length > 0 && (
-            <div className="flex justify-center mt-2">
-              <span
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-light text-foreground border-2 border-foreground text-sm font-bold"
-                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
-              >
-                <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
-                היסטוריית השיחה נטענה מהזיכרון המקומי • מסתנכן עם הענן…
-              </span>
-            </div>
-          )}
+          {isSyncing && initialMessages && initialMessages.length > 0 && (() => {
+            const estimatedTotal = 6; // typical cloud sync seconds
+            const remaining = Math.max(0, estimatedTotal - syncElapsed);
+            const progress = Math.min(100, Math.round((syncElapsed / estimatedTotal) * 100));
+            const stageLabel = syncElapsed < 2
+              ? 'מתחבר לענן…'
+              : syncElapsed < 5
+              ? 'מאמת את היסטוריית השיחה…'
+              : remaining > 0
+              ? 'משלים סנכרון אחרון…'
+              : 'הסנכרון אורך יותר מהצפוי — ההיסטוריה המקומית זמינה לשימוש';
+            const etaLabel = remaining > 0
+              ? `זמן משוער להשלמה: כ-${remaining} שניות`
+              : 'מסיים כל רגע';
+            return (
+              <div className="flex justify-center mt-3">
+                <div
+                  className="w-full max-w-md bg-gold-light text-foreground border-2 border-foreground rounded-2xl p-4 flex flex-col gap-2"
+                  style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.85)' }}
+                  role="status"
+                  aria-live="polite"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 bg-amber-500 rounded-full animate-pulse shrink-0" />
+                    <span className="text-sm font-bold leading-snug">
+                      היסטוריית השיחה נטענה מהזיכרון המקומי
+                    </span>
+                  </div>
+                  <div className="text-xs font-semibold text-foreground/80 leading-snug">
+                    {stageLabel}
+                  </div>
+                  <div
+                    className="w-full h-2 bg-foreground/15 rounded-full overflow-hidden border border-foreground/30"
+                    aria-hidden="true"
+                  >
+                    <div
+                      className="h-full bg-amber-500 transition-all duration-700 ease-out"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between text-xs font-bold">
+                    <span>חלף: {syncElapsed} שניות</span>
+                    <span className="text-foreground/80">{etaLabel}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
         </div>
 
         {/* Profile Summary Card — collapsible after first response */}
