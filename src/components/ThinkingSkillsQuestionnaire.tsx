@@ -169,7 +169,8 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
           >
             <button
               onClick={startTest}
-              className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-lg font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-300 hover:scale-[1.02] shadow-[var(--shadow-elevated)]"
+              style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.22)' }}
+              className="px-12 py-5 bg-destructive text-destructive-foreground rounded-2xl text-lg font-bold font-display tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200"
             >
               בואו נתחיל! 🧠
             </button>
