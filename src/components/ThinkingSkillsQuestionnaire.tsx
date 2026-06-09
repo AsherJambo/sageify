@@ -169,7 +169,8 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
           >
             <button
               onClick={startTest}
-              className="px-12 py-5 bg-primary text-primary-foreground rounded-2xl text-lg font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-300 hover:scale-[1.02] shadow-[var(--shadow-elevated)]"
+              style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.22)' }}
+              className="px-12 py-5 bg-destructive text-destructive-foreground rounded-2xl text-lg font-bold font-display tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200"
             >
               בואו נתחיל! 🧠
             </button>
@@ -315,7 +316,7 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
                           </div>
                           {/* Answer number badge */}
                           <div className={`absolute top-1 right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold font-display ${
-                            isSelected ? 'bg-secondary text-white' : 'bg-muted/60 text-muted-foreground'
+                            isSelected ? 'bg-accent text-accent-foreground' : 'bg-muted/60 text-muted-foreground'
                           }`}>
                             {num}
                           </div>
@@ -324,7 +325,7 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
                             <motion.div
                               initial={{ scale: 0 }}
                               animate={{ scale: 1 }}
-                              className="absolute top-1 left-1 w-7 h-7 rounded-full bg-secondary text-white flex items-center justify-center text-sm font-bold shadow-md"
+                              className="absolute top-1 left-1 w-7 h-7 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-sm font-bold shadow-md"
                             >
                               ✓
                             </motion.div>
@@ -382,7 +383,7 @@ const ThinkingSkillsQuestionnaire = ({ onComplete, onBackToHub }: ThinkingSkills
                           <motion.div
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
-                            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-secondary text-white flex items-center justify-center text-xs font-bold shadow-md"
+                            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-xs font-bold shadow-md"
                           >
                             ✓
                           </motion.div>

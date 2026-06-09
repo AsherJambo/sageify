@@ -172,12 +172,13 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.06 }}
                 whileHover={{ y: -4 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ y: 2 }}
                 onClick={() => onSelect(g.id)}
-                className={`group relative text-right h-full p-6 rounded-2xl bg-gradient-to-br ${g.tone} border transition-all duration-300 shadow-[var(--shadow-card)] ${
+                style={{ boxShadow: `0 6px 0 0 hsl(var(--foreground) / ${completed ? 0.22 : 0.14})` }}
+                className={`group relative text-right h-full p-6 rounded-2xl bg-gradient-to-br ${g.tone} border-2 transition-all duration-200 ${
                   completed
-                    ? 'border-success/40 hover:border-success/60'
-                    : 'border-border/60 hover:border-secondary/40 hover:shadow-xl'
+                    ? 'border-success/50'
+                    : 'border-foreground/15 hover:border-accent/60'
                 }`}
               >
                 {completed && (
@@ -236,19 +237,13 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
             <motion.button
               onClick={hasMinimum ? () => { celebrationConfetti(); onViewResults(); } : undefined}
               disabled={!hasMinimum}
-              animate={hasMinimum ? {
-                scale: [1, 1.06, 1],
-                boxShadow: [
-                  '0 0 0 0 hsl(160 28% 35% / 0)',
-                  '0 0 0 12px hsl(160 28% 35% / 0.15)',
-                  '0 0 0 0 hsl(160 28% 35% / 0)',
-                ],
-              } : {}}
-              transition={hasMinimum ? { duration: 1.2, ease: 'easeInOut', times: [0, 0.5, 1] } : {}}
-              className={`px-12 py-5 rounded-2xl text-lg font-semibold font-display tracking-wide transition-all duration-500 shadow-[var(--shadow-elevated)] group ${
+              animate={hasMinimum ? { y: [0, -3, 0] } : {}}
+              transition={hasMinimum ? { duration: 1.6, repeat: Infinity, ease: 'easeInOut' } : {}}
+              style={hasMinimum ? { boxShadow: '0 8px 0 0 hsl(var(--foreground) / 0.25)' } : undefined}
+              className={`px-12 py-5 rounded-2xl text-lg font-bold font-display tracking-wide border-2 transition-all duration-200 group ${
                 hasMinimum
-                  ? 'bg-primary text-primary-foreground hover:bg-primary/85 hover:scale-[1.02] cursor-pointer'
-                  : 'bg-muted text-muted-foreground cursor-not-allowed opacity-60'
+                  ? 'bg-destructive text-destructive-foreground border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none cursor-pointer'
+                  : 'bg-muted text-muted-foreground border-border cursor-not-allowed opacity-60'
               }`}
             >
               <span className="flex items-center gap-3 justify-center">
