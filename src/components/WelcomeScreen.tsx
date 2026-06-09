@@ -200,11 +200,12 @@ const WelcomeScreen = ({ onStart, partnerOrg }: WelcomeScreenProps) => {
           >
             <button
               onClick={onStart}
-              className="px-10 py-5 md:px-14 md:py-6 bg-primary text-primary-foreground rounded-2xl text-lg md:text-xl font-semibold font-display tracking-wide hover:bg-primary/85 transition-all duration-500 hover:scale-[1.03] shadow-[var(--shadow-elevated)] group"
+              className="px-12 py-5 md:px-16 md:py-6 bg-destructive text-destructive-foreground rounded-2xl text-lg md:text-xl font-bold font-display tracking-wide border-2 border-foreground/15 transition-all duration-150 hover:-translate-y-1 active:translate-y-1 group"
+              style={{ minHeight: 60, boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.85)' }}
             >
               <span className="flex items-center gap-3 justify-center">
                 {owlWelcome.cta}
-                <span className="inline-block transition-transform duration-300 group-hover:translate-x-[6px]">←</span>
+                <span className="inline-block transition-transform duration-300 group-hover:-translate-x-1.5">←</span>
               </span>
             </button>
           </div>

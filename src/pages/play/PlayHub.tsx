@@ -21,9 +21,8 @@ type Card = {
   subtitle: string;
   minutes: string;
   Icon: any;
-  to: string;
-  gradient: string;
-  glow: string;
+  tint: string;        // chunky card tint
+  iconBg: string;      // pill icon bg
 };
 
 const cards: Card[] = [
@@ -31,56 +30,51 @@ const cards: Card[] = [
     id: "via",
     num: "#02",
     title: "VIA — חוזקות אופי",
-    subtitle: "The Core Forge",
+    subtitle: "ליבת הזהות שלך",
     minutes: "4 דק׳",
     Icon: Sparkles,
-    to: "/play/via",
-    gradient: "from-violet-500/20 via-fuchsia-500/10 to-indigo-500/20",
-    glow: "shadow-[0_20px_60px_-20px_rgba(139,92,246,0.45)]",
+    tint: "bg-accent/20 border-accent/50",
+    iconBg: "bg-accent text-foreground",
   },
   {
     id: "schein",
     num: "#03",
     title: "Schein — עוגני קריירה",
-    subtitle: "Weight of the Anchor",
+    subtitle: "מה באמת מחזיק אותך",
     minutes: "5 דק׳",
     Icon: Anchor,
-    to: "/play/schein",
-    gradient: "from-sky-500/20 via-cyan-400/10 to-teal-500/20",
-    glow: "shadow-[0_20px_60px_-20px_rgba(14,165,233,0.45)]",
+    tint: "bg-sage/20 border-sage/50",
+    iconBg: "bg-sage text-foreground",
   },
   {
     id: "thinking",
     num: "#05",
     title: "חשיבה — דפוסים",
-    subtitle: "The Laser Matrix",
+    subtitle: "המטריצה האישית",
     minutes: "6 דק׳",
     Icon: Puzzle,
-    to: "/play/thinking",
-    gradient: "from-emerald-500/20 via-lime-400/10 to-cyan-500/20",
-    glow: "shadow-[0_20px_60px_-20px_rgba(16,185,129,0.45)]",
+    tint: "bg-sky-soft border-sky/50",
+    iconBg: "bg-sky text-foreground",
   },
   {
     id: "skills",
     num: "#06",
     title: "מיון כישורים",
-    subtitle: "The Champion Draft",
+    subtitle: "ארגז הכלים שלך",
     minutes: "5 דק׳",
     Icon: Layers,
-    to: "/play/skills",
-    gradient: "from-amber-500/20 via-orange-400/10 to-rose-500/20",
-    glow: "shadow-[0_20px_60px_-20px_rgba(245,158,11,0.45)]",
+    tint: "bg-sunny-soft border-sunny/50",
+    iconBg: "bg-sunny text-foreground",
   },
   {
     id: "considerations",
     num: "#07",
     title: "שיקולי קריירה",
-    subtitle: "Energy Balancer",
+    subtitle: "מה חשוב באמת",
     minutes: "4 דק׳",
     Icon: Scale,
-    to: "/play/considerations",
-    gradient: "from-rose-500/20 via-pink-400/10 to-violet-500/20",
-    glow: "shadow-[0_20px_60px_-20px_rgba(244,63,94,0.45)]",
+    tint: "bg-coral-soft border-coral/50",
+    iconBg: "bg-destructive text-destructive-foreground",
   },
 ];
 
@@ -97,10 +91,19 @@ export default function PlayHub() {
   const pct = Math.round((completed / cards.length) * 100);
 
   return (
-    <div dir="rtl" className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100 text-slate-900">
+    <div dir="rtl" className="min-h-screen bg-background text-foreground relative">
+      {/* Cozy ambient blobs */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-24 -right-16 w-80 h-80 rounded-full bg-accent/25 blur-3xl" />
+        <div className="absolute bottom-0 -left-16 w-72 h-72 rounded-full bg-sage/25 blur-3xl" />
+      </div>
+
       <div className="max-w-3xl mx-auto px-5 py-8">
         <header className="flex items-center justify-between mb-8">
-          <Link to="/" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-900 transition">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground/70 hover:text-foreground transition"
+          >
             <ArrowLeft className="w-4 h-4" />
             דף הבית
           </Link>
@@ -109,9 +112,9 @@ export default function PlayHub() {
               resetProgress();
               setProgress(getProgress());
             }}
-            className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-slate-700 transition"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-foreground/55 hover:text-foreground transition px-3 py-2 rounded-full border-2 border-foreground/10"
           >
-            <RotateCcw className="w-3 h-3" />
+            <RotateCcw className="w-3.5 h-3.5" />
             איפוס
           </button>
         </header>
@@ -122,29 +125,33 @@ export default function PlayHub() {
           transition={{ duration: 0.6 }}
           className="mb-10"
         >
-          <p className="text-xs tracking-[0.3em] text-slate-400 mb-3">PLAY MODE</p>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold bg-sage/15 text-foreground border-2 border-sage/40">
+            <Sparkles size={16} />
+            המשחקים של סגי'
+          </span>
+          <h1 className="font-serif text-4xl sm:text-5xl mt-4 leading-tight">
             המשחקים שלך,
             <br />
-            <span className="bg-gradient-to-l from-violet-600 via-fuchsia-500 to-indigo-500 bg-clip-text text-transparent">
-              ה־DNA הקריירתי שלך.
-            </span>
+            <span style={{ color: 'hsl(var(--accent))' }}>ה־DNA הקריירתי שלך.</span>
           </h1>
-          <p className="mt-4 text-slate-500 leading-relaxed">
+          <p className="mt-4 text-lg text-foreground/75 leading-relaxed">
             חמש חוויות אינטראקטיביות קצרות. בלי שאלונים יבשים — רק תנועה, משחק ותובנות מיידיות.
           </p>
 
           <div className="mt-6">
-            <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
+            <div className="flex items-center justify-between text-sm font-semibold text-foreground/70 mb-2">
               <span>התקדמות</span>
-              <span className="font-semibold text-slate-700">{completed}/{cards.length}</span>
+              <span className="px-3 py-1 rounded-full bg-accent text-foreground border-2 border-foreground/15 text-xs tabular-nums"
+                style={{ boxShadow: '0 2px 0 0 hsl(var(--foreground) / 0.20)' }}>
+                {completed}/{cards.length}
+              </span>
             </div>
-            <div className="h-1.5 bg-slate-200 rounded-full overflow-hidden">
+            <div className="h-3 bg-secondary rounded-full overflow-hidden border-2 border-foreground/10">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${pct}%` }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className="h-full bg-gradient-to-l from-violet-500 to-fuchsia-500"
+                className="h-full bg-gradient-to-l from-[hsl(var(--accent))] to-[hsl(var(--destructive))]"
               />
             </div>
           </div>
@@ -162,32 +169,34 @@ export default function PlayHub() {
               >
                 <Link
                   to={c.to}
-                  className={`group relative block overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-slate-300 ${c.glow}`}
+                  className={`group relative block rounded-[1.75rem] border-2 p-5 transition-all duration-200 hover:-translate-y-1 active:translate-y-0.5 ${c.tint}`}
+                  style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.14)' }}
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${c.gradient} opacity-60 pointer-events-none`} />
                   <div className="relative flex items-center gap-4">
-                    <div className="shrink-0 w-14 h-14 rounded-2xl bg-white/80 backdrop-blur border border-white shadow-sm flex items-center justify-center">
-                      <c.Icon className="w-6 h-6 text-slate-800" strokeWidth={1.75} />
+                    <div className={`shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center border-2 border-foreground/15 ${c.iconBg}`}
+                      style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.20)' }}>
+                      <c.Icon className="w-6 h-6" strokeWidth={2.2} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 text-[10px] tracking-[0.25em] text-slate-500">
+                      <div className="flex items-center gap-2 text-[11px] tracking-[0.2em] font-bold text-foreground/55">
                         <span>{c.num}</span>
                         <span className="opacity-50">·</span>
                         <span className="inline-flex items-center gap-1">
                           <Clock className="w-3 h-3" /> {c.minutes}
                         </span>
                       </div>
-                      <h3 className="mt-1 font-bold text-lg leading-tight">{c.title}</h3>
-                      <p className="text-xs text-slate-500 mt-0.5">{c.subtitle}</p>
+                      <h3 className="mt-1 font-serif text-xl leading-tight">{c.title}</h3>
+                      <p className="text-sm text-foreground/65 mt-0.5">{c.subtitle}</p>
                     </div>
                     {done ? (
-                      <div className="shrink-0 inline-flex items-center gap-1 text-emerald-600 text-xs font-semibold">
-                        <CheckCircle2 className="w-4 h-4" />
+                      <div className="shrink-0 inline-flex items-center gap-1 text-[hsl(var(--success))] text-sm font-bold">
+                        <CheckCircle2 className="w-5 h-5" />
                         הושלם
                       </div>
                     ) : (
-                      <div className="shrink-0 text-xs font-semibold text-slate-900 group-hover:translate-x-[-2px] transition">
-                        התחל ←
+                      <div className="shrink-0 text-sm font-bold text-foreground inline-flex items-center gap-1 transition group-hover:-translate-x-0.5">
+                        התחל
+                        <ArrowLeft className="w-4 h-4" />
                       </div>
                     )}
                   </div>
@@ -197,10 +206,13 @@ export default function PlayHub() {
           })}
         </div>
 
-        <p className="text-center text-xs text-slate-400 mt-10">
-          המשחקים נשמרים מקומית במכשיר שלך.
+        <p className="text-center text-sm text-foreground/55 mt-10">
+          המשחקים נשמרים מקומית במכשיר שלך 🦉
         </p>
       </div>
     </div>
   );
 }
+
+// Add `to` prop to cards via type fix
+declare module './PlayHub' {}
