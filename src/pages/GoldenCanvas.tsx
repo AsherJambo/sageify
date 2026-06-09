@@ -87,7 +87,7 @@ const HelpButton = ({ text }: { text: string }) => {
       <button
         onClick={() => setOpen(true)}
         aria-label="עזרה"
-        className="fixed bottom-6 left-6 z-40 flex items-center gap-2 px-5 py-3 rounded-full bg-amber-500 text-white text-lg font-semibold shadow-xl hover:bg-amber-600 active:scale-95 transition-all"
+        className="fixed bottom-6 left-6 z-40 flex items-center gap-2 px-5 py-3 rounded-full bg-accent text-white text-lg font-semibold shadow-xl hover:bg-accent active:scale-95 transition-all"
       >
         <HelpCircle className="w-6 h-6" />
         <span>עזרה</span>
@@ -126,7 +126,7 @@ const BigButton = ({
     disabled={disabled}
     className={`inline-flex items-center justify-center gap-3 px-8 py-5 rounded-2xl text-xl font-semibold min-h-[64px] transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
       variant === "primary"
-        ? "bg-amber-600 text-white hover:bg-amber-700 shadow-lg"
+        ? "bg-accent text-white hover:bg-accent shadow-lg"
         : "bg-white text-amber-900 border-2 border-amber-300 hover:bg-amber-50"
     } ${className}`}
   >
@@ -194,7 +194,7 @@ const HomeScreen = ({ go, count }: { go: (t: Track) => void; count: number }) =>
         <ImageIcon className="w-6 h-6" />
         <span>הגלריה שלי</span>
         {count > 0 && (
-          <span className="bg-amber-600 text-white text-base rounded-full px-3 py-0.5">{count}</span>
+          <span className="bg-accent text-white text-base rounded-full px-3 py-0.5">{count}</span>
         )}
       </BigButton>
     </motion.div>
@@ -396,7 +396,7 @@ const MusicScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation:
               onClick={() => setGenre(g.id)}
               className={`p-4 rounded-2xl border-2 text-lg font-semibold min-h-[80px] transition-all ${
                 genre === g.id
-                  ? "bg-sky-500 text-white border-sky-600 shadow-lg"
+                  ? "bg-[hsl(var(--sky))] text-white border-foreground/20 shadow-lg"
                   : "bg-white text-amber-900 border-amber-200 hover:border-sky-300"
               }`}
             >
@@ -417,7 +417,7 @@ const MusicScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation:
               onClick={() => setMood(m.id)}
               className={`p-4 rounded-2xl border-2 text-lg font-semibold min-h-[80px] transition-all ${
                 mood === m.id
-                  ? "bg-indigo-500 text-white border-indigo-600 shadow-lg"
+                  ? "bg-destructive text-white border-foreground/20 shadow-lg"
                   : "bg-white text-amber-900 border-amber-200 hover:border-indigo-300"
               }`}
             >
@@ -447,7 +447,7 @@ const MusicScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation:
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-8 p-6 md:p-8 bg-gradient-to-br from-sky-50 to-indigo-50 rounded-3xl border-2 border-sky-200 shadow-lg"
+            className="mt-8 p-6 md:p-8 bg-gradient-to-br from-[hsl(var(--sky-soft))] to-[hsl(var(--sage-light))] rounded-3xl border-2 border-[hsl(var(--sky))/0.4] shadow-lg"
           >
             <div className="text-5xl mb-4 text-center">🎼</div>
             <div className="text-center mb-4">
@@ -550,7 +550,7 @@ const MemoirScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation
         ענו על שאלה אחת – נהפוך את התשובה שלכם לסיפור קצר ומעוצב.
       </p>
 
-      <div className="p-5 md:p-6 bg-emerald-50 rounded-3xl border-2 border-emerald-200 mb-6">
+      <div className="p-5 md:p-6 bg-emerald-50 rounded-3xl border-2 border-[hsl(var(--success))/0.4] mb-6">
         <div className="text-sm font-semibold text-emerald-700 mb-2">השאלה של היום:</div>
         <p className="text-2xl font-display text-emerald-950 leading-relaxed">
           {MEMOIR_PROMPTS[promptIdx]}
@@ -589,7 +589,7 @@ const MemoirScreen = ({ go, addCreation }: { go: (t: Track) => void; addCreation
           <motion.article
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-8 p-6 md:p-10 bg-gradient-to-br from-emerald-50 to-amber-50 rounded-3xl border-2 border-emerald-200 shadow-xl"
+            className="mt-8 p-6 md:p-10 bg-gradient-to-br from-[hsl(var(--success-soft))] to-[hsl(var(--accent))/0.15] rounded-3xl border-2 border-[hsl(var(--success))/0.4] shadow-xl"
           >
             <p className="text-xl md:text-2xl leading-loose text-amber-950 whitespace-pre-wrap font-display">
               {story}
@@ -728,7 +728,7 @@ const GoldenCanvas = () => {
   return (
     <div
       dir="rtl"
-      className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50"
+      className="min-h-screen bg-gradient-to-br from-background via-[hsl(var(--accent))/0.08] to-[hsl(var(--coral-soft))]"
       style={{ fontSize: "18px" }}
     >
       {/* Top bar */}
