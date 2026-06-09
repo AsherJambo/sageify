@@ -110,7 +110,7 @@ const GardenBed = ({ answers }: { answers: Answers }) => {
         ))}
       </div>
       {/* soil */}
-      <div className="h-3 bg-gradient-to-b from-[hsl(28,40%,55%)] to-[hsl(28,45%,42%)]" />
+      <div className="h-4" style={{ background: 'linear-gradient(to bottom, hsl(var(--sand-warm)), hsl(var(--sage) / 0.55))' }} />
     </div>
   );
 };
@@ -128,10 +128,10 @@ const WaterRating = ({ value, onChange, color }: { value: number; onChange: (v: 
             whileTap={{ scale: 0.85 }}
             whileHover={{ y: -2 }}
             aria-label={`${v} מתוך 5`}
-            className={`relative w-11 h-12 md:w-12 md:h-14 rounded-b-full rounded-t-[40%] border-2 transition-all duration-300 flex items-end justify-center pb-1 text-xs font-bold ${
+            className={`relative w-11 h-12 md:w-12 md:h-14 rounded-b-full rounded-t-[40%] border-2 transition-all duration-300 flex items-end justify-center pb-1 text-sm font-bold ${
               active
-                ? 'border-transparent text-white shadow-md scale-105'
-                : 'border-border/60 bg-card text-muted-foreground/40 hover:border-sky/50'
+                ? 'border-foreground/15 text-primary-foreground shadow-md scale-105'
+                : 'border-foreground/15 bg-card text-foreground/40 hover:border-accent/60'
             }`}
             style={active ? {
               background: `linear-gradient(to bottom, ${color}55 0%, ${color} 70%, ${color} 100%)`,

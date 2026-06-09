@@ -109,7 +109,7 @@ const MixerBench = ({ scores }: { scores: MotivationScores }) => (
       ))}
     </div>
     {/* bench */}
-    <div className="h-3 bg-gradient-to-b from-[hsl(28,40%,55%)] to-[hsl(28,45%,42%)]" />
+    <div className="h-4" style={{ background: 'linear-gradient(to bottom, hsl(var(--sand-warm)), hsl(var(--sage) / 0.55))' }} />
   </div>
 );
 
@@ -134,10 +134,10 @@ const WaterRating = ({
           whileHover={{ y: -2 }}
           aria-label={`${v} מתוך 5 — ${scaleLabels[v]}`}
           title={scaleLabels[v]}
-          className={`relative w-11 h-12 md:w-12 md:h-14 rounded-b-full rounded-t-[40%] border-2 transition-all duration-300 flex items-end justify-center pb-1 text-xs font-bold ${
+          className={`relative w-11 h-12 md:w-12 md:h-14 rounded-b-full rounded-t-[40%] border-2 transition-all duration-300 flex items-end justify-center pb-1 text-sm font-bold ${
             active
-              ? 'border-transparent text-white shadow-md scale-105'
-              : 'border-border/60 bg-card text-muted-foreground/40 hover:border-sky/50'
+              ? 'border-foreground/15 text-primary-foreground shadow-md scale-105'
+              : 'border-foreground/15 bg-card text-foreground/40 hover:border-accent/60'
           }`}
           style={
             active
@@ -203,7 +203,7 @@ const SeedlingTray = ({ answers }: { answers: IntentionAnswers }) => {
           );
         })}
       </div>
-      <div className="h-3 bg-gradient-to-b from-[hsl(28,40%,55%)] to-[hsl(28,45%,42%)]" />
+      <div className="h-4" style={{ background: 'linear-gradient(to bottom, hsl(var(--sand-warm)), hsl(var(--sage) / 0.55))' }} />
       <div className="absolute bottom-5 left-0 right-0 text-center text-xs text-foreground/70 font-medium">
         {answered}/{total} זרעי כוונה
       </div>
