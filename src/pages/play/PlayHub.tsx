@@ -97,7 +97,7 @@ export default function PlayHub() {
             <span style={{ color: 'hsl(var(--accent))' }}>ה־DNA הקריירתי שלך.</span>
           </h1>
           <p className="mt-4 text-lg text-foreground/75 leading-relaxed">
-            חמש חוויות אינטראקטיביות קצרות. בלי שאלונים יבשים — רק תנועה, משחק ותובנות מיידיות.
+            חוויה אינטראקטיבית קצרה לטעימה. בלי שאלון יבש — רק תנועה, משחק ותובנות מיידיות.
           </p>
 
           <div className="mt-6">
