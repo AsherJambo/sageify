@@ -114,12 +114,51 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
   const [tokenRow, setTokenRow] = useState<{ id: string; username: string } | null>(null);
   const [responseId, setResponseId] = useState<string | null>(null);
   const [idNumber, setIdNumber] = useState('');
-  const [state, setState] = useState<ResponseData>(defaultData);
-  const [pageState, setPageState] = useState<'loading' | 'invalid' | 'used' | 'ready'>('loading');
+
+  const stateStorageKey = token ? `sageify-state-${token}` : null;
+  const chatStorageKey = token ? `sageify-chat-${token}` : null;
+
+  // Lazy initializer — hydrate full state from localStorage synchronously so the
+  // chat (and full progress) renders immediately on return, before the cloud round-trip.
+  const [state, setState] = useState<ResponseData>(() => {
+    if (typeof window === 'undefined' || !stateStorageKey) return defaultData;
+    try {
+      const raw = localStorage.getItem(stateStorageKey);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') {
+          if (parsed.step === 'welcome' || parsed.step === 'landing') parsed.step = 'hub';
+          return { ...defaultData, ...parsed } as ResponseData;
+        }
+      }
+      // Fall back to chat-only mirror (older format)
+      if (chatStorageKey) {
+        const localChat = localStorage.getItem(chatStorageKey);
+        if (localChat) {
+          const chat = JSON.parse(localChat);
+          if (Array.isArray(chat) && chat.length > 0) {
+            return { ...defaultData, step: 'hub', chatMessages: chat } as ResponseData;
+          }
+        }
+      }
+    } catch { /* ignore */ }
+    return defaultData;
+  });
+
+  // If localStorage already has state for this token, we can show the UI immediately
+  // and let the cloud fetch overlay it asynchronously.
+  const [pageState, setPageState] = useState<'loading' | 'invalid' | 'used' | 'ready'>(() => {
+    if (typeof window === 'undefined' || !stateStorageKey) return 'loading';
+    try {
+      const hasLocal = !!localStorage.getItem(stateStorageKey) || !!(chatStorageKey && localStorage.getItem(chatStorageKey));
+      return hasLocal ? 'ready' : 'loading';
+    } catch { return 'loading'; }
+  });
+
   const [advisorProgress, setAdvisorProgress] = useState(85);
   const supabase = cloudClient;
 
-  // Validate token on mount
+  // Validate token & overlay cloud data on mount
   useEffect(() => {
     if (!token) { setPageState('invalid'); return; }
 
@@ -148,57 +187,49 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
       if (existing) {
         setResponseId(existing.id);
         const loaded = existing.response_data as unknown as ResponseData;
-        // Skip welcome/landing entirely — jump straight to the hub
         if (loaded.step === 'welcome' || loaded.step === 'landing') {
           loaded.step = 'hub';
         }
-        // Hydrate chat history from localStorage if cloud copy is empty
-        try {
-          const localChat = localStorage.getItem(`sageify-chat-${token}`);
-          if (localChat && (!loaded.chatMessages || loaded.chatMessages.length === 0)) {
-            const parsed = JSON.parse(localChat);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              loaded.chatMessages = parsed;
-            }
-          }
-        } catch { /* ignore localStorage errors */ }
-        setState(loaded);
+        // Merge with whatever is already on screen from localStorage —
+        // prefer the longer chat history so we never overwrite a richer local copy.
+        setState(prev => {
+          const localChat = prev.chatMessages || [];
+          const cloudChat = loaded.chatMessages || [];
+          const chatMessages = localChat.length > cloudChat.length ? localChat : cloudChat;
+          return { ...loaded, chatMessages };
+        });
       } else {
-        const initial = JSON.parse(JSON.stringify(defaultData)) as ResponseData;
-        initial.step = 'hub';
-        // Restore any locally-saved chat for this token (e.g. after offline use)
-        try {
-          const localChat = localStorage.getItem(`sageify-chat-${token}`);
-          if (localChat) {
-            const parsed = JSON.parse(localChat);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              initial.chatMessages = parsed;
-            }
-          }
-        } catch { /* ignore */ }
-        const { data: newResp } = await supabase
-          .from('questionnaire_responses')
-          .insert([{ token_id: data.id, response_data: JSON.parse(JSON.stringify(initial)) }])
-          .select()
-          .single();
-        if (newResp) setResponseId(newResp.id);
-        setState(initial);
+        // No cloud record yet — push current (possibly local-hydrated) state up
+        setState(prev => {
+          const initial: ResponseData = prev && Object.keys(prev).length > 0
+            ? { ...prev, step: prev.step === 'loading' || prev.step === 'invalid' || prev.step === 'used' ? 'hub' : prev.step }
+            : { ...defaultData, step: 'hub' };
+          supabase
+            .from('questionnaire_responses')
+            .insert([{ token_id: data.id, response_data: JSON.parse(JSON.stringify(initial)) }])
+            .select()
+            .single()
+            .then(({ data: newResp }) => { if (newResp) setResponseId(newResp.id); });
+          return initial;
+        });
       }
-
 
       setPageState('ready');
     })();
   }, [token]);
 
-  // Mirror chat history to localStorage for instant restore on next visit
+  // Mirror full state + chat history to localStorage on every change
   useEffect(() => {
-    if (!token || pageState !== 'ready') return;
+    if (!stateStorageKey || pageState === 'invalid' || pageState === 'used') return;
     try {
-      if (state.chatMessages && state.chatMessages.length > 0) {
-        localStorage.setItem(`sageify-chat-${token}`, JSON.stringify(state.chatMessages));
+      localStorage.setItem(stateStorageKey, JSON.stringify(state));
+      if (chatStorageKey && state.chatMessages && state.chatMessages.length > 0) {
+        localStorage.setItem(chatStorageKey, JSON.stringify(state.chatMessages));
       }
     } catch { /* localStorage quota / privacy mode — fail silently */ }
-  }, [state.chatMessages, token, pageState]);
+  }, [state, stateStorageKey, chatStorageKey, pageState]);
+
+
 
 
 
