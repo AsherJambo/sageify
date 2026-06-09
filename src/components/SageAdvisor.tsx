@@ -56,6 +56,9 @@ const SageAdvisor = ({
   // Sync timer: tracks elapsed seconds while cloud sync is in progress
   const [syncElapsed, setSyncElapsed] = useState(0);
   const syncStartRef = useRef<number | null>(null);
+  const [syncJustCompleted, setSyncJustCompleted] = useState(false);
+  const wasSyncingRef = useRef(isSyncing);
+
   useEffect(() => {
     if (!isSyncing) {
       syncStartRef.current = null;
@@ -71,6 +74,16 @@ const SageAdvisor = ({
     }, 1000);
     return () => clearInterval(id);
   }, [isSyncing]);
+
+  // Detect transition from syncing → done (success) to show a brief confirmation
+  useEffect(() => {
+    if (wasSyncingRef.current && !isSyncing && !cloudSyncFailed) {
+      setSyncJustCompleted(true);
+      const t = setTimeout(() => setSyncJustCompleted(false), 4000);
+      return () => clearTimeout(t);
+    }
+    wasSyncingRef.current = isSyncing;
+  }, [isSyncing, cloudSyncFailed]);
 
   useEffect(() => {
     if (initialMessages?.some(m => m.content.includes('Sage Action Roadmap'))) {
