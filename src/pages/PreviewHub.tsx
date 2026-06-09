@@ -26,7 +26,7 @@ const PreviewHub = () => {
         </motion.header>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {PREVIEW_GAMES.map((p, i) => (
+          {PREVIEW_GAMES.slice(0, 1).map((p, i) => (
             <motion.div
               key={p.path}
               initial={{ opacity: 0, y: 16 }}
