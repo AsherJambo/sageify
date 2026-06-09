@@ -485,6 +485,17 @@ const SageAdvisor = ({
               </span>
             )}
           </div>
+          {isSyncing && initialMessages && initialMessages.length > 0 && (
+            <div className="flex justify-center mt-2">
+              <span
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-light text-foreground border-2 border-foreground text-sm font-bold"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+              >
+                <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+                היסטוריית השיחה נטענה מהזיכרון המקומי • מסתנכן עם הענן…
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Profile Summary Card — collapsible after first response */}
