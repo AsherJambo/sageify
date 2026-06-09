@@ -152,10 +152,30 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
         if (loaded.step === 'welcome' || loaded.step === 'landing') {
           loaded.step = 'hub';
         }
+        // Hydrate chat history from localStorage if cloud copy is empty
+        try {
+          const localChat = localStorage.getItem(`sageify-chat-${token}`);
+          if (localChat && (!loaded.chatMessages || loaded.chatMessages.length === 0)) {
+            const parsed = JSON.parse(localChat);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              loaded.chatMessages = parsed;
+            }
+          }
+        } catch { /* ignore localStorage errors */ }
         setState(loaded);
       } else {
         const initial = JSON.parse(JSON.stringify(defaultData)) as ResponseData;
         initial.step = 'hub';
+        // Restore any locally-saved chat for this token (e.g. after offline use)
+        try {
+          const localChat = localStorage.getItem(`sageify-chat-${token}`);
+          if (localChat) {
+            const parsed = JSON.parse(localChat);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              initial.chatMessages = parsed;
+            }
+          }
+        } catch { /* ignore */ }
         const { data: newResp } = await supabase
           .from('questionnaire_responses')
           .insert([{ token_id: data.id, response_data: JSON.parse(JSON.stringify(initial)) }])
@@ -169,6 +189,18 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
       setPageState('ready');
     })();
   }, [token]);
+
+  // Mirror chat history to localStorage for instant restore on next visit
+  useEffect(() => {
+    if (!token || pageState !== 'ready') return;
+    try {
+      if (state.chatMessages && state.chatMessages.length > 0) {
+        localStorage.setItem(`sageify-chat-${token}`, JSON.stringify(state.chatMessages));
+      }
+    } catch { /* localStorage quota / privacy mode — fail silently */ }
+  }, [state.chatMessages, token, pageState]);
+
+
 
   // Save progress on state change
   useEffect(() => {
