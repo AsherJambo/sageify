@@ -29,6 +29,7 @@ type Card = {
 const cards: Card[] = [
   {
     id: "via",
+    to: "/play/via",
     num: "#02",
     title: "VIA — חוזקות אופי",
     subtitle: "ליבת הזהות שלך",
@@ -39,6 +40,7 @@ const cards: Card[] = [
   },
   {
     id: "schein",
+    to: "/play/schein",
     num: "#03",
     title: "Schein — עוגני קריירה",
     subtitle: "מה באמת מחזיק אותך",
@@ -49,6 +51,7 @@ const cards: Card[] = [
   },
   {
     id: "thinking",
+    to: "/play/thinking",
     num: "#05",
     title: "חשיבה — דפוסים",
     subtitle: "המטריצה האישית",
@@ -59,6 +62,7 @@ const cards: Card[] = [
   },
   {
     id: "skills",
+    to: "/play/skills",
     num: "#06",
     title: "מיון כישורים",
     subtitle: "ארגז הכלים שלך",
@@ -69,6 +73,7 @@ const cards: Card[] = [
   },
   {
     id: "considerations",
+    to: "/play/considerations",
     num: "#07",
     title: "שיקולי קריירה",
     subtitle: "מה חשוב באמת",
