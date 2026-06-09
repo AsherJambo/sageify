@@ -38,50 +38,6 @@ const cards: Card[] = [
     tint: "bg-accent/20 border-accent/50",
     iconBg: "bg-accent text-foreground",
   },
-  {
-    id: "schein",
-    to: "/play/schein",
-    num: "#03",
-    title: "Schein — עוגני קריירה",
-    subtitle: "מה באמת מחזיק אותך",
-    minutes: "5 דק׳",
-    Icon: Anchor,
-    tint: "bg-sage/20 border-sage/50",
-    iconBg: "bg-sage text-foreground",
-  },
-  {
-    id: "thinking",
-    to: "/play/thinking",
-    num: "#05",
-    title: "חשיבה — דפוסים",
-    subtitle: "המטריצה האישית",
-    minutes: "6 דק׳",
-    Icon: Puzzle,
-    tint: "bg-sky-soft border-sky/50",
-    iconBg: "bg-sky text-foreground",
-  },
-  {
-    id: "skills",
-    to: "/play/skills",
-    num: "#06",
-    title: "מיון כישורים",
-    subtitle: "ארגז הכלים שלך",
-    minutes: "5 דק׳",
-    Icon: Layers,
-    tint: "bg-sunny-soft border-sunny/50",
-    iconBg: "bg-sunny text-foreground",
-  },
-  {
-    id: "considerations",
-    to: "/play/considerations",
-    num: "#07",
-    title: "שיקולי קריירה",
-    subtitle: "מה חשוב באמת",
-    minutes: "4 דק׳",
-    Icon: Scale,
-    tint: "bg-coral-soft border-coral/50",
-    iconBg: "bg-destructive text-destructive-foreground",
-  },
 ];
 
 export default function PlayHub() {
@@ -141,7 +97,7 @@ export default function PlayHub() {
             <span style={{ color: 'hsl(var(--accent))' }}>ה־DNA הקריירתי שלך.</span>
           </h1>
           <p className="mt-4 text-lg text-foreground/75 leading-relaxed">
-            חמש חוויות אינטראקטיביות קצרות. בלי שאלונים יבשים — רק תנועה, משחק ותובנות מיידיות.
+            חוויה אינטראקטיבית קצרה לטעימה. בלי שאלון יבש — רק תנועה, משחק ותובנות מיידיות.
           </p>
 
           <div className="mt-6">
