@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cabin:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,73 +6,73 @@
 
 @layer base {
   :root {
-    /* Premium minimalist palette — clean whites, charcoal, sophisticated navy accent */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    /* Owl Forest — warm cream canvas, deep forest ink, golden amber, coral CTAs */
+    --background: 40 50% 96%;       /* #FAF7F0 cream */
+    --foreground: 155 30% 17%;      /* #1F3A2E deep forest */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card: 40 55% 98%;
+    --card-foreground: 155 30% 17%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover: 40 55% 98%;
+    --popover-foreground: 155 30% 17%;
 
-    /* Primary: deep refined navy/indigo */
-    --primary: 222 47% 14%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary: deep forest — wisdom, calm, owl */
+    --primary: 155 30% 17%;
+    --primary-foreground: 40 55% 98%;
 
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 40 35% 90%;
+    --secondary-foreground: 155 30% 17%;
 
-    --muted: 210 20% 97%;
-    --muted-foreground: 215 16% 37%;
+    --muted: 40 30% 92%;
+    --muted-foreground: 155 18% 32%;
 
-    /* Accent: refined emerald, used sparingly */
-    --accent: 158 64% 32%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent: golden amber — XP, achievement, sunrise */
+    --accent: 36 80% 57%;           /* #E8A33D */
+    --accent-foreground: 155 30% 17%;
 
-    --destructive: 0 72% 45%;
-    --destructive-foreground: 0 0% 100%;
+    /* Destructive / CTA coral — warm, energetic */
+    --destructive: 8 67% 54%;       /* #D9533C */
+    --destructive-foreground: 40 55% 98%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 222 47% 14%;
+    --border: 40 25% 84%;
+    --input: 40 25% 88%;
+    --ring: 36 80% 57%;
 
-    --radius: 0.875rem;
+    --radius: 1.25rem;              /* generously rounded — Duolingo-like */
 
-    /* Legacy tokens — remapped onto the minimalist palette so existing components inherit the new look */
-    --sage: 158 50% 36%;
-    --sage-light: 158 35% 94%;
-    --sand: 210 20% 97%;
-    --sand-warm: 210 20% 94%;
-    --slate-blue: 222 47% 30%;
-    --slate-blue-light: 220 16% 94%;
-    --forest: 222 47% 11%;
-    --forest-light: 215 19% 35%;
-    --gold: 38 70% 50%;
-    --gold-light: 38 50% 95%;
-    --navy: 222 47% 14%;
-    --navy-light: 222 35% 28%;
-    --terracotta: 14 75% 55%;
-    --terracotta-light: 14 60% 96%;
-    --warm-bg: 210 20% 98%;
+    /* Legacy tokens remapped onto Owl Forest palette */
+    --sage: 105 22% 55%;
+    --sage-light: 105 30% 90%;
+    --sand: 40 35% 92%;
+    --sand-warm: 38 45% 88%;
+    --slate-blue: 155 25% 28%;
+    --slate-blue-light: 155 20% 88%;
+    --forest: 155 30% 17%;
+    --forest-light: 155 22% 32%;
+    --gold: 36 80% 57%;
+    --gold-light: 38 70% 92%;
+    --navy: 155 30% 17%;
+    --navy-light: 155 22% 30%;
+    --terracotta: 8 67% 54%;
+    --terracotta-light: 8 70% 94%;
+    --warm-bg: 40 50% 96%;
 
+    /* Playful semantic tokens — for questionnaires & XP states */
+    --success: 142 45% 42%;
+    --success-foreground: 40 55% 98%;
+    --success-soft: 142 35% 90%;
+    --coral: 8 67% 54%;
+    --coral-foreground: 40 55% 98%;
+    --coral-soft: 8 70% 94%;
+    --sky: 198 65% 55%;
+    --sky-soft: 198 55% 92%;
+    --sunny: 36 80% 57%;
+    --sunny-soft: 38 70% 92%;
 
-    /* Playful semantic tokens for questionnaires */
-    --success: 142 52% 48%;
-    --success-foreground: 0 0% 100%;
-    --success-soft: 142 40% 92%;
-    --coral: 8 78% 64%;
-    --coral-foreground: 0 0% 100%;
-    --coral-soft: 8 65% 94%;
-    --sky: 200 70% 60%;
-    --sky-soft: 200 65% 93%;
-    --sunny: 42 85% 62%;
-    --sunny-soft: 42 75% 92%;
-
-    --shadow-diffuse: 0 30px 80px -20px hsl(222 47% 11% / 0.06);
-    --shadow-card: 0 1px 2px 0 hsl(222 47% 11% / 0.04), 0 1px 3px 0 hsl(222 47% 11% / 0.03);
-    --shadow-elevated: 0 20px 50px -15px hsl(222 47% 11% / 0.10), 0 8px 16px -8px hsl(222 47% 11% / 0.04);
-
+    --shadow-diffuse: 0 30px 80px -20px hsl(155 30% 17% / 0.10);
+    --shadow-card: 0 4px 0 0 hsl(155 30% 17% / 0.10), 0 1px 2px 0 hsl(155 30% 17% / 0.06);
+    --shadow-elevated: 0 12px 30px -8px hsl(155 30% 17% / 0.18), 0 6px 0 0 hsl(155 30% 17% / 0.08);
+    --shadow-pop: 0 6px 0 0 hsl(155 30% 17% / 0.14);   /* Duolingo-style chunky bottom shadow */
   }
 
   .dark {
@@ -104,28 +104,30 @@
   }
 
   html {
-    font-family: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-family: 'Cabin', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-optical-sizing: auto;
-    font-feature-settings: 'cv11', 'ss01', 'ss03';
   }
 
   body {
     @apply bg-background text-foreground;
     direction: rtl;
-    font-size: 17px;
-    line-height: 1.7;
-    letter-spacing: -0.005em;
+    font-size: 18px;
+    line-height: 1.65;
+    letter-spacing: 0;
     -webkit-tap-highlight-color: transparent;
+    background-image:
+      radial-gradient(circle at 12% 8%, hsl(36 80% 57% / 0.10), transparent 38%),
+      radial-gradient(circle at 88% 92%, hsl(105 25% 60% / 0.12), transparent 42%);
+    background-attachment: fixed;
   }
 
   /* Ensure minimum touch target sizes */
   button, [role="button"], a, input, select, textarea {
-    min-height: 44px;
+    min-height: 48px;
   }
 
-  /* Reduce motion for users who prefer it */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -135,13 +137,14 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    letter-spacing: -0.02em;
-    font-weight: 700;
+    font-family: 'Abril Fatface', 'Fraunces', Georgia, serif;
+    letter-spacing: -0.01em;
+    font-weight: 400;
     color: hsl(var(--foreground));
+    line-height: 1.15;
   }
 
-  h1 { letter-spacing: -0.03em; font-weight: 800; }
+  h1 { letter-spacing: -0.015em; }
 }
 
 

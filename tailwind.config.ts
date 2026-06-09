@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'],
-        serif: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
-        display: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        sans: ['Cabin', 'system-ui', 'sans-serif'],
+        serif: ['Abril Fatface', 'Fraunces', 'Georgia', 'serif'],
+        display: ['Abril Fatface', 'Fraunces', 'Georgia', 'serif'],
       },
 
       fontSize: {
