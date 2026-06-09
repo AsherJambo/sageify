@@ -30,6 +30,7 @@ interface SageAdvisorProps {
   onRoadmapReady?: () => void;
   onFinish?: () => void;
   isSyncing?: boolean;
+  cloudSyncFailed?: boolean;
 }
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://mxyyirizhnwkmvcbnypn.supabase.co';
@@ -40,7 +41,7 @@ const SageAdvisor = ({
   viaScores, scheinScores, hollandScores,
   considerationsData, skillsAssignments, preferencesData, thinkingResult,
   initialMessages, onMessagesChange, onRoadmapReady, onFinish,
-  isSyncing,
+  isSyncing, cloudSyncFailed,
 }: SageAdvisorProps) => {
   const [phase, setPhase] = useState<'loading' | 'chat' | 'done'>(
     initialMessages && initialMessages.length > 0 ? 'chat' : 'loading'
