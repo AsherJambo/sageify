@@ -518,49 +518,67 @@ const SageAdvisor = ({
               </span>
             )}
           </div>
+          {syncJustCompleted && (
+            <div className="flex justify-center mt-3">
+              <div
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sage-light text-foreground border-2 border-foreground text-sm font-bold"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+              >
+                <span className="w-2.5 h-2.5 bg-sage rounded-full shrink-0" />
+                ההיסטוריה סונכרנה בהצלחה עם הענן ✅
+              </div>
+            </div>
+          )}
           {isSyncing && initialMessages && initialMessages.length > 0 && (() => {
             const estimatedTotal = 6; // typical cloud sync seconds
             const remaining = Math.max(0, estimatedTotal - syncElapsed);
             const progress = Math.min(100, Math.round((syncElapsed / estimatedTotal) * 100));
-            const stageLabel = syncElapsed < 2
+            const hasError = cloudSyncFailed;
+            const stageLabel = hasError
+              ? 'החיבור לענן נכשל — ההיסטוריה המקומית זמינה לשימוש'
+              : syncElapsed < 2
               ? 'מתחבר לענן…'
               : syncElapsed < 5
               ? 'מאמת את היסטוריית השיחה…'
               : remaining > 0
               ? 'משלים סנכרון אחרון…'
               : 'הסנכרון אורך יותר מהצפוי — ההיסטוריה המקומית זמינה לשימוש';
-            const etaLabel = remaining > 0
+            const etaLabel = hasError
+              ? 'ניתן להמשיך בשיחה'
+              : remaining > 0
               ? `זמן משוער להשלמה: כ-${remaining} שניות`
               : 'מסיים כל רגע';
             return (
               <div className="flex justify-center mt-3">
                 <div
-                  className="w-full max-w-md bg-gold-light text-foreground border-2 border-foreground rounded-2xl p-4 flex flex-col gap-2"
+                  className={`w-full max-w-md text-foreground border-2 border-foreground rounded-2xl p-4 flex flex-col gap-2 ${hasError ? 'bg-coral-soft' : 'bg-gold-light'}`}
                   style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.85)' }}
                   role="status"
                   aria-live="polite"
                 >
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 bg-amber-500 rounded-full animate-pulse shrink-0" />
+                    <span className={`w-2.5 h-2.5 rounded-full ${hasError ? 'bg-coral animate-pulse' : 'bg-amber-500 animate-pulse'} shrink-0`} />
                     <span className="text-sm font-bold leading-snug">
-                      היסטוריית השיחה נטענה מהזיכרון המקומי
+                      {hasError ? 'עובד במצב מקומי' : 'היסטוריית השיחה נטענה מהזיכרון המקומי'}
                     </span>
                   </div>
                   <div className="text-xs font-semibold text-foreground/80 leading-snug">
                     {stageLabel}
                   </div>
-                  <div
-                    className="w-full h-2 bg-foreground/15 rounded-full overflow-hidden border border-foreground/30"
-                    aria-hidden="true"
-                  >
+                  {!hasError && (
                     <div
-                      className="h-full bg-amber-500 transition-all duration-700 ease-out"
-                      style={{ width: `${progress}%` }}
-                    />
-                  </div>
+                      className="w-full h-2 bg-foreground/15 rounded-full overflow-hidden border border-foreground/30"
+                      aria-hidden="true"
+                    >
+                      <div
+                        className="h-full bg-amber-500 transition-all duration-700 ease-out"
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+                  )}
                   <div className="flex items-center justify-between text-xs font-bold">
-                    <span>חלף: {syncElapsed} שניות</span>
-                    <span className="text-foreground/80">{etaLabel}</span>
+                    {!hasError && <span>חלף: {syncElapsed} שניות</span>}
+                    <span className={hasError ? 'text-foreground font-bold' : 'text-foreground/80'}>{etaLabel}</span>
                   </div>
                 </div>
               </div>
