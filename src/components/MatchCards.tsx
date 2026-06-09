@@ -114,19 +114,21 @@ const MatchCards = ({ viaScores, scheinScores, hollandScores, tokenId }: MatchCa
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-card rounded-3xl border border-border/60 shadow-[var(--shadow-card)] overflow-hidden hover:shadow-[var(--shadow-elevated)] transition-shadow duration-300"
+            style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.14)' }}
+            className="bg-card rounded-3xl border-2 border-foreground/10 overflow-hidden hover:-translate-y-[2px] transition-transform duration-200"
           >
             {/* Match score header */}
-            <div className="flex items-center justify-between px-6 py-3 bg-muted/30 border-b border-border/40">
-              <span className={`text-xs px-3 py-1 rounded-full font-medium ${categoryColors[match.category] || 'bg-muted text-muted-foreground'}`}>
+            <div className="flex items-center justify-between px-6 py-3 bg-accent/10 border-b-2 border-dashed border-foreground/10">
+              <span className={`text-xs px-3 py-1 rounded-full font-bold font-display border-2 border-foreground/10 ${categoryColors[match.category] || 'bg-muted text-muted-foreground'}`}>
                 {categoryLabels[match.category] || match.category}
               </span>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">התאמה</span>
-                <span className={`text-lg font-bold font-display ${
-                  match.matchScore >= 70 ? 'text-secondary' : match.matchScore >= 40 ? 'text-primary' : 'text-muted-foreground'
-                }`}>
-                  {match.matchScore}%
+                <span className="text-xs text-muted-foreground">XP התאמה</span>
+                <span
+                  className="inline-flex items-center gap-1 text-lg font-bold font-display px-3 py-0.5 rounded-full bg-accent text-accent-foreground border-2 border-foreground/15"
+                  style={{ boxShadow: '0 2px 0 0 hsl(var(--foreground) / 0.18)' }}
+                >
+                  <span aria-hidden>🪙</span>{match.matchScore}%
                 </span>
               </div>
             </div>
@@ -143,16 +145,16 @@ const MatchCards = ({ viaScores, scheinScores, hollandScores, tokenId }: MatchCa
 
               {/* AI Rationale */}
               {match.aiRationale && (
-                <div className="bg-secondary/5 rounded-2xl px-5 py-4 border border-secondary/15">
-                  <p className="text-xs font-bold text-secondary mb-1.5 font-display">💡 למה זה מתאים לך?</p>
+                <div className="bg-accent/10 rounded-2xl px-5 py-4 border-2 border-foreground/10">
+                  <p className="text-xs font-bold text-foreground mb-1.5 font-display">💡 למה זה מתאים לך?</p>
                   <p className="text-sm text-foreground leading-relaxed">{match.aiRationale}</p>
                 </div>
               )}
 
               {/* Trait reasons */}
               {!match.aiRationale && match.reasons.length > 0 && (
-                <div className="bg-muted/30 rounded-2xl px-5 py-4">
-                  <p className="text-xs font-bold text-muted-foreground mb-1.5 font-display">🎯 למה זה מתאים:</p>
+                <div className="bg-sage-light/60 rounded-2xl px-5 py-4 border-2 border-foreground/10">
+                  <p className="text-xs font-bold text-foreground mb-1.5 font-display">🎯 למה זה מתאים:</p>
                   <ul className="space-y-1">
                     {match.reasons.map((r, j) => (
                       <li key={j} className="text-sm text-foreground">✓ {r}</li>
@@ -162,12 +164,13 @@ const MatchCards = ({ viaScores, scheinScores, hollandScores, tokenId }: MatchCa
               )}
 
               {/* Actions */}
-              <div className="flex items-center justify-between gap-3 pt-2">
+              <div className="flex items-center justify-between gap-3 pt-2 flex-wrap">
                 <a
                   href={match.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-primary text-primary-foreground font-medium font-display text-sm tracking-wide hover:bg-primary/85 transition-all duration-300 shadow-[var(--shadow-card)]"
+                  style={{ boxShadow: '0 5px 0 0 hsl(var(--foreground) / 0.18)' }}
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-destructive text-destructive-foreground font-bold font-display text-sm tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200"
                 >
                   למידע נוסף ←
                 </a>

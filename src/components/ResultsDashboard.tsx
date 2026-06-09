@@ -30,21 +30,29 @@ interface ResultsDashboardProps {
   tokenId?: string;
 }
 
-/* ── Expandable Section (accessible for elderly) ── */
+/* ── Expandable Section (Owl Forest chunky) ── */
 const ExpandableSection = ({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="bg-card rounded-3xl border border-border/60 shadow-[var(--shadow-card)] overflow-hidden">
+    <div
+      className="bg-card rounded-3xl border-2 border-foreground/10 overflow-hidden"
+      style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.10)' }}
+    >
       <button
         onClick={() => setOpen(o => !o)}
         aria-expanded={open}
-        className="w-full flex items-center justify-between px-6 md:px-8 py-5 md:py-6 text-right hover:bg-muted/30 transition-colors duration-300 min-h-[60px]"
+        className="w-full flex items-center justify-between px-6 md:px-8 py-5 md:py-6 text-right hover:bg-accent/5 transition-colors duration-300 min-h-[60px]"
       >
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{icon}</span>
+          <span
+            className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-accent/20 text-2xl border-2 border-foreground/10"
+            aria-hidden
+          >
+            {icon}
+          </span>
           <span className="text-lg md:text-xl font-bold font-display text-foreground tracking-wide">{title}</span>
         </div>
-        <ChevronDown className={`w-6 h-6 text-muted-foreground transition-transform duration-500 ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-6 h-6 text-foreground/60 transition-transform duration-500 ${open ? 'rotate-180' : ''}`} />
       </button>
       <AnimatePresence>
         {open && (
@@ -55,7 +63,7 @@ const ExpandableSection = ({ title, icon, children }: { title: string; icon: str
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-6 md:px-8 pb-7 pt-2">
+            <div className="px-6 md:px-8 pb-7 pt-2 border-t-2 border-dashed border-foreground/10">
               {children}
             </div>
           </motion.div>
@@ -65,21 +73,55 @@ const ExpandableSection = ({ title, icon, children }: { title: string; icon: str
   );
 };
 
-/* ── Score Bar (reusable, accessible) ── */
-const ScoreBar = ({ label, description, score, maxScore, colorClass = 'bg-secondary' }: {
-  label: string; description?: string; score: number; maxScore: number; colorClass?: string;
-}) => (
-  <div className="space-y-2">
-    <div className="flex justify-between items-baseline">
-      <span className="text-lg font-semibold text-foreground">{label}</span>
-      <span className="text-base text-muted-foreground font-display">{typeof score === 'number' ? score.toFixed(1) : score}/{maxScore}</span>
+/* ── Owl Forest Score Bar — thick, chunky, friendly ── */
+const ScoreBar = ({ label, description, score, maxScore, tone = 'accent' }: {
+  label: string;
+  description?: string;
+  score: number;
+  maxScore: number;
+  /** semantic palette: accent (amber/XP), coral (CTA), success (sage), primary (forest) */
+  tone?: 'accent' | 'coral' | 'success' | 'primary' | 'sky';
+}) => {
+  const pct = Math.max(0, Math.min(100, (score / maxScore) * 100));
+  const toneMap: Record<string, { fill: string; chip: string }> = {
+    accent:  { fill: 'hsl(var(--accent))',     chip: 'bg-accent/20 text-foreground' },
+    coral:   { fill: 'hsl(var(--coral))',      chip: 'bg-coral/20 text-foreground' },
+    success: { fill: 'hsl(var(--success))',    chip: 'bg-success/20 text-foreground' },
+    primary: { fill: 'hsl(var(--primary))',    chip: 'bg-primary/15 text-primary' },
+    sky:     { fill: 'hsl(var(--sky))',        chip: 'bg-sky/20 text-foreground' },
+  };
+  const t = toneMap[tone] ?? toneMap.accent;
+  return (
+    <div className="space-y-2">
+      <div className="flex justify-between items-baseline gap-3">
+        <span className="text-lg font-semibold text-foreground">{label}</span>
+        <span className={`text-sm font-display font-bold px-3 py-1 rounded-full border-2 border-foreground/10 ${t.chip}`}>
+          {typeof score === 'number' ? score.toFixed(1) : score}/{maxScore}
+        </span>
+      </div>
+      {description && <p className="text-base text-muted-foreground leading-relaxed">{description}</p>}
+      <div
+        className="relative w-full h-5 bg-secondary/60 rounded-full overflow-hidden border-2 border-foreground/10"
+        role="progressbar"
+        aria-valuenow={score}
+        aria-valuemin={0}
+        aria-valuemax={maxScore}
+        style={{ boxShadow: 'inset 0 2px 0 0 hsl(var(--foreground) / 0.06)' }}
+      >
+        <motion.div
+          className="h-full rounded-full"
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            background: `linear-gradient(to left, ${t.fill}, ${t.fill} 70%, hsl(var(--foreground) / 0.15))`,
+            boxShadow: `inset 0 -3px 0 0 hsl(var(--foreground) / 0.12)`,
+          }}
+        />
+      </div>
     </div>
-    {description && <p className="text-base text-muted-foreground leading-relaxed">{description}</p>}
-    <div className="w-full h-3.5 bg-muted/50 rounded-full overflow-hidden" role="progressbar" aria-valuenow={score} aria-valuemin={0} aria-valuemax={maxScore}>
-      <div className={`h-full ${colorClass} rounded-full progress-bar-fill`} style={{ width: `${(score / maxScore) * 100}%` }} />
-    </div>
-  </div>
-);
+  );
+};
 
 const ResultsDashboard = ({
   viaScores, scheinScores, hollandScores,
@@ -216,7 +258,8 @@ const ResultsDashboard = ({
             </div>
             <a
               href="/#/"
-              className="w-full md:w-auto px-8 py-4 bg-primary text-primary-foreground font-bold font-display tracking-wide rounded-2xl shadow-[var(--shadow-elevated)] hover:bg-primary/90 transition whitespace-nowrap min-h-[56px] inline-flex items-center justify-center"
+              style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.22)' }}
+              className="w-full md:w-auto px-8 py-4 bg-destructive text-destructive-foreground font-bold font-display tracking-wide rounded-2xl border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 whitespace-nowrap min-h-[56px] inline-flex items-center justify-center"
             >
               קבעו פגישת ייעוץ תעסוקתי ←
             </a>
@@ -244,7 +287,8 @@ const ResultsDashboard = ({
                {onBackToHub && (
                  <button
                    onClick={onBackToHub}
-                   className="mt-3 px-6 py-3 rounded-xl bg-secondary text-secondary-foreground text-base font-medium font-display tracking-wide hover:bg-secondary/85 transition-all duration-300 shadow-sm min-h-[52px]"
+                   style={{ boxShadow: '0 5px 0 0 hsl(var(--foreground) / 0.18)' }}
+                   className="mt-3 px-6 py-3 rounded-xl bg-accent text-accent-foreground text-base font-bold font-display tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 min-h-[52px]"
                  >
                    חזרה להשלמת שאלונים ←
                  </button>
@@ -353,7 +397,7 @@ const ResultsDashboard = ({
           <ExpandableSection title="חוזקות VIA – כל הקטגוריות" icon="◆">
             <div className="space-y-5">
               {Object.entries(viaScores).sort(([, a], [, b]) => b - a).map(([cat, score]) => (
-                <ScoreBar key={cat} label={cat} description={viaCategoryDescriptions[cat]} score={score} maxScore={5} colorClass="bg-secondary" />
+                <ScoreBar key={cat} label={cat} description={viaCategoryDescriptions[cat]} score={score} maxScore={5} tone="accent" />
               ))}
             </div>
           </ExpandableSection>
@@ -361,7 +405,7 @@ const ResultsDashboard = ({
           <ExpandableSection title="עוגנים תעסוקתיים – כל הקטגוריות" icon="●">
             <div className="space-y-5">
               {Object.entries(scheinScores).sort(([, a], [, b]) => b - a).map(([cat, score]) => (
-                <ScoreBar key={cat} label={cat} description={scheinCategoryDescriptions[cat]} score={score} maxScore={7} colorClass="bg-primary" />
+                <ScoreBar key={cat} label={cat} description={scheinCategoryDescriptions[cat]} score={score} maxScore={7} tone="primary" />
               ))}
             </div>
           </ExpandableSection>
@@ -370,7 +414,7 @@ const ResultsDashboard = ({
             <ExpandableSection title="נטיות תעסוקתיות (הולנד)" icon="✦">
               <div className="space-y-5">
                 {Object.entries(hollandScores || {}).sort(([, a], [, b]) => b - a).map(([cat, score]) => (
-                  <ScoreBar key={cat} label={cat} description={hollandCategoryDescriptions[cat]} score={score} maxScore={11} colorClass="bg-primary" />
+                  <ScoreBar key={cat} label={cat} description={hollandCategoryDescriptions[cat]} score={score} maxScore={11} tone="primary" />
                 ))}
               </div>
             </ExpandableSection>
@@ -441,7 +485,7 @@ const ResultsDashboard = ({
                           description={intentionDimensionDescriptions[dim.label]}
                           score={dim.value}
                           maxScore={5}
-                          colorClass="bg-secondary"
+                          tone="accent"
                         />
                       ))}
                     </div>
@@ -554,9 +598,10 @@ const ResultsDashboard = ({
         <div className="text-center pb-10 space-y-5 print:hidden">
           <button
             onClick={() => window.print()}
-            className="px-10 py-4 rounded-2xl bg-primary text-primary-foreground font-medium font-display text-lg tracking-wide hover:bg-primary/85 transition-all duration-300 mx-2 shadow-[var(--shadow-card)] min-h-[56px]"
+            style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.22)' }}
+            className="px-10 py-4 rounded-2xl bg-destructive text-destructive-foreground font-bold font-display text-lg tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 mx-2 min-h-[56px]"
           >
-            הורדה כ-PDF
+            ⬇ הורדה כ-PDF
           </button>
           <br />
           <p className="text-muted-foreground mb-3 text-base">סגי תמיד כאן אם תרצו לעבור שוב</p>
@@ -565,7 +610,8 @@ const ResultsDashboard = ({
               localStorage.clear();
               window.location.reload();
             }}
-            className="px-10 py-4 rounded-2xl bg-muted text-foreground font-medium font-display text-lg tracking-wide hover:bg-muted/80 transition-all duration-300 min-h-[56px]"
+            style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.12)' }}
+            className="px-10 py-4 rounded-2xl bg-card text-foreground font-bold font-display text-lg tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 min-h-[56px]"
           >
             התחלה מחדש
           </button>
