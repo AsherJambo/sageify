@@ -487,73 +487,94 @@ const SageAdvisor = ({
 
         {/* Profile Summary Card — collapsible after first response */}
         {visibleMessages.length <= 1 ? (
-          <div className="bg-card rounded-3xl border border-border/60 p-5 sm:p-8 shadow-[var(--shadow-card)]" dir="rtl">
-            <h3 className="text-lg font-bold font-display text-foreground mb-4 flex items-center gap-3 tracking-wide">
-              <span className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-sm text-secondary">✦</span>
-              סיכום הפרופיל האישי שלך
+          <div
+            className="bg-card rounded-3xl border-2 border-foreground p-5 sm:p-8"
+            style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
+            dir="rtl"
+          >
+            <h3 className="text-lg sm:text-xl font-serif font-bold text-foreground mb-5 flex items-center gap-3 tracking-wide">
+              <span
+                className="w-10 h-10 rounded-xl bg-accent text-accent-foreground border-2 border-foreground flex items-center justify-center"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                aria-hidden="true"
+              >🪙</span>
+              סיכום הפרופיל שלך
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-              <div className="space-y-1.5">
-                <p className="font-semibold text-foreground">◆ חוזקות מובילות</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-base">
+              <div className="bg-sage-light border-2 border-foreground/25 rounded-2xl p-4 space-y-2">
+                <p className="font-serif font-bold text-foreground flex items-center gap-2">🌿 חוזקות מובילות</p>
                 {topVIA.map(t => (
-                  <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
+                  <p key={t.category} className="text-foreground/80 leading-relaxed">• {t.category} – {viaCategoryDescriptions[t.category] || ''}</p>
                 ))}
               </div>
-              <div className="space-y-1.5">
-                <p className="font-semibold text-foreground">◆ עוגני קריירה</p>
+              <div className="bg-gold-light border-2 border-foreground/25 rounded-2xl p-4 space-y-2">
+                <p className="font-serif font-bold text-foreground flex items-center gap-2">⚓ עוגני קריירה</p>
                 {topSchein.map(t => (
-                  <p key={t.category} className="text-muted-foreground pr-2">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
+                  <p key={t.category} className="text-foreground/80 leading-relaxed">• {t.category} – {scheinCategoryDescriptions[t.category] || ''}</p>
                 ))}
               </div>
               {topHolland.length > 0 && (
-                <div className="space-y-1.5">
-                  <p className="font-semibold text-foreground">◆ נטיות הולנד</p>
+                <div className="bg-sky-soft border-2 border-foreground/25 rounded-2xl p-4 space-y-2">
+                  <p className="font-serif font-bold text-foreground flex items-center gap-2">🧭 נטיות הולנד</p>
                   {topHolland.map(([c]) => (
-                    <p key={c} className="text-muted-foreground pr-2">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
+                    <p key={c} className="text-foreground/80 leading-relaxed">• {c} – {hollandCategoryDescriptions[c] || ''}</p>
                   ))}
                 </div>
               )}
               {winnerSkills.length > 0 && (
-                <div className="space-y-1.5">
-                  <p className="font-semibold text-foreground">◆ כישורים מובילים</p>
+                <div className="bg-coral-soft border-2 border-foreground/25 rounded-2xl p-4 space-y-2">
+                  <p className="font-serif font-bold text-foreground flex items-center gap-2">🏆 כישורים מובילים</p>
                   {winnerSkills.slice(0, 4).map((s, i) => (
-                    <p key={i} className="text-muted-foreground pr-2">• {s}</p>
+                    <p key={i} className="text-foreground/80 leading-relaxed">• {s}</p>
                   ))}
                 </div>
               )}
             </div>
             {recommendations.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-border">
-                <p className="font-semibold text-foreground mb-2">✦ הצעות עיסוק מהדו״ח</p>
-                {recommendations.map((rec, i) => (
-                  <p key={i} className="text-muted-foreground text-sm pr-2">
-                    {rec.icon} {rec.title} – {rec.reason}
-                  </p>
-                ))}
+              <div className="mt-5 pt-5 border-t-2 border-dashed border-foreground/25">
+                <p className="font-serif font-bold text-foreground mb-3 flex items-center gap-2">✨ הצעות עיסוק מהדו״ח</p>
+                <div className="space-y-2">
+                  {recommendations.map((rec, i) => (
+                    <p key={i} className="text-foreground/80 leading-relaxed">
+                      <span aria-hidden="true">{rec.icon}</span> <span className="font-bold text-foreground">{rec.title}</span> – {rec.reason}
+                    </p>
+                  ))}
+                </div>
               </div>
             )}
             {preferencesData?.dream && (
-              <div className="mt-3">
-                <p className="text-secondary font-semibold text-sm">✦ חלום המגירה: {preferencesData.dream}</p>
+              <div className="mt-4">
+                <span
+                  className="inline-block px-4 py-2 rounded-full bg-accent text-accent-foreground border-2 border-foreground font-bold text-base"
+                  style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.85)' }}
+                >
+                  💭 חלום המגירה: {preferencesData.dream}
+                </span>
               </div>
             )}
           </div>
         ) : (
           <details className="group" dir="rtl">
-            <summary className="cursor-pointer flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-2">
-              <span className="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center text-xs text-secondary">✦</span>
+            <summary className="cursor-pointer flex items-center justify-center gap-2 text-base font-bold text-foreground/75 hover:text-foreground transition-colors py-2 list-none">
+              <span
+                className="w-7 h-7 rounded-full bg-accent text-accent-foreground border-2 border-foreground flex items-center justify-center text-sm"
+                aria-hidden="true"
+              >🪙</span>
               <span>הצגת סיכום הפרופיל</span>
-              <span className="text-xs transition-transform group-open:rotate-180">▼</span>
+              <span className="text-sm transition-transform group-open:rotate-180">▼</span>
             </summary>
-            <div className="mt-3 bg-card rounded-2xl border border-border/60 p-6 shadow-[var(--shadow-card)]">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div
+              className="mt-3 bg-card rounded-2xl border-2 border-foreground p-5"
+              style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.85)' }}
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-base">
                 <div className="space-y-1">
-                  <p className="font-semibold text-foreground text-xs">◆ חוזקות</p>
-                  {topVIA.map(t => <p key={t.category} className="text-muted-foreground text-xs pr-2">• {t.category}</p>)}
+                  <p className="font-serif font-bold text-foreground">🌿 חוזקות</p>
+                  {topVIA.map(t => <p key={t.category} className="text-foreground/80">• {t.category}</p>)}
                 </div>
                 <div className="space-y-1">
-                  <p className="font-semibold text-foreground text-xs">◆ עוגנים</p>
-                  {topSchein.map(t => <p key={t.category} className="text-muted-foreground text-xs pr-2">• {t.category}</p>)}
+                  <p className="font-serif font-bold text-foreground">⚓ עוגנים</p>
+                  {topSchein.map(t => <p key={t.category} className="text-foreground/80">• {t.category}</p>)}
                 </div>
               </div>
             </div>
