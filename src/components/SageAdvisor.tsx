@@ -418,18 +418,23 @@ const SageAdvisor = ({
   // Loading phase
   if (phase === 'loading') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6">
+      <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-background">
         <div className="max-w-md text-center space-y-8">
-          <img src={owlLogo} alt="Sage Advisor" className="w-28 h-28 mx-auto animate-float rounded-full shadow-[var(--shadow-elevated)]" />
-          <h2 className="text-3xl font-bold font-display text-foreground tracking-wide">
-            מנתח את התוצאות שלך...
+          <div
+            className="w-32 h-32 mx-auto rounded-full bg-card border-2 border-foreground flex items-center justify-center animate-float"
+            style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.9)' }}
+          >
+            <img src={owlLogo} alt="Sagi" className="w-24 h-24 rounded-full" />
+          </div>
+          <h2 className="text-3xl font-serif font-bold text-foreground tracking-wide">
+            סגי מנתח את הסיפור שלך… 🦉
           </h2>
-          <p className="text-muted-foreground text-lg">
-            מעבד את הפרופיל שלך ומכין תובנות מותאמות אישית
+          <p className="text-foreground/75 text-lg leading-relaxed">
+            מכין תובנות אישיות וחם מהתנור עבורך
           </p>
-          <div className="w-full h-2 bg-muted/40 rounded-full overflow-hidden">
+          <div className="w-full h-5 bg-sand-warm rounded-full overflow-hidden border-2 border-foreground">
             <div
-              className="h-full bg-secondary rounded-full progress-bar-fill animate-pulse"
+              className="h-full bg-accent animate-pulse"
               style={{ width: '85%' }}
             />
           </div>
