@@ -395,7 +395,7 @@ const ResultsDashboard = ({
           <ExpandableSection title="חוזקות VIA – כל הקטגוריות" icon="◆">
             <div className="space-y-5">
               {Object.entries(viaScores).sort(([, a], [, b]) => b - a).map(([cat, score]) => (
-                <ScoreBar key={cat} label={cat} description={viaCategoryDescriptions[cat]} score={score} maxScore={5} colorClass="bg-secondary" />
+                <ScoreBar key={cat} label={cat} description={viaCategoryDescriptions[cat]} score={score} maxScore={5} tone="accent" />
               ))}
             </div>
           </ExpandableSection>
@@ -403,7 +403,7 @@ const ResultsDashboard = ({
           <ExpandableSection title="עוגנים תעסוקתיים – כל הקטגוריות" icon="●">
             <div className="space-y-5">
               {Object.entries(scheinScores).sort(([, a], [, b]) => b - a).map(([cat, score]) => (
-                <ScoreBar key={cat} label={cat} description={scheinCategoryDescriptions[cat]} score={score} maxScore={7} colorClass="bg-primary" />
+                <ScoreBar key={cat} label={cat} description={scheinCategoryDescriptions[cat]} score={score} maxScore={7} tone="primary" />
               ))}
             </div>
           </ExpandableSection>
@@ -412,7 +412,7 @@ const ResultsDashboard = ({
             <ExpandableSection title="נטיות תעסוקתיות (הולנד)" icon="✦">
               <div className="space-y-5">
                 {Object.entries(hollandScores || {}).sort(([, a], [, b]) => b - a).map(([cat, score]) => (
-                  <ScoreBar key={cat} label={cat} description={hollandCategoryDescriptions[cat]} score={score} maxScore={11} colorClass="bg-primary" />
+                  <ScoreBar key={cat} label={cat} description={hollandCategoryDescriptions[cat]} score={score} maxScore={11} tone="primary" />
                 ))}
               </div>
             </ExpandableSection>
@@ -483,7 +483,7 @@ const ResultsDashboard = ({
                           description={intentionDimensionDescriptions[dim.label]}
                           score={dim.value}
                           maxScore={5}
-                          colorClass="bg-secondary"
+                          tone="accent"
                         />
                       ))}
                     </div>
