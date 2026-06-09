@@ -9,11 +9,12 @@ interface Props {
   onBackToHub?: () => void;
 }
 
-const COLUMNS: { id: SkillColumn; label: string; emoji: string; color: string }[] = [
-  { id: 'winner', label: 'ארגז מנצח', emoji: '🏆', color: 'from-emerald-400 to-teal-500' },
-  { id: 'burnout', label: 'מיציתי', emoji: '🔥', color: 'from-rose-400 to-red-500' },
-  { id: 'aspire', label: 'רוצה ללמוד', emoji: '🌱', color: 'from-sky-400 to-cyan-500' },
-  { id: 'irrelevant', label: 'לא רלוונטי', emoji: '💤', color: 'from-slate-400 to-slate-500' },
+// Owl Forest column tints — each uses a semantic token tied to the palette
+const COLUMNS: { id: SkillColumn; label: string; emoji: string; bg: string; shadow: string }[] = [
+  { id: 'winner',     label: 'ארגז מנצח',   emoji: '🏆', bg: 'bg-accent',      shadow: 'hsl(var(--accent) / 0.55)' },
+  { id: 'burnout',    label: 'מיציתי',       emoji: '🔥', bg: 'bg-destructive', shadow: 'hsl(var(--destructive) / 0.5)' },
+  { id: 'aspire',     label: 'רוצה ללמוד',   emoji: '🌱', bg: 'bg-sage',        shadow: 'hsl(var(--sage) / 0.55)' },
+  { id: 'irrelevant', label: 'לא רלוונטי',   emoji: '💤', bg: 'bg-secondary',   shadow: 'hsl(var(--foreground) / 0.18)' },
 ];
 
 const GameSkills = ({ onComplete, onBackToHub }: Props) => {
@@ -41,7 +42,6 @@ const GameSkills = ({ onComplete, onBackToHub }: Props) => {
       const winners = Object.values(next).filter((v) => v === 'winner').length;
       if (winners < 5) {
         setError(`בחרו לפחות 5 לארגז המנצח (כרגע ${winners})`);
-        // jump back to first unassigned-winner candidate; allow user to re-pick
         return;
       }
       burstConfetti();
@@ -61,11 +61,10 @@ const GameSkills = ({ onComplete, onBackToHub }: Props) => {
       subtitle="מיינו כל כישור לאחת מ-4 הקבוצות"
       step={index + 1}
       total={total}
-      bg="bg-gradient-to-b from-[#062b1c] via-[#0e4b35] to-[#03110a]"
       onBack={onBackToHub}
     >
-      <div className="flex-1 flex flex-col px-4 pb-6">
-        <div className="flex-1 flex items-center justify-center relative min-h-[220px]">
+      <div className="flex-1 flex flex-col px-4 pb-6 max-w-3xl mx-auto w-full">
+        <div className="flex-1 flex items-center justify-center relative min-h-[220px] py-6">
           <AnimatePresence mode="wait">
             <motion.div
               key={current?.id ?? 'done'}
@@ -73,10 +72,11 @@ const GameSkills = ({ onComplete, onBackToHub }: Props) => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -30, scale: 0.9 }}
               transition={{ duration: 0.35 }}
-              className="w-full max-w-md bg-white/10 backdrop-blur border border-white/20 rounded-3xl p-7 text-center shadow-2xl"
+              className="w-full max-w-md bg-card border-2 border-foreground/15 rounded-3xl p-7 text-center"
+              style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.18)' }}
             >
-              <div className="text-xs tracking-widest opacity-60 mb-3">כישור {index + 1}</div>
-              <p className="text-xl md:text-2xl font-bold leading-relaxed">{current?.text}</p>
+              <div className="text-xs tracking-widest text-foreground/60 mb-3">כישור {index + 1}</div>
+              <p className="text-xl md:text-2xl font-serif leading-relaxed text-foreground">{current?.text}</p>
             </motion.div>
           </AnimatePresence>
         </div>
@@ -85,7 +85,8 @@ const GameSkills = ({ onComplete, onBackToHub }: Props) => {
           <motion.div
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-3 text-center text-sm bg-amber-400 text-slate-900 rounded-lg py-2 px-3 font-bold"
+            className="mb-3 text-center text-sm bg-accent text-foreground rounded-xl py-2.5 px-3 font-bold border-2 border-foreground/20"
+            style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.20)' }}
           >
             {error}
           </motion.div>
@@ -95,9 +96,10 @@ const GameSkills = ({ onComplete, onBackToHub }: Props) => {
           {COLUMNS.map((c) => (
             <motion.button
               key={c.id}
-              whileTap={{ scale: 0.94 }}
+              whileTap={{ scale: 0.94, y: 4 }}
               onClick={() => assign(c.id)}
-              className={`min-h-[80px] rounded-2xl p-3 bg-gradient-to-br ${c.color} text-white font-bold shadow-lg border-2 border-white/20 flex flex-col items-center justify-center gap-1`}
+              style={{ boxShadow: `0 6px 0 0 ${c.shadow}`, minHeight: 88 }}
+              className={`rounded-2xl p-3 ${c.bg} text-foreground font-bold border-2 border-foreground/20 flex flex-col items-center justify-center gap-1 transition-transform active:translate-y-1`}
             >
               <span className="text-2xl">{c.emoji}</span>
               <span className="text-sm">{c.label}</span>
@@ -105,11 +107,16 @@ const GameSkills = ({ onComplete, onBackToHub }: Props) => {
           ))}
         </div>
 
-        <div className="flex justify-between items-center text-xs opacity-80">
-          <button onClick={goBack} disabled={index === 0} className="px-3 py-1.5 rounded-lg bg-white/10 disabled:opacity-30">
+        <div className="flex justify-between items-center text-xs text-foreground/70">
+          <button
+            onClick={goBack}
+            disabled={index === 0}
+            className="px-3 py-2 rounded-xl bg-card border-2 border-foreground/15 font-bold disabled:opacity-30"
+            style={{ boxShadow: '0 2px 0 0 hsl(var(--foreground) / 0.18)' }}
+          >
             → קודם
           </button>
-          <span>בארגז המנצח: {winnerCount} (5–7)</span>
+          <span className="font-bold">בארגז המנצח: {winnerCount} (5–7)</span>
         </div>
       </div>
     </GameShell>
