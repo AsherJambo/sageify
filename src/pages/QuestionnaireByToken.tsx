@@ -106,15 +106,17 @@ const QUESTIONNAIRE_STEPS: Step[] = [
 
 interface QuestionnaireByTokenProps {
   partnerOrg?: { org_name: string; logo_url: string | null; custom_welcome_message: string };
+  demoMode?: boolean;
 }
 
-const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) => {
-  const { token } = useParams<{ token: string }>();
+const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByTokenProps = {}) => {
+  const { token: paramToken } = useParams<{ token: string }>();
+  const token = demoMode ? 'demo-full' : paramToken;
   const isAdminMode = typeof window !== 'undefined' && /[?&]admin=1\b/.test(window.location.hash + window.location.search);
-  const [tokenRow, setTokenRow] = useState<{ id: string; username: string } | null>(null);
+  const [tokenRow, setTokenRow] = useState<{ id: string; username: string } | null>(demoMode ? { id: 'demo', username: 'אורח' } : null);
   const [responseId, setResponseId] = useState<string | null>(null);
   const [idNumber, setIdNumber] = useState('');
-  const [cloudSynced, setCloudSynced] = useState(false);
+  const [cloudSynced, setCloudSynced] = useState(demoMode ? true : false);
   const [cloudSyncFailed, setCloudSyncFailed] = useState(false);
 
   const stateStorageKey = token ? `sageify-state-${token}` : null;
