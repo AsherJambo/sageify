@@ -443,10 +443,11 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
       return (
         <QuestionnaireHub
           completedSections={completedSections}
+          minimumRequired={demoMode ? 0 : 3}
           onSelect={(id) => updateState({ step: SECTION_FIRST_STEP[id] })}
           onViewResults={() => {
             // Save user profile before processing
-            if (tokenRow && state.preferencesData) {
+            if (!demoMode && tokenRow && state.preferencesData) {
               saveUserProfile({
                 tokenId: tokenRow.id,
                 psychometricScores: { ...viaScores, ...scheinScores, ...hollandScores },
