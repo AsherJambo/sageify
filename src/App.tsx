@@ -60,6 +60,7 @@ const App = () => {
               <Route path="/haredi" element={<Haredi />} />
               <Route path="/cocktail" element={<Cocktail />} />
               <Route path="/preview" element={<PreviewHub />} />
+              <Route path="/demo-full" element={<DemoFull />} />
               <Route path="/preview/holland" element={<PreviewHolland />} />
               <Route path="/preview/via" element={<PreviewVIA />} />
               <Route path="/preview/schein" element={<PreviewSchein />} />
