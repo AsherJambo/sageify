@@ -53,9 +53,9 @@ const SECTION_SHORT_NAME: Record<QuestionnaireSectionId, string> = {
   motivation: 'מניעים', thinking: 'חשיבה',
 };
 
-const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: QuestionnaireHubProps) => {
+const QuestionnaireHub = ({ completedSections, onSelect, onViewResults, minimumRequired = 3 }: QuestionnaireHubProps) => {
   const completedCount = Object.values(completedSections).filter(Boolean).length;
-  const hasMinimum = completedCount >= 3;
+  const hasMinimum = completedCount >= minimumRequired;
   const prevCount = useRef(completedCount);
 
   const lastCompletedName = useMemo(() => {
