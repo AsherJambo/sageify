@@ -563,7 +563,6 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
               updateState({ step: 'results' });
             }}
           />
-          <ScheduleMeetingCTA variant="floating" />
         </>
       );
     case 'results':
