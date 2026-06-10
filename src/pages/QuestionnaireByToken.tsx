@@ -106,15 +106,17 @@ const QUESTIONNAIRE_STEPS: Step[] = [
 
 interface QuestionnaireByTokenProps {
   partnerOrg?: { org_name: string; logo_url: string | null; custom_welcome_message: string };
+  demoMode?: boolean;
 }
 
-const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) => {
-  const { token } = useParams<{ token: string }>();
+const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByTokenProps = {}) => {
+  const { token: paramToken } = useParams<{ token: string }>();
+  const token = demoMode ? 'demo-full' : paramToken;
   const isAdminMode = typeof window !== 'undefined' && /[?&]admin=1\b/.test(window.location.hash + window.location.search);
-  const [tokenRow, setTokenRow] = useState<{ id: string; username: string } | null>(null);
+  const [tokenRow, setTokenRow] = useState<{ id: string; username: string } | null>(demoMode ? { id: 'demo', username: 'אורח' } : null);
   const [responseId, setResponseId] = useState<string | null>(null);
   const [idNumber, setIdNumber] = useState('');
-  const [cloudSynced, setCloudSynced] = useState(false);
+  const [cloudSynced, setCloudSynced] = useState(demoMode ? true : false);
   const [cloudSyncFailed, setCloudSyncFailed] = useState(false);
 
   const stateStorageKey = token ? `sageify-state-${token}` : null;
@@ -150,6 +152,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
   // If localStorage already has state for this token, we can show the UI immediately
   // and let the cloud fetch overlay it asynchronously.
   const [pageState, setPageState] = useState<'loading' | 'invalid' | 'used' | 'ready'>(() => {
+    if (demoMode) return 'ready';
     if (typeof window === 'undefined' || !stateStorageKey) return 'loading';
     try {
       const hasLocal = !!localStorage.getItem(stateStorageKey) || !!(chatStorageKey && localStorage.getItem(chatStorageKey));
@@ -162,6 +165,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
   // Validate token & overlay cloud data on mount
   useEffect(() => {
+    if (demoMode) { setPageState('ready'); setCloudSynced(true); return; }
     if (!token) { setPageState('invalid'); return; }
 
     (async () => {
@@ -243,6 +247,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
 
   // Save progress on state change
   useEffect(() => {
+    if (demoMode) return;
     if (!responseId || pageState !== 'ready') return;
     supabase
       .from('questionnaire_responses')
@@ -342,6 +347,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
   };
 
   const markComplete = async () => {
+    if (demoMode) return;
     if (tokenRow) {
       await supabase.from('questionnaire_tokens').update({ completed_at: new Date().toISOString() }).eq('id', tokenRow.id);
     }
@@ -437,10 +443,11 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
       return (
         <QuestionnaireHub
           completedSections={completedSections}
+          minimumRequired={demoMode ? 0 : 3}
           onSelect={(id) => updateState({ step: SECTION_FIRST_STEP[id] })}
           onViewResults={() => {
             // Save user profile before processing
-            if (tokenRow && state.preferencesData) {
+            if (!demoMode && tokenRow && state.preferencesData) {
               saveUserProfile({
                 tokenId: tokenRow.id,
                 psychometricScores: { ...viaScores, ...scheinScores, ...hollandScores },
@@ -543,7 +550,7 @@ const QuestionnaireByToken = ({ partnerOrg }: QuestionnaireByTokenProps = {}) =>
             cloudSyncFailed={cloudSyncFailed}
             onFinish={() => {
               markComplete();
-              if (tokenRow) {
+              if (!demoMode && tokenRow) {
                 silentSaveInsights({
                   tokenId: tokenRow.id,
                   viaScores, scheinScores, hollandScores,

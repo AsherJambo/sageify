@@ -11,6 +11,7 @@ interface QuestionnaireHubProps {
   completedSections: Record<QuestionnaireSectionId, boolean>;
   onSelect: (id: QuestionnaireSectionId) => void;
   onViewResults: () => void;
+  minimumRequired?: number;
 }
 
 interface GameCard {
@@ -52,9 +53,9 @@ const SECTION_SHORT_NAME: Record<QuestionnaireSectionId, string> = {
   motivation: 'מניעים', thinking: 'חשיבה',
 };
 
-const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: QuestionnaireHubProps) => {
+const QuestionnaireHub = ({ completedSections, onSelect, onViewResults, minimumRequired = 3 }: QuestionnaireHubProps) => {
   const completedCount = Object.values(completedSections).filter(Boolean).length;
-  const hasMinimum = completedCount >= 3;
+  const hasMinimum = completedCount >= minimumRequired;
   const prevCount = useRef(completedCount);
 
   const lastCompletedName = useMemo(() => {
@@ -228,9 +229,9 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults }: Questi
           transition={{ delay: 0.5, duration: 0.6 }}
           className="text-center space-y-4 pb-8"
         >
-          {!hasMinimum && (
+          {!hasMinimum && minimumRequired > 0 && (
             <p className="text-base text-muted-foreground bg-card border border-border/60 rounded-2xl px-6 py-4 inline-block shadow-[var(--shadow-card)]">
-              📋 השלימו לפחות 3 משחקים כדי לקבל ייעוץ ({completedCount}/3)
+              📋 השלימו לפחות {minimumRequired} משחקים כדי לקבל ייעוץ ({completedCount}/{minimumRequired})
             </p>
           )}
           <div>
