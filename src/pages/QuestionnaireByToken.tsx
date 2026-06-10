@@ -347,6 +347,7 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
   };
 
   const markComplete = async () => {
+    if (demoMode) return;
     if (tokenRow) {
       await supabase.from('questionnaire_tokens').update({ completed_at: new Date().toISOString() }).eq('id', tokenRow.id);
     }
