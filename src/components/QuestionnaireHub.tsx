@@ -229,9 +229,9 @@ const QuestionnaireHub = ({ completedSections, onSelect, onViewResults, minimumR
           transition={{ delay: 0.5, duration: 0.6 }}
           className="text-center space-y-4 pb-8"
         >
-          {!hasMinimum && (
+          {!hasMinimum && minimumRequired > 0 && (
             <p className="text-base text-muted-foreground bg-card border border-border/60 rounded-2xl px-6 py-4 inline-block shadow-[var(--shadow-card)]">
-              📋 השלימו לפחות 3 משחקים כדי לקבל ייעוץ ({completedCount}/3)
+              📋 השלימו לפחות {minimumRequired} משחקים כדי לקבל ייעוץ ({completedCount}/{minimumRequired})
             </p>
           )}
           <div>
