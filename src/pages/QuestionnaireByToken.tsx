@@ -550,7 +550,7 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
             cloudSyncFailed={cloudSyncFailed}
             onFinish={() => {
               markComplete();
-              if (tokenRow) {
+              if (!demoMode && tokenRow) {
                 silentSaveInsights({
                   tokenId: tokenRow.id,
                   viaScores, scheinScores, hollandScores,
