@@ -247,6 +247,7 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
 
   // Save progress on state change
   useEffect(() => {
+    if (demoMode) return;
     if (!responseId || pageState !== 'ready') return;
     supabase
       .from('questionnaire_responses')
