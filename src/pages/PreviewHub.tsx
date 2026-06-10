@@ -63,6 +63,31 @@ const PreviewHub = () => {
           ))}
         </div>
 
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-14 max-w-2xl mx-auto text-center bg-card border border-border/60 rounded-3xl p-8 shadow-[var(--shadow-card)]"
+        >
+          <span className="inline-block text-xs font-semibold tracking-widest text-accent uppercase mb-3 px-3 py-1 rounded-full bg-accent/10">
+            ✦ גרסה מלאה
+          </span>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
+            רוצים לראות את החוויה המלאה?
+          </h2>
+          <p className="text-base text-muted-foreground leading-relaxed mb-5">
+            דמו פרימיום זהה למה ששולחים ללקוח — כל 8 המשחקים, שיחה עם סגי, ותוצאות.
+            <br className="hidden sm:block" />
+            נדרשת סיסמה לכניסה.
+          </p>
+          <Link
+            to="/demo-full"
+            className="inline-block px-10 py-4 bg-primary text-primary-foreground rounded-2xl text-lg font-semibold font-display tracking-wide hover:bg-primary/85 transition-all shadow-[var(--shadow-elevated)]"
+          >
+            כניסה לדמו המלא ←
+          </Link>
+        </motion.div>
+
         <div className="text-center mt-12">
           <Link
             to="/"
@@ -71,6 +96,7 @@ const PreviewHub = () => {
             ← חזרה לדף הבית
           </Link>
         </div>
+
       </div>
     </div>
   );
