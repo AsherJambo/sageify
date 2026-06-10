@@ -152,6 +152,7 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
   // If localStorage already has state for this token, we can show the UI immediately
   // and let the cloud fetch overlay it asynchronously.
   const [pageState, setPageState] = useState<'loading' | 'invalid' | 'used' | 'ready'>(() => {
+    if (demoMode) return 'ready';
     if (typeof window === 'undefined' || !stateStorageKey) return 'loading';
     try {
       const hasLocal = !!localStorage.getItem(stateStorageKey) || !!(chatStorageKey && localStorage.getItem(chatStorageKey));
