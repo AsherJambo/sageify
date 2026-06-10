@@ -20,6 +20,7 @@ const PreviewSkills = lazy(() => import("./pages/PreviewSkills"));
 const PreviewConsiderations = lazy(() => import("./pages/PreviewConsiderations"));
 const PreviewPreferences = lazy(() => import("./pages/PreviewPreferences"));
 const PreviewHub = lazy(() => import("./pages/PreviewHub"));
+const DemoFull = lazy(() => import("./pages/DemoFull"));
 
 
 const QuestionnaireByToken = lazy(() => import("./pages/QuestionnaireByToken"));
