@@ -165,6 +165,7 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
 
   // Validate token & overlay cloud data on mount
   useEffect(() => {
+    if (demoMode) { setPageState('ready'); setCloudSynced(true); return; }
     if (!token) { setPageState('invalid'); return; }
 
     (async () => {
