@@ -11,6 +11,7 @@ interface QuestionnaireHubProps {
   completedSections: Record<QuestionnaireSectionId, boolean>;
   onSelect: (id: QuestionnaireSectionId) => void;
   onViewResults: () => void;
+  minimumRequired?: number;
 }
 
 interface GameCard {
