@@ -582,6 +582,45 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
     case 'results':
       return (
         <>
+          {/* Sticky meeting CTA — appears after scrolling */}
+          <AnimatePresence>
+            {showStickyCTA && (
+              <motion.div
+                initial={{ opacity: 0, y: -60 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -60 }}
+                transition={{ duration: 0.35 }}
+                className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-b border-accent/30 shadow-lg"
+                dir="rtl"
+              >
+                <div className="max-w-3xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="relative shrink-0">
+                      <div className="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-accent-foreground shadow-sm">
+                        <CalendarCheck size={18} />
+                      </div>
+                      <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-500 border-2 border-card" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-foreground truncate">קבע פגישה ליועץ תעסוקתי</p>
+                      <p className="text-xs text-muted-foreground hidden sm:block">זמין עכשיו — פגישה אישית לתכנון הקריירה</p>
+                    </div>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => setMeetingModalOpen(true)}
+                    className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold shadow-[var(--shadow-button)]"
+                  >
+                    <CalendarCheck size={16} />
+                    <span className="hidden sm:inline">לתיאום הפגישה</span>
+                    <span className="sm:hidden">תיאום</span>
+                  </motion.button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <div className="px-3 sm:px-4 pt-4">
             <ScheduleMeetingCTA variant="banner" />
           </div>
@@ -602,6 +641,7 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
           <div className="px-3 sm:px-4 pb-12">
             <ScheduleMeetingCTA variant="banner" />
           </div>
+          <MeetingBookingModal open={meetingModalOpen} onClose={() => setMeetingModalOpen(false)} />
         </>
       );
     default:
