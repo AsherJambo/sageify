@@ -19,15 +19,18 @@ const ScheduleMeetingCTA = ({ variant = 'banner' }: ScheduleMeetingCTAProps) => 
     return (
       <>
         <motion.button
+          type="button"
           onClick={() => setOpen(true)}
+          aria-haspopup="dialog"
+          aria-expanded={open}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, type: 'spring' }}
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
-          className="fixed bottom-5 left-5 z-40 inline-flex items-center gap-2 px-4 py-3 rounded-full bg-accent text-accent-foreground font-bold text-sm shadow-[var(--shadow-elevated)]"
+          className="fixed bottom-5 left-5 z-40 inline-flex items-center gap-2 px-4 py-3 rounded-full bg-accent text-accent-foreground font-bold text-sm shadow-[var(--shadow-elevated)] outline-none focus-visible:ring-4 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
-          <CalendarCheck size={18} />
+          <CalendarCheck size={18} aria-hidden="true" />
           תיאום פגישה עם יועץ
         </motion.button>
         <MeetingBookingModal open={open} onClose={() => setOpen(false)} />
@@ -68,12 +71,15 @@ const ScheduleMeetingCTA = ({ variant = 'banner' }: ScheduleMeetingCTAProps) => 
               שיתרגם את התוצאות לתוכנית פעולה מעשית והזדמנויות אמיתיות בשטח.
             </p>
             <motion.button
+              type="button"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => setOpen(true)}
-              className="mt-2 sm:mt-4 w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl bg-accent text-accent-foreground font-bold text-base sm:text-lg hover:brightness-110 transition-all shadow-[var(--shadow-button)]"
+              aria-haspopup="dialog"
+              aria-expanded={open}
+              className="mt-2 sm:mt-4 w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl bg-accent text-accent-foreground font-bold text-base sm:text-lg hover:brightness-110 transition-all shadow-[var(--shadow-button)] outline-none focus-visible:ring-4 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-card"
             >
-              <CalendarCheck size={20} />
+              <CalendarCheck size={20} aria-hidden="true" />
               לתיאום הפגישה
             </motion.button>
           </div>

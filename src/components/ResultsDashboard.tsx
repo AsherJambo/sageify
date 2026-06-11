@@ -39,9 +39,10 @@ const ExpandableSection = ({ title, icon, children }: { title: string; icon: str
       style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.10)' }}
     >
       <button
+        type="button"
         onClick={() => setOpen(o => !o)}
         aria-expanded={open}
-        className="w-full flex items-center justify-between px-6 md:px-8 py-5 md:py-6 text-right hover:bg-accent/5 transition-colors duration-300 min-h-[60px]"
+        className="w-full flex items-center justify-between px-6 md:px-8 py-5 md:py-6 text-right hover:bg-accent/5 transition-colors duration-300 min-h-[60px] outline-none focus-visible:ring-4 focus-visible:ring-accent/40 focus-visible:ring-inset"
       >
         <div className="flex items-center gap-3">
           <span
@@ -286,9 +287,10 @@ const ResultsDashboard = ({
                </p>
                {onBackToHub && (
                  <button
+                   type="button"
                    onClick={onBackToHub}
                    style={{ boxShadow: '0 5px 0 0 hsl(var(--foreground) / 0.18)' }}
-                   className="mt-3 px-6 py-3 rounded-xl bg-accent text-accent-foreground text-base font-bold font-display tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 min-h-[52px]"
+                   className="mt-3 px-6 py-3 rounded-xl bg-accent text-accent-foreground text-base font-bold font-display tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 min-h-[52px] outline-none focus-visible:ring-4 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                  >
                    חזרה להשלמת שאלונים ←
                  </button>
@@ -597,21 +599,23 @@ const ResultsDashboard = ({
         {/* Actions */}
         <div className="text-center pb-10 space-y-5 print:hidden">
           <button
+            type="button"
             onClick={() => window.print()}
             style={{ boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.22)' }}
-            className="px-10 py-4 rounded-2xl bg-destructive text-destructive-foreground font-bold font-display text-lg tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 mx-2 min-h-[56px]"
+            className="px-10 py-4 rounded-2xl bg-destructive text-destructive-foreground font-bold font-display text-lg tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 mx-2 min-h-[56px] outline-none focus-visible:ring-4 focus-visible:ring-destructive/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             ⬇ הורדה כ-PDF
           </button>
           <br />
           <p className="text-muted-foreground mb-3 text-base">סגי תמיד כאן אם תרצו לעבור שוב</p>
           <button
+            type="button"
             onClick={() => {
               localStorage.clear();
               window.location.reload();
             }}
             style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.12)' }}
-            className="px-10 py-4 rounded-2xl bg-card text-foreground font-bold font-display text-lg tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 min-h-[56px]"
+            className="px-10 py-4 rounded-2xl bg-card text-foreground font-bold font-display text-lg tracking-wide border-2 border-foreground/15 hover:-translate-y-[2px] active:translate-y-[3px] active:shadow-none transition-all duration-200 min-h-[56px] outline-none focus-visible:ring-4 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             התחלה מחדש
           </button>
