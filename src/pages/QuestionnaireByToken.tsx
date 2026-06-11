@@ -265,6 +265,15 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [state.step]);
 
+  // Sticky CTA scroll trigger — show after scrolling past the hero CTA
+  useEffect(() => {
+    if (state.step !== 'results') { setShowStickyCTA(false); return; }
+    const onScroll = () => setShowStickyCTA(window.scrollY > 180);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [state.step]);
+
   const updateState = (partial: Partial<ResponseData>) => {
     setState(prev => ({ ...prev, ...partial }));
   };
