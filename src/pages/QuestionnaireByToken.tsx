@@ -568,6 +568,9 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
     case 'results':
       return (
         <>
+          <div className="px-3 sm:px-4 pt-4">
+            <ScheduleMeetingCTA variant="banner" />
+          </div>
           <ResultsDashboard
             viaScores={viaScores}
             scheinScores={scheinScores}
@@ -582,7 +585,7 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
             onBackToHub={() => updateState({ step: 'hub' })}
             tokenId={tokenRow?.id}
           />
-          <div className="px-4 pb-12">
+          <div className="px-3 sm:px-4 pb-12">
             <ScheduleMeetingCTA variant="banner" />
           </div>
         </>
