@@ -73,6 +73,10 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success'>('idle');
   const [calendarOpen, setCalendarOpen] = useState(false);
 
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
+
   const reset = () => {
     setName(''); setEmail(''); setPhone(''); setNotes('');
     setDate(undefined); setTime(''); setErrors({}); setStatus('idle');
@@ -82,6 +86,48 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
     onClose();
     setTimeout(reset, 300);
   };
+
+  // Esc to close, focus trap, restore focus
+  useEffect(() => {
+    if (!open) return;
+    lastFocusedRef.current = document.activeElement as HTMLElement | null;
+    // Focus close button when modal opens
+    const focusTimer = setTimeout(() => closeBtnRef.current?.focus(), 50);
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        handleClose();
+        return;
+      }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener('keydown', handleKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      clearTimeout(focusTimer);
+      document.removeEventListener('keydown', handleKey);
+      document.body.style.overflow = prevOverflow;
+      lastFocusedRef.current?.focus?.();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
 
   const validateField = (field: 'name' | 'email' | 'phone', value: string) => {
     const fieldSchema = (schema.shape as any)[field];
