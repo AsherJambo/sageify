@@ -9,8 +9,15 @@ const AUTH_KEY = 'sageify-demo-full-auth';
 const DemoFull = () => {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState('');
+  const [reset, setReset] = useState(false);
 
   useEffect(() => {
+    // Always reset demo state on entry so each visit starts fresh
+    try {
+      localStorage.removeItem('sageify-state-demo-full');
+      localStorage.removeItem('sageify-chat-demo-full');
+    } catch { /* ignore */ }
+    setReset(true);
     try {
       if (sessionStorage.getItem(AUTH_KEY) === '1') setAuthed(true);
     } catch { /* ignore */ }
@@ -61,6 +68,7 @@ const DemoFull = () => {
     );
   }
 
+  if (!reset) return null;
   return <QuestionnaireByToken demoMode />;
 };
 
