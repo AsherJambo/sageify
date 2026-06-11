@@ -215,7 +215,7 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
                 <X size={18} aria-hidden="true" />
               </button>
             </div>
-            <p className="px-7 text-sm text-muted-foreground mb-5">
+            <p id="meeting-modal-desc" className="px-7 text-sm text-muted-foreground mb-5">
               בחרו מועד נוח ומלאו פרטים — יועץ תעסוקתי המתמחה בתעסוקה אקטיבית אחרי פרישה יחזור אליכם לאישור.
             </p>
 
