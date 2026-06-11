@@ -42,27 +42,27 @@ const ScheduleMeetingCTA = ({ variant = 'banner' }: ScheduleMeetingCTAProps) => 
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.3 }}
         dir="rtl"
-        className="max-w-2xl mx-auto my-10 p-6 md:p-8 rounded-2xl bg-gradient-to-br from-accent/15 via-card to-secondary/10 border-2 border-accent/40 shadow-[var(--shadow-elevated)] text-right"
+        className="max-w-2xl mx-auto my-4 md:my-8 p-4 sm:p-6 md:p-8 rounded-2xl bg-gradient-to-br from-accent/15 via-card to-secondary/10 border-2 border-accent/40 shadow-[var(--shadow-elevated)] text-right"
       >
-        <div className="flex items-start gap-5">
-          <div className="relative">
-            <div className="w-14 h-14 rounded-full bg-accent flex items-center justify-center text-accent-foreground flex-shrink-0 shadow-md">
-              <CalendarCheck size={26} />
+        <div className="flex items-start gap-3 sm:gap-5">
+          <div className="relative shrink-0">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-accent flex items-center justify-center text-accent-foreground shadow-md">
+              <CalendarCheck size={24} />
             </div>
-            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white animate-pulse" />
             </span>
           </div>
-          <div className="flex-1 space-y-3">
+          <div className="flex-1 min-w-0 space-y-2 sm:space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-display text-xl md:text-2xl font-bold text-foreground">
+              <h3 className="font-display text-lg sm:text-xl md:text-2xl font-bold text-foreground">
                 קבע פגישה ליועץ תעסוקתי
               </h3>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-bold">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-[11px] sm:text-xs font-bold">
                 זמין עכשיו
               </span>
             </div>
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
               סיימתם את התכתבות עם סגי וקיבלתם תובנות ראשוניות. השלב הבא —
               <strong className="text-foreground"> פגישה אישית עם יועץ אנושי</strong>{' '}
               שיתרגם את התוצאות לתוכנית פעולה מעשית והזדמנויות אמיתיות בשטח.
@@ -71,7 +71,7 @@ const ScheduleMeetingCTA = ({ variant = 'banner' }: ScheduleMeetingCTAProps) => 
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => setOpen(true)}
-              className="mt-4 inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-accent text-accent-foreground font-bold text-lg hover:brightness-110 transition-all shadow-[var(--shadow-button)]"
+              className="mt-2 sm:mt-4 w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl bg-accent text-accent-foreground font-bold text-base sm:text-lg hover:brightness-110 transition-all shadow-[var(--shadow-button)]"
             >
               <CalendarCheck size={20} />
               לתיאום הפגישה
