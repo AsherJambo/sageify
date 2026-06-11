@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Loader2, CalendarCheck, CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
@@ -73,6 +73,10 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success'>('idle');
   const [calendarOpen, setCalendarOpen] = useState(false);
 
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
+
   const reset = () => {
     setName(''); setEmail(''); setPhone(''); setNotes('');
     setDate(undefined); setTime(''); setErrors({}); setStatus('idle');
@@ -82,6 +86,48 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
     onClose();
     setTimeout(reset, 300);
   };
+
+  // Esc to close, focus trap, restore focus
+  useEffect(() => {
+    if (!open) return;
+    lastFocusedRef.current = document.activeElement as HTMLElement | null;
+    // Focus close button when modal opens
+    const focusTimer = setTimeout(() => closeBtnRef.current?.focus(), 50);
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        handleClose();
+        return;
+      }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener('keydown', handleKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      clearTimeout(focusTimer);
+      document.removeEventListener('keydown', handleKey);
+      document.body.style.overflow = prevOverflow;
+      lastFocusedRef.current?.focus?.();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
 
   const validateField = (field: 'name' | 'email' | 'phone', value: string) => {
     const fieldSchema = (schema.shape as any)[field];
@@ -139,8 +185,14 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={handleClose} />
 
           <motion.div
+            ref={dialogRef}
             dir="rtl"
-            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-card border border-border rounded-2xl shadow-[var(--shadow-elevated)]"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="meeting-modal-title"
+            aria-describedby="meeting-modal-desc"
+            tabIndex={-1}
+            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-card border border-border rounded-2xl shadow-[var(--shadow-elevated)] focus:outline-none"
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
@@ -148,20 +200,22 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
           >
             <div className="flex items-center justify-between px-7 pt-7 pb-2">
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-accent/15 flex items-center justify-center text-accent">
+                <div className="w-10 h-10 rounded-full bg-accent/15 flex items-center justify-center text-accent" aria-hidden="true">
                   <CalendarCheck size={20} />
                 </div>
-                <h3 className="text-xl font-bold font-serif">תיאום פגישה עם יועץ תעסוקתי</h3>
+                <h3 id="meeting-modal-title" className="text-xl font-bold font-serif">תיאום פגישה עם יועץ תעסוקתי</h3>
               </div>
               <button
+                ref={closeBtnRef}
+                type="button"
                 onClick={handleClose}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors"
-                aria-label="סגור"
+                className="w-9 h-9 rounded-full flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                aria-label="סגור חלון תיאום פגישה"
               >
-                <X size={18} />
+                <X size={18} aria-hidden="true" />
               </button>
             </div>
-            <p className="px-7 text-sm text-muted-foreground mb-5">
+            <p id="meeting-modal-desc" className="px-7 text-sm text-muted-foreground mb-5">
               בחרו מועד נוח ומלאו פרטים — יועץ תעסוקתי המתמחה בתעסוקה אקטיבית אחרי פרישה יחזור אליכם לאישור.
             </p>
 

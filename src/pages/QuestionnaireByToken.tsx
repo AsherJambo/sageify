@@ -592,10 +592,12 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
                 transition={{ duration: 0.35 }}
                 className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-b border-accent/30 shadow-lg"
                 dir="rtl"
+                role="region"
+                aria-label="קבע פגישה ליועץ תעסוקתי"
               >
                 <div className="max-w-3xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="relative shrink-0">
+                    <div className="relative shrink-0" aria-hidden="true">
                       <div className="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-accent-foreground shadow-sm">
                         <CalendarCheck size={18} />
                       </div>
@@ -607,12 +609,22 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
                     </div>
                   </div>
                   <motion.button
+                    type="button"
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => setMeetingModalOpen(true)}
-                    className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold shadow-[var(--shadow-button)]"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setMeetingModalOpen(true);
+                      }
+                    }}
+                    aria-label="פתח טופס תיאום פגישה עם יועץ תעסוקתי"
+                    aria-haspopup="dialog"
+                    aria-expanded={meetingModalOpen}
+                    className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold shadow-[var(--shadow-button)] outline-none focus-visible:ring-4 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-card transition-shadow"
                   >
-                    <CalendarCheck size={16} />
+                    <CalendarCheck size={16} aria-hidden="true" />
                     <span className="hidden sm:inline">לתיאום הפגישה</span>
                     <span className="sm:hidden">תיאום</span>
                   </motion.button>
