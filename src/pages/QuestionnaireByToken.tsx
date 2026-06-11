@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CalendarCheck } from 'lucide-react';
 import { cloudClient } from '@/lib/cloudClient';
 import { silentSaveInsights } from '@/lib/insightsSaver';
 import { saveUserProfile } from '@/lib/profileManager';
@@ -23,6 +25,7 @@ import DataProcessingAnimation from '@/components/DataProcessingAnimation';
 import SageiInsightBubble from '@/components/SageiInsightBubble';
 import SaveProgressButton from '@/components/SaveProgressButton';
 import ScheduleMeetingCTA from '@/components/ScheduleMeetingCTA';
+import MeetingBookingModal from '@/components/MeetingBookingModal';
 import { viaQuestions, viaCategories } from '@/data/viaQuestions';
 import { scheinQuestions, scheinCategories } from '@/data/scheinQuestions';
 import { hollandQuestions, hollandCategories } from '@/data/hollandQuestions';
