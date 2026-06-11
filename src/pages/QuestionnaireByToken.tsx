@@ -582,6 +582,14 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
     case 'results':
       return (
         <>
+          {/* Skip to content — keyboard accessibility */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-0 focus:right-0 focus:left-0 focus:z-[60] focus:px-6 focus:py-4 focus:bg-primary focus:text-primary-foreground focus:font-bold focus:text-lg focus:shadow-lg focus:text-center focus:outline-none focus:ring-4 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background"
+          >
+            דלג לתוכן הראשי
+          </a>
+
           {/* Sticky meeting CTA — appears after scrolling */}
           <AnimatePresence>
             {showStickyCTA && (

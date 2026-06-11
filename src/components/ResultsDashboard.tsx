@@ -219,7 +219,7 @@ const ResultsDashboard = ({
   }, [topVIA, topSchein, topHolland, winnerSkills, topConsiderations, preferencesData, motivationData, intentionDimensions, staticRecommendations, thinkingResult]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-10 md:py-14">
+    <div id="main-content" tabIndex={-1} className="min-h-screen flex flex-col items-center px-4 py-10 md:py-14 outline-none focus-visible:ring-4 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background">
       <div className="w-full max-w-3xl space-y-8 md:space-y-10">
         {/* Header */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible" custom={0} className="text-center space-y-5">
