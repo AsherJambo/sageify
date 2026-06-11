@@ -42,15 +42,15 @@ const ScheduleMeetingCTA = ({ variant = 'banner' }: ScheduleMeetingCTAProps) => 
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.3 }}
         dir="rtl"
-        className="max-w-2xl mx-auto my-10 p-6 md:p-8 rounded-2xl bg-gradient-to-br from-accent/15 via-card to-secondary/10 border-2 border-accent/40 shadow-[var(--shadow-elevated)] text-right"
+        className="max-w-2xl mx-auto my-4 md:my-8 p-4 sm:p-6 md:p-8 rounded-2xl bg-gradient-to-br from-accent/15 via-card to-secondary/10 border-2 border-accent/40 shadow-[var(--shadow-elevated)] text-right"
       >
-        <div className="flex items-start gap-5">
-          <div className="relative">
-            <div className="w-14 h-14 rounded-full bg-accent flex items-center justify-center text-accent-foreground flex-shrink-0 shadow-md">
-              <CalendarCheck size={26} />
+        <div className="flex items-start gap-3 sm:gap-5">
+          <div className="relative shrink-0">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-accent flex items-center justify-center text-accent-foreground shadow-md">
+              <CalendarCheck size={24} />
             </div>
-            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white animate-pulse" />
             </span>
           </div>
           <div className="flex-1 space-y-3">
