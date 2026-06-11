@@ -185,8 +185,14 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={handleClose} />
 
           <motion.div
+            ref={dialogRef}
             dir="rtl"
-            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-card border border-border rounded-2xl shadow-[var(--shadow-elevated)]"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="meeting-modal-title"
+            aria-describedby="meeting-modal-desc"
+            tabIndex={-1}
+            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-card border border-border rounded-2xl shadow-[var(--shadow-elevated)] focus:outline-none"
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
@@ -194,17 +200,19 @@ const MeetingBookingModal = ({ open, onClose }: MeetingBookingModalProps) => {
           >
             <div className="flex items-center justify-between px-7 pt-7 pb-2">
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-accent/15 flex items-center justify-center text-accent">
+                <div className="w-10 h-10 rounded-full bg-accent/15 flex items-center justify-center text-accent" aria-hidden="true">
                   <CalendarCheck size={20} />
                 </div>
-                <h3 className="text-xl font-bold font-serif">תיאום פגישה עם יועץ תעסוקתי</h3>
+                <h3 id="meeting-modal-title" className="text-xl font-bold font-serif">תיאום פגישה עם יועץ תעסוקתי</h3>
               </div>
               <button
+                ref={closeBtnRef}
+                type="button"
                 onClick={handleClose}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors"
-                aria-label="סגור"
+                className="w-9 h-9 rounded-full flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                aria-label="סגור חלון תיאום פגישה"
               >
-                <X size={18} />
+                <X size={18} aria-hidden="true" />
               </button>
             </div>
             <p className="px-7 text-sm text-muted-foreground mb-5">
