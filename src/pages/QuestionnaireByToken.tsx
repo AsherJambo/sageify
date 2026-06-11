@@ -164,6 +164,8 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
   });
 
   const [advisorProgress, setAdvisorProgress] = useState(85);
+  const [showStickyCTA, setShowStickyCTA] = useState(false);
+  const [meetingModalOpen, setMeetingModalOpen] = useState(false);
   const supabase = cloudClient;
 
   // Validate token & overlay cloud data on mount
