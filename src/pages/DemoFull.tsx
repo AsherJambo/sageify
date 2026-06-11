@@ -68,6 +68,7 @@ const DemoFull = () => {
     );
   }
 
+  if (!reset) return null;
   return <QuestionnaireByToken demoMode />;
 };
 
