@@ -283,36 +283,6 @@ const Landing = () => {
           </motion.div>
         </section>
 
-        {/* Help micro-section above footer — trust + low digital anxiety */}
-        <section className="relative max-w-6xl mx-auto w-full px-4 md:px-6 pb-8">
-          <div
-            className="rounded-3xl px-5 py-5 md:px-7 md:py-6 bg-sage/15 border-2 border-sage/40 flex flex-col md:flex-row items-center justify-between gap-4"
-            style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.08)' }}
-          >
-            <div className="flex items-center gap-3 text-center md:text-right">
-              <div className="shrink-0 w-12 h-12 rounded-2xl bg-card border-2 border-foreground/15 flex items-center justify-center"
-                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.15)' }}>
-                <MessageCircle size={22} strokeWidth={2.2} className="text-foreground" />
-              </div>
-              <div>
-                <p className="font-bold text-lg md:text-xl text-foreground leading-tight">
-                  צריכים עזרה טכנית? אנחנו כאן
-                </p>
-                <p className="text-base text-foreground/75 leading-snug mt-0.5">
-                  נשמח ללוות אתכם בטלפון או בוואטסאפ — בלי לחץ, בקצב שלכם.
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={openContact}
-              className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-bold rounded-2xl bg-card text-foreground border-2 border-foreground/15 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/50"
-              style={{ minHeight: 56, boxShadow: '0 5px 0 0 hsl(var(--foreground) / 0.20)' }}
-            >
-              <Phone size={18} strokeWidth={2.4} />
-              דברו איתנו
-            </button>
-          </div>
-        </section>
 
         <footer className="relative py-6 px-6 border-t border-border/60">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-base text-foreground/70">
