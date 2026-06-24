@@ -88,8 +88,9 @@ const Landing = () => {
               transition={{ duration: 0.7, delay: 0.3 }}
               className="text-lg md:text-xl mb-9 leading-relaxed max-w-xl mx-auto lg:mx-0 text-foreground/75"
             >
-              סגי' — הינשוף המנטור שלך — מזמין אותך ל־8 משחקים קצרים ומהנים שיחשפו את החוזקות,
-              המניעים והכיוון התעסוקתי הבא בחיים שלך. בלי שאלונים משעממים. רק גילוי.
+              סגי – הינשוף המנטור שלך – מזמין אותך ל-8 משחקים קצרים, חווייתיים ובלי ציונים,
+              שיחשפו את החוזקות, המניעים והכיוון התעסוקתי הבא בחיים שלך. בלי שאלונים משעממים
+              ובלי מבחנים מלחיצים. רק גילוי נטו.
             </motion.p>
 
             <motion.div
@@ -100,7 +101,7 @@ const Landing = () => {
             >
               <button
                 onClick={openContact}
-                className="group relative w-full sm:w-auto px-10 py-5 text-lg font-bold rounded-2xl bg-destructive text-destructive-foreground border-2 border-foreground/15 transition-all duration-150 hover:-translate-y-0.5 active:translate-y-1 active:shadow-none"
+                className="group relative w-full sm:w-auto px-10 py-5 text-lg font-bold rounded-2xl bg-destructive text-destructive-foreground border-2 border-foreground/15 transition-all duration-300 ease-out hover:-translate-y-1 hover:brightness-105 active:translate-y-1 active:shadow-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/50"
                 style={{
                   minHeight: 60,
                   boxShadow: '0 6px 0 0 hsl(var(--foreground) / 0.85)',
@@ -108,7 +109,7 @@ const Landing = () => {
               >
                 <span className="flex items-center justify-center gap-2">
                   בואו נתחיל את המסע
-                  <ArrowLeft size={20} className="transition-transform group-hover:-translate-x-1" />
+                  <ArrowLeft size={20} className="transition-transform duration-300 ease-out group-hover:-translate-x-1.5" />
                 </span>
               </button>
               <Link
