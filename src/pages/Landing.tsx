@@ -283,27 +283,69 @@ const Landing = () => {
           </motion.div>
         </section>
 
+        {/* Help micro-section above footer — trust + low digital anxiety */}
+        <section className="relative max-w-6xl mx-auto w-full px-4 md:px-6 pb-8">
+          <div
+            className="rounded-3xl px-5 py-5 md:px-7 md:py-6 bg-sage/15 border-2 border-sage/40 flex flex-col md:flex-row items-center justify-between gap-4"
+            style={{ boxShadow: '0 4px 0 0 hsl(var(--foreground) / 0.08)' }}
+          >
+            <div className="flex items-center gap-3 text-center md:text-right">
+              <div className="shrink-0 w-12 h-12 rounded-2xl bg-card border-2 border-foreground/15 flex items-center justify-center"
+                style={{ boxShadow: '0 3px 0 0 hsl(var(--foreground) / 0.15)' }}>
+                <MessageCircle size={22} strokeWidth={2.2} className="text-foreground" />
+              </div>
+              <div>
+                <p className="font-bold text-lg md:text-xl text-foreground leading-tight">
+                  צריכים עזרה טכנית? אנחנו כאן
+                </p>
+                <p className="text-base text-foreground/75 leading-snug mt-0.5">
+                  נשמח ללוות אתכם בטלפון או בוואטסאפ — בלי לחץ, בקצב שלכם.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={openContact}
+              className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-bold rounded-2xl bg-card text-foreground border-2 border-foreground/15 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/50"
+              style={{ minHeight: 56, boxShadow: '0 5px 0 0 hsl(var(--foreground) / 0.20)' }}
+            >
+              <Phone size={18} strokeWidth={2.4} />
+              דברו איתנו
+            </button>
+          </div>
+        </section>
+
         <footer className="relative py-6 px-6 border-t border-border/60">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-foreground/65">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-base text-foreground/70">
             <span>© {new Date().getFullYear()} Sageify</span>
             <div className="flex items-center gap-5">
               <a
                 href="https://www.linkedin.com/company/sageify"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors min-h-[44px] px-2"
               >
-                <Linkedin size={15} /> LinkedIn
+                <Linkedin size={16} /> LinkedIn
               </a>
               <Link
                 to="/admin-panel"
-                className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors min-h-[44px] px-2"
               >
-                <Settings size={15} /> ניהול
+                <Settings size={16} /> ניהול
               </Link>
             </div>
           </div>
         </footer>
+
+        {/* Floating help button — always accessible */}
+        <button
+          onClick={openContact}
+          aria-label="צריכים עזרה טכנית? לחצו כאן לדבר איתנו"
+          className="fixed bottom-5 left-5 z-40 group inline-flex items-center gap-2 px-5 py-3 rounded-full bg-success text-success-foreground border-2 border-foreground/20 font-bold text-base transition-all duration-200 hover:-translate-y-1 active:translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/60"
+          style={{ minHeight: 56, boxShadow: '0 5px 0 0 hsl(var(--foreground) / 0.35)' }}
+        >
+          <MessageCircle size={20} strokeWidth={2.4} />
+          <span className="hidden sm:inline">עזרה? אנחנו כאן</span>
+        </button>
       </div>
     </ContactModalProvider>
   );
