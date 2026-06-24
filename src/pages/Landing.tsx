@@ -13,6 +13,8 @@ import {
   Trophy,
   Heart,
   ArrowLeft,
+  MessageCircle,
+  Phone,
 } from 'lucide-react';
 import sageifyLogo from '@/assets/owl-logo.png';
 import owlVideo from '@/assets/owl-guide.mp4.asset.json';
