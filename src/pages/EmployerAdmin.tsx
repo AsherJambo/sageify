@@ -36,6 +36,7 @@ const CHART_COLORS = ['hsl(160,28%,35%)', 'hsl(210,30%,45%)', 'hsl(40,45%,50%)',
 
 const EmployerAdmin = () => {
   const [password, setPassword] = useState('');
+  const [storedPassword, setStoredPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
   const [org, setOrg] = useState<OrgData | null>(null);
   const [tokens, setTokens] = useState<TokenRow[]>([]);
@@ -47,38 +48,47 @@ const EmployerAdmin = () => {
   const [showFeedback, setShowFeedback] = useState(false);
   const supabase = cloudClient;
 
+  const apiCall = async (action: string, body: Record<string, unknown> = {}) => {
+    const { data, error } = await supabase.functions.invoke('employer', {
+      headers: { 'x-employer-password': storedPassword },
+      body: { action, ...body },
+    });
+    if (error) throw error;
+    return data ?? {};
+  };
+
   const handleLogin = async () => {
     const pw = password.trim();
     if (!pw) { toast.error('יש להזין סיסמה'); return; }
 
     try {
-      const { data: orgs, error } = await supabase
-        .from('organizations')
-        .select('*')
-        .eq('admin_password', pw);
+      const { data, error } = await supabase.functions.invoke('employer', {
+        headers: { 'x-employer-password': pw },
+        body: { action: 'get-org' },
+      });
 
-      if (error || !orgs || orgs.length === 0) {
+      if (error || !data?.organization) {
         toast.error('סיסמה שגויה או ארגון לא נמצא');
         return;
       }
 
-      const orgData = orgs[0] as unknown as OrgData & { admin_password: string };
+      const orgData = data.organization as OrgData;
+      setStoredPassword(pw);
       setOrg(orgData);
       setAuthenticated(true);
-      loadTokens(orgData.id);
+      loadTokens(pw);
     } catch {
       toast.error('שגיאת תקשורת');
     }
   };
 
-  const loadTokens = async (orgId: string) => {
+  const loadTokens = async (pw: string) => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('questionnaire_tokens')
-      .select('*, questionnaire_responses(*)')
-      .eq('organization_id', orgId)
-      .order('created_at', { ascending: false });
-    if (!error && data) setTokens(data as unknown as TokenRow[]);
+    const { data, error } = await supabase.functions.invoke('employer', {
+      headers: { 'x-employer-password': pw },
+      body: { action: 'list-tokens' },
+    });
+    if (!error && data?.tokens) setTokens(data.tokens as unknown as TokenRow[]);
     setLoading(false);
   };
 
@@ -97,16 +107,13 @@ const EmployerAdmin = () => {
   const createInvite = async () => {
     if (!newEmployeeName.trim() || !org) return;
     setLoading(true);
-    const { data, error } = await supabase
-      .from('questionnaire_tokens')
-      .insert({ username: newEmployeeName.trim(), organization_id: org.id })
-      .select()
-      .single();
-    if (error) toast.error('שגיאה ביצירת הזמנה');
-    else {
+    try {
+      await apiCall('create-token', { username: newEmployeeName.trim() });
       toast.success('קישור נוצר בהצלחה!');
       setNewEmployeeName('');
-      loadTokens(org.id);
+      loadTokens(storedPassword);
+    } catch {
+      toast.error('שגיאה ביצירת הזמנה');
     }
     setLoading(false);
   };
@@ -116,29 +123,26 @@ const EmployerAdmin = () => {
     const names = bulkNames.split('\n').map(n => n.trim()).filter(Boolean);
     if (names.length === 0) return;
     setLoading(true);
-    const rows = names.map(username => ({ username, organization_id: org.id }));
-    const { error } = await supabase.from('questionnaire_tokens').insert(rows);
-    if (error) toast.error('שגיאה ביצירה');
-    else {
+    try {
+      await apiCall('create-tokens-bulk', { usernames: names });
       toast.success(`${names.length} קישורים נוצרו בהצלחה!`);
       setBulkNames('');
-      loadTokens(org.id);
+      loadTokens(storedPassword);
+    } catch {
+      toast.error('שגיאה ביצירה');
     }
     setLoading(false);
   };
 
   const sendFeedback = async () => {
     if (!feedbackText.trim() || !org) return;
-    const { error } = await supabase.from('employer_feedback').insert({
-      organization_id: org.id,
-      feedback_text: feedbackText.trim(),
-      feedback_type: 'ui_suggestion',
-    });
-    if (error) toast.error('שגיאה בשליחת המשוב');
-    else {
+    try {
+      await apiCall('submit-feedback', { feedback_text: feedbackText.trim() });
       toast.success('המשוב נשלח בהצלחה, תודה!');
       setFeedbackText('');
       setShowFeedback(false);
+    } catch {
+      toast.error('שגיאה בשליחת המשוב');
     }
   };
 

@@ -12,12 +12,15 @@ interface Org {
   org_name: string;
   logo_url: string | null;
   admin_email: string;
-  admin_password: string;
   custom_welcome_message: string;
   created_at: string;
 }
 
-const AdminOrganizations = () => {
+interface Props {
+  adminPassword: string;
+}
+
+const AdminOrganizations = ({ adminPassword }: Props) => {
   const [orgs, setOrgs] = useState<Org[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
@@ -35,10 +38,23 @@ const AdminOrganizations = () => {
     custom_welcome_message: '',
   });
 
+  const apiCall = async (action: string, body: Record<string, unknown> = {}) => {
+    const { data, error } = await cloudClient.functions.invoke('admin', {
+      headers: { 'x-admin-password': adminPassword },
+      body: { action, ...body },
+    });
+    if (error) throw error;
+    return data ?? {};
+  };
+
   const loadOrgs = async () => {
     setLoading(true);
-    const { data } = await cloudClient.from('organizations').select('*').order('created_at', { ascending: false });
-    if (data) setOrgs(data as unknown as Org[]);
+    try {
+      const data = await apiCall('list-organizations');
+      setOrgs((data?.organizations || []) as Org[]);
+    } catch {
+      toast.error('שגיאה בטעינת ארגונים');
+    }
     setLoading(false);
   };
 
@@ -67,7 +83,7 @@ const AdminOrganizations = () => {
 
   const uploadLogo = async (orgId: string): Promise<string | null> => {
     if (!logoFile) return newOrg.logo_url.trim() || null;
-    
+
     setUploading(true);
     const ext = logoFile.name.split('.').pop() || 'png';
     const filePath = `${orgId}.${ext}`;
@@ -97,40 +113,46 @@ const AdminOrganizations = () => {
       return;
     }
 
-    const { data: inserted, error } = await cloudClient.from('organizations').insert({
-      org_name: newOrg.org_name.trim(),
-      admin_email: newOrg.admin_email.trim(),
-      admin_password: newOrg.admin_password.trim(),
-      logo_url: logoMode === 'url' ? (newOrg.logo_url.trim() || null) : null,
-      custom_welcome_message: newOrg.custom_welcome_message.trim(),
-    }).select('id').single();
+    try {
+      const data = await apiCall('create-organization', {
+        org_name: newOrg.org_name.trim(),
+        admin_email: newOrg.admin_email.trim(),
+        admin_password: newOrg.admin_password.trim(),
+        logo_url: logoMode === 'url' ? (newOrg.logo_url.trim() || null) : null,
+        custom_welcome_message: newOrg.custom_welcome_message.trim(),
+      });
 
-    if (error || !inserted) {
-      toast.error('שגיאה ביצירת ארגון');
-      return;
-    }
-
-    if (logoMode === 'file' && logoFile) {
-      const logoUrl = await uploadLogo((inserted as any).id);
-      if (logoUrl) {
-        await cloudClient.from('organizations').update({ logo_url: logoUrl }).eq('id', (inserted as any).id);
+      const inserted = data?.organization as Org | undefined;
+      if (!inserted) {
+        toast.error('שגיאה ביצירת ארגון');
+        return;
       }
-    }
 
-    toast.success('ארגון נוצר בהצלחה!');
-    setNewOrg({ org_name: '', admin_email: '', admin_password: '', logo_url: '', custom_welcome_message: '' });
-    clearFile();
-    setShowCreate(false);
-    loadOrgs();
+      if (logoMode === 'file' && logoFile) {
+        const logoUrl = await uploadLogo(inserted.id);
+        if (logoUrl) {
+          await apiCall('update-organization', { orgId: inserted.id, logo_url: logoUrl });
+        }
+      }
+
+      toast.success('ארגון נוצר בהצלחה!');
+      setNewOrg({ org_name: '', admin_email: '', admin_password: '', logo_url: '', custom_welcome_message: '' });
+      clearFile();
+      setShowCreate(false);
+      loadOrgs();
+    } catch {
+      toast.error('שגיאה ביצירת ארגון');
+    }
   };
 
   const deleteOrg = async (id: string) => {
     if (!confirm('למחוק את הארגון? פעולה זו לא ניתנת לביטול.')) return;
-    const { error } = await cloudClient.from('organizations').delete().eq('id', id);
-    if (error) toast.error('שגיאה במחיקה');
-    else {
+    try {
+      await apiCall('delete-organization', { orgId: id });
       toast.success('הארגון נמחק');
       loadOrgs();
+    } catch {
+      toast.error('שגיאה במחיקה');
     }
   };
 
@@ -140,7 +162,7 @@ const AdminOrganizations = () => {
       : window.location.origin;
   };
 
-  const copyEmployerLink = (orgId: string) => {
+  const copyEmployerLink = () => {
     navigator.clipboard.writeText(`${getOrigin()}/#/employer-admin`);
     toast.success('קישור פורטל מעסיק הועתק!');
   };
@@ -190,7 +212,7 @@ const AdminOrganizations = () => {
                 <Input placeholder="סיסמה לפורטל מעסיק" value={newOrg.admin_password} onChange={e => setNewOrg(p => ({ ...p, admin_password: e.target.value }))} />
               </div>
             </div>
-            
+
             {/* Logo section */}
             <div className="space-y-1">
               <label className="text-xs text-muted-foreground">לוגו</label>
@@ -261,11 +283,10 @@ const AdminOrganizations = () => {
                 </div>
               </div>
               <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>סיסמה: <span className="font-mono">{org.admin_password}</span></span>
                 <span>{new Date(org.created_at).toLocaleDateString('he-IL')}</span>
               </div>
               <div className="flex gap-2 pt-1 border-t border-border">
-                <Button size="sm" variant="outline" onClick={() => copyEmployerLink(org.id)} className="flex-1 gap-1.5 text-xs h-8">
+                <Button size="sm" variant="outline" onClick={() => copyEmployerLink()} className="flex-1 gap-1.5 text-xs h-8">
                   <Copy className="w-3 h-3" />
                   קישור פורטל
                 </Button>
@@ -292,7 +313,6 @@ const AdminOrganizations = () => {
               <tr>
                 <th className="p-3 text-right font-semibold">ארגון</th>
                 <th className="p-3 text-right font-semibold">אימייל מנהל</th>
-                <th className="p-3 text-right font-semibold">סיסמה</th>
                 <th className="p-3 text-right font-semibold">נוצר</th>
                 <th className="p-3 text-right font-semibold">פעולות</th>
               </tr>
@@ -307,11 +327,10 @@ const AdminOrganizations = () => {
                     </div>
                   </td>
                   <td className="p-3 text-muted-foreground">{org.admin_email}</td>
-                  <td className="p-3 text-muted-foreground font-mono text-xs">{org.admin_password}</td>
                   <td className="p-3 text-muted-foreground">{new Date(org.created_at).toLocaleDateString('he-IL')}</td>
                   <td className="p-3">
                     <div className="flex gap-1">
-                      <Button size="sm" variant="ghost" onClick={() => copyEmployerLink(org.id)} title="העתק קישור פורטל">
+                      <Button size="sm" variant="ghost" onClick={() => copyEmployerLink()} title="העתק קישור פורטל">
                         <Copy className="w-3.5 h-3.5" />
                       </Button>
                       <Button size="sm" variant="ghost" onClick={() => copyPartnerPrefix(org.id)} title="העתק קידומת שותף">
@@ -325,7 +344,7 @@ const AdminOrganizations = () => {
                 </tr>
               ))}
               {orgs.length === 0 && (
-                <tr><td colSpan={5} className="p-8 text-center text-muted-foreground">אין ארגונים עדיין. צרו את הראשון!</td></tr>
+                <tr><td colSpan={4} className="p-8 text-center text-muted-foreground">אין ארגונים עדיין. צרו את הראשון!</td></tr>
               )}
             </tbody>
           </table>
