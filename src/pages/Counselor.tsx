@@ -48,15 +48,15 @@ const Counselor = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('meeting_bookings')
-      .select('*')
-      .order('meeting_date', { ascending: true })
-      .order('meeting_time', { ascending: true });
-    if (error) {
+    try {
+      const { data, error } = await cloudClient.functions.invoke('admin', {
+        headers: { 'x-admin-password': PASSWORD },
+        body: { action: 'list-meeting-bookings' },
+      });
+      if (error) throw error;
+      setBookings((data?.bookings || []) as Booking[]);
+    } catch {
       toast.error('שגיאה בטעינת הפגישות');
-    } else {
-      setBookings((data || []) as Booking[]);
     }
     setLoading(false);
   };
