@@ -590,7 +590,7 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="organizations">
-          <AdminOrganizations />
+          <AdminOrganizations adminPassword={storedPassword} />
         </TabsContent>
 
         <TabsContent value="insights">

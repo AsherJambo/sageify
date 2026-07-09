@@ -175,26 +175,19 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
 
     (async () => {
       try {
-        const { data, error } = await supabase
-          .from('questionnaire_tokens')
-          .select('*')
-          .eq('token', token)
-          .single();
+        const { data, error } = await supabase.functions.invoke('validate-token', {
+          body: { token, markUsed: true, isAdminMode },
+        });
 
         if (error || !data) { setPageState('invalid'); return; }
         if (data.completed_at && !isAdminMode) { setPageState('used'); return; }
 
         setTokenRow({ id: data.id, username: data.username });
 
-        if (!data.used && !isAdminMode) {
-          await supabase.from('questionnaire_tokens').update({ used: true }).eq('id', data.id);
-        }
-
-        const { data: existing } = await supabase
-          .from('questionnaire_responses')
-          .select('*')
-          .eq('token_id', data.id)
-          .single();
+        const { data: existingData } = await supabase.functions.invoke('questionnaire-response', {
+          body: { action: 'get', token },
+        });
+        const existing = existingData?.response;
 
         if (existing) {
           setResponseId(existing.id);
@@ -216,12 +209,9 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
             const initial: ResponseData = prev && Object.keys(prev).length > 0
               ? { ...prev, step: prev.step === 'loading' || prev.step === 'invalid' || prev.step === 'used' ? 'hub' : prev.step }
               : { ...defaultData, step: 'hub' };
-            supabase
-              .from('questionnaire_responses')
-              .insert([{ token_id: data.id, response_data: JSON.parse(JSON.stringify(initial)) }])
-              .select()
-              .single()
-              .then(({ data: newResp }) => { if (newResp) setResponseId(newResp.id); });
+            supabase.functions.invoke('questionnaire-response', {
+              body: { action: 'save', token, response_data: JSON.parse(JSON.stringify(initial)) },
+            }).then(({ data: newResp }) => { if (newResp?.response?.id) setResponseId(newResp.response.id); });
             return initial;
           });
         }
@@ -253,13 +243,11 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
   // Save progress on state change
   useEffect(() => {
     if (demoMode) return;
-    if (!responseId || pageState !== 'ready') return;
-    supabase
-      .from('questionnaire_responses')
-      .update({ response_data: JSON.parse(JSON.stringify(state)) })
-      .eq('id', responseId)
-      .then();
-  }, [state, responseId, pageState]);
+    if (!token || pageState !== 'ready') return;
+    supabase.functions.invoke('questionnaire-response', {
+      body: { action: 'save', token, response_data: JSON.parse(JSON.stringify(state)) },
+    }).then();
+  }, [state, token, pageState]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });

@@ -171,6 +171,67 @@ Deno.serve(async (req) => {
         return jsonResponse({ insights: data });
       }
 
+      case "list-organizations": {
+        const { data, error } = await supabase
+          .from("organizations")
+          .select("id, org_name, logo_url, admin_email, custom_welcome_message, created_at")
+          .order("created_at", { ascending: false });
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ organizations: data });
+      }
+
+      case "create-organization": {
+        const name = typeof payload.org_name === "string" ? payload.org_name.trim() : "";
+        const email = typeof payload.admin_email === "string" ? payload.admin_email.trim() : "";
+        const pw = typeof payload.admin_password === "string" ? payload.admin_password : "";
+        if (!name || !email || !pw) {
+          return jsonResponse({ error: "org_name, admin_email, and admin_password are required" }, 400);
+        }
+        const { data, error } = await supabase
+          .from("organizations")
+          .insert({
+            org_name: name,
+            admin_email: email,
+            admin_password: pw,
+            logo_url: typeof payload.logo_url === "string" ? payload.logo_url.trim() || null : null,
+            custom_welcome_message: typeof payload.custom_welcome_message === "string" ? payload.custom_welcome_message.trim() : "",
+          })
+          .select("id, org_name, logo_url, admin_email, custom_welcome_message, created_at")
+          .single();
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ organization: data });
+      }
+
+      case "update-organization": {
+        const orgId = typeof payload.orgId === "string" ? payload.orgId : null;
+        if (!orgId) return jsonResponse({ error: "orgId required" }, 400);
+        const updates: Record<string, unknown> = {};
+        if (typeof payload.org_name === "string") updates.org_name = payload.org_name.trim();
+        if (typeof payload.admin_email === "string") updates.admin_email = payload.admin_email.trim();
+        if (typeof payload.admin_password === "string") updates.admin_password = payload.admin_password;
+        if (typeof payload.logo_url === "string") updates.logo_url = payload.logo_url.trim() || null;
+        if (typeof payload.custom_welcome_message === "string") updates.custom_welcome_message = payload.custom_welcome_message.trim();
+        if (Object.keys(updates).length === 0) {
+          return jsonResponse({ error: "No fields to update" }, 400);
+        }
+        const { data, error } = await supabase
+          .from("organizations")
+          .update(updates)
+          .eq("id", orgId)
+          .select("id, org_name, logo_url, admin_email, custom_welcome_message, created_at")
+          .single();
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ organization: data });
+      }
+
+      case "delete-organization": {
+        const orgId = typeof payload.orgId === "string" ? payload.orgId : null;
+        if (!orgId) return jsonResponse({ error: "orgId required" }, 400);
+        const { error } = await supabase.from("organizations").delete().eq("id", orgId);
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ success: true });
+      }
+
       default:
         return jsonResponse({ error: "Unknown action" }, 400);
     }
