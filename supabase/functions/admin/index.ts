@@ -132,6 +132,45 @@ Deno.serve(async (req) => {
         return jsonResponse({ success: true });
       }
 
+      case "list-contact-submissions": {
+        const { data, error } = await supabase
+          .from("contact_submissions")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ submissions: data });
+      }
+
+      case "list-meeting-bookings": {
+        const { data, error } = await supabase
+          .from("meeting_bookings")
+          .select("*")
+          .order("meeting_date", { ascending: true })
+          .order("meeting_time", { ascending: true });
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ bookings: data });
+      }
+
+      case "delete-meeting-booking": {
+        const bookingId = typeof payload.bookingId === "string" ? payload.bookingId : null;
+        if (!bookingId) return jsonResponse({ error: "bookingId required" }, 400);
+        const { error } = await supabase
+          .from("meeting_bookings")
+          .delete()
+          .eq("id", bookingId);
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ success: true });
+      }
+
+      case "list-global-retiree-insights": {
+        const { data, error } = await supabase
+          .from("global_retiree_insights")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ insights: data });
+      }
+
       default:
         return jsonResponse({ error: "Unknown action" }, 400);
     }

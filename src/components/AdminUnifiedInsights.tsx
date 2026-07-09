@@ -98,18 +98,21 @@ export default function AdminUnifiedInsights({ tokens, adminPassword }: Props) {
   useEffect(() => {
     (async () => {
       const [insightsRes, oppsRes, interactions, choicesRes] = await Promise.all([
-        cloudClient.from('global_retiree_insights').select('*').order('created_at', { ascending: false }),
+        cloudClient.functions.invoke('admin', {
+          headers: { 'x-admin-password': adminPassword },
+          body: { action: 'list-global-retiree-insights' },
+        }),
         cloudClient.from('opportunities').select('*').eq('is_active', true).order('created_at', { ascending: false }).limit(50),
         getInteractionStats(),
         cloudClient.from('activity_choices').select('*').order('created_at', { ascending: false }).limit(1000),
       ]);
-      if (insightsRes.data) setInsights(insightsRes.data as unknown as InsightRow[]);
+      if (insightsRes.data) setInsights((insightsRes.data?.insights || []) as unknown as InsightRow[]);
       if (oppsRes.data) setOpportunities(oppsRes.data);
       if (choicesRes.data) setActivityChoices(choicesRes.data);
       setInteractionStats(interactions);
       setLoading(false);
     })();
-  }, []);
+  }, [adminPassword]);
 
   // ===== ACTIVITY CHOICES AGGREGATION =====
   const activityAgg = useMemo(() => {

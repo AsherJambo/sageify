@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { cloudClient } from '@/lib/cloudClient';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -48,15 +48,15 @@ const Counselor = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('meeting_bookings')
-      .select('*')
-      .order('meeting_date', { ascending: true })
-      .order('meeting_time', { ascending: true });
-    if (error) {
+    try {
+      const { data, error } = await cloudClient.functions.invoke('admin', {
+        headers: { 'x-admin-password': PASSWORD },
+        body: { action: 'list-meeting-bookings' },
+      });
+      if (error) throw error;
+      setBookings((data?.bookings || []) as Booking[]);
+    } catch {
       toast.error('שגיאה בטעינת הפגישות');
-    } else {
-      setBookings((data || []) as Booking[]);
     }
     setLoading(false);
   };
@@ -98,12 +98,16 @@ const Counselor = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm('למחוק את הפגישה?')) return;
-    const { error } = await supabase.from('meeting_bookings').delete().eq('id', id);
-    if (error) {
-      toast.error('שגיאה במחיקה');
-    } else {
+    try {
+      const { error } = await cloudClient.functions.invoke('admin', {
+        headers: { 'x-admin-password': PASSWORD },
+        body: { action: 'delete-meeting-booking', bookingId: id },
+      });
+      if (error) throw error;
       toast.success('הפגישה נמחקה');
       setBookings(prev => prev.filter(b => b.id !== id));
+    } catch {
+      toast.error('שגיאה במחיקה');
     }
   };
 

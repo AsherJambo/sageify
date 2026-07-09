@@ -602,7 +602,7 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="contacts">
-          <AdminContactSubmissions />
+          <AdminContactSubmissions adminPassword={storedPassword} />
         </TabsContent>
       </Tabs>
     </div>
