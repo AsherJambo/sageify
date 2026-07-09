@@ -159,7 +159,7 @@ export async function silentSaveInsights(input: InsightsInput): Promise<void> {
       gap_detected: false,
       market_unmet_need: '',
       profession_category: professionCategory,
-    }, { onConflict: 'token_id' });
+    }, { onConflict: 'token_id', ignoreDuplicates: true });
   } catch (e) {
     console.warn('[Insights] Silent save failed:', e);
   }
