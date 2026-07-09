@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Activity,
@@ -11,23 +10,27 @@ import {
   Bandage,
   FileCheck2,
   Heart,
-  ArrowLeft,
   Timer,
   Trophy,
+  GraduationCap,
+  Sparkles,
+  ChevronDown,
 } from "lucide-react";
 
 // ============================================================
-// Nursing (ER Shift) — a fast-paced triage micro-game
+// ER SHIFT — standalone experience for young adults exploring
+// a degree in the health professions (nursing, paramedics, etc).
 // Route: /nursing-er
+// Tone: bold, dark-clinical, high-energy. NOT owl-forest.
 // ============================================================
 
 type ActionId = "oxygen" | "bandage" | "meds" | "discharge";
 
 interface Vitals {
-  oxygen: number; // %
-  bpSys: number; // mmHg
+  oxygen: number;
+  bpSys: number;
   bpDia: number;
-  temp: number; // °C
+  temp: number;
   bleeding: boolean;
 }
 
@@ -37,24 +40,25 @@ interface Patient {
   emoji: string;
   complaint: string;
   vitals: Vitals;
-  required: ActionId[]; // must include "discharge" as last
+  required: ActionId[];
 }
 
 const NAMES = [
-  "מר כהן", "גב' לוי", "מר אבוטבול", "גב' פרץ", "מר ביטון",
-  "גב' שפירא", "מר מזרחי", "גב' דהן", "מר אזולאי", "גב' חדד",
+  "רון, 34", "מיכל, 28", "אבי, 52", "נועה, 19", "יוסי, 61",
+  "שירה, 24", "דני, 45", "תמר, 30", "עומר, 17", "ליאור, 39",
 ];
-const EMOJIS = ["🧓", "👴", "👵", "🧔", "👨‍🦳", "👩‍🦳"];
+const EMOJIS = ["🧑", "👩", "🧔", "👱", "🧑‍🦱", "👨", "👩‍🦰"];
 
 const COMPLAINTS = [
-  "קוצר נשימה חד",
-  "פציעת ראש עם דימום",
-  "כאב חזה וחום גבוה",
-  "סחרחורת ורעד",
-  "פצע פתוח ברגל",
-  "שיעול וחום",
-  "חולשה כללית",
-  "כווייה קלה ביד",
+  "קוצר נשימה חד לאחר מאמץ",
+  "פציעת ראש עם דימום פעיל",
+  "כאב חזה מקרין וחום",
+  "סחרחורת, רעד וזיעה קרה",
+  "פצע חתך עמוק ברגל",
+  "שיעול, קוצר נשימה וחום",
+  "חולשה כללית ובלבול",
+  "כווייה בדרגה שנייה ביד",
+  "כאב בטן חד וחום",
 ];
 
 function randomPatient(id: number): Patient {
@@ -68,7 +72,6 @@ function randomPatient(id: number): Patient {
   if (oxygen < 90) required.push("oxygen");
   if (bleeding) required.push("bandage");
   if (temp >= 38) required.push("meds");
-  // Guarantee at least one treatment
   if (required.length === 0) required.push("meds");
   required.push("discharge");
 
@@ -83,16 +86,16 @@ function randomPatient(id: number): Patient {
 }
 
 const ACTION_META: Record<ActionId, { label: string; Icon: any; tint: string }> = {
-  oxygen: { label: "מסכת חמצן", Icon: Wind, tint: "bg-sky text-white" },
-  bandage: { label: "חבישה", Icon: Bandage, tint: "bg-coral text-white" },
-  meds: { label: "מתן תרופה", Icon: Pill, tint: "bg-secondary text-secondary-foreground" },
-  discharge: { label: "תיעוד ושחרור", Icon: FileCheck2, tint: "bg-success text-white" },
+  oxygen:    { label: "מסכת חמצן",     Icon: Wind,       tint: "bg-sky text-white" },
+  bandage:   { label: "חבישה",         Icon: Bandage,    tint: "bg-coral text-white" },
+  meds:      { label: "מתן תרופה",     Icon: Pill,       tint: "bg-secondary text-secondary-foreground" },
+  discharge: { label: "תיעוד ושחרור",  Icon: FileCheck2, tint: "bg-success text-white" },
 };
 
 const SHIFT_SECONDS = 90;
 
 export default function NursingER() {
-  const [phase, setPhase] = useState<"intro" | "playing" | "done">("intro");
+  const [phase, setPhase] = useState<"landing" | "playing" | "done">("landing");
   const [score, setScore] = useState(0);
   const [treated, setTreated] = useState(0);
   const [missed, setMissed] = useState(0);
@@ -102,7 +105,6 @@ export default function NursingER() {
   const [sequence, setSequence] = useState<ActionId[]>([]);
   const [flash, setFlash] = useState<{ msg: string; ok: boolean } | null>(null);
 
-  // Timer
   useEffect(() => {
     if (phase !== "playing") return;
     const t = setInterval(() => {
@@ -137,6 +139,8 @@ export default function NursingER() {
     setTimeLeft(SHIFT_SECONDS);
     nextPatient(1);
     setPhase("playing");
+    // Scroll to top for the fast-paced view
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   };
 
   const addAction = (a: ActionId) => {
@@ -148,8 +152,7 @@ export default function NursingER() {
     if (sequence.includes(a)) return;
 
     if (a === "discharge") {
-      // Evaluate: needed treatments must all be present before discharge
-      const needed = patient.required.slice(0, -1); // exclude discharge
+      const needed = patient.required.slice(0, -1);
       const gotAll = needed.every((n) => sequence.includes(n));
       const extra = sequence.filter((x) => !needed.includes(x)).length;
 
@@ -190,31 +193,34 @@ export default function NursingER() {
     nextPatient(patient.id + 1);
   };
 
-  // ---------------- Render ----------------
-
   return (
-    <div dir="rtl" className="min-h-screen bg-background text-foreground relative overflow-hidden">
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-24 -right-16 w-80 h-80 rounded-full bg-coral/20 blur-3xl" />
-        <div className="absolute bottom-0 -left-16 w-72 h-72 rounded-full bg-sky/25 blur-3xl" />
-      </div>
-
-      <div className="max-w-3xl mx-auto px-5 py-6">
-        <header className="flex items-center justify-between mb-6">
-          <Link
-            to="/play"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground/70 hover:text-foreground transition"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            מרכז המשחקים
-          </Link>
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-coral/15 text-coral border-2 border-coral/40">
-            <Stethoscope size={14} />
-            Track #03 · Nursing (ER Shift)
+    <div
+      dir="rtl"
+      className="min-h-screen text-white relative overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(1200px 600px at 10% -10%, hsl(199 89% 48% / 0.25), transparent), radial-gradient(900px 500px at 100% 10%, hsl(346 77% 55% / 0.22), transparent), linear-gradient(180deg, #0b1220 0%, #0a0f1a 100%)",
+      }}
+    >
+      {/* Top nav — no back link to /play, this is standalone */}
+      <nav className="relative z-10 max-w-6xl mx-auto px-5 pt-6 flex items-center justify-between">
+        <div className="inline-flex items-center gap-2 font-black tracking-tight text-lg">
+          <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/10 backdrop-blur border border-white/15">
+            <Stethoscope className="w-5 h-5" />
           </span>
-        </header>
+          ER<span className="text-[hsl(346_77%_65%)]">.Shift</span>
+        </div>
+        <a
+          href="#about"
+          className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-white/70 hover:text-white transition"
+        >
+          למה זה כאן?
+          <ChevronDown className="w-4 h-4" />
+        </a>
+      </nav>
 
-        {phase === "intro" && <Intro onStart={startShift} />}
+      <div className="max-w-3xl mx-auto px-5 pt-8 pb-16">
+        {phase === "landing" && <Landing onStart={startShift} />}
 
         {phase === "playing" && (
           <PlayingUI
@@ -236,58 +242,147 @@ export default function NursingER() {
           <DoneUI score={score} treated={treated} missed={missed} onRetry={startShift} />
         )}
       </div>
+
+      {phase === "landing" && <AboutSection />}
     </div>
   );
 }
 
-// ---------------- Sub-components ----------------
+// ---------------- Landing ----------------
 
-function Intro({ onStart }: { onStart: () => void }) {
+function Landing({ onStart }: { onStart: () => void }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="rounded-3xl bg-card border-2 border-foreground/10 p-6 md:p-8"
-      style={{ boxShadow: "0 6px 0 0 hsl(var(--foreground) / 0.12)" }}
-    >
-      <div className="text-6xl mb-3">🚑</div>
-      <h1 className="font-serif text-3xl md:text-4xl leading-tight mb-2">
-        משמרת חדר מיון
-      </h1>
-      <p className="text-lg text-foreground/75 leading-relaxed mb-5">
-        משחק מהיר: חולים מגיעים עם תלונה. קודם בדוק סימנים חיוניים, ואז החלט על סדר הטיפולים הנכון.
-        <br />
-        <strong>כל טיפול חייב להסתיים ב"תיעוד ושחרור" — אחרת החולה לא זז והנקודות יורדות.</strong>
-      </p>
-
-      <div className="grid sm:grid-cols-3 gap-3 mb-6 text-right">
-        <Rule n={1} text="בדוק Vitals לפני כל טיפול" />
-        <Rule n={2} text="חמצן<90 · דימום · חום גבוה — פעל בהתאם" />
-        <Rule n={3} text="סיים תמיד ב'תיעוד ושחרור' 📋" />
-      </div>
-
-      <button
-        onClick={onStart}
-        className="inline-flex items-center gap-2 bg-coral text-white px-8 py-4 rounded-full font-bold text-lg border-2 border-foreground/15 transition-all hover:-translate-y-1 active:translate-y-0.5"
-        style={{ boxShadow: "0 5px 0 0 hsl(var(--foreground) / 0.30)", minHeight: 56 }}
+    <div className="text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
-        <Activity className="w-5 h-5" />
-        התחלת המשמרת ({SHIFT_SECONDS} שניות)
-      </button>
-    </motion.div>
-  );
-}
+        <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-white/10 border border-white/15 backdrop-blur">
+          <Sparkles className="w-3.5 h-3.5 text-[hsl(48_96%_65%)]" />
+          חוויה לעתידי מקצועות הבריאות
+        </span>
+      </motion.div>
 
-function Rule({ n, text }: { n: number; text: string }) {
-  return (
-    <div className="bg-background/70 rounded-xl p-3 border-2 border-foreground/10 flex items-start gap-2">
-      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-coral/20 text-coral text-xs font-bold flex items-center justify-center">
-        {n}
-      </span>
-      <span className="text-sm text-foreground/85 leading-snug">{text}</span>
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, duration: 0.7 }}
+        className="mt-5 font-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] tracking-tight"
+      >
+        90 שניות.<br />
+        <span
+          style={{
+            background: "linear-gradient(90deg, hsl(346 77% 65%), hsl(48 96% 65%))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          משמרת אחת במיון.
+        </span>
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.35, duration: 0.6 }}
+        className="mt-5 text-lg md:text-xl text-white/75 leading-relaxed max-w-xl mx-auto"
+      >
+        שוקל/ת תואר בסיעוד, פרמדיק, ריפוי בעיסוק או רפואה?
+        בוא/י תרגיש/י איך זה באמת — טריאז׳, קבלת החלטות תחת לחץ, וכן — גם ניירת.
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        className="mt-8 flex flex-col items-center gap-3"
+      >
+        <button
+          onClick={onStart}
+          className="group relative inline-flex items-center gap-3 px-9 py-5 rounded-full font-black text-lg text-[#0a0f1a] transition-all hover:scale-[1.03] active:scale-[0.98]"
+          style={{
+            background: "linear-gradient(90deg, hsl(48 96% 65%), hsl(346 77% 65%))",
+            boxShadow: "0 20px 60px -20px hsl(346 77% 55% / 0.6), 0 0 0 1px rgba(255,255,255,0.08) inset",
+            minHeight: 60,
+          }}
+        >
+          <Activity className="w-5 h-5" />
+          התחל/י משמרת
+          <span className="text-xs font-bold opacity-70">· {SHIFT_SECONDS} שניות</span>
+        </button>
+        <p className="text-xs text-white/45">ללא הרשמה. ללא ציון בתעודה. רק אתה, שעון וחולה.</p>
+      </motion.div>
+
+      {/* three-rule strip */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7, duration: 0.6 }}
+        className="mt-14 grid sm:grid-cols-3 gap-3 text-right"
+      >
+        <Rule n="01" title="Vitals לפני הכל" text="לחץ 'בדוק סימנים חיוניים' כדי לראות חמצן, ל.ד, חום ודימום." />
+        <Rule n="02" title="החלטות מהירות" text="חמצן<90 · דימום · חום גבוה — כל תסמין דורש פעולה אחרת." />
+        <Rule n="03" title="ניירת חובה" text="בלי 'תיעוד ושחרור' החולה לא זז, והנקודות יורדות. ברוך/ה הבא/ה לעולם האמיתי." />
+      </motion.div>
     </div>
   );
 }
+
+function Rule({ n, title, text }: { n: string; title: string; text: string }) {
+  return (
+    <div
+      className="rounded-2xl p-4 border border-white/10 bg-white/[0.03] backdrop-blur"
+    >
+      <div className="text-[11px] font-black tracking-[0.25em] text-[hsl(48_96%_65%)]">{n}</div>
+      <div className="mt-1 font-serif text-lg leading-tight">{title}</div>
+      <p className="mt-1 text-sm text-white/60 leading-snug">{text}</p>
+    </div>
+  );
+}
+
+function AboutSection() {
+  return (
+    <section
+      id="about"
+      className="relative z-10 border-t border-white/10 mt-12"
+      style={{ background: "linear-gradient(180deg, transparent, rgba(0,0,0,0.35))" }}
+    >
+      <div className="max-w-3xl mx-auto px-5 py-16">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-white/10 border border-white/15">
+          <GraduationCap className="w-3.5 h-3.5" />
+          למה בנינו את זה
+        </div>
+        <h2 className="mt-4 font-serif text-3xl md:text-4xl leading-tight">
+          לפני שנרשמים לתואר של 4 שנים —<br />
+          כדאי להרגיש איך זה שם.
+        </h2>
+        <p className="mt-4 text-white/70 text-lg leading-relaxed">
+          מקצועות הבריאות דורשים חשיבה מהירה, סדר, ואחריות. המשחק הזה הוא סימולציה זעירה של רגע אחד
+          במיון — הרגע שבו את/ה עוצר/ת, קורא/ת נתונים, ופועל/ת. אם החוויה מרגישה כמו זרימה — יש כאן רמז.
+        </p>
+
+        <div className="mt-8 grid sm:grid-cols-2 gap-3">
+          <PathCard title="סיעוד" text="B.S.N — 4 שנים · ליבת המערכת" />
+          <PathCard title="פרמדיקה" text="B.EMS — 4 שנים · שטח וחדר מיון" />
+          <PathCard title="ריפוי בעיסוק" text="B.OT — 4 שנים · שיקום ותפקוד" />
+          <PathCard title="פיזיותרפיה" text="B.PT — 4 שנים · תנועה וכאב" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PathCard({ title, text }: { title: string; text: string }) {
+  return (
+    <div className="rounded-2xl p-4 border border-white/10 bg-white/[0.04]">
+      <div className="font-serif text-xl">{title}</div>
+      <div className="text-sm text-white/55 mt-0.5">{text}</div>
+    </div>
+  );
+}
+
+// ---------------- Playing ----------------
 
 function PlayingUI(props: {
   patient: Patient;
@@ -306,48 +401,48 @@ function PlayingUI(props: {
 
   return (
     <div className="space-y-4">
-      {/* Stats bar */}
       <div className="grid grid-cols-4 gap-2">
-        <Stat icon={<Timer className="w-4 h-4" />} label="זמן" value={`${timeLeft}s`} accent={timeLeft <= 15 ? "text-coral" : ""} />
+        <Stat icon={<Timer className="w-4 h-4" />} label="זמן" value={`${timeLeft}s`} accent={timeLeft <= 15 ? "text-[hsl(346_77%_65%)]" : ""} />
         <Stat icon={<Trophy className="w-4 h-4" />} label="ניקוד" value={score} />
         <Stat icon={<Heart className="w-4 h-4" />} label="שוחררו" value={treated} />
         <Stat icon={<Activity className="w-4 h-4" />} label="פספוסים" value={missed} />
       </div>
 
-      {/* Patient card */}
       <motion.div
         key={patient.id}
         initial={{ opacity: 0, y: 20, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.35 }}
-        className="rounded-3xl bg-card border-2 border-foreground/10 p-5"
-        style={{ boxShadow: "0 6px 0 0 hsl(var(--foreground) / 0.12)" }}
+        className="rounded-3xl p-5 border border-white/10 bg-white/[0.04] backdrop-blur"
       >
         <div className="flex items-center gap-3 mb-3">
           <div className="text-4xl">{patient.emoji}</div>
           <div className="flex-1">
-            <div className="text-xs font-bold text-foreground/55 tracking-widest">חולה #{patient.id}</div>
+            <div className="text-[10px] font-black text-white/45 tracking-[0.25em]">חולה #{patient.id}</div>
             <div className="font-serif text-xl">{patient.name}</div>
           </div>
           <button
             onClick={props.onSkip}
-            className="text-xs font-semibold text-foreground/55 hover:text-coral px-3 py-1.5 rounded-full border-2 border-foreground/10"
+            className="text-xs font-semibold text-white/55 hover:text-[hsl(346_77%_65%)] px-3 py-1.5 rounded-full border border-white/15"
           >
             דלג (-5)
           </button>
         </div>
 
-        <div className="rounded-2xl bg-coral/10 border-2 border-coral/30 p-3 mb-4">
-          <div className="text-[11px] font-bold text-coral tracking-widest mb-0.5">תלונה עיקרית</div>
+        <div className="rounded-2xl bg-[hsl(346_77%_55%/0.15)] border border-[hsl(346_77%_55%/0.4)] p-3 mb-4">
+          <div className="text-[10px] font-black text-[hsl(346_77%_75%)] tracking-[0.25em] mb-0.5">תלונה עיקרית</div>
           <div className="text-base font-semibold">{patient.complaint}</div>
         </div>
 
-        {/* Vitals */}
         {!vitalsShown ? (
           <button
             onClick={props.onCheckVitals}
-            className="w-full bg-sky text-white rounded-2xl py-4 font-bold text-base border-2 border-foreground/15 transition-all hover:-translate-y-0.5 active:translate-y-0.5 inline-flex items-center justify-center gap-2"
-            style={{ boxShadow: "0 4px 0 0 hsl(var(--foreground) / 0.22)", minHeight: 56 }}
+            className="w-full rounded-2xl py-4 font-bold text-base transition-all hover:-translate-y-0.5 active:translate-y-0.5 inline-flex items-center justify-center gap-2 text-[#0a0f1a]"
+            style={{
+              background: "linear-gradient(90deg, hsl(199 89% 68%), hsl(199 89% 55%))",
+              boxShadow: "0 8px 30px -8px hsl(199 89% 55% / 0.6)",
+              minHeight: 56,
+            }}
           >
             <Stethoscope className="w-5 h-5" />
             בדוק סימנים חיוניים
@@ -366,7 +461,6 @@ function PlayingUI(props: {
         )}
       </motion.div>
 
-      {/* Sequence chips */}
       {sequence.length > 0 && (
         <div className="flex flex-wrap gap-2 justify-center">
           {sequence.map((s, i) => {
@@ -381,7 +475,6 @@ function PlayingUI(props: {
         </div>
       )}
 
-      {/* Actions */}
       <div className="grid grid-cols-2 gap-3">
         {(["oxygen", "bandage", "meds"] as ActionId[]).map((a) => {
           const m = ACTION_META[a];
@@ -391,8 +484,8 @@ function PlayingUI(props: {
               key={a}
               disabled={used}
               onClick={() => props.onAction(a)}
-              className={`${m.tint} rounded-2xl p-4 font-bold text-base border-2 border-foreground/15 transition-all hover:-translate-y-0.5 active:translate-y-0.5 inline-flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-y-0`}
-              style={{ boxShadow: "0 4px 0 0 hsl(var(--foreground) / 0.22)", minHeight: 64 }}
+              className={`${m.tint} rounded-2xl p-4 font-bold text-base border border-white/15 transition-all hover:-translate-y-0.5 active:translate-y-0.5 inline-flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-y-0`}
+              style={{ boxShadow: "0 8px 24px -12px rgba(0,0,0,0.6)", minHeight: 64 }}
             >
               <m.Icon className="w-5 h-5" />
               {m.label}
@@ -401,23 +494,28 @@ function PlayingUI(props: {
         })}
         <button
           onClick={() => props.onAction("discharge")}
-          className="bg-success text-white rounded-2xl p-4 font-bold text-base border-2 border-foreground/15 transition-all hover:-translate-y-0.5 active:translate-y-0.5 inline-flex items-center justify-center gap-2"
-          style={{ boxShadow: "0 4px 0 0 hsl(var(--foreground) / 0.30)", minHeight: 64 }}
+          className="rounded-2xl p-4 font-bold text-base border border-white/15 transition-all hover:-translate-y-0.5 active:translate-y-0.5 inline-flex items-center justify-center gap-2 text-white"
+          style={{
+            background: "linear-gradient(90deg, hsl(142 71% 45%), hsl(142 71% 35%))",
+            boxShadow: "0 10px 30px -10px hsl(142 71% 45% / 0.5)",
+            minHeight: 64,
+          }}
         >
           <FileCheck2 className="w-5 h-5" />
           תיעוד ושחרור
         </button>
       </div>
 
-      {/* Flash */}
       <AnimatePresence>
         {flash && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className={`fixed bottom-6 left-1/2 -translate-x-1/2 px-5 py-3 rounded-full font-bold text-sm shadow-2xl border-2 ${
-              flash.ok ? "bg-success text-white border-success" : "bg-coral text-white border-coral"
+            className={`fixed bottom-6 left-1/2 -translate-x-1/2 px-5 py-3 rounded-full font-bold text-sm shadow-2xl border ${
+              flash.ok
+                ? "bg-[hsl(142_71%_45%)] text-white border-[hsl(142_71%_45%)]"
+                : "bg-[hsl(346_77%_55%)] text-white border-[hsl(346_77%_55%)]"
             }`}
           >
             {flash.msg}
@@ -430,48 +528,55 @@ function PlayingUI(props: {
 
 function Stat({ icon, label, value, accent = "" }: { icon: React.ReactNode; label: string; value: React.ReactNode; accent?: string }) {
   return (
-    <div className="rounded-2xl bg-card border-2 border-foreground/10 px-3 py-2 text-center">
-      <div className={`inline-flex items-center gap-1 text-[10px] font-bold text-foreground/55 tracking-widest ${accent}`}>
+    <div className="rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2 text-center backdrop-blur">
+      <div className={`inline-flex items-center gap-1 text-[10px] font-black text-white/55 tracking-[0.25em] ${accent}`}>
         {icon}
         {label}
       </div>
-      <div className={`font-serif text-xl tabular-nums ${accent}`}>{value}</div>
+      <div className={`font-serif text-xl tabular-nums ${accent || "text-white"}`}>{value}</div>
     </div>
   );
 }
 
 function Vital({ icon, label, value, warn = false }: { icon: React.ReactNode; label: string; value: string; warn?: boolean }) {
   return (
-    <div className={`rounded-2xl border-2 px-3 py-2 ${warn ? "bg-coral/15 border-coral/50" : "bg-background border-foreground/10"}`}>
-      <div className={`inline-flex items-center gap-1 text-[10px] font-bold tracking-widest ${warn ? "text-coral" : "text-foreground/55"}`}>
+    <div
+      className={`rounded-2xl border px-3 py-2 ${
+        warn
+          ? "bg-[hsl(346_77%_55%/0.15)] border-[hsl(346_77%_55%/0.5)]"
+          : "bg-white/[0.03] border-white/10"
+      }`}
+    >
+      <div className={`inline-flex items-center gap-1 text-[10px] font-black tracking-[0.25em] ${warn ? "text-[hsl(346_77%_75%)]" : "text-white/55"}`}>
         {icon}
         {label}
       </div>
-      <div className={`font-serif text-lg ${warn ? "text-coral" : ""}`}>{value}</div>
+      <div className={`font-serif text-lg ${warn ? "text-[hsl(346_77%_75%)]" : "text-white"}`}>{value}</div>
     </div>
   );
 }
 
+// ---------------- Done ----------------
+
 function DoneUI({ score, treated, missed, onRetry }: { score: number; treated: number; missed: number; onRetry: () => void }) {
   const rating = useMemo(() => {
-    if (score >= 200) return { title: "אחות/אח בכיר/ה 🏆", tint: "text-success" };
-    if (score >= 100) return { title: "אחות/אח מנוסה 💪", tint: "text-sky" };
-    if (score >= 40) return { title: "מתמחה בהתקדמות ✨", tint: "text-secondary" };
-    return { title: "צריך עוד תרגול 🩺", tint: "text-coral" };
+    if (score >= 200) return { title: "יש לך את זה. באמת.", sub: "החוויה זרמה — כדאי לבדוק ברצינות תואר בבריאות." };
+    if (score >= 100) return { title: "פוטנציאל אמיתי.", sub: "החלטת נכון תחת לחץ. שווה לך יום פתוח בפקולטה." };
+    if (score >= 40)  return { title: "התחלה טובה.",     sub: "המשמרת הזו רק גירדה — יש עוד מה לגלות." };
+    return              { title: "אולי בכיוון אחר?",     sub: "רפואה לא מרגישה טבעי — וזה גם מידע חשוב." };
   }, [score]);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-3xl bg-card border-2 border-foreground/10 p-6 md:p-8 text-center"
-      style={{ boxShadow: "0 6px 0 0 hsl(var(--foreground) / 0.12)" }}
+      className="rounded-3xl p-6 md:p-10 text-center border border-white/10 bg-white/[0.04] backdrop-blur"
     >
       <div className="text-6xl mb-3">🏁</div>
-      <h2 className="font-serif text-3xl mb-1">סוף המשמרת</h2>
-      <p className={`text-lg font-bold mb-6 ${rating.tint}`}>{rating.title}</p>
+      <h2 className="font-serif text-3xl md:text-4xl">{rating.title}</h2>
+      <p className="mt-2 text-white/70 text-lg">{rating.sub}</p>
 
-      <div className="grid grid-cols-3 gap-3 mb-6">
+      <div className="grid grid-cols-3 gap-3 mt-6 mb-6">
         <Stat icon={<Trophy className="w-4 h-4" />} label="ניקוד" value={score} />
         <Stat icon={<Heart className="w-4 h-4" />} label="שוחררו" value={treated} />
         <Stat icon={<Activity className="w-4 h-4" />} label="פספוסים" value={missed} />
@@ -480,19 +585,23 @@ function DoneUI({ score, treated, missed, onRetry }: { score: number; treated: n
       <div className="flex flex-wrap gap-3 justify-center">
         <button
           onClick={onRetry}
-          className="inline-flex items-center gap-2 bg-coral text-white px-6 py-3 rounded-full font-bold border-2 border-foreground/15 transition-all hover:-translate-y-0.5 active:translate-y-0.5"
-          style={{ boxShadow: "0 4px 0 0 hsl(var(--foreground) / 0.28)", minHeight: 52 }}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-black text-[#0a0f1a]"
+          style={{
+            background: "linear-gradient(90deg, hsl(48 96% 65%), hsl(346 77% 65%))",
+            boxShadow: "0 12px 30px -12px hsl(346 77% 55% / 0.5)",
+            minHeight: 52,
+          }}
         >
           משמרת נוספת
         </button>
-        <Link
-          to="/play"
-          className="inline-flex items-center gap-2 bg-card text-foreground px-6 py-3 rounded-full font-bold border-2 border-foreground/15 transition-all hover:-translate-y-0.5 active:translate-y-0.5"
-          style={{ boxShadow: "0 4px 0 0 hsl(var(--foreground) / 0.18)", minHeight: 52 }}
+        <a
+          href="#about"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-white border border-white/20 bg-white/[0.04] hover:bg-white/[0.08] transition"
+          style={{ minHeight: 52 }}
         >
-          <ArrowLeft className="w-4 h-4" />
-          חזרה למרכז המשחקים
-        </Link>
+          <GraduationCap className="w-4 h-4" />
+          מסלולי תואר בבריאות
+        </a>
       </div>
     </motion.div>
   );
