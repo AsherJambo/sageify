@@ -98,12 +98,16 @@ const Counselor = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm('למחוק את הפגישה?')) return;
-    const { error } = await supabase.from('meeting_bookings').delete().eq('id', id);
-    if (error) {
-      toast.error('שגיאה במחיקה');
-    } else {
+    try {
+      const { error } = await cloudClient.functions.invoke('admin', {
+        headers: { 'x-admin-password': PASSWORD },
+        body: { action: 'delete-meeting-booking', bookingId: id },
+      });
+      if (error) throw error;
       toast.success('הפגישה נמחקה');
       setBookings(prev => prev.filter(b => b.id !== id));
+    } catch {
+      toast.error('שגיאה במחיקה');
     }
   };
 
