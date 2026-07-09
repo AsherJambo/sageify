@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { Mail, Clock, User, Trash2, RefreshCw } from 'lucide-react';
+import { cloudClient } from '@/lib/cloudClient';
+import { Mail, Clock, User, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 
@@ -12,18 +12,28 @@ interface Submission {
   created_at: string;
 }
 
-const AdminContactSubmissions = () => {
+interface Props {
+  adminPassword: string;
+}
+
+const AdminContactSubmissions = ({ adminPassword }: Props) => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('contact_submissions')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (!error && data) setSubmissions(data as Submission[]);
-    setLoading(false);
+    try {
+      const { data, error } = await cloudClient.functions.invoke('admin', {
+        headers: { 'x-admin-password': adminPassword },
+        body: { action: 'list-contact-submissions' },
+      });
+      if (error) throw error;
+      setSubmissions((data?.submissions || []) as Submission[]);
+    } catch {
+      toast({ title: 'שגיאה בטעינת הפניות', variant: 'destructive' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { load(); }, []);
