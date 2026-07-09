@@ -35,6 +35,9 @@ const PlayThinking = lazy(() => import("./pages/play/PlayThinking"));
 const PlaySkills = lazy(() => import("./pages/play/PlaySkills"));
 const PlayConsiderations = lazy(() => import("./pages/play/PlayConsiderations"));
 const NursingER = lazy(() => import("./pages/NursingER"));
+const HealthcareSimHub = lazy(() => import("./pages/HealthcareSimHub"));
+const HealthcarePT = lazy(() => import("./pages/HealthcarePT"));
+const HealthcareNutrition = lazy(() => import("./pages/HealthcareNutrition"));
 
 const queryClient = new QueryClient();
 
@@ -83,6 +86,9 @@ const App = () => {
               <Route path="/play/skills" element={<PlaySkills />} />
               <Route path="/play/considerations" element={<PlayConsiderations />} />
               <Route path="/nursing-er" element={<NursingER />} />
+              <Route path="/healthcare-sim" element={<HealthcareSimHub />} />
+              <Route path="/healthcare-sim/pt" element={<HealthcarePT />} />
+              <Route path="/healthcare-sim/nutrition" element={<HealthcareNutrition />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
