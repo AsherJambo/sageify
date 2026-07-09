@@ -34,6 +34,7 @@ const PlaySchein = lazy(() => import("./pages/play/PlaySchein"));
 const PlayThinking = lazy(() => import("./pages/play/PlayThinking"));
 const PlaySkills = lazy(() => import("./pages/play/PlaySkills"));
 const PlayConsiderations = lazy(() => import("./pages/play/PlayConsiderations"));
+const NursingER = lazy(() => import("./pages/NursingER"));
 
 const queryClient = new QueryClient();
 
@@ -81,6 +82,7 @@ const App = () => {
               <Route path="/play/thinking" element={<PlayThinking />} />
               <Route path="/play/skills" element={<PlaySkills />} />
               <Route path="/play/considerations" element={<PlayConsiderations />} />
+              <Route path="/nursing-er" element={<NursingER />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
