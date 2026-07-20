@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "sageify-mcp",
+      "version": "0.1.0",
+      "title": "Sageify MCP"
+    },
+    "tools": [
+      {
+        "name": "list_assessments",
+        "title": "List assessments",
+        "description": "List the 8 self-discovery assessments available in the Sageify journey.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_healthcare_tracks",
+        "title": "List healthcare simulator tracks",
+        "description": "List the healthcare career simulator tracks in the Sageify app (for young audiences exploring health degrees).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_app_info",
+        "title": "About Sageify",
+        "description": "Get a short public description of the Sageify app: purpose, audience, and main journey.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
