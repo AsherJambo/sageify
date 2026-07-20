@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Anyone can read activity choices" ON public.activity_choices; DROP POLICY IF EXISTS "Anyone can read feedback" ON public.user_feedback; REVOKE SELECT ON public.activity_choices FROM anon, authenticated; REVOKE SELECT ON public.user_feedback FROM anon, authenticated;
