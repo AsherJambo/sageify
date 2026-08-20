@@ -232,6 +232,26 @@ Deno.serve(async (req) => {
         return jsonResponse({ success: true });
       }
 
+      case "list-interactions": {
+        const { data, error } = await supabase
+          .from("user_interactions")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(1000);
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ interactions: data });
+      }
+
+      case "list-health-leads": {
+        const { data, error } = await supabase
+          .from("health_leads")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(1000);
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ leads: data });
+      }
+
       default:
         return jsonResponse({ error: "Unknown action" }, 400);
     }
