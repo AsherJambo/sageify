@@ -224,6 +224,36 @@ export type Database = {
           },
         ]
       }
+      health_leads: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          note: string | null
+          phone: string
+          source: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          note?: string | null
+          phone: string
+          source?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          note?: string | null
+          phone?: string
+          source?: string
+        }
+        Relationships: []
+      }
       meeting_bookings: {
         Row: {
           created_at: string
