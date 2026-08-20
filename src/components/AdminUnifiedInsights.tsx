@@ -103,7 +103,7 @@ export default function AdminUnifiedInsights({ tokens, adminPassword }: Props) {
           body: { action: 'list-global-retiree-insights' },
         }),
         cloudClient.from('opportunities').select('*').eq('is_active', true).order('created_at', { ascending: false }).limit(50),
-        getInteractionStats(),
+        getInteractionStats(adminPassword),
         cloudClient.from('activity_choices').select('*').order('created_at', { ascending: false }).limit(1000),
       ]);
       if (insightsRes.data) setInsights((insightsRes.data?.insights || []) as unknown as InsightRow[]);

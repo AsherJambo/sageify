@@ -38,6 +38,8 @@ const NursingER = lazy(() => import("./pages/NursingER"));
 const HealthcareSimHub = lazy(() => import("./pages/HealthcareSimHub"));
 const HealthcarePT = lazy(() => import("./pages/HealthcarePT"));
 const HealthcareNutrition = lazy(() => import("./pages/HealthcareNutrition"));
+const HealthLanding = lazy(() => import("./pages/HealthLanding"));
+
 
 const queryClient = new QueryClient();
 
@@ -89,6 +91,8 @@ const App = () => {
               <Route path="/healthcare-sim" element={<HealthcareSimHub />} />
               <Route path="/healthcare-sim/pt" element={<HealthcarePT />} />
               <Route path="/healthcare-sim/nutrition" element={<HealthcareNutrition />} />
+              <Route path="/health" element={<HealthLanding />} />
+
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

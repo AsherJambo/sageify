@@ -27,7 +27,7 @@ export async function trackInteraction(params: TrackParams): Promise<void> {
   }
 }
 
-export async function getInteractionStats(): Promise<{
+export async function getInteractionStats(adminPassword?: string): Promise<{
   totalInteractions: number;
   byType: Record<string, number>;
   byTarget: Record<string, number>;
@@ -37,11 +37,16 @@ export async function getInteractionStats(): Promise<{
   topDismissed: { title: string; count: number }[];
   recentTrends: { date: string; count: number }[];
 }> {
-  const { data } = await supabase
-    .from('user_interactions' as any)
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(1000);
+  let data: any[] | null = null;
+  if (adminPassword) {
+    const res = await supabase.functions.invoke('admin', {
+      headers: { 'x-admin-password': adminPassword },
+      body: { action: 'list-interactions' },
+    });
+    data = (res.data as any)?.interactions ?? null;
+  }
+
+
 
   const interactions = (data || []) as any[];
   const byType: Record<string, number> = {};
