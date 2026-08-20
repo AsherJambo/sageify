@@ -110,9 +110,10 @@ const QUESTIONNAIRE_STEPS: Step[] = [
 interface QuestionnaireByTokenProps {
   partnerOrg?: { org_name: string; logo_url: string | null; custom_welcome_message: string };
   demoMode?: boolean;
+  domain?: 'health';
 }
 
-const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByTokenProps = {}) => {
+const QuestionnaireByToken = ({ partnerOrg, demoMode = false, domain }: QuestionnaireByTokenProps = {}) => {
   const { token: paramToken } = useParams<{ token: string }>();
   const token = demoMode ? 'demo-full' : paramToken;
   const isAdminMode = typeof window !== 'undefined' && /[?&]admin=1\b/.test(window.location.hash + window.location.search);
@@ -545,6 +546,7 @@ const QuestionnaireByToken = ({ partnerOrg, demoMode = false }: QuestionnaireByT
             skillsAssignments={state.skillsAssignments}
             preferencesData={state.preferencesData}
             thinkingResult={state.thinkingResult}
+            domain={domain}
             initialMessages={state.chatMessages}
             onMessagesChange={(msgs) => updateState({ chatMessages: msgs })}
             onRoadmapReady={() => setAdvisorProgress(100)}
