@@ -186,7 +186,7 @@ function InlineJourney() {
           {data.full_name ? `${data.full_name}, סיימנו!` : "סיימנו!"}
         </h2>
         <p className="mt-3 text-lg text-med-navy/70 leading-relaxed">
-          שמרנו את התשובות שלך. ניצור קשר עם קישור אישי להמשך התהליך — בינתיים אפשר להתנסות בסימולטור.
+          שמרנו את התשובות שלך. ניצור קשר עם קישור אישי למסע הגילוי המלא — בינתיים אפשר להתנסות בסימולטור המקצועות.
         </p>
         <a
           href="/#/healthcare-sim"

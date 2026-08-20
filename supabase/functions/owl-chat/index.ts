@@ -10,7 +10,7 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages, profileSummary, tokenId } = await req.json();
+    const { messages, profileSummary, tokenId, domain } = await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
@@ -435,6 +435,17 @@ ${activityWisdom}
 - בלוק ה-Roadmap חייב להכיל "Sage Action Roadmap" בדיוק כך.
 - **חובה:** שלב המלצות הדו"ח + חוכמת קהל ב-Roadmap.`;
 
+    const healthFocus = `
+
+## מיקוד תחומי (מסלול מקצועות הבריאות):
+- קהל היעד כאן הוא אנשים ששוקלים כניסה או הסבה למקצועות הבריאות (לא בהכרח בני 60+). התאם את הטון לגילם ולשלב החיים שלהם כפי שעולה מהשיחה.
+- כל ההמלצות והכיוונים חייבים להיות בתוך עולם הבריאות: סיעוד, פיזיותרפיה, תזונה קלינית, ריפוי בעיסוק, פרמדיק, רדיולוגיה, מעבדות רפואיות, קלינאות תקשורת, מנהל מערכות בריאות, סייעות רפואיות ותפקידי תמיכה קליניים.
+- לכל כיוון ציין: מה עושים ביום-יום, מסלול ההכשרה בישראל (תואר / תעודה / קורס), משך זמן משוער, ורגישות למשמרות ולעומס רגשי.
+- אם הפרופיל לא מתאים למקצוע קליני ישיר — הצע תפקידי בריאות עוקפי-קליניקה (מנהלה, תיאום מטופלים, בריאות דיגיטלית, קידום בריאות).
+- ב-Roadmap כלול צעד ראשון קונקרטי לבדיקת התאמה (התנסות/צל/התנדבות במסגרת בריאות).`;
+
+    const finalSystemPrompt = domain === "health" ? systemPrompt + healthFocus : systemPrompt;
+
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -444,7 +455,7 @@ ${activityWisdom}
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: systemPrompt },
+          { role: "system", content: finalSystemPrompt },
           ...messages,
         ],
         stream: true,
