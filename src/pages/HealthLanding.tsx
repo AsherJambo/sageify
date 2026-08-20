@@ -158,7 +158,7 @@ export default function HealthLanding() {
           aria-hidden
         />
 
-        <nav className="max-w-6xl mx-auto px-5 pt-6 flex items-center justify-between text-med-surface">
+        <nav className="relative z-10 max-w-6xl mx-auto px-5 pt-6 flex items-center justify-between text-med-surface">
           <div className="inline-flex items-center gap-2.5">
             <span className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-med-surface/15 border border-med-surface/25 backdrop-blur">
               <Stethoscope className="w-5.5 h-5.5" aria-hidden />
@@ -300,7 +300,7 @@ export default function HealthLanding() {
             }}
             aria-hidden
           />
-          <div className="max-w-6xl mx-auto px-5 text-med-surface">
+          <div className="relative z-10 max-w-6xl mx-auto px-5 text-med-surface">
             <h2 className="font-display text-3xl sm:text-4xl">איך זה עובד</h2>
             <div className="mt-10 grid md:grid-cols-3 gap-6">
               {steps.map((s) => (
