@@ -103,6 +103,14 @@ export default {
           DEFAULT: "hsl(var(--sunny))",
           soft: "hsl(var(--sunny-soft))",
         },
+        med: {
+          teal: "hsl(var(--med-teal))",
+          navy: "hsl(var(--med-navy))",
+          blue: "hsl(var(--med-blue))",
+          yellow: "hsl(var(--med-yellow))",
+          surface: "hsl(var(--med-surface))",
+        },
+
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
