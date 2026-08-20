@@ -142,7 +142,7 @@ export default function HealthLanding() {
       {/* Diagonal brand stripes header */}
       <header className="relative overflow-hidden">
         <div
-          className="absolute inset-0 -z-10"
+          className="absolute inset-0 z-0"
           style={{
             background:
               "linear-gradient(135deg, hsl(var(--med-navy)) 0%, hsl(var(--med-blue)) 55%, hsl(var(--med-teal)) 100%)",
@@ -150,7 +150,7 @@ export default function HealthLanding() {
           aria-hidden
         />
         <div
-          className="absolute inset-0 -z-10 opacity-[0.16]"
+          className="absolute inset-0 z-0 opacity-[0.16]"
           style={{
             backgroundImage:
               "repeating-linear-gradient(115deg, hsl(var(--med-yellow)) 0 14px, transparent 14px 46px)",
@@ -291,9 +291,9 @@ export default function HealthLanding() {
 
         {/* Steps on brand blue with yellow parallelograms */}
         <section className="relative overflow-hidden py-16 sm:py-24">
-          <div className="absolute inset-0 -z-10 bg-med-blue" aria-hidden />
+          <div className="absolute inset-0 z-0 bg-med-blue" aria-hidden />
           <div
-            className="absolute inset-0 -z-10 opacity-20"
+            className="absolute inset-0 z-0 opacity-20"
             style={{
               backgroundImage:
                 "repeating-linear-gradient(115deg, hsl(var(--med-yellow)) 0 18px, transparent 18px 54px)",
