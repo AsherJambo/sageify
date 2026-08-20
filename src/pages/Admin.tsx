@@ -220,6 +220,8 @@ const Admin = () => {
     return `${origin}/#/q/${tokenValue}`;
   };
 
+  const getHealthLink = (tokenValue: string) => getLink(tokenValue).replace('/#/q/', '/#/health/q/');
+
   const copyLink = (tokenValue: string) => {
     navigator.clipboard.writeText(getLink(tokenValue));
     toast.success('הקישור הועתק!');
@@ -559,6 +561,7 @@ const Admin = () => {
                           </>
                         ) : null}
                         <Button size="sm" variant="ghost" onClick={() => copyLink(t.token)}>📋 העתק</Button>
+                        <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(getHealthLink(t.token)); toast.success('קישור מסלול הבריאות הועתק!'); }}>🩺 בריאות</Button>
                         <Button size="sm" variant="ghost" onClick={() => window.open(`${getLink(t.token)}?admin=1`, '_blank')}>🚀 פתח כאדמין</Button>
                         <Button size="sm" variant="ghost" onClick={() => deleteToken(t.id)} className="text-destructive">🗑️</Button>
                       </div>
