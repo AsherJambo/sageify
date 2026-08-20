@@ -82,6 +82,73 @@
     --med-surface: 0 0% 100%;
   }
 
+  /* Health track theme — remaps every semantic token onto the medical brand
+     language (teal / navy / blue / yellow) so the full Sageify journey renders
+     in the healthcare visual identity without touching component code. */
+  .theme-health {
+    --background: 0 0% 100%;
+    --foreground: 240 100% 14%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 100% 14%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 100% 14%;
+
+    --primary: 240 100% 14%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 170 40% 94%;
+    --secondary-foreground: 240 100% 14%;
+
+    --muted: 207 30% 95%;
+    --muted-foreground: 207 35% 35%;
+
+    --accent: 170 64% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 207 100% 29%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 25% 88%;
+    --input: 240 20% 90%;
+    --ring: 170 64% 42%;
+
+    /* Legacy token remap */
+    --sage: 170 64% 42%;
+    --sage-light: 170 45% 92%;
+    --sand: 207 30% 95%;
+    --sand-warm: 170 35% 94%;
+    --slate-blue: 207 100% 29%;
+    --slate-blue-light: 207 45% 92%;
+    --forest: 240 100% 14%;
+    --forest-light: 207 100% 29%;
+    --gold: 65 85% 50%;
+    --gold-light: 65 90% 92%;
+    --navy: 240 100% 14%;
+    --navy-light: 207 100% 29%;
+    --terracotta: 170 64% 42%;
+    --terracotta-light: 170 45% 93%;
+    --warm-bg: 0 0% 100%;
+
+    --success: 170 64% 42%;
+    --success-foreground: 0 0% 100%;
+    --success-soft: 170 45% 92%;
+    --coral: 170 64% 42%;
+    --coral-foreground: 0 0% 100%;
+    --coral-soft: 170 45% 93%;
+    --sky: 207 100% 29%;
+    --sky-soft: 207 45% 93%;
+    --sunny: 65 85% 50%;
+    --sunny-soft: 65 90% 92%;
+
+    --shadow-diffuse: 0 30px 80px -20px hsl(240 100% 14% / 0.14);
+    --shadow-card: 0 4px 0 0 hsl(240 100% 14% / 0.12), 0 1px 2px 0 hsl(240 100% 14% / 0.06);
+    --shadow-elevated: 0 12px 30px -8px hsl(240 100% 14% / 0.20), 0 6px 0 0 hsl(240 100% 14% / 0.10);
+    --shadow-pop: 0 6px 0 0 hsl(240 100% 14% / 0.16);
+  }
+
+
+
 
   .dark {
     --background: 210 12% 7%;
