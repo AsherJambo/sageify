@@ -177,7 +177,7 @@ export default function HealthLanding() {
           </a>
         </nav>
 
-        <div className="max-w-6xl mx-auto px-5 pt-14 pb-20 grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
+        <div className="relative z-10 max-w-6xl mx-auto px-5 pt-14 pb-20 grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
           <div className="text-med-surface">
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold bg-med-surface/12 border border-med-surface/25 backdrop-blur">
               <Sparkles className="w-4 h-4 text-med-yellow" aria-hidden />
